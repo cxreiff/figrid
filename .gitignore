@@ -4,4 +4,11 @@ node_modules
 /build
 /public/build
 .env
+.env.local
 .vercel
+
+.DS_store
+
+/coverage
+
+*.local.*

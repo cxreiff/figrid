@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "@remix-run/eslint-config",
+    "@remix-run/eslint-config/node",
+    "prettier"
+  ],
+  "ignorePatterns": ["/node_modules", "/build", "/public/build"],
+  "parserOptions": {
+    "warnOnUnsupportedTypeScriptVersion": false
+  }
+}
