@@ -9,7 +9,7 @@ node_modules
 /playwright-report/
 /playwright/.cache/
 /coverage
-/prisma/migrations
+/drizzle
 
 package-lock.json
 pnpm-lock.yaml
