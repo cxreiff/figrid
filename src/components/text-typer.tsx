@@ -36,7 +36,6 @@ export function TextTyper({
       <div className="pointer-events-none invisible">{text}</div>
       <div className="absolute inset-0 p-[inherit]">
         {hidden ? text.slice(0, -hidden) : text}
-        {hidden > 0 && <span className="animate-pulse"> _</span>}
       </div>
     </div>
   );
