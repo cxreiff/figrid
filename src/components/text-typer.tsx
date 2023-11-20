@@ -34,6 +34,7 @@ export function TextTyper({
       }}
     >
       <div className="pointer-events-none invisible">{text}</div>
+      <noscript className="absolute inset-0 p-[inherit]">{text}</noscript>
       <div className="absolute inset-0 p-[inherit]">
         {hidden ? text.slice(0, -hidden) : text}
       </div>

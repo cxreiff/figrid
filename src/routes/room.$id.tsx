@@ -36,13 +36,21 @@ export async function action({ request }: ActionFunctionArgs) {
 
     switch (cmd) {
         case "north":
-            return redirect(`/room/${room.north}`);
+            return room.north
+                ? redirect(`/room/${room.north}`)
+                : new Response("invalid direction");
         case "east":
-            return redirect(`/room/${room.east}`);
+            return room.east
+                ? redirect(`/room/${room.east}`)
+                : new Response("invalid direction");
         case "south":
-            return redirect(`/room/${room.south}`);
+            return room.south
+                ? redirect(`/room/${room.south}`)
+                : new Response("invalid direction");
         case "west":
-            return redirect(`/room/${room.west}`);
+            return room.west
+                ? redirect(`/room/${room.west}`)
+                : new Response("invalid direction");
         default:
             return new Response("invalid cmd");
     }
@@ -52,7 +60,7 @@ export default function Index() {
     const { room } = useLoaderData<typeof loader>();
 
     return (
-        <div key={room.id} className="text-center">
+        <div key={room.id} className="p-12 text-center">
             <TextTyper
                 className="pb-8 text-center"
                 text={`${room.description || "[empty description]"
