@@ -12,7 +12,7 @@ import { eq } from "drizzle-orm";
 import { rooms, room_schema } from "~/database/schema.server";
 import { z } from "zod";
 
-export const config = { runtime: "edge" };
+export const config = { runtime: "node" };
 
 export async function loader({ params }: LoaderFunctionArgs) {
   invariant(params.id, "missing id param");
