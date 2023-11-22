@@ -15,7 +15,7 @@ import stylesheet from "~/styles.css";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "figrid.io" },
+    { title: "figrid" },
     { name: "description", content: "text adventure service" },
   ];
 };
