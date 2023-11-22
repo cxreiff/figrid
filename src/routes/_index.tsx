@@ -1,5 +1,5 @@
 import { TextTyper } from "~/components/text-typer";
-import { loremIpsum } from "~/utilities/lorem-ipsum";
+import { loremIpsum } from "~/utilities/misc";
 
 export const config = { runtime: "edge" };
 

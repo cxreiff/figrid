@@ -1,12 +1,12 @@
 {
   "version": "5",
-  "dialect": "mysql",
+  "dialect": "pg",
   "entries": [
     {
       "idx": 0,
       "version": "5",
-      "when": 1700263182716,
-      "tag": "0000_damp_hex",
+      "when": 1700645618620,
+      "tag": "0000_chemical_magneto",
       "breakpoints": true
     }
   ]
