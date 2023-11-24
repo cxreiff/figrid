@@ -2,9 +2,7 @@ import { z } from "zod"
 
 const schema = z.object({
   NODE_ENV: z.enum(["production", "development", "test"] as const),
-  POSTGRES_URL: z.string(),
-  SUPABASE_URL: z.string(),
-  SUPABASE_ANON_KEY: z.string(),
+  DATABASE_URL: z.string(),
 })
 
 declare global {
@@ -39,8 +37,6 @@ export function getEnv() {
   return {
     MODE: process.env.NODE_ENV,
     SENTRY_DSN: process.env.SENTRY_DSN,
-    SUPABASE_URL: process.env.SUPABASE_URL,
-    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
   }
 }
 

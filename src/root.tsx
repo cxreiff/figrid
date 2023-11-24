@@ -10,14 +10,10 @@ import {
 } from "@remix-run/react"
 import { Analytics } from "@vercel/analytics/react"
 import {
-  json,
   type LinksFunction,
-  type LoaderFunctionArgs,
   type MetaFunction,
 } from "@vercel/remix"
-import { supabaseServer } from "~/database/supabase.server"
 import stylesheet from "~/styles.css"
-import { getEnv } from "~/utilities/env.server"
 
 export const meta: MetaFunction = () => {
   return [
@@ -30,20 +26,6 @@ export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
   { rel: "stylesheet", href: stylesheet },
 ]
-
-export async function loader({ request }: LoaderFunctionArgs) {
-  const [supabase, headers] = supabaseServer(request)
-  const session = await supabase.auth.getSession()
-  return json(
-    {
-      session: session?.data?.session,
-      env: getEnv(),
-    },
-    {
-      headers,
-    },
-  )
-}
 
 export default function App() {
   return (
@@ -64,7 +46,6 @@ export default function App() {
             <Link to="/" className="grow">
               figrid
             </Link>
-            <Link to="/protected">/protected</Link>
             <Link to="/room/1">/room/1</Link>
           </div>
           <main className="m-2 flex grow flex-col items-center justify-center border border-stone-500">

@@ -1,23 +1,29 @@
-import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core"
+import {
+  int,
+  mysqlTable,
+  serial,
+  text,
+  timestamp,
+} from "drizzle-orm/mysql-core"
 import { createSelectSchema } from "drizzle-zod"
 import { z } from "zod"
 
-const create_update_timestamps = {
+const createUpdateTimestamps = {
   created_at: timestamp("created_at").defaultNow().notNull(),
-  updated_at: timestamp("updated_at").defaultNow().notNull(),
+  updated_at: timestamp("updated_at").defaultNow().notNull().onUpdateNow(),
 }
 
-export const rooms = pgTable("rooms", {
+export const rooms = mysqlTable("rooms", {
   id: serial("id").primaryKey(),
   name: text("name"),
   description: text("description"),
 
-  north: integer("north"),
-  east: integer("east"),
-  south: integer("south"),
-  west: integer("west"),
+  north: int("north"),
+  east: int("east"),
+  south: int("south"),
+  west: int("west"),
 
-  ...create_update_timestamps,
+  ...createUpdateTimestamps,
 })
 
 export const room_schema = createSelectSchema(rooms, {

@@ -1,14 +1,14 @@
 import type { Config } from "drizzle-kit"
 
 if (!process.env.DATABASE_URL) {
-  throw new Error("Missing environment variable: DATABASE_PATH")
+  throw new Error("Missing environment variable: DATABASE_URL")
 }
 
 export default {
-  schema: "./src/database/schema.server.ts",
+  schema: "./src/utilities/schema.server.ts",
   out: "./drizzle/migrations",
-  driver: "pg",
+  driver: "mysql2",
   dbCredentials: {
-    connectionString: process.env.DATABASE_URL,
+    uri: process.env.DATABASE_URL,
   },
 } satisfies Config
