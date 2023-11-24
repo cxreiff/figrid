@@ -1,4 +1,4 @@
-import { cssBundleHref } from "@remix-run/css-bundle";
+import { cssBundleHref } from "@remix-run/css-bundle"
 import {
   Link,
   Links,
@@ -7,38 +7,42 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-} from "@remix-run/react";
-import { Analytics } from "@vercel/analytics/react";
-import type { LinksFunction, MetaFunction } from "@vercel/remix";
-import type { ReactNode } from "react";
-import stylesheet from "~/styles.css";
+} from "@remix-run/react"
+import { Analytics } from "@vercel/analytics/react"
+import {
+  json,
+  type LinksFunction,
+  type LoaderFunctionArgs,
+  type MetaFunction,
+} from "@vercel/remix"
+import { supabaseServer } from "~/database/supabase.server"
+import stylesheet from "~/styles.css"
+import { getEnv } from "~/utilities/env.server"
 
 export const meta: MetaFunction = () => {
   return [
     { title: "figrid" },
     { name: "description", content: "text adventure service" },
-  ];
-};
+  ]
+}
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
   { rel: "stylesheet", href: stylesheet },
-];
+]
 
-function Layout({ children }: { children: ReactNode }) {
-  return (
-    <div className="flex min-h-screen flex-col">
-      <div className="m-2 flex h-12 items-center gap-4 border border-stone-500 px-6 py-2">
-        <Link to="/" className="grow">
-          figrid
-        </Link>
-        <Link to="/room/1">first_room</Link>
-      </div>
-      <main className="m-2 flex grow flex-col items-center justify-center border border-stone-500">
-        {children}
-      </main>
-    </div>
-  );
+export async function loader({ request }: LoaderFunctionArgs) {
+  const [supabase, headers] = supabaseServer(request)
+  const session = await supabase.auth.getSession()
+  return json(
+    {
+      session: session?.data?.session,
+      env: getEnv(),
+    },
+    {
+      headers,
+    },
+  )
 }
 
 export default function App() {
@@ -55,14 +59,23 @@ export default function App() {
           "min-h-screen bg-gradient-to-b from-stone-700 to-stone-900 font-sans text-white"
         }
       >
-        <Layout>
-          <Outlet />
-        </Layout>
+        <div className="flex min-h-screen flex-col">
+          <div className="m-2 flex h-12 items-center gap-4 border border-stone-500 px-6 py-2">
+            <Link to="/" className="grow">
+              figrid
+            </Link>
+            <Link to="/protected">/protected</Link>
+            <Link to="/room/1">/room/1</Link>
+          </div>
+          <main className="m-2 flex grow flex-col items-center justify-center border border-stone-500">
+            <Outlet />
+          </main>
+        </div>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
         <Analytics />
       </body>
     </html>
-  );
+  )
 }

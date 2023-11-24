@@ -4,7 +4,7 @@
   "printWidth": 80,
   "proseWrap": "always",
   "quoteProps": "consistent",
-  "semi": true,
+  "semi": false,
   "singleQuote": false,
   "tabWidth": 2,
   "trailingComma": "all",

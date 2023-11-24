@@ -1,7 +1,7 @@
-import type { Config } from "drizzle-kit";
+import type { Config } from "drizzle-kit"
 
 if (!process.env.DATABASE_URL) {
-  throw new Error("Missing environment variable: DATABASE_PATH");
+  throw new Error("Missing environment variable: DATABASE_PATH")
 }
 
 export default {
@@ -11,4 +11,4 @@ export default {
   dbCredentials: {
     connectionString: process.env.DATABASE_URL,
   },
-} satisfies Config;
+} satisfies Config

@@ -1,4 +1,4 @@
-import { useEffect, useState, type ComponentProps } from "react";
+import { useEffect, useState, type ComponentProps } from "react"
 
 export function TextTyper({
   text,
@@ -6,19 +6,19 @@ export function TextTyper({
   onClick,
   ...props
 }: { text: string } & ComponentProps<"div">) {
-  const [hidden, setHidden] = useState(text.length);
+  const [hidden, setHidden] = useState(text.length)
 
   useEffect(() => {
-    setHidden(text.length);
-  }, [text]);
+    setHidden(text.length)
+  }, [text])
 
   useEffect(() => {
     if (hidden > 0) {
       setTimeout(() => {
-        setHidden((prevHidden) => Math.max(prevHidden - 4, 0));
-      }, 32);
+        setHidden((prevHidden) => Math.max(prevHidden - 4, 0))
+      }, 32)
     }
-  }, [hidden, text]);
+  }, [hidden, text])
 
   return (
     <div
@@ -29,8 +29,8 @@ export function TextTyper({
         whiteSpace: "pre-wrap",
       }}
       onClick={(event) => {
-        onClick?.(event);
-        setHidden(0);
+        onClick?.(event)
+        setHidden(0)
       }}
     >
       <div className="pointer-events-none invisible">{text}</div>
@@ -39,5 +39,5 @@ export function TextTyper({
         {hidden ? text.slice(0, -hidden) : text}
       </div>
     </div>
-  );
+  )
 }

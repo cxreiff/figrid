@@ -1,13 +1,11 @@
-import { z } from "zod";
+import { z } from "zod"
 
 const schema = z.object({
   NODE_ENV: z.enum(["production", "development", "test"] as const),
-  DATABASE_URL: z.string(),
-  SESSION_SECRET: z.string(),
-  GITHUB_CLIENT_ID: z.string().default("MOCK_GITHUB_CLIENT_ID"),
-  GITHUB_CLIENT_SECRET: z.string().default("MOCK_GITHUB_CLIENT_SECRET"),
-  GITHUB_TOKEN: z.string().default("MOCK_GITHUB_TOKEN"),
-});
+  POSTGRES_URL: z.string(),
+  SUPABASE_URL: z.string(),
+  SUPABASE_ANON_KEY: z.string(),
+})
 
 declare global {
   namespace NodeJS {
@@ -16,15 +14,15 @@ declare global {
 }
 
 export function init() {
-  const parsed = schema.safeParse(process.env);
+  const parsed = schema.safeParse(process.env)
 
   if (parsed.success === false) {
     console.error(
       "❌ Invalid environment variables:",
       parsed.error.flatten().fieldErrors,
-    );
+    )
 
-    throw new Error("Invalid environment variables");
+    throw new Error("Invalid environment variables")
   }
 }
 
@@ -41,14 +39,16 @@ export function getEnv() {
   return {
     MODE: process.env.NODE_ENV,
     SENTRY_DSN: process.env.SENTRY_DSN,
-  };
+    SUPABASE_URL: process.env.SUPABASE_URL,
+    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
+  }
 }
 
-type ENV = ReturnType<typeof getEnv>;
+type ENV = ReturnType<typeof getEnv>
 
 declare global {
-  var ENV: ENV;
+  var ENV: ENV
   interface Window {
-    ENV: ENV;
+    ENV: ENV
   }
 }

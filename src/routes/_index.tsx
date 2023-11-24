@@ -1,8 +1,8 @@
-import { TextTyper } from "~/components/text-typer";
-import { loremIpsum } from "~/utilities/misc";
+import { TextTyper } from "~/components/text-typer"
+import { loremIpsum } from "~/utilities/misc"
 
-export const config = { runtime: "edge" };
+export const config = { runtime: "edge" }
 
 export default function Index() {
-  return <TextTyper text={loremIpsum} className="p-6" />;
+  return <TextTyper text={loremIpsum} className="p-6" />
 }
