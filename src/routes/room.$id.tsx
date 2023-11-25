@@ -9,7 +9,7 @@ import { TextTyper } from "~/components/text-typer"
 import { db } from "~/utilities/database.server"
 import invariant from "tiny-invariant"
 import { eq } from "drizzle-orm"
-import { rooms, room_schema } from "~/utilities/schema.server"
+import { rooms, room_select_schema } from "~/utilities/schema.server"
 import { z } from "zod"
 
 export const config = { runtime: "edge" }
@@ -29,7 +29,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 const action_schema = z.object({
   cmd: z.string(),
-  room: z.preprocess((r) => JSON.parse(String(r)), room_schema),
+  room: z.preprocess((r) => JSON.parse(String(r)), room_select_schema),
 })
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -65,15 +65,16 @@ export default function Room() {
     <div key={room.id} className="p-12 text-center">
       <TextTyper
         className="pb-8 text-center"
-        text={`${room.description || "[empty description]"
-          }\n\nthere are exits to the ${[
-            room.north && "north",
-            room.east && "east",
-            room.south && "south",
-            room.west && "west",
-          ]
-            .filter((dir) => dir != undefined)
-            .join(", ")}.`}
+        text={`${
+          room.description || "[empty description]"
+        }\n\nthere are exits to the ${[
+          room.north && "north",
+          room.east && "east",
+          room.south && "south",
+          room.west && "west",
+        ]
+          .filter((dir) => dir != undefined)
+          .join(", ")}.`}
       />
       <Form method="post" replace preventScrollReset>
         {">"}

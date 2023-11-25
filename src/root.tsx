@@ -9,10 +9,7 @@ import {
   ScrollRestoration,
 } from "@remix-run/react"
 import { Analytics } from "@vercel/analytics/react"
-import {
-  type LinksFunction,
-  type MetaFunction,
-} from "@vercel/remix"
+import { type LinksFunction, type MetaFunction } from "@vercel/remix"
 import stylesheet from "~/styles.css"
 
 export const meta: MetaFunction = () => {

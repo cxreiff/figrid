@@ -8,6 +8,27 @@
       "when": 1700818314093,
       "tag": "0000_married_scourge",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1700853067223,
+      "tag": "0001_open_white_queen",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1700855921430,
+      "tag": "0002_graceful_boomerang",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1700872763907,
+      "tag": "0003_panoramic_switch",
+      "breakpoints": true
     }
   ]
 }

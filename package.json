@@ -11,9 +11,9 @@
     "typecheck": "tsc",
     "format": "prettier --write .",
     "lint": "eslint .",
-    "db:generate": "drizzle-kit generate:mysql",
-    "db:push": "drizzle-kit push:mysql",
-    "db:studio": "drizzle-kit studio"
+    "generate": "drizzle-kit generate:mysql",
+    "migrate": "drizzle-kit push:mysql",
+    "studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@epic-web/remember": "^1.0.2",
@@ -24,11 +24,14 @@
     "@remix-run/serve": "^2.3.0",
     "@vercel/analytics": "^1.1.1",
     "@vercel/remix": "^2.2.0",
+    "bcryptjs": "^2.4.3",
     "drizzle-orm": "^0.29.0",
     "drizzle-zod": "^0.5.1",
     "isbot": "^3.6.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "remix-auth": "^3.6.0",
+    "remix-auth-form": "^1.4.0",
     "tiny-invariant": "^1.3.1",
     "zod": "^3.22.4"
   },
@@ -36,6 +39,7 @@
     "@remix-run/dev": "^2.3.0",
     "@remix-run/eslint-config": "^2.3.0",
     "@total-typescript/ts-reset": "^0.5.1",
+    "@types/bcryptjs": "^2.4.6",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "drizzle-kit": "^0.20.4",
