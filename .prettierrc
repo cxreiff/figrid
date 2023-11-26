@@ -1,12 +1,12 @@
 {
-  "arrowParens": "always",
-  "bracketSpacing": true,
-  "printWidth": 80,
-  "proseWrap": "always",
-  "quoteProps": "consistent",
-  "semi": false,
-  "singleQuote": false,
-  "tabWidth": 2,
-  "trailingComma": "all",
-  "plugins": ["prettier-plugin-sql", "prettier-plugin-tailwindcss"]
+    "arrowParens": "always",
+    "bracketSpacing": true,
+    "printWidth": 80,
+    "proseWrap": "always",
+    "quoteProps": "consistent",
+    "semi": false,
+    "singleQuote": false,
+    "tabWidth": 4,
+    "trailingComma": "all",
+    "plugins": ["prettier-plugin-sql", "prettier-plugin-tailwindcss"]
 }
