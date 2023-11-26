@@ -1,7 +1,5 @@
 import { TextTyper } from "~/components/text-typer"
 
-export const config = { runtime: "edge" }
-
 const loremIpsum = `
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum pharetra libero lectus, ut finibus velit molestie sit amet. Quisque in scelerisque ipsum. Maecenas lacinia pretium lectus sit amet consectetur. Integer viverra, leo ut luctus elementum, metus nunc dictum diam, a volutpat nulla tortor non orci. Maecenas a ultricies urna. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam sollicitudin, nunc nec accumsan aliquet, lectus orci condimentum velit, non tempus eros neque at massa. Proin efficitur porta lectus, hendrerit varius eros convallis sed. Nulla lacinia vitae ex ullamcorper porta. In nec egestas orci. Sed tincidunt massa vitae fringilla tempor. Phasellus eu lorem non risus fermentum rutrum nec quis purus. Proin orci ligula, posuere quis nisi a, congue ultricies lectus. Nunc sit amet risus fringilla, pulvinar leo in, tristique sem. Fusce eget faucibus ipsum, ut mattis justo. Aliquam metus neque, faucibus nec mauris eu, tristique dictum elit.
 
@@ -15,5 +13,5 @@ Proin elementum sem sed odio condimentum, non volutpat metus pulvinar. Donec lib
 `.trim()
 
 export default function Index() {
-  return <TextTyper text={loremIpsum} className="p-6" />
+    return <TextTyper text={loremIpsum} className="p-6" />
 }

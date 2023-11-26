@@ -1,28 +1,30 @@
 import { z } from "zod"
 
 const schema = z.object({
-  NODE_ENV: z.enum(["production", "development", "test"] as const),
-  DATABASE_URL: z.string(),
-  SESSION_SECRET: z.string(),
+    NODE_ENV: z.enum(["production", "development", "test"] as const),
+    DATABASE_URL: z.string(),
+    SESSION_SECRET: z.string(),
+    GITHUB_CLIENT_ID: z.string(),
+    GITHUB_CLIENT_SECRET: z.string(),
 })
 
 declare global {
-  namespace NodeJS {
-    interface ProcessEnv extends z.infer<typeof schema> {}
-  }
+    namespace NodeJS {
+        interface ProcessEnv extends z.infer<typeof schema> {}
+    }
 }
 
 export function init() {
-  const parsed = schema.safeParse(process.env)
+    const parsed = schema.safeParse(process.env)
 
-  if (parsed.success === false) {
-    console.error(
-      "❌ Invalid environment variables:",
-      parsed.error.flatten().fieldErrors,
-    )
+    if (parsed.success === false) {
+        console.error(
+            "❌ Invalid environment variables:",
+            parsed.error.flatten().fieldErrors,
+        )
 
-    throw new Error("Invalid environment variables")
-  }
+        throw new Error("Invalid environment variables")
+    }
 }
 
 /**
@@ -35,17 +37,17 @@ export function init() {
  * @returns all public ENV variables
  */
 export function getEnv() {
-  return {
-    MODE: process.env.NODE_ENV,
-    SENTRY_DSN: process.env.SENTRY_DSN,
-  }
+    return {
+        MODE: process.env.NODE_ENV,
+        SENTRY_DSN: process.env.SENTRY_DSN,
+    }
 }
 
 type ENV = ReturnType<typeof getEnv>
 
 declare global {
-  var ENV: ENV
-  interface Window {
-    ENV: ENV
-  }
+    var ENV: ENV
+    interface Window {
+        ENV: ENV
+    }
 }
