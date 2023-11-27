@@ -1,7 +1,14 @@
 import { eq } from "drizzle-orm"
 import { GitHubStrategy } from "remix-auth-github"
+import { z } from "zod"
+import { getSessionExpirationDate } from "~/auth/authenticator.server"
 import { db } from "~/utilities/database.server"
-import { connections, users } from "~/utilities/schema.server"
+import {
+    connections,
+    profiles,
+    sessions,
+    users,
+} from "~/utilities/schema.server"
 
 export const GITHUB_STRATEGY = "GITHUB_STRATEGY"
 
@@ -15,7 +22,7 @@ export const gitHubStrategy = new GitHubStrategy(
         const email = profile.emails[0].value
 
         let user = await db.query.users.findFirst({
-            with: { connections: true },
+            with: { connections: true, profiles: true },
             where: eq(users.email, profile.emails[0].value),
         })
 
@@ -25,21 +32,42 @@ export const gitHubStrategy = new GitHubStrategy(
                 alias: profile.displayName,
                 name: profile.name.givenName,
             }
-            const { insertId: user_id } = await db.insert(users).values(newUser)
-            await db.insert(connections).values({
-                user_id: Number(user_id),
-                provider_id: profile.id.toString(),
-                provider_name: GITHUB_STRATEGY,
+            const response = await db.insert(users).values(newUser)
+            const { insertId: user_id } = z
+                .object({ insertId: z.coerce.number() })
+                .parse(response)
+
+            await db.insert(profiles).values({
+                user_id,
+                image_url: profile.photos?.[0].value,
             })
             user = await db.query.users.findFirst({
-                with: { connections: true },
-                where: eq(users.id, Number(user_id)),
+                with: { connections: true, profiles: true },
+                where: eq(users.id, user_id),
             })
         }
 
         if (!user) {
-            throw Error("failed to authenticate")
+            throw Error("failed to create a user")
         }
+
+        if (
+            !user.connections
+                .map((connection) => connection.provider_name)
+                .includes(GITHUB_STRATEGY)
+        ) {
+            console.debug("create connection")
+            db.insert(connections).values({
+                user_id: user.id,
+                provider_id: profile.id.toString(),
+                provider_name: GITHUB_STRATEGY,
+            })
+        }
+
+        await db.insert(sessions).values({
+            user_id: user.id,
+            expiration_date: getSessionExpirationDate(),
+        })
 
         return user
     },

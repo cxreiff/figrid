@@ -6,6 +6,8 @@ import {
     GITHUB_STRATEGY,
     gitHubStrategy,
 } from "~/auth/strategies/github.server"
+// import bcrypt from "resources/bcrypt.min.cjs"
+import bcrypt from "bcryptjs"
 
 export const SESSION_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 30
 
@@ -32,4 +34,8 @@ authenticator.use(gitHubStrategy, GITHUB_STRATEGY)
 
 export function getSessionExpirationDate() {
     return new Date(Date.now() + SESSION_EXPIRATION_TIME)
+}
+
+export async function hashPassword(password: string) {
+    return bcrypt.hash(password, process.env.BCRYPT_SALT)
 }

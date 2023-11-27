@@ -16,13 +16,6 @@ export const formStrategy = new FormStrategy(async ({ form }) => {
         })
         .parse(Object.fromEntries(form))
 
-    const hashed = await bcrypt.hash(password, 10)
-    const user = await login(email, hashed || "mock")
-
-    return user
-})
-
-async function login(email: string, hash: string) {
     const user = await db.query.users.findFirst({
         with: { password: true },
         where: eq(users.email, email),
@@ -32,7 +25,7 @@ async function login(email: string, hash: string) {
         throw new Error("no user found.")
     }
 
-    if (!bcrypt.compare(hash, user.password.hash)) {
+    if (!(await bcrypt.compare(password, user.password.hash))) {
         throw new Error("invalid password.")
     }
 
@@ -46,4 +39,6 @@ async function login(email: string, hash: string) {
     }
 
     return user
-}
+
+    return user
+})

@@ -6,6 +6,7 @@ import {
 import {
     char,
     datetime,
+    index,
     int,
     mysqlEnum,
     mysqlTable,
@@ -44,25 +45,29 @@ export const room_select_schema = createSelectSchema(rooms, {
 export type RoomsSelectModel = InferSelectModel<typeof rooms>
 export type RoomsInsertModel = InferInsertModel<typeof rooms>
 
-export const users = mysqlTable("users", {
-    id: int("id").primaryKey().unique().notNull().autoincrement(),
-    email: varchar("email", { length: 256 }).unique().notNull(),
-    alias: varchar("alias", { length: 256 }).unique().notNull(),
-    name: varchar("name", { length: 256 }),
+export const users = mysqlTable(
+    "users",
+    {
+        id: int("id").primaryKey().unique().notNull().autoincrement(),
+        email: varchar("email", { length: 256 }).unique().notNull(),
+        alias: varchar("alias", { length: 256 }).unique().notNull(),
+        name: varchar("name", { length: 256 }),
 
-    type: mysqlEnum("type", ["standard", "creator", "admin"])
-        .default("standard")
-        .notNull(),
+        type: mysqlEnum("type", ["standard", "creator", "admin"])
+            .default("standard")
+            .notNull(),
 
-    ...create_update_timestamps,
-})
+        ...create_update_timestamps,
+    },
+    (t) => ({
+        email: uniqueIndex("email").on(t.email),
+        alias: uniqueIndex("alias").on(t.alias),
+    }),
+)
 
 export const users_relations = relations(users, ({ many, one }) => ({
     sessions: many(sessions),
-    connections: one(connections, {
-        fields: [users.id],
-        references: [connections.user_id],
-    }),
+    connections: many(connections),
     password: one(passwords, {
         fields: [users.id],
         references: [passwords.user_id],
@@ -112,7 +117,7 @@ export const sessions = mysqlTable(
             .notNull(),
     },
     (t) => ({
-        user_id_index: uniqueIndex("user_id_index").on(t.user_id),
+        user_id_index: index("user_id_index").on(t.user_id),
     }),
 )
 

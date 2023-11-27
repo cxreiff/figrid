@@ -31,7 +31,7 @@ export default function Login() {
                 <button type="submit">log in</button>
             </Form>
             OR
-            <Form action="/auth/github" method="post">
+            <Form action="/auth/github" method="post" className="p-4">
                 <button>Login with GitHub</button>
             </Form>
         </>
