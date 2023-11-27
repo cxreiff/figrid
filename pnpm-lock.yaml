@@ -29,9 +29,6 @@ dependencies:
   '@vercel/remix':
     specifier: ^2.2.0
     version: 2.2.0(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
-  bcryptjs:
-    specifier: ^2.4.3
-    version: 2.4.3
   drizzle-orm:
     specifier: ^0.29.0
     version: 0.29.0(@planetscale/database@1.11.0)(mysql2@3.6.5)
@@ -2357,10 +2354,6 @@ packages:
     engines: {node: '>= 0.8'}
     dependencies:
       safe-buffer: 5.1.2
-
-  /bcryptjs@2.4.3:
-    resolution: {integrity: sha512-V/Hy/X9Vt7f3BbPJEi8BdVFMByHi+jNXrYkW3huaybV/kQ0KJg0Y6PkEMbn+zeT+i+SiKZ/HMqJGIIt4LZDqNQ==}
-    dev: false
 
   /big-integer@1.6.51:
     resolution: {integrity: sha512-GPEid2Y9QU1Exl1rpO9B2IPJGHPSupF5GnVIP0blYvNOMer2bTvSWs1jGOUg04hTmu67nmLsQ9TBo1puaotBHg==}

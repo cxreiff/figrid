@@ -131,30 +131,16 @@ export const sessions_relations = relations(sessions, ({ one }) => ({
 export type SessionsSelectModel = InferSelectModel<typeof sessions>
 export type SessionsInsertModel = InferInsertModel<typeof sessions>
 
-export const connections = mysqlTable(
-    "connections",
-    {
-        id: int("id").primaryKey().unique().notNull().autoincrement(),
-        provider_name: varchar("provider_name", { length: 256 })
-            .unique()
-            .notNull(),
-        provider_id: varchar("provider_id", { length: 256 }).unique().notNull(),
+export const connections = mysqlTable("connections", {
+    id: int("id").primaryKey().unique().notNull().autoincrement(),
+    provider_name: varchar("provider_name", { length: 256 }).unique().notNull(),
+    provider_id: varchar("provider_id", { length: 256 }).unique().notNull(),
 
-        user_id: int("user_id"),
+    user_id: int("user_id"),
 
-        created_at: timestamp("created_at").defaultNow().notNull(),
-        updated_at: timestamp("updated_at")
-            .defaultNow()
-            .onUpdateNow()
-            .notNull(),
-    },
-    (t) => ({
-        provider_name_index: uniqueIndex("provider_name_index").on(
-            t.provider_name,
-        ),
-        provider_id_index: uniqueIndex("provider_id_index").on(t.provider_id),
-    }),
-)
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+})
 
 export const connections_relations = relations(connections, ({ one }) => ({
     user: one(users, {

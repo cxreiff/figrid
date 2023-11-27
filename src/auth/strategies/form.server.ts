@@ -17,7 +17,7 @@ export const formStrategy = new FormStrategy(async ({ form }) => {
         .parse(Object.fromEntries(form))
 
     const user = await db.query.users.findFirst({
-        with: { password: true },
+        with: { password: true, profiles: true },
         where: eq(users.email, email),
     })
 
@@ -38,7 +38,13 @@ export const formStrategy = new FormStrategy(async ({ form }) => {
         throw new Error("failed to create session.")
     }
 
-    return user
-
-    return user
+    return {
+        alias: user.alias,
+        email: user.email,
+        name: user.name,
+        type: user.type,
+        profile: {
+            image_url: user.profiles.image_url,
+        },
+    }
 })

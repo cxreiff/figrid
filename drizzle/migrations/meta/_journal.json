@@ -36,6 +36,13 @@
       "when": 1701046756399,
       "tag": "0004_blue_vin_gonzales",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1701067377034,
+      "tag": "0005_thin_invaders",
+      "breakpoints": true
     }
   ]
 }

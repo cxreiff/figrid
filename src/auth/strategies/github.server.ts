@@ -56,10 +56,9 @@ export const gitHubStrategy = new GitHubStrategy(
                 .map((connection) => connection.provider_name)
                 .includes(GITHUB_STRATEGY)
         ) {
-            console.debug("create connection")
             db.insert(connections).values({
                 user_id: user.id,
-                provider_id: profile.id.toString(),
+                provider_id: profile.id,
                 provider_name: GITHUB_STRATEGY,
             })
         }
@@ -69,6 +68,12 @@ export const gitHubStrategy = new GitHubStrategy(
             expiration_date: getSessionExpirationDate(),
         })
 
-        return user
+        return {
+            alias: user.alias,
+            email: user.email,
+            name: user.name,
+            type: user.type,
+            profile: user.profiles,
+        }
     },
 )

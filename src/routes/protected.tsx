@@ -24,7 +24,12 @@ export default function Login() {
 
     return (
         <Form className="flex flex-col gap-2 p-4" method="post">
-            <div>logged in: {user.email}</div>
+            <div>logged in</div>
+            <div>{user.email}</div>
+            <div>{user.alias}</div>
+            <div>{user.name}</div>
+            <div>{user.type}</div>
+            <div>{user.profile.image_url}</div>
             <button type="submit">log out</button>
         </Form>
     )
