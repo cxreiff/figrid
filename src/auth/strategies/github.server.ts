@@ -16,7 +16,10 @@ export const gitHubStrategy = new GitHubStrategy(
     {
         clientID: process.env.GITHUB_CLIENT_ID,
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
-        callbackURL: "https://figrid.io/auth/github/callback",
+        callbackURL:
+            process.env.NODE_ENV === "production"
+                ? "https://figrid.io/auth/github/callback"
+                : "http://localhost:3000/auth/github/callback",
     },
     async ({ profile }) => {
         const email = profile.emails[0].value
@@ -56,7 +59,7 @@ export const gitHubStrategy = new GitHubStrategy(
                 .map((connection) => connection.provider_name)
                 .includes(GITHUB_STRATEGY)
         ) {
-            db.insert(connections).values({
+            await db.insert(connections).values({
                 user_id: user.id,
                 provider_id: profile.id,
                 provider_name: GITHUB_STRATEGY,

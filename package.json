@@ -8,7 +8,7 @@
         "build": "remix build",
         "dev": "remix dev --manual",
         "start": "remix-serve ./build/index.js",
-        "typecheck": "tsc",
+        "tsc": "tsc",
         "format": "prettier --write .",
         "lint": "eslint .",
         "generate": "drizzle-kit generate:mysql",
