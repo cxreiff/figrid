@@ -46,9 +46,9 @@ export async function action({ request }: ActionFunctionArgs) {
         throw new Error("alias already taken")
     }
 
-    const hash = await hashPassword(password)
+    const [hash, salt] = hashPassword(password)
 
-    const user_id = await db.transaction(async (tx) => {
+    await db.transaction(async (tx) => {
         const result = await tx.insert(users).values({
             email,
             alias,
@@ -68,19 +68,11 @@ export async function action({ request }: ActionFunctionArgs) {
         await tx.insert(passwords).values({
             user_id,
             hash,
+            salt,
         })
 
         return user_id
     })
-
-    const user = await db.query.users.findFirst({
-        with: { connections: true, profiles: true },
-        where: eq(users.id, user_id),
-    })
-
-    if (!user) {
-        throw new Error("failed to create user")
-    }
 
     return await authenticator.authenticate(FORM_STRATEGY, request, {
         successRedirect: "/protected",

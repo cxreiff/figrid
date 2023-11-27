@@ -1,10 +1,12 @@
 import { eq } from "drizzle-orm"
 import { FormStrategy } from "remix-auth-form"
 import { z } from "zod"
-import { getSessionExpirationDate } from "~/auth/authenticator.server"
+import {
+    comparePassWithHash,
+    getSessionExpirationDate,
+} from "~/auth/authenticator.server"
 import { db } from "~/utilities/database.server"
 import { users, sessions } from "~/utilities/schema.server"
-import bcrypt from "~/../resources/bcrypt.min.cjs"
 
 export const FORM_STRATEGY = "FORM_STRATEGY"
 
@@ -24,8 +26,9 @@ export const formStrategy = new FormStrategy(async ({ form }) => {
     if (!user || !user.password) {
         throw new Error("no user found.")
     }
-
-    if (!(await bcrypt.compare(password, user.password.hash))) {
+    if (
+        !comparePassWithHash(password, user.password.hash, user.password.salt)
+    ) {
         throw new Error("invalid password.")
     }
 

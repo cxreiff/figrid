@@ -43,6 +43,27 @@
       "when": 1701067377034,
       "tag": "0005_thin_invaders",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1701081191421,
+      "tag": "0006_wooden_psynapse",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1701118295208,
+      "tag": "0007_complex_bushwacker",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1701126892983,
+      "tag": "0008_fixed_true_believers",
+      "breakpoints": true
     }
   ]
 }

@@ -4,7 +4,6 @@ import {
     relations,
 } from "drizzle-orm"
 import {
-    char,
     datetime,
     index,
     int,
@@ -87,9 +86,12 @@ export type UsersSelectModel = InferSelectModel<typeof users>
 export type UsersInsertModel = InferInsertModel<typeof users>
 
 export const passwords = mysqlTable("passwords", {
-    hash: char("hash", { length: 60 }).notNull(),
-
     user_id: int("user_id"),
+
+    hash: text("hash").notNull(),
+    salt: text("salt").notNull(),
+
+    ...create_update_timestamps,
 })
 
 export const passwords_relations = relations(passwords, ({ one }) => ({
@@ -105,16 +107,12 @@ export type PasswordsInsertModel = InferInsertModel<typeof passwords>
 export const sessions = mysqlTable(
     "sessions",
     {
+        user_id: int("user_id"),
+
         id: int("id").primaryKey().unique().notNull().autoincrement(),
         expiration_date: datetime("expiration_date").notNull(),
 
-        user_id: int("user_id"),
-
-        created_at: timestamp("created_at").defaultNow().notNull(),
-        updated_at: timestamp("updated_at")
-            .defaultNow()
-            .onUpdateNow()
-            .notNull(),
+        ...create_update_timestamps,
     },
     (t) => ({
         user_id_index: index("user_id_index").on(t.user_id),
@@ -132,14 +130,13 @@ export type SessionsSelectModel = InferSelectModel<typeof sessions>
 export type SessionsInsertModel = InferInsertModel<typeof sessions>
 
 export const connections = mysqlTable("connections", {
+    user_id: int("user_id"),
+
     id: int("id").primaryKey().unique().notNull().autoincrement(),
     provider_name: varchar("provider_name", { length: 256 }).unique().notNull(),
     provider_id: varchar("provider_id", { length: 256 }).unique().notNull(),
 
-    user_id: int("user_id"),
-
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    ...create_update_timestamps,
 })
 
 export const connections_relations = relations(connections, ({ one }) => ({
@@ -153,10 +150,12 @@ export type ConnectionsSelectModel = InferSelectModel<typeof connections>
 export type ConnectionsInsertModel = InferInsertModel<typeof connections>
 
 export const profiles = mysqlTable("profiles", {
+    user_id: int("user_id"),
+
     id: int("id").primaryKey().unique().notNull().autoincrement(),
     image_url: varchar("image_url", { length: 2083 }),
 
-    user_id: int("user_id"),
+    ...create_update_timestamps,
 })
 
 export const profiles_relations = relations(profiles, ({ one }) => ({

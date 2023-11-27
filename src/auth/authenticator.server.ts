@@ -9,7 +9,7 @@ import {
     GITHUB_STRATEGY,
     gitHubStrategy,
 } from "~/auth/strategies/github.server"
-import bcrypt from "resources/bcrypt.min.cjs"
+import * as crypto from "node:crypto"
 
 type AuthUser = Pick<UsersSelectModel, "alias" | "email" | "name" | "type"> & {
     profile: Pick<ProfilesSelectModel, "image_url">
@@ -42,6 +42,17 @@ export function getSessionExpirationDate() {
     return new Date(Date.now() + SESSION_EXPIRATION_TIME)
 }
 
-export async function hashPassword(password: string) {
-    return bcrypt.hash(password, process.env.BCRYPT_SALT)
+export function hashPassword(password: string) {
+    const salt = crypto.randomBytes(16).toString("hex")
+    const hash = crypto.scryptSync(password, salt, 64).toString("hex")
+    return [hash, salt]
+}
+
+export function comparePassWithHash(
+    password: string,
+    hash: string,
+    salt: string,
+) {
+    const attempt = crypto.scryptSync(password, salt, 64).toString("hex")
+    return attempt === hash
 }
