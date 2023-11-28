@@ -26,9 +26,7 @@ export const formStrategy = new FormStrategy(async ({ form }) => {
     if (!user || !user.password) {
         throw new Error("no user found.")
     }
-    if (
-        !comparePassWithHash(password, user.password.hash, user.password.salt)
-    ) {
+    if (!comparePassWithHash(password, user.password.hash)) {
         throw new Error("invalid password.")
     }
 

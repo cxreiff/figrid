@@ -64,6 +64,13 @@
       "when": 1701126892983,
       "tag": "0008_fixed_true_believers",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1701130479141,
+      "tag": "0009_low_iron_fist",
+      "breakpoints": true
     }
   ]
 }

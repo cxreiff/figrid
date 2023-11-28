@@ -89,7 +89,6 @@ export const passwords = mysqlTable("passwords", {
     user_id: int("user_id"),
 
     hash: text("hash").notNull(),
-    salt: text("salt").notNull(),
 
     ...create_update_timestamps,
 })

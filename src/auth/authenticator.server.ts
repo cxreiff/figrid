@@ -9,7 +9,15 @@ import {
     GITHUB_STRATEGY,
     gitHubStrategy,
 } from "~/auth/strategies/github.server"
-import * as crypto from "node:crypto"
+import {
+    setRandomFallback,
+    genSaltSync,
+    hash,
+    compare,
+} from "~/../resources/bcrypt.min.cjs"
+import { nanoid } from "nanoid"
+
+setRandomFallback((bytes: number) => nanoid(bytes))
 
 type AuthUser = Pick<UsersSelectModel, "alias" | "email" | "name" | "type"> & {
     profile: Pick<ProfilesSelectModel, "image_url">
@@ -42,17 +50,10 @@ export function getSessionExpirationDate() {
     return new Date(Date.now() + SESSION_EXPIRATION_TIME)
 }
 
-export function hashPassword(password: string) {
-    const salt = crypto.randomBytes(16).toString("hex")
-    const hash = crypto.scryptSync(password, salt, 64).toString("hex")
-    return [hash, salt]
+export async function hashPassword(password: string) {
+    return await hash(password, genSaltSync(12))
 }
 
-export function comparePassWithHash(
-    password: string,
-    hash: string,
-    salt: string,
-) {
-    const attempt = crypto.scryptSync(password, salt, 64).toString("hex")
-    return attempt === hash
+export async function comparePassWithHash(password: string, hash: string) {
+    return await compare(password, hash)
 }

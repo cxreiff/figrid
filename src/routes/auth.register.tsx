@@ -46,7 +46,7 @@ export async function action({ request }: ActionFunctionArgs) {
         throw new Error("alias already taken")
     }
 
-    const [hash, salt] = hashPassword(password)
+    const hash = await hashPassword(password)
 
     await db.transaction(async (tx) => {
         const result = await tx.insert(users).values({
@@ -68,7 +68,6 @@ export async function action({ request }: ActionFunctionArgs) {
         await tx.insert(passwords).values({
             user_id,
             hash,
-            salt,
         })
 
         return user_id
