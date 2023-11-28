@@ -1,14 +1,14 @@
 import { eq } from "drizzle-orm"
 import { GitHubStrategy } from "remix-auth-github"
 import { z } from "zod"
-import { getSessionExpirationDate } from "~/auth/authenticator.server"
-import { db } from "~/utilities/database.server"
+import { getSessionExpirationDate } from "~/auth/authenticator.server.ts"
+import { db } from "~/utilities/database.server.ts"
 import {
     connections,
     profiles,
     sessions,
     users,
-} from "~/utilities/schema.server"
+} from "~/utilities/schema.server.ts"
 
 export const GITHUB_STRATEGY = "GITHUB_STRATEGY"
 

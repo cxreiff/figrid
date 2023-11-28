@@ -29,7 +29,6 @@ export default function Login() {
             <div>{user.alias}</div>
             <div>{user.name}</div>
             <div>{user.type}</div>
-            <div>{user.profile.image_url}</div>
             <button type="submit">log out</button>
         </Form>
     )

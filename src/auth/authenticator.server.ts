@@ -3,23 +3,23 @@ import { createCookieSessionStorage } from "@vercel/remix"
 import {
     type ProfilesSelectModel,
     type UsersSelectModel,
-} from "~/utilities/schema.server"
-import { FORM_STRATEGY, formStrategy } from "~/auth/strategies/form.server"
+} from "~/utilities/schema.server.ts"
+import { FORM_STRATEGY, formStrategy } from "~/auth/strategies/form.server.ts"
 import {
     GITHUB_STRATEGY,
     gitHubStrategy,
-} from "~/auth/strategies/github.server"
-import {
-    setRandomFallback,
-    genSaltSync,
-    hash,
-    compare,
-} from "~/../resources/bcrypt.min.cjs"
-import { nanoid } from "nanoid"
+} from "~/auth/strategies/github.server.ts"
+import bcrypt from "bcryptjs"
+import { customAlphabet } from "nanoid"
 
-setRandomFallback((bytes: number) => nanoid(bytes))
+bcrypt.setRandomFallback((bytes: number) =>
+    customAlphabet("0123456789", bytes)().split("").map(Number),
+)
 
-type AuthUser = Pick<UsersSelectModel, "alias" | "email" | "name" | "type"> & {
+export type AuthUser = Pick<
+    UsersSelectModel,
+    "alias" | "email" | "name" | "type"
+> & {
     profile: Pick<ProfilesSelectModel, "image_url">
 }
 
@@ -51,9 +51,9 @@ export function getSessionExpirationDate() {
 }
 
 export async function hashPassword(password: string) {
-    return await hash(password, genSaltSync(12))
+    return await bcrypt.hash(password, bcrypt.genSaltSync(12))
 }
 
 export async function comparePassWithHash(password: string, hash: string) {
-    return await compare(password, hash)
+    return await bcrypt.compare(password, hash)
 }

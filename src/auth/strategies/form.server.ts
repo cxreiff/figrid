@@ -4,9 +4,9 @@ import { z } from "zod"
 import {
     comparePassWithHash,
     getSessionExpirationDate,
-} from "~/auth/authenticator.server"
-import { db } from "~/utilities/database.server"
-import { users, sessions } from "~/utilities/schema.server"
+} from "~/auth/authenticator.server.ts"
+import { db } from "~/utilities/database.server.ts"
+import { users, sessions } from "~/utilities/schema.server.ts"
 
 export const FORM_STRATEGY = "FORM_STRATEGY"
 
@@ -26,7 +26,7 @@ export const formStrategy = new FormStrategy(async ({ form }) => {
     if (!user || !user.password) {
         throw new Error("no user found.")
     }
-    if (!comparePassWithHash(password, user.password.hash)) {
+    if (!(await comparePassWithHash(password, user.password.hash))) {
         throw new Error("invalid password.")
     }
 

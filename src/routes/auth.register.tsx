@@ -7,9 +7,14 @@ import {
     getSessionExpirationDate,
     hashPassword,
 } from "~/auth/authenticator.server.ts"
-import { FORM_STRATEGY } from "~/auth/strategies/form.server"
-import { db } from "~/utilities/database.server"
-import { passwords, profiles, sessions, users } from "~/utilities/schema.server"
+import { FORM_STRATEGY } from "~/auth/strategies/form.server.ts"
+import { db } from "~/utilities/database.server.ts"
+import {
+    passwords,
+    profiles,
+    sessions,
+    users,
+} from "~/utilities/schema.server.ts"
 
 export async function loader({ request }: LoaderFunctionArgs) {
     return authenticator.isAuthenticated(request, {
@@ -85,28 +90,24 @@ export default function Register() {
             <Form className="flex flex-col gap-2 p-4" method="post">
                 <input
                     className="bg-black p-2"
-                    defaultValue="cooper@cxreiff.com"
                     name="email"
                     type="email"
                     placeholder="email address"
                 />
                 <input
                     className="bg-black p-2"
-                    defaultValue="cxreiff"
                     name="alias"
                     type="text"
                     placeholder="user alias"
                 />
                 <input
                     className="bg-black p-2"
-                    defaultValue="mockpass"
                     name="password"
                     type="password"
                     placeholder="password"
                 />
                 <input
                     className="bg-black p-2"
-                    defaultValue="mockpass"
                     name="confirm"
                     type="password"
                     placeholder="confirm password"

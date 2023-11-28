@@ -1,3 +1,4 @@
+import { GitHubLogoIcon } from "@radix-ui/react-icons"
 import { Form } from "@remix-run/react"
 import { type LoaderFunctionArgs } from "@vercel/remix"
 import { authenticator } from "~/auth/authenticator.server.ts"
@@ -32,7 +33,11 @@ export default function Login() {
             </Form>
             OR
             <Form action="/auth/github" method="post" className="p-4">
-                <button>Login with GitHub</button>
+                <button type="submit">
+                    <span className="whitespace-nowrap">
+                        <GitHubLogoIcon /> Login with GitHub
+                    </span>
+                </button>
             </Form>
         </>
     )

@@ -5,7 +5,7 @@ import {
     type LoaderFunctionArgs,
     redirect,
 } from "@vercel/remix"
-import { TextTyper } from "~/components/text-typer.tsx"
+import { TextTyper } from "~/components/textTyper.tsx"
 import { db } from "~/utilities/database.server.ts"
 import { eq } from "drizzle-orm"
 import { rooms, room_select_schema } from "~/utilities/schema.server.ts"
@@ -65,16 +65,15 @@ export default function Room() {
         <div key={room.id} className="p-12 text-center">
             <TextTyper
                 className="pb-8 text-center"
-                text={`${
-                    room.description || "[empty description]"
-                }\n\nthere are exits to the ${[
-                    room.north && "north",
-                    room.east && "east",
-                    room.south && "south",
-                    room.west && "west",
-                ]
-                    .filter((dir) => dir != undefined)
-                    .join(", ")}.`}
+                text={`${room.description || "[empty description]"
+                    }\n\nthere are exits to the ${[
+                        room.north && "north",
+                        room.east && "east",
+                        room.south && "south",
+                        room.west && "west",
+                    ]
+                        .filter((dir) => dir != undefined)
+                        .join(", ")}.`}
             />
             <Form method="post" replace preventScrollReset>
                 {">"}
