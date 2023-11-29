@@ -65,15 +65,16 @@ export default function Room() {
         <div key={room.id} className="p-12 text-center">
             <TextTyper
                 className="pb-8 text-center"
-                text={`${room.description || "[empty description]"
-                    }\n\nthere are exits to the ${[
-                        room.north && "north",
-                        room.east && "east",
-                        room.south && "south",
-                        room.west && "west",
-                    ]
-                        .filter((dir) => dir != undefined)
-                        .join(", ")}.`}
+                text={`${
+                    room.description || "[empty description]"
+                }\n\nthere are exits to the ${[
+                    room.north && "north",
+                    room.east && "east",
+                    room.south && "south",
+                    room.west && "west",
+                ]
+                    .filter((dir) => dir != undefined)
+                    .join(", ")}.`}
             />
             <Form method="post" replace preventScrollReset>
                 {">"}

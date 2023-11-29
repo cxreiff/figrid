@@ -9,7 +9,7 @@ import {
     GITHUB_STRATEGY,
     gitHubStrategy,
 } from "~/auth/strategies/github.server.ts"
-import bcrypt from "bcryptjs"
+import bcrypt from "~/../resources/bcrypt.min.cjs"
 import { customAlphabet } from "nanoid"
 
 bcrypt.setRandomFallback((bytes: number) =>
