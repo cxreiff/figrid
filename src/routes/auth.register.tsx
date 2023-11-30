@@ -8,13 +8,13 @@ import {
     hashPassword,
 } from "~/auth/authenticator.server.ts"
 import { FORM_STRATEGY } from "~/auth/strategies/form.server.ts"
-import { db } from "~/utilities/database.server.ts"
+import { db } from "~/database/database.server.ts"
 import {
     passwords,
     profiles,
     sessions,
     users,
-} from "~/utilities/schema.server.ts"
+} from "~/database/schema/auth.server.ts"
 
 export async function loader({ request }: LoaderFunctionArgs) {
     return authenticator.isAuthenticated(request, {

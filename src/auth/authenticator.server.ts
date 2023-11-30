@@ -3,7 +3,7 @@ import { createCookieSessionStorage } from "@vercel/remix"
 import {
     type ProfilesSelectModel,
     type UsersSelectModel,
-} from "~/utilities/schema.server.ts"
+} from "~/database/schema/auth.server.ts"
 import { FORM_STRATEGY, formStrategy } from "~/auth/strategies/form.server.ts"
 import {
     GITHUB_STRATEGY,

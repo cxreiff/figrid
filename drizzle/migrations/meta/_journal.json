@@ -71,6 +71,20 @@
       "when": 1701130479141,
       "tag": "0009_low_iron_fist",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1701301137163,
+      "tag": "0010_glossy_zaran",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "5",
+      "when": 1701301785272,
+      "tag": "0011_massive_darwin",
+      "breakpoints": true
     }
   ]
 }

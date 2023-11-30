@@ -9,45 +9,23 @@ import {
     int,
     mysqlEnum,
     mysqlTable,
-    serial,
     text,
-    timestamp,
     uniqueIndex,
     varchar,
 } from "drizzle-orm/mysql-core"
-import { createInsertSchema, createSelectSchema } from "drizzle-zod"
+import { createInsertSchema } from "drizzle-zod"
 import { z } from "zod"
-
-const create_update_timestamps = {
-    created_at: timestamp("created_at").defaultNow().notNull(),
-    updated_at: timestamp("updated_at").defaultNow().notNull().onUpdateNow(),
-}
-
-export const rooms = mysqlTable("rooms", {
-    id: serial("id").primaryKey(),
-    name: text("name"),
-    description: text("description"),
-
-    north: int("north"),
-    east: int("east"),
-    south: int("south"),
-    west: int("west"),
-
-    ...create_update_timestamps,
-})
-
-export const room_select_schema = createSelectSchema(rooms, {
-    created_at: z.string(), // Dates are JSON serialized as strings.
-    updated_at: z.string(), // Dates are JSON serialized as strings.
-})
-
-export type RoomsSelectModel = InferSelectModel<typeof rooms>
-export type RoomsInsertModel = InferInsertModel<typeof rooms>
+import {
+    create_update_timestamps,
+    incrementing_id,
+} from "~/database/shared.server.ts"
 
 export const users = mysqlTable(
     "users",
     {
-        id: int("id").primaryKey().unique().notNull().autoincrement(),
+        ...incrementing_id,
+        ...create_update_timestamps,
+
         email: varchar("email", { length: 256 }).unique().notNull(),
         alias: varchar("alias", { length: 256 }).unique().notNull(),
         name: varchar("name", { length: 256 }),
@@ -55,8 +33,6 @@ export const users = mysqlTable(
         type: mysqlEnum("type", ["standard", "creator", "admin"])
             .default("standard")
             .notNull(),
-
-        ...create_update_timestamps,
     },
     (t) => ({
         email: uniqueIndex("email").on(t.email),
@@ -86,11 +62,11 @@ export type UsersSelectModel = InferSelectModel<typeof users>
 export type UsersInsertModel = InferInsertModel<typeof users>
 
 export const passwords = mysqlTable("passwords", {
-    user_id: int("user_id"),
+    ...create_update_timestamps,
 
     hash: text("hash").notNull(),
 
-    ...create_update_timestamps,
+    user_id: int("user_id"),
 })
 
 export const passwords_relations = relations(passwords, ({ one }) => ({
@@ -106,12 +82,12 @@ export type PasswordsInsertModel = InferInsertModel<typeof passwords>
 export const sessions = mysqlTable(
     "sessions",
     {
-        user_id: int("user_id"),
+        ...incrementing_id,
+        ...create_update_timestamps,
 
-        id: int("id").primaryKey().unique().notNull().autoincrement(),
         expiration_date: datetime("expiration_date").notNull(),
 
-        ...create_update_timestamps,
+        user_id: int("user_id"),
     },
     (t) => ({
         user_id_index: index("user_id_index").on(t.user_id),
@@ -129,13 +105,13 @@ export type SessionsSelectModel = InferSelectModel<typeof sessions>
 export type SessionsInsertModel = InferInsertModel<typeof sessions>
 
 export const connections = mysqlTable("connections", {
-    user_id: int("user_id"),
+    ...incrementing_id,
+    ...create_update_timestamps,
 
-    id: int("id").primaryKey().unique().notNull().autoincrement(),
     provider_name: varchar("provider_name", { length: 256 }).unique().notNull(),
     provider_id: varchar("provider_id", { length: 256 }).unique().notNull(),
 
-    ...create_update_timestamps,
+    user_id: int("user_id"),
 })
 
 export const connections_relations = relations(connections, ({ one }) => ({
@@ -149,12 +125,12 @@ export type ConnectionsSelectModel = InferSelectModel<typeof connections>
 export type ConnectionsInsertModel = InferInsertModel<typeof connections>
 
 export const profiles = mysqlTable("profiles", {
-    user_id: int("user_id"),
+    ...incrementing_id,
+    ...create_update_timestamps,
 
-    id: int("id").primaryKey().unique().notNull().autoincrement(),
     image_url: varchar("image_url", { length: 2083 }),
 
-    ...create_update_timestamps,
+    user_id: int("user_id"),
 })
 
 export const profiles_relations = relations(profiles, ({ one }) => ({

@@ -5,8 +5,8 @@ import {
     comparePassWithHash,
     getSessionExpirationDate,
 } from "~/auth/authenticator.server.ts"
-import { db } from "~/utilities/database.server.ts"
-import { users, sessions } from "~/utilities/schema.server.ts"
+import { db } from "~/database/database.server.ts"
+import { users, sessions } from "~/database/schema/auth.server.ts"
 
 export const FORM_STRATEGY = "FORM_STRATEGY"
 

@@ -1,3 +1,4 @@
+import { Theme } from "@itsmapleleaf/radix-themes"
 import { cssBundleHref } from "@remix-run/css-bundle"
 import {
     Link,
@@ -19,6 +20,7 @@ import { authenticator } from "~/auth/authenticator.server.ts"
 import { ProfileButton } from "~/components/profileButton.tsx"
 
 import stylesheet from "~/styles.css"
+import "@itsmapleleaf/radix-themes/styles.css"
 
 export const config = { runtime: "edge" }
 
@@ -54,21 +56,23 @@ export default function App() {
             </head>
             <body
                 className={
-                    "min-h-screen bg-gradient-to-b from-zinc-700 to-zinc-900 font-sans text-white"
+                    "min-h-screen bg-gradient-to-b from-zinc-700 to-zinc-900 font-sans"
                 }
             >
-                <div className="flex min-h-screen flex-col">
-                    <div className="m-2 flex h-16 items-center gap-4 border border-zinc-500 px-2 py-2">
-                        <Link to="/" className="grow px-4">
-                            <h1>figrid</h1>
-                        </Link>
-                        <Link to="/room/1">/room/1</Link>
-                        <ProfileButton user={user} />
+                <Theme appearance="dark">
+                    <div className="flex min-h-screen flex-col text-zinc-100">
+                        <div className="m-2 flex h-16 items-center gap-4 border border-zinc-500 px-2 py-2">
+                            <Link to="/" className="grow px-4">
+                                <h1>figrid</h1>
+                            </Link>
+                            <Link to="/read/1/1">first</Link>
+                            <ProfileButton user={user} />
+                        </div>
+                        <main className="m-2 flex grow flex-col items-center justify-center border border-zinc-500">
+                            <Outlet />
+                        </main>
                     </div>
-                    <main className="m-2 flex grow flex-col items-center justify-center border border-zinc-500">
-                        <Outlet />
-                    </main>
-                </div>
+                </Theme>
                 <ScrollRestoration />
                 <Scripts />
                 <LiveReload />

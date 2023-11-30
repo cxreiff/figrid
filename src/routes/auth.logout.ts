@@ -1,7 +1,7 @@
-import { type ActionFunctionArgs } from "@vercel/remix"
+import { type LoaderFunctionArgs } from "@vercel/remix"
 import { authenticator } from "~/auth/authenticator.server.ts"
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
     return await authenticator.logout(request, {
         redirectTo: "/auth/login",
     })

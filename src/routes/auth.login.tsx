@@ -1,3 +1,4 @@
+import { Button } from "@itsmapleleaf/radix-themes"
 import { GitHubLogoIcon } from "@radix-ui/react-icons"
 import { Form } from "@remix-run/react"
 import { type LoaderFunctionArgs } from "@vercel/remix"
@@ -33,11 +34,9 @@ export default function Login() {
             </Form>
             OR
             <Form action="/auth/github" method="post" className="p-4">
-                <button type="submit">
-                    <span className="whitespace-nowrap">
-                        <GitHubLogoIcon /> Login with GitHub
-                    </span>
-                </button>
+                <Button type="submit" variant="outline" color="ruby">
+                    <GitHubLogoIcon /> Login with GitHub
+                </Button>
             </Form>
         </>
     )

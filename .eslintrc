@@ -2,8 +2,10 @@
     "extends": [
         "@remix-run/eslint-config",
         "@remix-run/eslint-config/node",
-        "prettier"
+        "prettier",
+        "plugin:drizzle/all"
     ],
+    "plugins": ["drizzle"],
     "ignorePatterns": ["/node_modules", "/build", "/public/build"],
     "parserOptions": {
         "warnOnUnsupportedTypeScriptVersion": false
