@@ -34,7 +34,12 @@ export default function Login() {
             </Form>
             OR
             <Form action="/auth/github" method="post" className="p-4">
-                <Button type="submit" variant="outline" color="ruby" className="cursor-pointer">
+                <Button
+                    type="submit"
+                    variant="outline"
+                    color="ruby"
+                    className="cursor-pointer"
+                >
                     <GitHubLogoIcon /> Login with GitHub
                 </Button>
             </Form>

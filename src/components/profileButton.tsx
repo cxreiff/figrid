@@ -15,7 +15,11 @@ export function ProfileButton({ user }: ProfileButtonProps) {
                     <ProfileAvatar user={user} />
                 </button>
             </DropdownMenu.Trigger>
-            <DropdownMenu.Content color="ruby" className="mr-2 mt-2" align="center">
+            <DropdownMenu.Content
+                color="ruby"
+                className="mr-2 mt-2"
+                align="center"
+            >
                 <DropdownMenu.Label>{user.email}</DropdownMenu.Label>
                 <DropdownMenu.Label>{user.alias}</DropdownMenu.Label>
                 <DropdownMenu.Label hidden={!user.name}>
