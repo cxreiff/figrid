@@ -41,10 +41,10 @@ export const ROUTE_STRATEGY_MAP: Record<string, string> = {
     form: FORM_STRATEGY,
 }
 
-export const authenticator = new Authenticator<AuthUser>(sessionStorage)
+export const auth = new Authenticator<AuthUser>(sessionStorage)
 
-authenticator.use(formStrategy, FORM_STRATEGY)
-authenticator.use(gitHubStrategy, GITHUB_STRATEGY)
+auth.use(formStrategy, FORM_STRATEGY)
+auth.use(gitHubStrategy, GITHUB_STRATEGY)
 
 export function getSessionExpirationDate() {
     return new Date(Date.now() + SESSION_EXPIRATION_TIME)

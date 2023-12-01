@@ -1,3 +1,4 @@
+import { Link } from "@remix-run/react"
 import { TextTyper } from "~/components/textTyper.tsx"
 
 const loremIpsum = `
@@ -13,5 +14,10 @@ Proin elementum sem sed odio condimentum, non volutpat metus pulvinar. Donec lib
 `.trim()
 
 export default function Index() {
-    return <TextTyper text={loremIpsum} className="p-6" />
+    return (
+        <>
+            <Link to="/read/1/1">first</Link>
+            <TextTyper text={loremIpsum} className="p-6" />
+        </>
+    )
 }

@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+input {
+    caret-color: var(--accent-8);
+}
+
+.faded-edge {
+    --mask: radial-gradient(rgba(0, 0, 0, 1) 0,
+            rgba(0, 0, 0, 1) 40%,
+            rgba(0, 0, 0, 0) 90%,
+            rgba(0, 0, 0, 0) 0) 100% 50% / 100% 100% repeat-x;
+
+    -webkit-mask: var(--mask);
+    mask: var(--mask);
+}
+
+.pixel-image {
+    image-rendering: pixelated;
+}

@@ -2,10 +2,10 @@ import { Button } from "@itsmapleleaf/radix-themes"
 import { GitHubLogoIcon } from "@radix-ui/react-icons"
 import { Form } from "@remix-run/react"
 import { type LoaderFunctionArgs } from "@vercel/remix"
-import { authenticator } from "~/auth/authenticator.server.ts"
+import { auth } from "~/auth/auth.server.ts"
 
 export async function loader({ request }: LoaderFunctionArgs) {
-    return authenticator.isAuthenticated(request, {
+    return auth.isAuthenticated(request, {
         successRedirect: "/protected",
     })
 }
@@ -34,7 +34,7 @@ export default function Login() {
             </Form>
             OR
             <Form action="/auth/github" method="post" className="p-4">
-                <Button type="submit" variant="outline" color="ruby">
+                <Button type="submit" variant="outline" color="ruby" className="cursor-pointer">
                     <GitHubLogoIcon /> Login with GitHub
                 </Button>
             </Form>

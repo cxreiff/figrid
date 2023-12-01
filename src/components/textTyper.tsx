@@ -1,12 +1,26 @@
-import { useEffect, useState, type ComponentProps } from "react"
+import { ScrollArea } from "@itsmapleleaf/radix-themes"
+import type { ScrollAreaProps } from "node_modules/@itsmapleleaf/radix-themes/dist/esm/components/scroll-area.js"
+import { useEffect, useRef, useState } from "react"
 
 export function TextTyper({
     text,
     style,
     onClick,
     ...props
-}: { text: string } & ComponentProps<"div">) {
+}: { text: string } & ScrollAreaProps) {
     const [hidden, setHidden] = useState(text.length)
+    const scrollRef = useRef<HTMLDivElement>(null)
+    const bottomRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (scrollRef.current && bottomRef.current) {
+            const resizeObserver = new ResizeObserver(() => {
+                bottomRef.current?.scrollIntoView()
+            })
+            resizeObserver.observe(scrollRef.current);
+            return () => resizeObserver.disconnect()
+        }
+    }, [scrollRef, bottomRef])
 
     useEffect(() => {
         setHidden(text.length)
@@ -17,15 +31,18 @@ export function TextTyper({
             setTimeout(() => {
                 setHidden((prevHidden) => Math.max(prevHidden - 4, 0))
             }, 32)
+        } else {
+            bottomRef.current?.scrollIntoView()
         }
     }, [hidden, text])
 
     return (
-        <div
+        <ScrollArea
             {...props}
+            ref={scrollRef}
             style={{
                 ...style,
-                position: "relative",
+                padding: "1.5rem",
                 whiteSpace: "pre-wrap",
             }}
             onClick={(event) => {
@@ -33,11 +50,11 @@ export function TextTyper({
                 setHidden(0)
             }}
         >
-            <div className="pointer-events-none invisible">{text}</div>
-            <noscript className="absolute inset-0 p-[inherit]">{text}</noscript>
-            <div className="absolute inset-0 p-[inherit]">
+            <noscript>{text}</noscript>
+            <div>
                 {hidden ? text.slice(0, -hidden) : text}
             </div>
-        </div>
+            <div ref={bottomRef} className="invisible" />
+        </ScrollArea>
     )
 }

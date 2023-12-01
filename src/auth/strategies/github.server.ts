@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm"
 import { GitHubStrategy } from "remix-auth-github"
 import { z } from "zod"
-import { getSessionExpirationDate } from "~/auth/authenticator.server.ts"
+import { getSessionExpirationDate } from "~/auth/auth.server.ts"
 import { db } from "~/database/database.server.ts"
 import {
     connections,

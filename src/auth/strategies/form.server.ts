@@ -4,7 +4,7 @@ import { z } from "zod"
 import {
     comparePassWithHash,
     getSessionExpirationDate,
-} from "~/auth/authenticator.server.ts"
+} from "~/auth/auth.server.ts"
 import { db } from "~/database/database.server.ts"
 import { users, sessions } from "~/database/schema/auth.server.ts"
 

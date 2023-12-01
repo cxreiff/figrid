@@ -3,10 +3,10 @@ import { type ActionFunctionArgs, type LoaderFunctionArgs } from "@vercel/remix"
 import { eq, or } from "drizzle-orm"
 import { z } from "zod"
 import {
-    authenticator,
+    auth,
     getSessionExpirationDate,
     hashPassword,
-} from "~/auth/authenticator.server.ts"
+} from "~/auth/auth.server.ts"
 import { FORM_STRATEGY } from "~/auth/strategies/form.server.ts"
 import { db } from "~/database/database.server.ts"
 import {
@@ -17,7 +17,7 @@ import {
 } from "~/database/schema/auth.server.ts"
 
 export async function loader({ request }: LoaderFunctionArgs) {
-    return authenticator.isAuthenticated(request, {
+    return auth.isAuthenticated(request, {
         successRedirect: "/protected",
     })
 }
@@ -78,7 +78,7 @@ export async function action({ request }: ActionFunctionArgs) {
         return user_id
     })
 
-    return await authenticator.authenticate(FORM_STRATEGY, request, {
+    return await auth.authenticate(FORM_STRATEGY, request, {
         successRedirect: "/protected",
         failureRedirect: "/auth/login",
     })

@@ -4,17 +4,17 @@ import {
     type ActionFunctionArgs,
     type LoaderFunctionArgs,
 } from "@vercel/remix"
-import { authenticator } from "~/auth/authenticator.server.ts"
+import { auth } from "~/auth/auth.server.ts"
 
 export async function loader({ request }: LoaderFunctionArgs) {
-    const user = await authenticator.isAuthenticated(request, {
+    const user = await auth.isAuthenticated(request, {
         failureRedirect: "/auth/login",
     })
     return json({ user })
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-    return await authenticator.logout(request, {
+    return await auth.logout(request, {
         redirectTo: "/auth/login",
     })
 }

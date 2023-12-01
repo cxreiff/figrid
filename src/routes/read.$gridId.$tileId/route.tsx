@@ -1,17 +1,21 @@
-import { Form, useLoaderData } from "@remix-run/react"
+import { useLoaderData } from "@remix-run/react"
 import {
     type ActionFunctionArgs,
     json,
     type LoaderFunctionArgs,
     redirect,
 } from "@vercel/remix"
-import { TextTyper } from "~/components/textTyper.tsx"
 import { db } from "~/database/database.server.ts"
 import { eq } from "drizzle-orm"
 import { z } from "zod"
 import { tiles, tiles_select_schema } from "~/database/schema/grids.server.ts"
+import { auth } from "~/auth/auth.server.ts"
+import { Layout } from "~/components/layout.tsx"
+import { Text } from "~/routes/read.$gridId.$tileId/text.tsx"
+import { Map } from "~/routes/read.$gridId.$tileId/map.tsx"
+import { Info } from "~/routes/read.$gridId.$tileId/info.tsx"
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function loader({ request, params }: LoaderFunctionArgs) {
     const { gridId, tileId } = z
         .object({
             gridId: z.coerce.number(),
@@ -19,17 +23,18 @@ export async function loader({ params }: LoaderFunctionArgs) {
         })
         .parse(params)
 
-    const [tile] = await db
-        .select()
-        .from(tiles)
-        .where(eq(tiles.id, tileId))
-        .limit(1)
+    const tile = await db.query.tiles.findFirst({
+        where: eq(tiles.id, tileId),
+        with: { grid: true },
+    })
 
     if (!tile || tile.grid_id !== gridId) {
         throw new Response("Not Found", { status: 404 })
     }
 
-    return json({ tile })
+    const user = await auth.isAuthenticated(request)
+
+    return json({ user, tile })
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -67,34 +72,16 @@ export async function action({ request, params }: ActionFunctionArgs) {
     }
 }
 
-export default function Room() {
-    const { tile } = useLoaderData<typeof loader>()
+export default function Tile() {
+    const { user, tile } = useLoaderData<typeof loader>()
 
     return (
-        <div key={tile.id} className="p-12 text-center">
-            <TextTyper
-                className="pb-8 text-center"
-                text={`${
-                    tile.description || "[empty description]"
-                }\n\nthere are exits to the ${[
-                    tile.north_id && "north",
-                    tile.east_id && "east",
-                    tile.south_id && "south",
-                    tile.west_id && "west",
-                ]
-                    .filter((dir) => dir != undefined)
-                    .join(", ")}.`}
-            />
-            <Form method="post" replace preventScrollReset>
-                {">"}
-                <input
-                    name="cmd"
-                    className="border-b-2 border-stone-200 bg-transparent p-2 caret-stone-200 outline-none"
-                    autoFocus
-                />
-                <input name="tile" defaultValue={JSON.stringify(tile)} hidden />
-                <input type="submit" hidden />
-            </Form>
-        </div>
+        <Layout
+            user={user}
+            title={`${tile.grid.name} — ${tile.name}`}
+            left={<Info />}
+            right={<Map tile={tile} />}
+            center={<Text tile={tile} />}
+        />
     )
 }

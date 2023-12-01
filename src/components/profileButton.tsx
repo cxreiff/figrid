@@ -1,6 +1,6 @@
-import { DropdownMenu } from "@itsmapleleaf/radix-themes"
+import { Card, DropdownMenu } from "@itsmapleleaf/radix-themes"
 import { Link } from "@remix-run/react"
-import { type AuthUser } from "~/auth/authenticator.server.ts"
+import { type AuthUser } from "~/auth/auth.server.ts"
 import { ProfileAvatar } from "~/components/profileAvatar.tsx"
 
 type ProfileButtonProps = {
@@ -15,7 +15,7 @@ export function ProfileButton({ user }: ProfileButtonProps) {
                     <ProfileAvatar user={user} />
                 </button>
             </DropdownMenu.Trigger>
-            <DropdownMenu.Content color="ruby">
+            <DropdownMenu.Content color="ruby" className="mr-2 mt-2" align="center">
                 <DropdownMenu.Label>{user.email}</DropdownMenu.Label>
                 <DropdownMenu.Label>{user.alias}</DropdownMenu.Label>
                 <DropdownMenu.Label hidden={!user.name}>
@@ -29,6 +29,8 @@ export function ProfileButton({ user }: ProfileButtonProps) {
             </DropdownMenu.Content>
         </DropdownMenu.Root>
     ) : (
-        <Link to="/auth/login">log in</Link>
+        <Card asChild>
+            <Link to="/auth/login">log in</Link>
+        </Card>
     )
 }

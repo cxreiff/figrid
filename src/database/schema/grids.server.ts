@@ -4,7 +4,7 @@ import {
     type InferSelectModel,
 } from "drizzle-orm"
 import { int, mysqlTable, text } from "drizzle-orm/mysql-core"
-import { createSelectSchema } from "drizzle-zod"
+import { createInsertSchema, createSelectSchema } from "drizzle-zod"
 import { z } from "zod"
 import { users } from "~/database/schema/auth.server.ts"
 import {
@@ -16,7 +16,7 @@ export const grids = mysqlTable("grids", {
     ...incrementing_id,
     ...create_update_timestamps,
 
-    name: text("name"),
+    name: text("name").notNull(),
     description: text("description"),
 
     first_id: int("first_tile").notNull(),
@@ -82,9 +82,14 @@ export const tiles_relations = relations(tiles, ({ one }) => ({
 }))
 
 export const tiles_select_schema = createSelectSchema(tiles, {
-    created_at: z.string(), // Dates are JSON serialized as strings.
-    updated_at: z.string(), // Dates are JSON serialized as strings.
+    created_at: z.string(),
+    updated_at: z.string(),
 })
 
-export type TilesSelectModel = InferSelectModel<typeof tiles>
-export type TilesInsertModel = InferInsertModel<typeof tiles>
+export const tiles_insert_schema = createInsertSchema(tiles, {
+    created_at: z.coerce.date(),
+    updated_at: z.coerce.date(),
+})
+
+export type TilesSelectModel = z.infer<typeof tiles_select_schema>
+export type TilesInsertModel = z.infer<typeof tiles_insert_schema>

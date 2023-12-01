@@ -1,8 +1,8 @@
 import { type LoaderFunctionArgs } from "@vercel/remix"
-import { authenticator } from "~/auth/authenticator.server.ts"
+import { auth } from "~/auth/auth.server.ts"
 
 export async function loader({ request }: LoaderFunctionArgs) {
-    return await authenticator.logout(request, {
+    return await auth.logout(request, {
         redirectTo: "/auth/login",
     })
 }
