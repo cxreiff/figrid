@@ -1,13 +1,20 @@
 import { Card, Flex, TextField } from "@itsmapleleaf/radix-themes"
 import { ChevronRightIcon } from "@radix-ui/react-icons"
 import { Form } from "@remix-run/react"
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { TextTyper } from "~/components/textTyper.tsx"
 import type { TilesSelectModel } from "~/database/schema/grids.server.ts"
 
-export function Text({ tile }: { tile: TilesSelectModel }) {
+export function Text({
+    tile,
+    handleCommand,
+}: {
+    tile: TilesSelectModel
+    handleCommand: (command: string) => string
+}) {
     const inputRef = useRef<HTMLInputElement>(null)
     const scrollRef = useRef<HTMLDivElement>(null)
+    const [command, setCommand] = useState("")
 
     return (
         <Flex
@@ -35,7 +42,13 @@ export function Text({ tile }: { tile: TilesSelectModel }) {
                         .join(", ")}.`}
                 />
             </Card>
-            <Form method="post" replace preventScrollReset>
+            <Form
+                onSubmit={(event) => {
+                    event.preventDefault()
+                    handleCommand(command)
+                    setCommand("")
+                }}
+            >
                 <TextField.Root>
                     <TextField.Slot>
                         <ChevronRightIcon />
@@ -43,13 +56,13 @@ export function Text({ tile }: { tile: TilesSelectModel }) {
                     <TextField.Input
                         key={tile.id}
                         ref={inputRef}
-                        name="cmd"
+                        value={command}
+                        onChange={(event) => setCommand(event.target.value)}
+                        onKeyDown={() => !command && scrollRef.current?.click()}
                         autoFocus
-                        onKeyDown={() => scrollRef.current?.click()}
                     />
+                    <TextField.Input type="submit" hidden />
                 </TextField.Root>
-                <input name="tile" defaultValue={JSON.stringify(tile)} hidden />
-                <input type="submit" hidden />
             </Form>
         </Flex>
     )

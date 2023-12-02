@@ -3,7 +3,7 @@ import {
     type InferInsertModel,
     type InferSelectModel,
 } from "drizzle-orm"
-import { int, mysqlTable, text } from "drizzle-orm/mysql-core"
+import { index, int, mysqlTable, text } from "drizzle-orm/mysql-core"
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
 import { z } from "zod"
 import { users } from "~/database/schema/auth.server.ts"
@@ -38,21 +38,27 @@ export const grids_relations = relations(grids, ({ one, many }) => ({
 export type GridsSelectModel = InferSelectModel<typeof grids>
 export type GridsInsertModel = InferInsertModel<typeof grids>
 
-export const tiles = mysqlTable("tiles", {
-    ...incrementing_id,
-    ...create_update_timestamps,
+export const tiles = mysqlTable(
+    "tiles",
+    {
+        ...incrementing_id,
+        ...create_update_timestamps,
 
-    name: text("name"),
-    description: text("description"),
+        name: text("name"),
+        description: text("description"),
 
-    north_id: int("north_id"),
-    east_id: int("east_id"),
-    south_id: int("south_id"),
-    west_id: int("west_id"),
+        north_id: int("north_id"),
+        east_id: int("east_id"),
+        south_id: int("south_id"),
+        west_id: int("west_id"),
 
-    grid_id: int("grid_id").notNull(),
-    user_id: int("user_id").notNull(),
-})
+        grid_id: int("grid_id").notNull(),
+        user_id: int("user_id").notNull(),
+    },
+    (t) => ({
+        grid_id: index("grid_id").on(t.grid_id),
+    }),
+)
 
 export const tiles_relations = relations(tiles, ({ one }) => ({
     user: one(users, {

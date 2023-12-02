@@ -16,7 +16,7 @@ Proin elementum sem sed odio condimentum, non volutpat metus pulvinar. Donec lib
 export default function Index() {
     return (
         <>
-            <Link to="/read/1/1">first</Link>
+            <Link to="/read/1">first</Link>
             <TextTyper text={loremIpsum} className="p-6" />
         </>
     )

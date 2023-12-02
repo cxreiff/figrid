@@ -69,7 +69,7 @@ export function Info() {
                 <Tabs.Content value="data" className="flex-1 p-4">
                     Empty
                 </Tabs.Content>
-                <Tabs.List className="mx-2 mt-4">
+                <Tabs.List className="mx-4 mt-4">
                     <Tabs.Trigger value="tile">tile</Tabs.Trigger>
                     <Tabs.Trigger value="status">status</Tabs.Trigger>
                     <Tabs.Trigger value="data">data</Tabs.Trigger>
