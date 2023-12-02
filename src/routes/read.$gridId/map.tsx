@@ -35,9 +35,7 @@ export function Map({
 
     return (
         <div className="faded-edge flex max-h-[100%] items-center justify-center overflow-hidden rounded-lg">
-            <div
-                className={`grid h-full w-full grid-cols-${MAP_DIMENSIONS.x} gap-3`}
-            >
+            <div className={`grid h-full w-full grid-cols-5 gap-3`}>
                 {mapMatrix.map((row) =>
                     row.map((tileId) => (
                         <div
