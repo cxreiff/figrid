@@ -4,25 +4,25 @@ import { useEffect, useRef, useState, type RefObject } from "react"
 
 export function TextTyper({
     text,
-    scrollRef: externalScrollRef,
+    textRef: externalTextRef,
     style,
     onClick,
     ...props
-}: { text: string; scrollRef?: RefObject<HTMLDivElement> } & ScrollAreaProps) {
+}: { text: string; textRef?: RefObject<HTMLDivElement> } & ScrollAreaProps) {
     const [hidden, setHidden] = useState(text.length)
     const endRef = useRef<HTMLDivElement>(null)
-    const internalScrollRef = useRef<HTMLDivElement>(null)
-    const scrollRef = externalScrollRef || internalScrollRef
+    const internalTextRef = useRef<HTMLDivElement>(null)
+    const textRef = externalTextRef || internalTextRef
 
     useEffect(() => {
-        if (scrollRef.current && endRef.current) {
+        if (textRef.current && endRef.current) {
             const resizeObserver = new ResizeObserver(() => {
                 endRef.current?.scrollIntoView()
             })
-            resizeObserver.observe(scrollRef.current)
+            resizeObserver.observe(textRef.current)
             return () => resizeObserver.disconnect()
         }
-    }, [scrollRef, endRef])
+    }, [textRef, endRef])
 
     useEffect(() => {
         setHidden(text.length)
@@ -41,7 +41,6 @@ export function TextTyper({
     return (
         <ScrollArea
             {...props}
-            ref={scrollRef}
             style={{
                 ...style,
                 padding: "1.5rem",
@@ -53,7 +52,7 @@ export function TextTyper({
             }}
         >
             <noscript>{text}</noscript>
-            <div>{hidden ? text.slice(0, -hidden) : text}</div>
+            <div ref={textRef}>{hidden ? text.slice(0, -hidden) : text}</div>
             <div ref={endRef} className="invisible" />
         </ScrollArea>
     )

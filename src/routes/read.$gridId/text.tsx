@@ -13,7 +13,7 @@ export function Text({
     handleCommand: (command: string) => string
 }) {
     const inputRef = useRef<HTMLInputElement>(null)
-    const scrollRef = useRef<HTMLDivElement>(null)
+    const textRef = useRef<HTMLDivElement>(null)
     const [command, setCommand] = useState("")
 
     return (
@@ -29,7 +29,7 @@ export function Text({
                 style={{ height: "calc(100vh - 10rem)" }}
             >
                 <TextTyper
-                    scrollRef={scrollRef}
+                    textRef={textRef}
                     text={`${
                         tile.description || "[empty description]"
                     }\n\nthere are exits to the ${[
@@ -58,7 +58,7 @@ export function Text({
                         ref={inputRef}
                         value={command}
                         onChange={(event) => setCommand(event.target.value)}
-                        onKeyDown={() => !command && scrollRef.current?.click()}
+                        onKeyDown={() => !command && textRef.current?.click()}
                         autoFocus
                     />
                     <TextField.Input type="submit" hidden />
