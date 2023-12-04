@@ -1,8 +1,4 @@
-import {
-    type InferInsertModel,
-    type InferSelectModel,
-    relations,
-} from "drizzle-orm"
+import { relations } from "drizzle-orm"
 import {
     datetime,
     index,
@@ -13,12 +9,13 @@ import {
     uniqueIndex,
     varchar,
 } from "drizzle-orm/mysql-core"
-import { createInsertSchema } from "drizzle-zod"
-import { z } from "zod"
+import type { z } from "zod"
 import {
     create_update_timestamps,
     incrementing_id,
+    fixer,
 } from "~/database/shared.server.ts"
+import { createInsertSchema, createSelectSchema } from "drizzle-zod"
 
 export const users = mysqlTable(
     "users",
@@ -53,13 +50,10 @@ export const users_relations = relations(users, ({ many, one }) => ({
     }),
 }))
 
-export const users_insert_schema = createInsertSchema(users, {
-    created_at: z.string(), // Dates are JSON serialized as strings.
-    updated_at: z.string(), // Dates are JSON serialized as strings.
-})
-
-export type UsersSelectModel = InferSelectModel<typeof users>
-export type UsersInsertModel = InferInsertModel<typeof users>
+export const users_select_schema = createSelectSchema(users, fixer)
+export const users_insert_schema = createInsertSchema(users, fixer)
+export type UsersSelectModel = z.infer<typeof users_select_schema>
+export type UsersInsertModel = z.infer<typeof users_insert_schema>
 
 export const passwords = mysqlTable("passwords", {
     ...create_update_timestamps,
@@ -76,8 +70,10 @@ export const passwords_relations = relations(passwords, ({ one }) => ({
     }),
 }))
 
-export type PasswordsSelectModel = InferSelectModel<typeof passwords>
-export type PasswordsInsertModel = InferInsertModel<typeof passwords>
+export const passwords_select_schema = createSelectSchema(passwords, fixer)
+export const passwords_insert_schema = createInsertSchema(passwords, fixer)
+export type PasswordsSelectModel = z.infer<typeof passwords_select_schema>
+export type PasswordsInsertModel = z.infer<typeof passwords_insert_schema>
 
 export const sessions = mysqlTable(
     "sessions",
@@ -101,8 +97,10 @@ export const sessions_relations = relations(sessions, ({ one }) => ({
     }),
 }))
 
-export type SessionsSelectModel = InferSelectModel<typeof sessions>
-export type SessionsInsertModel = InferInsertModel<typeof sessions>
+export const sessions_select_schema = createSelectSchema(sessions, fixer)
+export const sessions_insert_schema = createInsertSchema(sessions, fixer)
+export type SessionsSelectModel = z.infer<typeof sessions_select_schema>
+export type SessionsInsertModel = z.infer<typeof sessions_insert_schema>
 
 export const connections = mysqlTable("connections", {
     ...incrementing_id,
@@ -121,8 +119,10 @@ export const connections_relations = relations(connections, ({ one }) => ({
     }),
 }))
 
-export type ConnectionsSelectModel = InferSelectModel<typeof connections>
-export type ConnectionsInsertModel = InferInsertModel<typeof connections>
+export const connections_select_schema = createSelectSchema(connections, fixer)
+export const connections_insert_schema = createInsertSchema(connections, fixer)
+export type ConnectionsSelectModel = z.infer<typeof connections_select_schema>
+export type ConnectionsInsertModel = z.infer<typeof connections_insert_schema>
 
 export const profiles = mysqlTable("profiles", {
     ...incrementing_id,
@@ -140,5 +140,7 @@ export const profiles_relations = relations(profiles, ({ one }) => ({
     }),
 }))
 
-export type ProfilesSelectModel = InferSelectModel<typeof profiles>
-export type ProfilesInsertModel = InferInsertModel<typeof profiles>
+export const profiles_select_schema = createSelectSchema(profiles, fixer)
+export const profiles_insert_schema = createInsertSchema(profiles, fixer)
+export type ProfilesSelectModel = z.infer<typeof profiles_select_schema>
+export type ProfilesInsertModel = z.infer<typeof profiles_insert_schema>

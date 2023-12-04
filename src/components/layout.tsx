@@ -1,61 +1,58 @@
-import { Box, Card, Flex } from "@itsmapleleaf/radix-themes"
+import { Card } from "@itsmapleleaf/radix-themes"
+import { DotFilledIcon } from "@radix-ui/react-icons"
 import { Link } from "@remix-run/react"
 import type { ReactNode } from "react"
 import type { AuthUser } from "~/auth/auth.server.ts"
 import { ProfileButton } from "~/components/profileButton.tsx"
 
-type LayoutProps = {
+export function Layout({
+    user,
+    title,
+    subtitle,
+    left,
+    right,
+    center,
+}: {
     user: AuthUser | null
     title: string
+    subtitle?: string | null
     left?: ReactNode
     right?: ReactNode
     center?: ReactNode
-}
-
-export function Layout({ user, title, left, right, center }: LayoutProps) {
+}) {
     return (
-        <Flex direction="column" gap="3" p="4" width="100%">
-            <Flex align="center" gap="3">
-                <Box>
-                    <Card className="p-0" asChild>
-                        <Link to="/">figrid</Link>
-                    </Card>
-                </Box>
-                <Box grow="1">
-                    <Card className="text-center" asChild>
-                        <h1>{title}</h1>
-                    </Card>
-                </Box>
-                <Box>
-                    <Card asChild>
-                        <ProfileButton user={user} />
-                    </Card>
-                </Box>
-            </Flex>
+        <div className="flex w-full flex-col gap-3 p-4">
+            <div className="flex items-center gap-3">
+                <Card
+                    className="bg-[var(--accent-8)] p-0 text-black mix-blend-screen"
+                    asChild
+                >
+                    <Link to="/">
+                        <strong>figrid</strong>
+                    </Link>
+                </Card>
+                <Card className="flex-1 bg-transparent text-center">
+                    <h1 className="flex items-center justify-center">
+                        <span className="pr-8">{title}</span>
+                        {subtitle && <DotFilledIcon />}
+                        {subtitle && <span className="pl-8">{subtitle}</span>}
+                    </h1>
+                </Card>
+                <ProfileButton user={user} />
+            </div>
             <main>
-                <Flex width="100%" gap="5">
-                    <Box
-                        grow="1"
-                        className="w-1/3"
-                        style={{ height: "calc(100vh - 6rem)" }}
-                    >
-                        {left}
-                    </Box>
-                    <Box
-                        className="w-1/3 max-w-[1200px]"
-                        style={{ height: "calc(100vh - 6rem)" }}
-                    >
+                <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="grow-1 h-[calc(100vh-6rem)] w-full lg:order-2">
                         {center}
-                    </Box>
-                    <Box
-                        grow="1"
-                        className="w-1/3"
-                        style={{ height: "calc(100vh - 6rem)" }}
-                    >
+                    </div>
+                    <div className="w-full md:order-3 md:col-span-2 lg:order-1 lg:col-span-1">
+                        {left}
+                    </div>
+                    <div className="grow-1 h-[calc(100vh-6rem)] w-full md:order-2 lg:order-3">
                         {right}
-                    </Box>
-                </Flex>
+                    </div>
+                </div>
             </main>
-        </Flex>
+        </div>
     )
 }

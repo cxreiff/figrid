@@ -12,7 +12,7 @@ export function Info() {
             />
             <Tabs.Root
                 defaultValue="tile"
-                className="flex min-h-[30%] flex-col rounded-lg border border-zinc-600"
+                className="flex flex-1 flex-col rounded-lg border border-zinc-600"
             >
                 <Tabs.Content value="tile" className="flex-1 p-4">
                     <Table.Root>
@@ -69,7 +69,7 @@ export function Info() {
                 <Tabs.Content value="data" className="flex-1 p-4">
                     Empty
                 </Tabs.Content>
-                <Tabs.List className="mx-4 mt-4">
+                <Tabs.List className="mx-4 mt-4 shadow-none">
                     <Tabs.Trigger value="tile">tile</Tabs.Trigger>
                     <Tabs.Trigger value="status">status</Tabs.Trigger>
                     <Tabs.Trigger value="data">data</Tabs.Trigger>

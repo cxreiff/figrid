@@ -1,14 +1,11 @@
-import {
-    relations,
-    type InferInsertModel,
-    type InferSelectModel,
-} from "drizzle-orm"
+import { relations } from "drizzle-orm"
 import { index, int, mysqlTable, text } from "drizzle-orm/mysql-core"
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
-import { z } from "zod"
+import type { z } from "zod"
 import { users } from "~/database/schema/auth.server.ts"
 import {
     create_update_timestamps,
+    fixer,
     incrementing_id,
 } from "~/database/shared.server.ts"
 
@@ -35,8 +32,10 @@ export const grids_relations = relations(grids, ({ one, many }) => ({
     tiles: many(tiles),
 }))
 
-export type GridsSelectModel = InferSelectModel<typeof grids>
-export type GridsInsertModel = InferInsertModel<typeof grids>
+export const grids_select_schema = createSelectSchema(grids, fixer)
+export const grids_insert_schema = createInsertSchema(grids, fixer)
+export type GridsSelectModel = z.infer<typeof grids_select_schema>
+export type GridsInsertModel = z.infer<typeof grids_insert_schema>
 
 export const tiles = mysqlTable(
     "tiles",
@@ -87,15 +86,7 @@ export const tiles_relations = relations(tiles, ({ one }) => ({
     }),
 }))
 
-export const tiles_select_schema = createSelectSchema(tiles, {
-    created_at: z.string(),
-    updated_at: z.string(),
-})
-
-export const tiles_insert_schema = createInsertSchema(tiles, {
-    created_at: z.coerce.date(),
-    updated_at: z.coerce.date(),
-})
-
+export const tiles_select_schema = createSelectSchema(tiles, fixer)
+export const tiles_insert_schema = createInsertSchema(tiles, fixer)
 export type TilesSelectModel = z.infer<typeof tiles_select_schema>
 export type TilesInsertModel = z.infer<typeof tiles_insert_schema>

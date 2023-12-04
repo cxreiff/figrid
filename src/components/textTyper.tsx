@@ -1,14 +1,21 @@
-import { ScrollArea } from "@itsmapleleaf/radix-themes"
-import type { ScrollAreaProps } from "node_modules/@itsmapleleaf/radix-themes/dist/esm/components/scroll-area.js"
-import { useEffect, useRef, useState, type RefObject } from "react"
+import {
+    useEffect,
+    useRef,
+    useState,
+    type RefObject,
+    type HTMLProps,
+} from "react"
 
 export function TextTyper({
     text,
     textRef: externalTextRef,
-    style,
     onClick,
+    className,
     ...props
-}: { text: string; textRef?: RefObject<HTMLDivElement> } & ScrollAreaProps) {
+}: {
+    text: string
+    textRef?: RefObject<HTMLDivElement>
+} & HTMLProps<HTMLDivElement>) {
     const [hidden, setHidden] = useState(text.length)
     const endRef = useRef<HTMLDivElement>(null)
     const internalTextRef = useRef<HTMLDivElement>(null)
@@ -39,13 +46,9 @@ export function TextTyper({
     }, [hidden, text, endRef])
 
     return (
-        <ScrollArea
+        <div
             {...props}
-            style={{
-                ...style,
-                padding: "1.5rem",
-                whiteSpace: "pre-wrap",
-            }}
+            className={`${className} whitespace-pre-wrap`}
             onClick={(event) => {
                 onClick?.(event)
                 setHidden(0)
@@ -54,6 +57,6 @@ export function TextTyper({
             <noscript>{text}</noscript>
             <div ref={textRef}>{hidden ? text.slice(0, -hidden) : text}</div>
             <div ref={endRef} className="invisible" />
-        </ScrollArea>
+        </div>
     )
 }
