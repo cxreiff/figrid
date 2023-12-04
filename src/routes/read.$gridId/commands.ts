@@ -110,7 +110,11 @@ export function handleCommand(
                     }
                     break
                 default:
-                    handleUnrecognized(command, setCommand, appendToCommandLog)
+                    handleUnrecognized(
+                        rawCommand,
+                        setCommand,
+                        appendToCommandLog,
+                    )
                     return
             }
             break
@@ -208,18 +212,19 @@ export function handleCommand(
                     }
                     break
                 default:
-                    handleUnrecognized(command, setCommand, appendToCommandLog)
+                    handleUnrecognized(
+                        rawCommand,
+                        setCommand,
+                        appendToCommandLog,
+                    )
                     return
             }
             break
         case COMMANDS.TAKE:
-            switch (commandTokens[1]) {
-                default:
-                    appendToCommandLog(command, "not implemented yet")
-            }
-            break
+            handleUnrecognized(rawCommand, setCommand, appendToCommandLog)
+            return
         default:
-            handleUnrecognized(command, setCommand, appendToCommandLog)
+            handleUnrecognized(rawCommand, setCommand, appendToCommandLog)
             return
     }
     setCommand("")
@@ -252,7 +257,7 @@ function handleUnrecognized(
 }
 
 export function availableCommands(command: string) {
-    const commandTokens = splitCommand(command)
+    const commandTokens = splitCommand(command.toLowerCase())
 
     if (commandTokens.length === 1) {
         return prefixFilter(Object.values(COMMANDS), commandTokens[0])
