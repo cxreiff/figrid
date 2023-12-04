@@ -8,9 +8,10 @@
         "build": "remix build",
         "dev": "remix dev --manual",
         "start": "remix-serve ./build/index.js",
-        "tsc": "tsc",
         "format": "prettier --write .",
+        "tsc": "tsc",
         "lint": "eslint .",
+        "checks": "pnpm format && pnpm tsc && pnpm lint",
         "generate": "drizzle-kit generate:mysql",
         "migrate": "drizzle-kit push:mysql",
         "studio": "drizzle-kit studio"

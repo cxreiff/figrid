@@ -45,7 +45,7 @@ export function Layout({
                     <div className="grow-1 h-[calc(100vh-6rem)] w-full lg:order-2">
                         {center}
                     </div>
-                    <div className="w-full md:order-3 md:col-span-2 lg:order-1 lg:col-span-1">
+                    <div className="h-[calc(100vh-6rem)] w-full md:order-3 md:col-span-2 lg:order-1 lg:col-span-1">
                         {left}
                     </div>
                     <div className="grow-1 h-[calc(100vh-6rem)] w-full md:order-2 lg:order-3">
