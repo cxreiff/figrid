@@ -44,7 +44,7 @@ export default function App() {
                 <Theme appearance="dark" accentColor="ruby">
                     <div
                         className={
-                            "flex min-h-screen flex-col items-center bg-gradient-to-b from-zinc-700 to-zinc-900 font-sans text-zinc-100"
+                            "flex min-h-screen flex-col items-center bg-gradient-to-b from-zinc-700 to-zinc-900 font-sans"
                         }
                     >
                         <Outlet />

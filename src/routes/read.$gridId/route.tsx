@@ -53,6 +53,7 @@ export default function Grid() {
         handleCommand(
             command,
             tile,
+            tileIdMap,
             setCommand,
             appendToCommandLog,
             clearCommandLog,

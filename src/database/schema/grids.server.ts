@@ -44,12 +44,15 @@ export const tiles = mysqlTable(
         ...create_update_timestamps,
 
         name: text("name"),
+        summary: text("summary"),
         description: text("description"),
 
         north_id: int("north_id"),
         east_id: int("east_id"),
         south_id: int("south_id"),
         west_id: int("west_id"),
+        up_id: int("up_id"),
+        down_id: int("down_id"),
 
         grid_id: int("grid_id").notNull(),
         user_id: int("user_id").notNull(),

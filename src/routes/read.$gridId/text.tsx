@@ -5,6 +5,7 @@ import { useRef, type Dispatch, type SetStateAction } from "react"
 import { TextTyper } from "~/components/textTyper.tsx"
 import type { TilesSelectModel } from "~/database/schema/grids.server.ts"
 import { availableCommands } from "~/routes/read.$gridId/commands.ts"
+import { commasWithAnd } from "~/utilities/misc.ts"
 
 export function Text({
     tile,
@@ -22,6 +23,15 @@ export function Text({
     const inputRef = useRef<HTMLInputElement>(null)
     const textRef = useRef<HTMLDivElement>(null)
 
+    const exitsMessage = commasWithAnd([
+        tile.north_id ? "north" : undefined,
+        tile.east_id ? "east" : undefined,
+        tile.south_id ? "south" : undefined,
+        tile.west_id ? "west" : undefined,
+        tile.up_id ? "up" : undefined,
+        tile.down_id ? "down" : undefined,
+    ])
+
     return (
         <div
             key={tile.id}
@@ -38,14 +48,7 @@ export function Text({
                         textRef={textRef}
                         text={`${
                             tile.description || "[empty description]"
-                        }\n\nthere are exits to the ${[
-                            tile.north_id && "north",
-                            tile.east_id && "east",
-                            tile.south_id && "south",
-                            tile.west_id && "west",
-                        ]
-                            .filter((dir) => dir != undefined)
-                            .join(", ")}.`}
+                        }\n\nthere are exits to the ${exitsMessage}.`}
                     />
                     {commandLog.map((message, index) => (
                         <TextTyper

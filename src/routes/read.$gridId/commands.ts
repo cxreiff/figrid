@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from "react"
 import type { TilesSelectModel } from "~/database/schema/grids.server.ts"
+import type { TileIdMap } from "~/routes/read.$gridId/processing.ts"
 
 export const COMMANDS = {
     GO: "go",
@@ -13,14 +14,24 @@ export const SUBCOMMANDS = {
         EAST: "east",
         SOUTH: "south",
         WEST: "west",
+        UP: "up",
+        DOWN: "down",
     },
-    [COMMANDS.LOOK]: {},
+    [COMMANDS.LOOK]: {
+        NORTH: "north",
+        EAST: "east",
+        SOUTH: "south",
+        WEST: "west",
+        UP: "up",
+        DOWN: "down",
+    },
     [COMMANDS.TAKE]: {},
 }
 
 export function handleCommand(
     rawCommand: string,
     tile: TilesSelectModel,
+    tileIdMap: TileIdMap,
     setCommand: Dispatch<SetStateAction<string>>,
     appendToCommandLog: (command: string, message: string) => void,
     clearCommandLog: () => void,
@@ -76,15 +87,129 @@ export function handleCommand(
                         )
                     }
                     break
+                case SUBCOMMANDS[COMMANDS.GO].UP:
+                    if (tile.up_id) {
+                        clearCommandLog()
+                        setCurrentTileId(tile.up_id)
+                    } else {
+                        appendToCommandLog(
+                            command,
+                            "there is no passage in that direction",
+                        )
+                    }
+                    break
+                case SUBCOMMANDS[COMMANDS.GO].DOWN:
+                    if (tile.down_id) {
+                        clearCommandLog()
+                        setCurrentTileId(tile.down_id)
+                    } else {
+                        appendToCommandLog(
+                            command,
+                            "there is no passage in that direction",
+                        )
+                    }
+                    break
                 default:
                     handleUnrecognized(command, setCommand, appendToCommandLog)
                     return
             }
             break
         case COMMANDS.LOOK:
+            if (commandTokens.length === 1) {
+                appendToCommandLog(
+                    command,
+                    tile.summary || "you don't see anything of interest",
+                )
+                break
+            }
             switch (commandTokens[1]) {
+                case SUBCOMMANDS[COMMANDS.GO].NORTH:
+                    if (tile.north_id) {
+                        appendToCommandLog(
+                            command,
+                            tileIdMap[tile.north_id].summary ||
+                                "you don't see anything of interest",
+                        )
+                    } else {
+                        appendToCommandLog(
+                            command,
+                            "there is no exit in that direction",
+                        )
+                    }
+                    break
+                case SUBCOMMANDS[COMMANDS.GO].EAST:
+                    if (tile.east_id) {
+                        appendToCommandLog(
+                            command,
+                            tileIdMap[tile.east_id].summary ||
+                                "you don't see anything of interest",
+                        )
+                    } else {
+                        appendToCommandLog(
+                            command,
+                            "there is no exit in that direction",
+                        )
+                    }
+                    break
+                case SUBCOMMANDS[COMMANDS.GO].SOUTH:
+                    if (tile.south_id) {
+                        appendToCommandLog(
+                            command,
+                            tileIdMap[tile.south_id].summary ||
+                                "you don't see anything of interest",
+                        )
+                    } else {
+                        appendToCommandLog(
+                            command,
+                            "there is no exit in that direction",
+                        )
+                    }
+                    break
+                case SUBCOMMANDS[COMMANDS.GO].WEST:
+                    if (tile.west_id) {
+                        appendToCommandLog(
+                            command,
+                            tileIdMap[tile.west_id].summary ||
+                                "you don't see anything of interest",
+                        )
+                    } else {
+                        appendToCommandLog(
+                            command,
+                            "there is no exit in that direction",
+                        )
+                    }
+                    break
+                case SUBCOMMANDS[COMMANDS.GO].UP:
+                    if (tile.up_id) {
+                        appendToCommandLog(
+                            command,
+                            tileIdMap[tile.up_id].summary ||
+                                "you don't see anything of interest",
+                        )
+                    } else {
+                        appendToCommandLog(
+                            command,
+                            "there is no exit in that direction",
+                        )
+                    }
+                    break
+                case SUBCOMMANDS[COMMANDS.GO].DOWN:
+                    if (tile.down_id) {
+                        appendToCommandLog(
+                            command,
+                            tileIdMap[tile.down_id].summary ||
+                                "you don't see anything of interest",
+                        )
+                    } else {
+                        appendToCommandLog(
+                            command,
+                            "there is no exit in that direction",
+                        )
+                    }
+                    break
                 default:
-                    appendToCommandLog(command, "not implemented yet")
+                    handleUnrecognized(command, setCommand, appendToCommandLog)
+                    return
             }
             break
         case COMMANDS.TAKE:

@@ -1,3 +1,4 @@
+import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons"
 import type { CoordsMap, TileIdMap } from "~/routes/read.$gridId/processing.ts"
 import { indicesArray } from "~/utilities/misc.ts"
 
@@ -31,6 +32,7 @@ export function Map({
                         currentTile.coords![1] -
                             Math.ceil(MAP_DIMENSIONS.y / 2) +
                             y,
+                        currentTile.coords![2],
                     ].join(",")
                 ],
         ),
@@ -88,15 +90,37 @@ export function Map({
                                 {mapTile.north_id && (
                                     <div className="absolute left-0 right-0 top-[-1rem] mx-auto h-4 w-4 bg-[var(--accent-8)]" />
                                 )}
-                                {tileId && tileIdMap[tileId].east_id && (
+                                {mapTile.east_id && (
                                     <div className="absolute bottom-0 right-[-1rem] top-0 my-auto h-4 w-4 bg-[var(--accent-8)]" />
                                 )}
-                                {tileId && tileIdMap[tileId].south_id && (
+                                {mapTile.south_id && (
                                     <div className="absolute bottom-[-1rem] left-0 right-0 mx-auto h-4 w-4 bg-[var(--accent-8)]" />
                                 )}
-                                {tileId && tileIdMap[tileId].west_id && (
+                                {mapTile.west_id && (
                                     <div className="absolute bottom-0 left-[-1rem] top-0 my-auto h-4 w-4 bg-[var(--accent-8)]" />
                                 )}
+                                {mapTile.up_id &&
+                                    (tileId === currentTileId ? (
+                                        <ArrowUpIcon
+                                            className="absolute right-2 top-2 h-8 w-8 cursor-pointer hover:text-zinc-400"
+                                            onClick={() =>
+                                                handleCommand("go up")
+                                            }
+                                        />
+                                    ) : (
+                                        <ArrowUpIcon className="absolute right-2 top-2 h-8 w-8 text-zinc-400" />
+                                    ))}
+                                {mapTile.down_id &&
+                                    (tileId === currentTileId ? (
+                                        <ArrowDownIcon
+                                            className="absolute left-2 top-2 h-8 w-8 cursor-pointer hover:text-zinc-400"
+                                            onClick={() =>
+                                                handleCommand("go down")
+                                            }
+                                        />
+                                    ) : (
+                                        <ArrowDownIcon className="absolute left-2 top-2 h-8 w-8 text-zinc-400" />
+                                    ))}
                             </div>
                         )
                     }),
