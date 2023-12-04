@@ -135,7 +135,7 @@ export function availableCommands(command: string) {
 
     return (
         prefixFilter(
-            Object.values(SUBCOMMANDS[commandTokens[0]]),
+            Object.values(SUBCOMMANDS[commandTokens[0]] || {}),
             commandTokens[1],
         ) || []
     )
