@@ -12,6 +12,7 @@ import { Map } from "~/routes/read.$gridId/map.tsx"
 import { Info } from "~/routes/read.$gridId/info.tsx"
 import { generateTileCoordsMap } from "~/routes/read.$gridId/processing.ts"
 import { handleCommand } from "~/routes/read.$gridId/commands.ts"
+import { useSaveData } from "~/utilities/useSaveData.ts"
 
 const paramsSchema = z.object({ gridId: z.coerce.number() })
 
@@ -35,40 +36,39 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return json({ user, grid, tileIdMap, tileCoordsMap })
 }
 
-export default function Grid() {
+export default function Route() {
     const { user, grid, tileIdMap, tileCoordsMap } =
         useLoaderData<typeof loader>()
 
-    const [currentTileId, setCurrentTileId] = useState(grid.first_id)
     const [command, setCommand] = useState("")
     const [commandLog, setCommandLog] = useState<string[]>([])
-
-    const tile = tileIdMap[currentTileId]
+    const [saveData, setSaveData] = useSaveData(user, grid)
 
     const clearCommandLog = () => setCommandLog([])
     const appendToCommandLog = (command: string, message: string) =>
         setCommandLog([...commandLog, ">  " + command, message])
 
-    const handleCommandClosure = (command: string) =>
+    const handleCommandClosure = (command: string) => {
+        if (!saveData) return
         handleCommand(
             command,
-            tile,
+            saveData,
             tileIdMap,
             setCommand,
             appendToCommandLog,
             clearCommandLog,
-            setCurrentTileId,
+            setSaveData,
         )
+    }
 
     return (
         <Layout
             user={user}
             title={grid.name}
-            subtitle={tile.name}
             left={<Info />}
             right={
                 <Map
-                    currentTileId={currentTileId}
+                    saveData={saveData}
                     tileIdMap={tileIdMap}
                     coordsMap={tileCoordsMap}
                     handleCommand={handleCommandClosure}
@@ -76,7 +76,8 @@ export default function Grid() {
             }
             center={
                 <Text
-                    tile={tile}
+                    saveData={saveData}
+                    tileIdMap={tileIdMap}
                     command={command}
                     commandLog={commandLog}
                     setCommand={setCommand}

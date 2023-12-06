@@ -1,20 +1,25 @@
-import { Card, ScrollArea, TextField } from "@itsmapleleaf/radix-themes"
+import { ScrollArea, TextField } from "@itsmapleleaf/radix-themes"
 import { ChevronRightIcon } from "@radix-ui/react-icons"
 import { Form } from "@remix-run/react"
-import { useRef, type Dispatch, type SetStateAction } from "react"
+import { useRef, type Dispatch, type SetStateAction, useEffect } from "react"
+import { Card } from "~/components/card.tsx"
 import { TextTyper } from "~/components/textTyper.tsx"
-import type { TilesSelectModel } from "~/database/schema/grids.server.ts"
+import { Wait } from "~/components/wait.tsx"
 import { availableCommands } from "~/routes/read.$gridId/commands.ts"
+import type { TileIdMap } from "~/routes/read.$gridId/processing.ts"
 import { commasWithAnd } from "~/utilities/misc.ts"
+import type { SaveData } from "~/utilities/useSaveData.ts"
 
 export function Text({
-    tile,
+    saveData,
+    tileIdMap,
     command,
     commandLog,
     setCommand,
     handleCommand,
 }: {
-    tile: TilesSelectModel
+    saveData?: SaveData
+    tileIdMap: TileIdMap
     command: string
     commandLog: string[]
     setCommand: Dispatch<SetStateAction<string>>
@@ -23,47 +28,68 @@ export function Text({
     const inputRef = useRef<HTMLInputElement>(null)
     const textRef = useRef<HTMLDivElement>(null)
 
-    const exitsMessage = commasWithAnd([
-        tile.north_id ? "north" : undefined,
-        tile.east_id ? "east" : undefined,
-        tile.south_id ? "south" : undefined,
-        tile.west_id ? "west" : undefined,
-        tile.up_id ? "up" : undefined,
-        tile.down_id ? "down" : undefined,
-    ])
+    useEffect(() => inputRef?.current?.focus(), [saveData?.currentTileId])
 
     return (
         <div
-            key={tile.id}
             className="flex h-full flex-col gap-5"
             onClick={() => {
                 inputRef.current?.focus()
                 textRef.current?.click()
             }}
         >
-            <Card key={tile.id} className="h-[calc(100vh-9.4rem)]">
+            <Card className="h-[calc(100vh-9.4rem)]">
                 <ScrollArea className="flex-1 p-5">
-                    <TextTyper
-                        className="pb-6"
-                        textRef={textRef}
-                        text={`${
-                            tile.description || "[empty description]"
-                        }\n\nthere are exits to the ${exitsMessage}.`}
-                    />
-                    {commandLog.map((message, index) => (
-                        <TextTyper
-                            key={index}
-                            text={message}
-                            className={
-                                "pb-6 " +
-                                (index % 2 ? undefined : "text-zinc-400")
-                            }
-                        />
-                    ))}
+                    <Wait on={saveData}>
+                        {(saveData) => {
+                            const currentTile =
+                                tileIdMap[saveData.currentTileId]
+
+                            const exitsMessage = commasWithAnd([
+                                currentTile.north_id ? "north" : undefined,
+                                currentTile.east_id ? "east" : undefined,
+                                currentTile.south_id ? "south" : undefined,
+                                currentTile.west_id ? "west" : undefined,
+                                currentTile.up_id ? "up" : undefined,
+                                currentTile.down_id ? "down" : undefined,
+                            ])
+
+                            return (
+                                <>
+                                    {currentTile.name && (
+                                        <TextTyper
+                                            className="pb-6 italic"
+                                            text={`[${currentTile.name}]`}
+                                        />
+                                    )}
+                                    <TextTyper
+                                        className="pb-6"
+                                        textRef={textRef}
+                                        text={`${
+                                            currentTile.description ||
+                                            "[empty description]"
+                                        }\n\nthere are exits to the ${exitsMessage}.`}
+                                    />
+                                    {commandLog.map((message, index) => (
+                                        <TextTyper
+                                            key={index}
+                                            text={message}
+                                            className={
+                                                "pb-6 " +
+                                                (index % 2
+                                                    ? undefined
+                                                    : "text-zinc-400")
+                                            }
+                                        />
+                                    ))}
+                                </>
+                            )
+                        }}
+                    </Wait>
                 </ScrollArea>
             </Card>
             <Form
-                className="pb-1"
+                className="border-zinc-700 pb-1"
                 onSubmit={(event) => {
                     event.preventDefault()
                     handleCommand(command)
@@ -74,7 +100,6 @@ export function Text({
                         <ChevronRightIcon />
                     </TextField.Slot>
                     <TextField.Input
-                        key={tile.id}
                         ref={inputRef}
                         className="outline-none"
                         value={command}

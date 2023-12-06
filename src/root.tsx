@@ -30,7 +30,7 @@ export const links: LinksFunction = () => [
 
 export default function App() {
     return (
-        <html lang="en" suppressHydrationWarning>
+        <html lang="en" className="dark-theme dark" suppressHydrationWarning>
             <head>
                 <meta charSet="utf-8" />
                 <meta
@@ -41,10 +41,10 @@ export default function App() {
                 <Links />
             </head>
             <body>
-                <Theme appearance="dark" accentColor="ruby">
+                <Theme accentColor="ruby">
                     <div
                         className={
-                            "flex min-h-screen flex-col items-center bg-gradient-to-b from-zinc-700 to-zinc-900 font-sans"
+                            "flex min-h-screen flex-col items-center bg-gradient-to-b from-zinc-800 to-zinc-950 font-sans"
                         }
                     >
                         <Outlet />

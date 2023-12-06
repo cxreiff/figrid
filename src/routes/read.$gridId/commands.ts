@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react"
-import type { TilesSelectModel } from "~/database/schema/grids.server.ts"
 import type { TileIdMap } from "~/routes/read.$gridId/processing.ts"
+import type { SaveData, useSaveData } from "~/utilities/useSaveData.ts"
 
 export const COMMANDS = {
     GO: "go",
@@ -30,13 +30,14 @@ export const SUBCOMMANDS = {
 
 export function handleCommand(
     rawCommand: string,
-    tile: TilesSelectModel,
+    saveData: SaveData,
     tileIdMap: TileIdMap,
     setCommand: Dispatch<SetStateAction<string>>,
     appendToCommandLog: (command: string, message: string) => void,
     clearCommandLog: () => void,
-    setCurrentTileId: Dispatch<SetStateAction<number>>,
+    setSaveData: ReturnType<typeof useSaveData>[1],
 ) {
+    const currentTile = tileIdMap[saveData.currentTileId]
     const command = rawCommand.toLowerCase().trim()
     const commandTokens = splitCommand(command)
 
@@ -44,9 +45,9 @@ export function handleCommand(
         case COMMANDS.GO:
             switch (commandTokens[1]) {
                 case SUBCOMMANDS[COMMANDS.GO].NORTH:
-                    if (tile.north_id) {
+                    if (currentTile.north_id) {
                         clearCommandLog()
-                        setCurrentTileId(tile.north_id)
+                        setSaveData("currentTileId", currentTile.north_id)
                     } else {
                         appendToCommandLog(
                             command,
@@ -55,9 +56,9 @@ export function handleCommand(
                     }
                     break
                 case SUBCOMMANDS[COMMANDS.GO].EAST:
-                    if (tile.east_id) {
+                    if (currentTile.east_id) {
                         clearCommandLog()
-                        setCurrentTileId(tile.east_id)
+                        setSaveData("currentTileId", currentTile.east_id)
                     } else {
                         appendToCommandLog(
                             command,
@@ -66,9 +67,9 @@ export function handleCommand(
                     }
                     break
                 case SUBCOMMANDS[COMMANDS.GO].SOUTH:
-                    if (tile.south_id) {
+                    if (currentTile.south_id) {
                         clearCommandLog()
-                        setCurrentTileId(tile.south_id)
+                        setSaveData("currentTileId", currentTile.south_id)
                     } else {
                         appendToCommandLog(
                             command,
@@ -77,9 +78,9 @@ export function handleCommand(
                     }
                     break
                 case SUBCOMMANDS[COMMANDS.GO].WEST:
-                    if (tile.west_id) {
+                    if (currentTile.west_id) {
                         clearCommandLog()
-                        setCurrentTileId(tile.west_id)
+                        setSaveData("currentTileId", currentTile.west_id)
                     } else {
                         appendToCommandLog(
                             command,
@@ -88,9 +89,9 @@ export function handleCommand(
                     }
                     break
                 case SUBCOMMANDS[COMMANDS.GO].UP:
-                    if (tile.up_id) {
+                    if (currentTile.up_id) {
                         clearCommandLog()
-                        setCurrentTileId(tile.up_id)
+                        setSaveData("currentTileId", currentTile.up_id)
                     } else {
                         appendToCommandLog(
                             command,
@@ -99,9 +100,9 @@ export function handleCommand(
                     }
                     break
                 case SUBCOMMANDS[COMMANDS.GO].DOWN:
-                    if (tile.down_id) {
+                    if (currentTile.down_id) {
                         clearCommandLog()
-                        setCurrentTileId(tile.down_id)
+                        setSaveData("currentTileId", currentTile.down_id)
                     } else {
                         appendToCommandLog(
                             command,
@@ -122,16 +123,16 @@ export function handleCommand(
             if (commandTokens.length === 1) {
                 appendToCommandLog(
                     command,
-                    tile.summary || "you don't see anything of interest",
+                    currentTile.summary || "you don't see anything of interest",
                 )
                 break
             }
             switch (commandTokens[1]) {
                 case SUBCOMMANDS[COMMANDS.GO].NORTH:
-                    if (tile.north_id) {
+                    if (currentTile.north_id) {
                         appendToCommandLog(
                             command,
-                            tileIdMap[tile.north_id].summary ||
+                            tileIdMap[currentTile.north_id].summary ||
                                 "you don't see anything of interest",
                         )
                     } else {
@@ -142,10 +143,10 @@ export function handleCommand(
                     }
                     break
                 case SUBCOMMANDS[COMMANDS.GO].EAST:
-                    if (tile.east_id) {
+                    if (currentTile.east_id) {
                         appendToCommandLog(
                             command,
-                            tileIdMap[tile.east_id].summary ||
+                            tileIdMap[currentTile.east_id].summary ||
                                 "you don't see anything of interest",
                         )
                     } else {
@@ -156,10 +157,10 @@ export function handleCommand(
                     }
                     break
                 case SUBCOMMANDS[COMMANDS.GO].SOUTH:
-                    if (tile.south_id) {
+                    if (currentTile.south_id) {
                         appendToCommandLog(
                             command,
-                            tileIdMap[tile.south_id].summary ||
+                            tileIdMap[currentTile.south_id].summary ||
                                 "you don't see anything of interest",
                         )
                     } else {
@@ -170,10 +171,10 @@ export function handleCommand(
                     }
                     break
                 case SUBCOMMANDS[COMMANDS.GO].WEST:
-                    if (tile.west_id) {
+                    if (currentTile.west_id) {
                         appendToCommandLog(
                             command,
-                            tileIdMap[tile.west_id].summary ||
+                            tileIdMap[currentTile.west_id].summary ||
                                 "you don't see anything of interest",
                         )
                     } else {
@@ -184,10 +185,10 @@ export function handleCommand(
                     }
                     break
                 case SUBCOMMANDS[COMMANDS.GO].UP:
-                    if (tile.up_id) {
+                    if (currentTile.up_id) {
                         appendToCommandLog(
                             command,
-                            tileIdMap[tile.up_id].summary ||
+                            tileIdMap[currentTile.up_id].summary ||
                                 "you don't see anything of interest",
                         )
                     } else {
@@ -198,10 +199,10 @@ export function handleCommand(
                     }
                     break
                 case SUBCOMMANDS[COMMANDS.GO].DOWN:
-                    if (tile.down_id) {
+                    if (currentTile.down_id) {
                         appendToCommandLog(
                             command,
-                            tileIdMap[tile.down_id].summary ||
+                            tileIdMap[currentTile.down_id].summary ||
                                 "you don't see anything of interest",
                         )
                     } else {

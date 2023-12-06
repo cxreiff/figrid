@@ -40,6 +40,7 @@ export const formStrategy = new FormStrategy(async ({ form }) => {
     }
 
     return {
+        id: user.id,
         alias: user.alias,
         email: user.email,
         name: user.name,

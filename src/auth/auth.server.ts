@@ -18,7 +18,7 @@ bcrypt.setRandomFallback((bytes: number) =>
 
 export type AuthUser = Pick<
     UsersSelectModel,
-    "alias" | "email" | "name" | "type"
+    "id" | "alias" | "email" | "name" | "type"
 > & {
     profile: Pick<ProfilesSelectModel, "image_url">
 }

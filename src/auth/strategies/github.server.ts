@@ -72,6 +72,7 @@ export const gitHubStrategy = new GitHubStrategy(
         })
 
         return {
+            id: user.id,
             alias: user.alias,
             email: user.email,
             name: user.name,

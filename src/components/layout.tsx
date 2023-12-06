@@ -1,21 +1,18 @@
-import { Card } from "@itsmapleleaf/radix-themes"
-import { DotFilledIcon } from "@radix-ui/react-icons"
 import { Link } from "@remix-run/react"
 import type { ReactNode } from "react"
 import type { AuthUser } from "~/auth/auth.server.ts"
+import { Card } from "~/components/card.tsx"
 import { ProfileButton } from "~/components/profileButton.tsx"
 
 export function Layout({
     user,
     title,
-    subtitle,
     left,
     right,
     center,
 }: {
     user: AuthUser | null
     title: string
-    subtitle?: string | null
     left?: ReactNode
     right?: ReactNode
     center?: ReactNode
@@ -23,19 +20,14 @@ export function Layout({
     return (
         <div className="flex w-full flex-col gap-3 p-4">
             <div className="flex items-center gap-3">
-                <Card
-                    className="bg-[var(--accent-8)] p-0 text-black mix-blend-screen"
-                    asChild
-                >
+                <Card asChild className="bg-[var(--accent-8)] text-zinc-800">
                     <Link to="/">
                         <strong>figrid</strong>
                     </Link>
                 </Card>
-                <Card className="flex-1 bg-transparent text-center">
-                    <h1 className="flex items-center justify-center">
-                        <span className="pr-8">{title}</span>
-                        {subtitle && <DotFilledIcon />}
-                        {subtitle && <span className="pl-8">{subtitle}</span>}
+                <Card asChild>
+                    <h1 className="flex-1 items-center justify-center text-center">
+                        <span className="pr-8">&nbsp;{title}&nbsp;</span>
                     </h1>
                 </Card>
                 <ProfileButton user={user} />

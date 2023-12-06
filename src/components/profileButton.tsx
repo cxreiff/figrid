@@ -1,7 +1,8 @@
-import { Card, DropdownMenu } from "@itsmapleleaf/radix-themes"
+import { DropdownMenu } from "@itsmapleleaf/radix-themes"
 import { Link } from "@remix-run/react"
 import { type AuthUser } from "~/auth/auth.server.ts"
 import { ProfileAvatar } from "~/components/profileAvatar.tsx"
+import { Card } from "~/components/card.tsx"
 
 type ProfileButtonProps = {
     user: AuthUser | null

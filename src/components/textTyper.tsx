@@ -21,6 +21,12 @@ export function TextTyper({
     const internalTextRef = useRef<HTMLDivElement>(null)
     const textRef = externalTextRef || internalTextRef
 
+    const [prevText, setPrevText] = useState(text)
+    if (text !== prevText) {
+        setHidden(text.length)
+        setPrevText(text)
+    }
+
     useEffect(() => {
         if (textRef.current && endRef.current) {
             const resizeObserver = new ResizeObserver(() => {
@@ -32,14 +38,11 @@ export function TextTyper({
     }, [textRef, endRef])
 
     useEffect(() => {
-        setHidden(text.length)
-    }, [text])
-
-    useEffect(() => {
         if (hidden > 0) {
-            setTimeout(() => {
+            const interval = setTimeout(() => {
                 setHidden((prevHidden) => Math.max(prevHidden - 4, 0))
             }, 32)
+            return () => clearTimeout(interval)
         } else {
             endRef.current?.scrollIntoView()
         }
