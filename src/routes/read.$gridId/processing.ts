@@ -1,7 +1,13 @@
-import type { TilesSelectModel } from "~/database/schema/grids.server.ts"
+import type {
+    ItemsSelectModel,
+    TilesSelectModel,
+} from "~/database/schema/grids.server.ts"
 
 type Coords = [number, number, number]
-type TileWithCoords = TilesSelectModel & { coords?: Coords }
+export type TileWithCoords = TilesSelectModel & {
+    items: ItemsSelectModel[]
+    coords?: Coords
+}
 export type CoordsMap = Record<string, number | undefined>
 export type TileIdMap = Record<string, TileWithCoords>
 

@@ -1,5 +1,12 @@
 import { relations } from "drizzle-orm"
-import { index, int, mysqlTable, text } from "drizzle-orm/mysql-core"
+import {
+    index,
+    int,
+    mysqlEnum,
+    mysqlTable,
+    text,
+    varchar,
+} from "drizzle-orm/mysql-core"
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
 import type { z } from "zod"
 import { users } from "~/database/schema/auth.server.ts"
@@ -30,6 +37,7 @@ export const grids_relations = relations(grids, ({ one, many }) => ({
         references: [tiles.id],
     }),
     tiles: many(tiles),
+    items: many(items),
 }))
 
 export const grids_select_schema = createSelectSchema(grids, fixer)
@@ -43,7 +51,7 @@ export const tiles = mysqlTable(
         ...incrementing_id,
         ...create_update_timestamps,
 
-        name: text("name"),
+        name: text("name").notNull(),
         summary: text("summary"),
         description: text("description"),
 
@@ -54,15 +62,17 @@ export const tiles = mysqlTable(
         up_id: int("up_id"),
         down_id: int("down_id"),
 
-        grid_id: int("grid_id").notNull(),
+        image_url: varchar("image_url", { length: 2083 }),
+
         user_id: int("user_id").notNull(),
+        grid_id: int("grid_id").notNull(),
     },
     (t) => ({
         grid_id: index("grid_id").on(t.grid_id),
     }),
 )
 
-export const tiles_relations = relations(tiles, ({ one }) => ({
+export const tiles_relations = relations(tiles, ({ one, many }) => ({
     user: one(users, {
         fields: [tiles.user_id],
         references: [users.id],
@@ -87,9 +97,44 @@ export const tiles_relations = relations(tiles, ({ one }) => ({
         fields: [tiles.west_id],
         references: [tiles.id],
     }),
+    items: many(items),
 }))
 
 export const tiles_select_schema = createSelectSchema(tiles, fixer)
 export const tiles_insert_schema = createInsertSchema(tiles, fixer)
 export type TilesSelectModel = z.infer<typeof tiles_select_schema>
 export type TilesInsertModel = z.infer<typeof tiles_insert_schema>
+
+export const items = mysqlTable("items", {
+    ...incrementing_id,
+    ...create_update_timestamps,
+
+    type: mysqlEnum("type", ["key", "pass"]),
+    name: text("name").notNull(),
+    summary: text("summary"),
+    description: text("description"),
+
+    user_id: int("user_id").notNull(),
+    grid_id: int("grid_id").notNull(),
+    tile_id: int("tile_id").notNull(),
+})
+
+export const items_relations = relations(items, ({ one }) => ({
+    user: one(users, {
+        fields: [items.user_id],
+        references: [users.id],
+    }),
+    grid: one(grids, {
+        fields: [items.user_id],
+        references: [grids.id],
+    }),
+    tile: one(tiles, {
+        fields: [items.user_id],
+        references: [tiles.id],
+    }),
+}))
+
+export const items_select_schema = createSelectSchema(items, fixer)
+export const items_insert_schema = createInsertSchema(items, fixer)
+export type ItemsSelectModel = z.infer<typeof items_select_schema>
+export type ItemsInsertModel = z.infer<typeof items_insert_schema>

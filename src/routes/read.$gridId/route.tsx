@@ -20,10 +20,12 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     const { gridId } = paramsSchema.parse(params)
 
     const [grid] = await db.select().from(grids).where(eq(grids.id, gridId))
-    const gridTiles = await db
-        .select()
-        .from(tiles)
-        .where(eq(tiles.grid_id, gridId))
+    const gridTiles = await db.query.tiles.findMany({
+        where: eq(tiles.grid_id, gridId),
+        with: {
+            items: true,
+        },
+    })
 
     const tileIdMap = Object.fromEntries(
         gridTiles.map((tile) => [tile.id, tile]),
@@ -65,7 +67,13 @@ export default function Route() {
         <Layout
             user={user}
             title={grid.name}
-            left={<Info />}
+            left={
+                <Info
+                    saveData={saveData}
+                    tileIdMap={tileIdMap}
+                    handleCommand={handleCommandClosure}
+                />
+            }
             right={
                 <Map
                     saveData={saveData}

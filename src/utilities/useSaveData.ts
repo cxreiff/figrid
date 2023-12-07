@@ -5,6 +5,7 @@ import { useLocalStorage } from "~/utilities/useLocalStorage.ts"
 export type SaveData = {
     currentTileId: number
     characterName: string
+    heldItems: number[]
 }
 
 export function useSaveData(user: AuthUser | null, grid: GridsSelectModel) {
@@ -13,6 +14,7 @@ export function useSaveData(user: AuthUser | null, grid: GridsSelectModel) {
         {
             currentTileId: grid.first_id,
             characterName: user?.alias || "player",
+            heldItems: [],
         },
     )
     function setSaveData<T extends keyof SaveData>(key: T, value: SaveData[T]) {

@@ -1,5 +1,8 @@
 import type { Dispatch, SetStateAction } from "react"
-import type { TileIdMap } from "~/routes/read.$gridId/processing.ts"
+import type {
+    TileIdMap,
+    TileWithCoords,
+} from "~/routes/read.$gridId/processing.ts"
 import type { SaveData, useSaveData } from "~/utilities/useSaveData.ts"
 
 export const COMMANDS = {
@@ -41,6 +44,15 @@ export function handleCommand(
     const command = rawCommand.toLowerCase().trim()
     const commandTokens = splitCommand(command)
 
+    /* DEV COMMANDS */
+    if (command === "drop items") {
+        setSaveData("heldItems", [])
+        appendToCommandLog(command, "cleared held items")
+        setCommand("")
+        return
+    }
+
+    /* REAL COMMANDS */
     switch (commandTokens[0]) {
         case COMMANDS.GO:
             switch (commandTokens[1]) {
@@ -126,6 +138,19 @@ export function handleCommand(
                     currentTile.summary || "you don't see anything of interest",
                 )
                 break
+            }
+            for (const item of availableItems(currentTile, saveData)) {
+                if (
+                    item.name.toLowerCase().trim() ===
+                    commandTokens.slice(1).join(" ").trim()
+                ) {
+                    appendToCommandLog(
+                        command,
+                        item.description || "the item is nondescript",
+                    )
+                    setCommand("")
+                    return
+                }
             }
             switch (commandTokens[1]) {
                 case SUBCOMMANDS[COMMANDS.GO].NORTH:
@@ -222,6 +247,17 @@ export function handleCommand(
             }
             break
         case COMMANDS.TAKE:
+            for (const item of availableItems(currentTile, saveData)) {
+                if (
+                    item.name.toLowerCase().trim() ===
+                    commandTokens.slice(1).join(" ").trim()
+                ) {
+                    setSaveData("heldItems", [...saveData.heldItems, item.id])
+                    appendToCommandLog(command, `you take the ${item.name}`)
+                    setCommand("")
+                    return
+                }
+            }
             handleUnrecognized(rawCommand, setCommand, appendToCommandLog)
             return
         default:
@@ -278,4 +314,8 @@ function splitCommand(command: string) {
 
 function prefixFilter(available: string[], commandToken: string) {
     return available.filter((suggestion) => suggestion.startsWith(commandToken))
+}
+
+export function availableItems(tile: TileWithCoords, saveData: SaveData) {
+    return tile.items.filter(({ id }) => !saveData.heldItems.includes(id))
 }

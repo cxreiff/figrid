@@ -1,4 +1,4 @@
-import { ScrollArea, TextField } from "@itsmapleleaf/radix-themes"
+import { TextField } from "@itsmapleleaf/radix-themes"
 import { ChevronRightIcon } from "@radix-ui/react-icons"
 import { Form } from "@remix-run/react"
 import { useRef, type Dispatch, type SetStateAction, useEffect } from "react"
@@ -39,7 +39,7 @@ export function Text({
             }}
         >
             <Card className="h-[calc(100vh-9.4rem)]">
-                <ScrollArea className="flex-1 p-5">
+                <div className="h-full flex-1 overflow-auto p-5">
                     <Wait on={saveData}>
                         {(saveData) => {
                             const currentTile =
@@ -86,7 +86,7 @@ export function Text({
                             )
                         }}
                     </Wait>
-                </ScrollArea>
+                </div>
             </Card>
             <Form
                 className="border-zinc-700 pb-1"
