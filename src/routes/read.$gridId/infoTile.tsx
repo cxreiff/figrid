@@ -33,7 +33,7 @@ export function InfoTile({
                         <div className="h-2/5 overflow-auto px-5">
                             <h3 className="pb-3 text-zinc-500">items</h3>
                             <Table.Root className="pb-12">
-                                <Table.Body className="text-center align-middle">
+                                <Table.Body className="align-middle">
                                     {Object.values(
                                         availableItemsMap(tile, saveData),
                                     ).map((item) => (
@@ -41,10 +41,10 @@ export function InfoTile({
                                             key={item.id}
                                             className="duration-500 animate-in fade-in"
                                         >
-                                            <Table.RowHeaderCell>
+                                            <Table.RowHeaderCell className="w-1/3">
                                                 {item.name}
                                             </Table.RowHeaderCell>
-                                            <Table.Cell>
+                                            <Table.Cell className="w-2/3">
                                                 {item.summary}
                                             </Table.Cell>
                                             <Table.Cell>
@@ -79,14 +79,14 @@ export function InfoTile({
                             </Table.Root>
                             <h3 className="pb-3 text-zinc-500">characters</h3>
                             <Table.Root>
-                                <Table.Body className="text-center align-middle">
+                                <Table.Body className="align-middle">
                                     {tile.character_instances.map(
                                         ({ character }) => (
                                             <Table.Row key={character.id}>
-                                                <Table.RowHeaderCell>
+                                                <Table.RowHeaderCell className="w-1/3">
                                                     {character.name}
                                                 </Table.RowHeaderCell>
-                                                <Table.Cell>
+                                                <Table.Cell className="w-2/3">
                                                     {character.summary}
                                                 </Table.Cell>
                                                 <Table.Cell>

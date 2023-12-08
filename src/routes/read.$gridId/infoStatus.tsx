@@ -39,7 +39,7 @@ export function InfoStatus({
                         </div>
                         <div className="h-2/5 overflow-auto px-5">
                             <Table.Root className="pb-8">
-                                <Table.Body className="text-center align-middle">
+                                <Table.Body className="align-middle">
                                     {saveData.heldItems.map((instanceId) => {
                                         const item =
                                             itemIdMap[
@@ -51,10 +51,10 @@ export function InfoStatus({
                                                 key={item.id}
                                                 className="duration-500 animate-in fade-in"
                                             >
-                                                <Table.RowHeaderCell>
+                                                <Table.RowHeaderCell className="w-1/3">
                                                     {item.name}
                                                 </Table.RowHeaderCell>
-                                                <Table.Cell>
+                                                <Table.Cell className="w-2/3">
                                                     {item.summary}
                                                 </Table.Cell>
                                                 <Table.Cell>

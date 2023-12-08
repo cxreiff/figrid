@@ -58,7 +58,7 @@ export function Text({
                                 <>
                                     {currentTile.name && (
                                         <TextTyper
-                                            className="pb-6 italic"
+                                            className="pb-6 italic text-[var(--accent-8)]"
                                             text={`[${currentTile.name}]`}
                                         />
                                     )}
