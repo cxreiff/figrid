@@ -1,6 +1,10 @@
 import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons"
 import { Wait } from "~/components/wait.tsx"
-import type { CoordsMap, TileIdMap } from "~/routes/read.$gridId/processing.ts"
+import type {
+    CoordsMap,
+    IdMap,
+    TileWithCoords,
+} from "~/routes/read.$gridId/processing.ts"
 import { indicesArray } from "~/utilities/misc.ts"
 import type { SaveData } from "~/utilities/useSaveData.ts"
 
@@ -13,7 +17,7 @@ export function Map({
     handleCommand,
 }: {
     saveData?: SaveData
-    tileIdMap: TileIdMap
+    tileIdMap: IdMap<TileWithCoords>
     coordsMap: CoordsMap
     handleCommand: (command: string) => void
 }) {

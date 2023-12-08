@@ -1,4 +1,4 @@
-import { serial, timestamp } from "drizzle-orm/mysql-core"
+import { serial, text, timestamp, varchar } from "drizzle-orm/mysql-core"
 import { z } from "zod"
 
 export const incrementing_id = {
@@ -8,6 +8,13 @@ export const incrementing_id = {
 export const create_update_timestamps = {
     created_at: timestamp("created_at").defaultNow().notNull(),
     updated_at: timestamp("updated_at").defaultNow().notNull().onUpdateNow(),
+}
+
+export const name_summary_description = {
+    name: text("name").notNull(),
+    summary: text("summary"),
+    description: text("description"),
+    image_url: varchar("image_url", { length: 2083 }),
 }
 
 export const fixer = {

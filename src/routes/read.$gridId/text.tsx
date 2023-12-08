@@ -6,7 +6,7 @@ import { Card } from "~/components/card.tsx"
 import { TextTyper } from "~/components/textTyper.tsx"
 import { Wait } from "~/components/wait.tsx"
 import { availableCommands } from "~/routes/read.$gridId/commands.ts"
-import type { TileIdMap } from "~/routes/read.$gridId/processing.ts"
+import type { IdMap, TileWithCoords } from "~/routes/read.$gridId/processing.ts"
 import { commasWithAnd } from "~/utilities/misc.ts"
 import type { SaveData } from "~/utilities/useSaveData.ts"
 
@@ -19,7 +19,7 @@ export function Text({
     handleCommand,
 }: {
     saveData?: SaveData
-    tileIdMap: TileIdMap
+    tileIdMap: IdMap<TileWithCoords>
     command: string
     commandLog: string[]
     setCommand: Dispatch<SetStateAction<string>>
@@ -78,7 +78,7 @@ export function Text({
                                                 "pb-6 " +
                                                 (index % 2
                                                     ? undefined
-                                                    : "text-zinc-400")
+                                                    : "text-zinc-500")
                                             }
                                         />
                                     ))}

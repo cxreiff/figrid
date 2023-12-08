@@ -1,8 +1,5 @@
 import type { Dispatch, SetStateAction } from "react"
-import type {
-    TileIdMap,
-    TileWithCoords,
-} from "~/routes/read.$gridId/processing.ts"
+import type { IdMap, TileWithCoords } from "~/routes/read.$gridId/processing.ts"
 import type { SaveData, useSaveData } from "~/utilities/useSaveData.ts"
 
 export const COMMANDS = {
@@ -34,7 +31,7 @@ export const SUBCOMMANDS = {
 export function handleCommand(
     rawCommand: string,
     saveData: SaveData,
-    tileIdMap: TileIdMap,
+    tileIdMap: IdMap<TileWithCoords>,
     setCommand: Dispatch<SetStateAction<string>>,
     appendToCommandLog: (command: string, message: string) => void,
     clearCommandLog: () => void,
@@ -139,7 +136,9 @@ export function handleCommand(
                 )
                 break
             }
-            for (const item of availableItems(currentTile, saveData)) {
+            for (const item of Object.values(
+                availableItemsMap(currentTile, saveData),
+            )) {
                 if (
                     item.name.toLowerCase().trim() ===
                     commandTokens.slice(1).join(" ").trim()
@@ -247,12 +246,17 @@ export function handleCommand(
             }
             break
         case COMMANDS.TAKE:
-            for (const item of availableItems(currentTile, saveData)) {
+            for (const [instanceId, item] of Object.entries(
+                availableItemsMap(currentTile, saveData),
+            )) {
                 if (
                     item.name.toLowerCase().trim() ===
                     commandTokens.slice(1).join(" ").trim()
                 ) {
-                    setSaveData("heldItems", [...saveData.heldItems, item.id])
+                    setSaveData("heldItems", [
+                        ...saveData.heldItems,
+                        Number(instanceId),
+                    ])
                     appendToCommandLog(command, `you take the ${item.name}`)
                     setCommand("")
                     return
@@ -316,6 +320,10 @@ function prefixFilter(available: string[], commandToken: string) {
     return available.filter((suggestion) => suggestion.startsWith(commandToken))
 }
 
-export function availableItems(tile: TileWithCoords, saveData: SaveData) {
-    return tile.items.filter(({ id }) => !saveData.heldItems.includes(id))
+export function availableItemsMap(tile: TileWithCoords, saveData: SaveData) {
+    return Object.fromEntries(
+        tile.item_instances
+            .filter(({ id }) => !saveData.heldItems.includes(id))
+            .map(({ id, item }) => [id, item]),
+    )
 }

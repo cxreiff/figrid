@@ -4,13 +4,16 @@ import { json, type LoaderFunctionArgs } from "@vercel/remix"
 import { db } from "~/database/database.server.ts"
 import { eq } from "drizzle-orm"
 import { z } from "zod"
-import { grids, tiles } from "~/database/schema/grids.server.ts"
+import { grids } from "~/database/schema/grids.server.ts"
 import { auth } from "~/auth/auth.server.ts"
 import { Layout } from "~/components/layout.tsx"
 import { Text } from "~/routes/read.$gridId/text.tsx"
 import { Map } from "~/routes/read.$gridId/map.tsx"
 import { Info } from "~/routes/read.$gridId/info.tsx"
-import { generateTileCoordsMap } from "~/routes/read.$gridId/processing.ts"
+import {
+    generateIdMap,
+    generateTileCoordsMap,
+} from "~/routes/read.$gridId/processing.ts"
 import { handleCommand } from "~/routes/read.$gridId/commands.ts"
 import { useSaveData } from "~/utilities/useSaveData.ts"
 
@@ -19,28 +22,62 @@ const paramsSchema = z.object({ gridId: z.coerce.number() })
 export async function loader({ request, params }: LoaderFunctionArgs) {
     const { gridId } = paramsSchema.parse(params)
 
-    const [grid] = await db.select().from(grids).where(eq(grids.id, gridId))
-    const gridTiles = await db.query.tiles.findMany({
-        where: eq(tiles.grid_id, gridId),
+    const grid = await db.query.grids.findFirst({
+        where: eq(grids.id, gridId),
         with: {
+            tiles: {
+                with: {
+                    item_instances: {
+                        with: {
+                            item: true,
+                        },
+                    },
+                    character_instances: {
+                        with: {
+                            character: true,
+                        },
+                    },
+                },
+            },
             items: true,
+            item_instances: true,
+            player: true,
         },
     })
 
-    const tileIdMap = Object.fromEntries(
-        gridTiles.map((tile) => [tile.id, tile]),
-    )
+    if (!grid) {
+        throw new Response(null, {
+            status: 404,
+            statusText: "Not Found",
+        })
+    }
 
+    const tileIdMap = generateIdMap(grid.tiles)
+    const itemIdMap = generateIdMap(grid.items)
+    const itemInstanceIdMap = generateIdMap(grid.item_instances)
     const tileCoordsMap = generateTileCoordsMap(tileIdMap, grid.first_id)
 
     const user = await auth.isAuthenticated(request)
 
-    return json({ user, grid, tileIdMap, tileCoordsMap })
+    return json({
+        user,
+        grid,
+        tileIdMap,
+        itemIdMap,
+        itemInstanceIdMap,
+        tileCoordsMap,
+    })
 }
 
 export default function Route() {
-    const { user, grid, tileIdMap, tileCoordsMap } =
-        useLoaderData<typeof loader>()
+    const {
+        user,
+        grid,
+        tileIdMap,
+        itemIdMap,
+        itemInstanceIdMap,
+        tileCoordsMap,
+    } = useLoaderData<typeof loader>()
 
     const [command, setCommand] = useState("")
     const [commandLog, setCommandLog] = useState<string[]>([])
@@ -71,6 +108,9 @@ export default function Route() {
                 <Info
                     saveData={saveData}
                     tileIdMap={tileIdMap}
+                    itemIdMap={itemIdMap}
+                    itemInstanceIdMap={itemInstanceIdMap}
+                    player={grid.player}
                     handleCommand={handleCommandClosure}
                 />
             }

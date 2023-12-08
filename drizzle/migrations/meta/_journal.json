@@ -127,6 +127,27 @@
       "when": 1701931295504,
       "tag": "0017_crazy_jamie_braddock",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "5",
+      "when": 1701991373547,
+      "tag": "0018_cloudy_revanche",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "5",
+      "when": 1702005373843,
+      "tag": "0019_fancy_bruce_banner",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "5",
+      "when": 1702005570784,
+      "tag": "0020_pale_quasimodo",
+      "breakpoints": true
     }
   ]
 }

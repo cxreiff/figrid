@@ -1,20 +1,35 @@
 import type {
+    CharacterInstancesSelectModel,
+    CharactersSelectModel,
+    ItemInstancesSelectModel,
     ItemsSelectModel,
     TilesSelectModel,
 } from "~/database/schema/grids.server.ts"
 
 type Coords = [number, number, number]
 export type TileWithCoords = TilesSelectModel & {
-    items: ItemsSelectModel[]
+    item_instances: (ItemInstancesSelectModel & {
+        item: ItemsSelectModel
+    })[]
+    character_instances: (CharacterInstancesSelectModel & {
+        character: CharactersSelectModel
+    })[]
     coords?: Coords
 }
 export type CoordsMap = Record<string, number | undefined>
-export type TileIdMap = Record<string, TileWithCoords>
+export type IdMap<T extends { id: number }> = Record<string, T>
 
-export function generateTileCoordsMap(tileIdMap: TileIdMap, firstId: number) {
+export function generateIdMap<T extends { id: number }>(elements: T[]) {
+    return Object.fromEntries(elements.map((element) => [element.id, element]))
+}
+
+export function generateTileCoordsMap(
+    tileIdMap: IdMap<TileWithCoords>,
+    firstId: number,
+) {
     function generateTileCoordsMapInner(
         tileCoordsMap: CoordsMap,
-        tileIdMap: TileIdMap,
+        tileIdMap: IdMap<TileWithCoords>,
         currentId: number,
         currentCoords: Coords,
     ) {
