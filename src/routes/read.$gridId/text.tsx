@@ -32,13 +32,13 @@ export function Text({
 
     return (
         <div
-            className="flex h-full flex-col gap-5"
+            className="flex h-full flex-col gap-4"
             onClick={() => {
                 inputRef.current?.focus()
                 textRef.current?.click()
             }}
         >
-            <Card className="h-[calc(100vh-9.4rem)]">
+            <Card className="h-[calc(100%-4rem)]">
                 <div className="h-full flex-1 overflow-auto p-5">
                     <Wait on={saveData}>
                         {(saveData) => {
@@ -89,7 +89,7 @@ export function Text({
                 </div>
             </Card>
             <Form
-                className="border-zinc-700 pb-1"
+                className="h-12 border-zinc-700 pb-1"
                 onSubmit={(event) => {
                     event.preventDefault()
                     handleCommand(command)
@@ -101,7 +101,7 @@ export function Text({
                     </TextField.Slot>
                     <TextField.Input
                         ref={inputRef}
-                        className="outline-none"
+                        className="h-12 outline-none"
                         value={command}
                         onChange={(event) =>
                             setCommand(event.target.value.toLowerCase())

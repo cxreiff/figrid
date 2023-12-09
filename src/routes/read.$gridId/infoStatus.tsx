@@ -1,4 +1,5 @@
 import { Button, Table } from "@itsmapleleaf/radix-themes"
+import { Card } from "~/components/card.tsx"
 import { Wait } from "~/components/wait.tsx"
 import type {
     CharactersSelectModel,
@@ -24,22 +25,36 @@ export function InfoStatus({
     handleCommand: (command: string) => void
 }) {
     return (
-        <Wait on={saveData}>
-            {(saveData) => {
-                const image = player.image_url || PLAYER_FALLBACK_IMAGE
-                return (
-                    <>
-                        <div className="flex h-3/5 items-center justify-center pb-8">
-                            <img
-                                key={image}
-                                src={image}
-                                alt="placeholder"
-                                className="pixel-image m-auto h-full max-w-full rounded-lg object-contain duration-500 animate-in fade-in"
-                            />
-                        </div>
-                        <div className="h-2/5 overflow-auto px-5">
-                            <Table.Root className="pb-8">
+        <>
+            <Card className="no-card-padding mb-4 h-1/2 bg-zinc-950">
+                <Wait on={saveData}>
+                    {() => {
+                        const image = player.image_url || PLAYER_FALLBACK_IMAGE
+                        return (
+                            <div className="flex h-full items-center justify-center pb-8">
+                                <img
+                                    key={image}
+                                    src={image}
+                                    alt="placeholder"
+                                    className="pixel-image m-auto h-full max-w-full rounded-lg object-contain duration-500 animate-in fade-in"
+                                />
+                            </div>
+                        )
+                    }}
+                </Wait>
+            </Card>
+            <Card className="h-[calc(50%-1rem)] bg-transparent pt-4">
+                <Wait on={saveData}>
+                    {(saveData) => (
+                        <div className="h-full overflow-auto px-5">
+                            <h3 className="pb-3 text-zinc-500">inventory</h3>
+                            <Table.Root>
                                 <Table.Body className="align-middle">
+                                    {saveData.heldItems.length === 0 && (
+                                        <Table.Row className="text-zinc-500">
+                                            &nbsp; &nbsp; no items
+                                        </Table.Row>
+                                    )}
                                     {saveData.heldItems.map((instanceId) => {
                                         const item =
                                             itemIdMap[
@@ -76,9 +91,9 @@ export function InfoStatus({
                                 </Table.Body>
                             </Table.Root>
                         </div>
-                    </>
-                )
-            }}
-        </Wait>
+                    )}
+                </Wait>
+            </Card>
+        </>
     )
 }

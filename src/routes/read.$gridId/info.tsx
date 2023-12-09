@@ -28,28 +28,28 @@ export function Info({
     handleCommand: (command: string) => void
 }) {
     return (
-        <Card className="h-full bg-transparent pt-4">
-            <Tabs.Root defaultValue="tile" className="h-full">
-                <Tabs.Content value="tile" className="h-[calc(100%-3rem)]">
-                    <InfoTile
-                        saveData={saveData}
-                        tileIdMap={tileIdMap}
-                        handleCommand={handleCommand}
-                    />
-                </Tabs.Content>
-                <Tabs.Content value="status" className="h-[calc(100%-3rem)]">
-                    <InfoStatus
-                        saveData={saveData}
-                        player={player}
-                        itemIdMap={itemIdMap}
-                        itemInstanceIdMap={itemInstanceIdMap}
-                        handleCommand={handleCommand}
-                    />
-                </Tabs.Content>
-                <Tabs.Content value="data" className="h-[calc(100%-3rem)]">
-                    <InfoData saveData={saveData} />
-                </Tabs.Content>
-                <Tabs.List className="absolute bottom-0 mx-4 mt-6 h-10 shadow-none">
+        <Tabs.Root defaultValue="tile" className="flex h-full flex-col gap-4">
+            <Tabs.Content value="tile" className="h-[calc(100%-4rem)]">
+                <InfoTile
+                    saveData={saveData}
+                    tileIdMap={tileIdMap}
+                    handleCommand={handleCommand}
+                />
+            </Tabs.Content>
+            <Tabs.Content value="status" className="h-[calc(100%-4rem)]">
+                <InfoStatus
+                    saveData={saveData}
+                    player={player}
+                    itemIdMap={itemIdMap}
+                    itemInstanceIdMap={itemInstanceIdMap}
+                    handleCommand={handleCommand}
+                />
+            </Tabs.Content>
+            <Tabs.Content value="data" className="h-[calc(100%-4rem)]">
+                <InfoData saveData={saveData} />
+            </Tabs.Content>
+            <Card className="no-card-padding h-[calc(3rem+1px)] bg-transparent">
+                <Tabs.List className="mx-4 h-[calc(3rem+1px)] shadow-none">
                     <Tabs.Trigger value="tile" className="cursor-pointer">
                         tile
                     </Tabs.Trigger>
@@ -60,7 +60,7 @@ export function Info({
                         data
                     </Tabs.Trigger>
                 </Tabs.List>
-            </Tabs.Root>
-        </Card>
+            </Card>
+        </Tabs.Root>
     )
 }

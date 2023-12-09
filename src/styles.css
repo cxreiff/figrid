@@ -22,3 +22,7 @@ input {
 .pixel-image {
     image-rendering: pixelated;
 }
+
+.no-card-padding {
+    --card-padding: 0;
+}

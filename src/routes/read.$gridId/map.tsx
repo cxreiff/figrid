@@ -1,5 +1,11 @@
-import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons"
+import {
+    ArrowDownIcon,
+    ArrowUpIcon,
+    CubeIcon,
+    PersonIcon,
+} from "@radix-ui/react-icons"
 import { Wait } from "~/components/wait.tsx"
+import { availableItemsMap } from "~/routes/read.$gridId/commands.ts"
 import type {
     CoordsMap,
     IdMap,
@@ -43,8 +49,9 @@ export function Map({
                             meanwhile={<BlankTile />}
                             asChild
                         >
-                            {({ currentTileId }) => {
-                                const currentTile = tileIdMap[currentTileId]
+                            {(saveData) => {
+                                const currentTile =
+                                    tileIdMap[saveData.currentTileId]
                                 const tileId =
                                     coordsMap[
                                         [
@@ -87,7 +94,7 @@ export function Map({
                                                 ? "cursor-pointer hover:bg-zinc-600"
                                                 : ""
                                         } ${
-                                            tileId === currentTileId
+                                            tileId === saveData.currentTileId
                                                 ? "bg-[var(--accent-8)]"
                                                 : ""
                                         }`}
@@ -106,27 +113,41 @@ export function Map({
                                             <div className="absolute bottom-0 left-[-1rem] top-0 my-auto h-4 w-4 bg-[var(--accent-8)]" />
                                         )}
                                         {mapTile.up_id &&
-                                            (tileId === currentTileId ? (
+                                            (tileId ===
+                                            saveData.currentTileId ? (
                                                 <ArrowUpIcon
-                                                    className="absolute right-2 top-2 h-8 w-8 cursor-pointer hover:text-zinc-400"
+                                                    className="absolute left-2 top-2 h-6 w-6 cursor-pointer hover:text-zinc-400"
                                                     onClick={() =>
                                                         handleCommand("go up")
                                                     }
                                                 />
                                             ) : (
-                                                <ArrowUpIcon className="absolute right-2 top-2 h-8 w-8 text-zinc-400" />
+                                                <ArrowUpIcon className="absolute left-2 top-2 h-6 w-6 text-zinc-400" />
                                             ))}
                                         {mapTile.down_id &&
-                                            (tileId === currentTileId ? (
+                                            (tileId ===
+                                            saveData.currentTileId ? (
                                                 <ArrowDownIcon
-                                                    className="absolute left-2 top-2 h-8 w-8 cursor-pointer hover:text-zinc-400"
+                                                    className="absolute bottom-2 left-2 h-6 w-6 cursor-pointer hover:text-zinc-400"
                                                     onClick={() =>
                                                         handleCommand("go down")
                                                     }
                                                 />
                                             ) : (
-                                                <ArrowDownIcon className="absolute left-2 top-2 h-8 w-8 text-zinc-400" />
+                                                <ArrowDownIcon className="absolute bottom-2 left-2 h-6 w-6 text-zinc-400" />
                                             ))}
+                                        {Object.values(
+                                            availableItemsMap(
+                                                mapTile,
+                                                saveData,
+                                            ),
+                                        ).length > 0 && (
+                                            <CubeIcon className="absolute bottom-2 right-2 h-6 w-6 text-zinc-400" />
+                                        )}
+                                        {mapTile.character_instances.length >
+                                            0 && (
+                                            <PersonIcon className="absolute right-2 top-2 h-6 w-6 text-zinc-400" />
+                                        )}
                                     </div>
                                 )
                             }}
