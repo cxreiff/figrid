@@ -3,10 +3,12 @@ import { Card } from "~/components/card.tsx"
 import { Wait } from "~/components/wait.tsx"
 import type {
     CharactersSelectModel,
-    ItemInstancesSelectModel,
     ItemsSelectModel,
 } from "~/database/schema/grids.server.ts"
-import type { IdMap } from "~/routes/read.$gridId/processing.ts"
+import type {
+    IdMap,
+    ItemInstanceWithItem,
+} from "~/routes/read.$gridId/processing.ts"
 import type { SaveData } from "~/utilities/useSaveData.ts"
 
 const PLAYER_FALLBACK_IMAGE = "https://img.figrid.io/tiles/kitty.png"
@@ -21,7 +23,7 @@ export function InfoStatus({
     saveData?: SaveData
     player: CharactersSelectModel
     itemIdMap: IdMap<ItemsSelectModel>
-    itemInstanceIdMap: IdMap<ItemInstancesSelectModel>
+    itemInstanceIdMap: IdMap<ItemInstanceWithItem>
     handleCommand: (command: string) => void
 }) {
     return (

@@ -8,14 +8,16 @@ import type {
 
 type Coords = [number, number, number]
 export type TileWithCoords = TilesSelectModel & {
-    item_instances: (ItemInstancesSelectModel & {
-        item: ItemsSelectModel
-    })[]
+    item_instances: ItemInstanceWithItem[]
     character_instances: (CharacterInstancesSelectModel & {
         character: CharactersSelectModel
     })[]
     coords?: Coords
 }
+export type ItemInstanceWithItem = ItemInstancesSelectModel & {
+    item: ItemsSelectModel
+}
+
 export type CoordsMap = Record<string, number | undefined>
 export type IdMap<T extends { id: number }> = Record<string, T>
 

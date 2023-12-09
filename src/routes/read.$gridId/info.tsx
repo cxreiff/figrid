@@ -1,15 +1,17 @@
 import { Tabs } from "@itsmapleleaf/radix-themes"
-
 import { Card } from "~/components/card.tsx"
 import type {
     CharactersSelectModel,
-    ItemInstancesSelectModel,
     ItemsSelectModel,
 } from "~/database/schema/grids.server.ts"
 import { InfoData } from "~/routes/read.$gridId/infoData.tsx"
 import { InfoStatus } from "~/routes/read.$gridId/infoStatus.tsx"
 import { InfoTile } from "~/routes/read.$gridId/infoTile.tsx"
-import type { IdMap, TileWithCoords } from "~/routes/read.$gridId/processing.ts"
+import type {
+    IdMap,
+    ItemInstanceWithItem,
+    TileWithCoords,
+} from "~/routes/read.$gridId/processing.ts"
 import type { SaveData } from "~/utilities/useSaveData.ts"
 
 export function Info({
@@ -23,7 +25,7 @@ export function Info({
     saveData?: SaveData
     tileIdMap: IdMap<TileWithCoords>
     itemIdMap: IdMap<ItemsSelectModel>
-    itemInstanceIdMap: IdMap<ItemInstancesSelectModel>
+    itemInstanceIdMap: IdMap<ItemInstanceWithItem>
     player: CharactersSelectModel
     handleCommand: (command: string) => void
 }) {

@@ -11,7 +11,7 @@ export const create_update_timestamps = {
 }
 
 export const name_summary_description = {
-    name: text("name").notNull(),
+    name: varchar("name", { length: 256 }).notNull(),
     summary: text("summary"),
     description: text("description"),
     image_url: varchar("image_url", { length: 2083 }),

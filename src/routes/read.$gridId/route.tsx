@@ -40,7 +40,11 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
                 },
             },
             items: true,
-            item_instances: true,
+            item_instances: {
+                with: {
+                    item: true,
+                },
+            },
             player: true,
         },
     })
@@ -93,6 +97,7 @@ export default function Route() {
             command,
             saveData,
             tileIdMap,
+            itemInstanceIdMap,
             setCommand,
             appendToCommandLog,
             clearCommandLog,

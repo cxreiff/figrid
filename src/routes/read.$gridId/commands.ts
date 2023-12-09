@@ -1,5 +1,13 @@
 import type { Dispatch, SetStateAction } from "react"
-import type { IdMap, TileWithCoords } from "~/routes/read.$gridId/processing.ts"
+import type {
+    CharactersSelectModel,
+    ItemsSelectModel,
+} from "~/database/schema/grids.server.ts"
+import type {
+    IdMap,
+    ItemInstanceWithItem,
+    TileWithCoords,
+} from "~/routes/read.$gridId/processing.ts"
 import type { SaveData, useSaveData } from "~/utilities/useSaveData.ts"
 
 export const COMMANDS = {
@@ -32,6 +40,7 @@ export function handleCommand(
     rawCommand: string,
     saveData: SaveData,
     tileIdMap: IdMap<TileWithCoords>,
+    itemInstanceIdMap: IdMap<ItemInstanceWithItem>,
     setCommand: Dispatch<SetStateAction<string>>,
     appendToCommandLog: (command: string, message: string) => void,
     clearCommandLog: () => void,
@@ -136,16 +145,27 @@ export function handleCommand(
                 )
                 break
             }
-            for (const item of Object.values(
+            let lookables: Array<ItemsSelectModel | CharactersSelectModel>
+            lookables = Object.values(
                 availableItemsMap(currentTile, saveData),
-            )) {
+            ).concat(
+                saveData.heldItems.map(
+                    (instanceId) => itemInstanceIdMap[instanceId].item,
+                ),
+            )
+            lookables = lookables.concat(
+                currentTile.character_instances.map(
+                    ({ character }) => character,
+                ),
+            )
+            for (const lookable of lookables) {
                 if (
-                    item.name.toLowerCase().trim() ===
+                    lookable.name.toLowerCase().trim() ===
                     commandTokens.slice(1).join(" ").trim()
                 ) {
                     appendToCommandLog(
                         command,
-                        item.description || "the item is nondescript",
+                        lookable.description || "you notice nothing of note",
                     )
                     setCommand("")
                     return

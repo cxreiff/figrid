@@ -1,0 +1,1 @@
+ALTER TABLE `items` DROP INDEX `unique_name`;

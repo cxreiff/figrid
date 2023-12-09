@@ -1,5 +1,11 @@
 import { relations } from "drizzle-orm"
-import { index, int, mysqlEnum, mysqlTable } from "drizzle-orm/mysql-core"
+import {
+    index,
+    int,
+    mysqlEnum,
+    mysqlTable,
+    unique,
+} from "drizzle-orm/mysql-core"
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
 import type { z } from "zod"
 import { users } from "~/database/schema/auth.server.ts"
@@ -101,16 +107,22 @@ export const tiles_insert_schema = createInsertSchema(tiles, fixer)
 export type TilesSelectModel = z.infer<typeof tiles_select_schema>
 export type TilesInsertModel = z.infer<typeof tiles_insert_schema>
 
-export const items = mysqlTable("items", {
-    ...incrementing_id,
-    ...create_update_timestamps,
-    ...name_summary_description,
+export const items = mysqlTable(
+    "items",
+    {
+        ...incrementing_id,
+        ...create_update_timestamps,
+        ...name_summary_description,
 
-    type: mysqlEnum("type", ["key", "pass"]),
+        type: mysqlEnum("type", ["key", "pass"]),
 
-    user_id: int("user_id").notNull(),
-    grid_id: int("grid_id").notNull(),
-})
+        user_id: int("user_id").notNull(),
+        grid_id: int("grid_id").notNull(),
+    },
+    (t) => ({
+        unique_name: unique("unique_name").on(t.id, t.name),
+    }),
+)
 
 export const items_relations = relations(items, ({ one, many }) => ({
     user: one(users, {
