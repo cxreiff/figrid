@@ -1,5 +1,6 @@
 import { Button, Table } from "@itsmapleleaf/radix-themes"
 import { Card } from "~/components/card.tsx"
+import { Image } from "~/components/image.tsx"
 import { Wait } from "~/components/wait.tsx"
 import type {
     CharactersSelectModel,
@@ -34,11 +35,10 @@ export function InfoStatus({
                         const image = player.image_url || PLAYER_FALLBACK_IMAGE
                         return (
                             <div className="flex h-full items-center justify-center pb-8">
-                                <img
+                                <Image
                                     key={image}
                                     src={image}
                                     alt="placeholder"
-                                    className="pixel-image m-auto h-full max-w-full rounded-lg object-contain duration-500 animate-in fade-in"
                                 />
                             </div>
                         )
@@ -54,7 +54,9 @@ export function InfoStatus({
                                 <Table.Body className="align-middle">
                                     {saveData.heldItems.length === 0 && (
                                         <Table.Row className="text-zinc-500">
-                                            &nbsp; &nbsp; no items
+                                            <Table.Cell className="shadow-none">
+                                                &nbsp; &nbsp; no items
+                                            </Table.Cell>
                                         </Table.Row>
                                     )}
                                     {saveData.heldItems.map((instanceId) => {
@@ -77,7 +79,6 @@ export function InfoStatus({
                                                 <Table.Cell>
                                                     <Button
                                                         variant="ghost"
-                                                        className="cursor-pointer"
                                                         onClick={() =>
                                                             handleCommand(
                                                                 `look ${item.name.toLowerCase()}`,

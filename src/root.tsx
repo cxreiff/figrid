@@ -12,7 +12,6 @@ import { Analytics } from "@vercel/analytics/react"
 import { type LinksFunction, type MetaFunction } from "@vercel/remix"
 
 import stylesheet from "~/styles.css"
-import "@itsmapleleaf/radix-themes/styles.css"
 
 export const config = { runtime: "edge" }
 
@@ -43,6 +42,7 @@ export default function App() {
             <body>
                 <Theme accentColor="ruby">
                     <div
+                        id="app"
                         className={
                             "flex min-h-screen flex-col items-center bg-gradient-to-b from-zinc-800 to-zinc-950 font-sans"
                         }

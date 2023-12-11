@@ -1,11 +1,12 @@
 import { Button, Table } from "@itsmapleleaf/radix-themes"
 import { Card } from "~/components/card.tsx"
+import { Image } from "~/components/image.tsx"
 import { Wait } from "~/components/wait.tsx"
 import { availableItemsMap } from "~/routes/read.$gridId/commands.ts"
 import type { IdMap, TileWithCoords } from "~/routes/read.$gridId/processing.ts"
 import type { SaveData } from "~/utilities/useSaveData.ts"
 
-const TILE_FALLBACK_IMAGE = "https://img.figrid.io/tiles/kitty.png"
+export const TILE_FALLBACK_IMAGE = "https://img.figrid.io/tiles/kitty.png"
 
 export function InfoTile({
     saveData,
@@ -18,18 +19,17 @@ export function InfoTile({
 }) {
     return (
         <>
-            <Card className="no-card-padding mb-4 h-1/2 bg-zinc-950">
+            <Card className="mb-4 h-1/2 bg-zinc-950">
                 <Wait on={saveData}>
                     {(saveData) => {
                         const tile = tileIdMap[saveData.currentTileId]
                         const image = tile.image_url || TILE_FALLBACK_IMAGE
                         return (
                             <div className="flex h-full items-center justify-center">
-                                <img
+                                <Image
                                     key={image}
                                     src={image}
                                     alt="placeholder"
-                                    className="pixel-image m-auto h-full max-w-full rounded-lg object-contain p-[1px] duration-500 animate-in fade-in"
                                 />
                             </div>
                         )
@@ -50,7 +50,9 @@ export function InfoTile({
                                     <Table.Body className="align-middle">
                                         {items.length === 0 && (
                                             <Table.Row className="text-zinc-500">
-                                                &nbsp; &nbsp; no items
+                                                <Table.Cell className="shadow-none">
+                                                    &nbsp; &nbsp; no items
+                                                </Table.Cell>
                                             </Table.Row>
                                         )}
                                         {items.map((item) => (
@@ -67,7 +69,6 @@ export function InfoTile({
                                                 <Table.Cell>
                                                     <Button
                                                         variant="ghost"
-                                                        className="cursor-pointer"
                                                         onClick={() =>
                                                             handleCommand(
                                                                 `look ${item.name.toLowerCase()}`,
@@ -80,7 +81,6 @@ export function InfoTile({
                                                 <Table.Cell>
                                                     <Button
                                                         variant="ghost"
-                                                        className="cursor-pointer"
                                                         onClick={() =>
                                                             handleCommand(
                                                                 `take ${item.name.toLowerCase()}`,
@@ -102,7 +102,9 @@ export function InfoTile({
                                         {tile.character_instances.length ===
                                             0 && (
                                             <Table.Row className="text-zinc-500">
-                                                &nbsp; &nbsp; no characters
+                                                <Table.Cell className="shadow-none">
+                                                    &nbsp; &nbsp; no characters
+                                                </Table.Cell>
                                             </Table.Row>
                                         )}
                                         {tile.character_instances.map(
@@ -117,7 +119,6 @@ export function InfoTile({
                                                     <Table.Cell>
                                                         <Button
                                                             variant="ghost"
-                                                            className="cursor-pointer"
                                                             onClick={() =>
                                                                 handleCommand(
                                                                     `look ${character.name.toLowerCase()}`,
@@ -130,7 +131,6 @@ export function InfoTile({
                                                     <Table.Cell>
                                                         <Button
                                                             variant="ghost"
-                                                            className="cursor-pointer"
                                                             onClick={() =>
                                                                 handleCommand(
                                                                     `talk ${character.name.toLowerCase()}`,

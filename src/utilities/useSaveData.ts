@@ -10,7 +10,7 @@ export type SaveData = {
 
 export function useSaveData(user: AuthUser | null, grid: GridsSelectModel) {
     const [saveData, setLocalSaveData] = useLocalStorage<SaveData>(
-        `${user?.id || 0}.${grid.id}.SAVE_DATA`,
+        `SAVE_DATA.${user?.id || 0}.${grid.id}`,
         {
             currentTileId: grid.first_id,
             characterName: user?.alias || "player",
@@ -21,5 +21,5 @@ export function useSaveData(user: AuthUser | null, grid: GridsSelectModel) {
         if (saveData === undefined) return
         setLocalSaveData({ ...saveData, [key]: value })
     }
-    return [saveData, setSaveData] as const
+    return [saveData, setSaveData, setLocalSaveData] as const
 }

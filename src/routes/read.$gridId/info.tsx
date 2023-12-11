@@ -12,7 +12,7 @@ import type {
     ItemInstanceWithItem,
     TileWithCoords,
 } from "~/routes/read.$gridId/processing.ts"
-import type { SaveData } from "~/utilities/useSaveData.ts"
+import type { SaveData, useSaveData } from "~/utilities/useSaveData.ts"
 
 export function Info({
     saveData,
@@ -20,6 +20,9 @@ export function Info({
     itemIdMap,
     itemInstanceIdMap,
     player,
+    userId,
+    gridId,
+    replaceSave,
     handleCommand,
 }: {
     saveData?: SaveData
@@ -27,6 +30,9 @@ export function Info({
     itemIdMap: IdMap<ItemsSelectModel>
     itemInstanceIdMap: IdMap<ItemInstanceWithItem>
     player: CharactersSelectModel
+    userId: number
+    gridId: number
+    replaceSave: ReturnType<typeof useSaveData>[2]
     handleCommand: (command: string) => void
 }) {
     return (
@@ -48,19 +54,19 @@ export function Info({
                 />
             </Tabs.Content>
             <Tabs.Content value="data" className="h-[calc(100%-4rem)]">
-                <InfoData saveData={saveData} />
+                <InfoData
+                    saveData={saveData}
+                    userId={userId}
+                    gridId={gridId}
+                    tileIdMap={tileIdMap}
+                    replaceSave={replaceSave}
+                />
             </Tabs.Content>
             <Card className="no-card-padding h-[calc(3rem+1px)] bg-transparent">
                 <Tabs.List className="mx-4 h-[calc(3rem+1px)] shadow-none">
-                    <Tabs.Trigger value="tile" className="cursor-pointer">
-                        tile
-                    </Tabs.Trigger>
-                    <Tabs.Trigger value="status" className="cursor-pointer">
-                        status
-                    </Tabs.Trigger>
-                    <Tabs.Trigger value="data" className="cursor-pointer">
-                        data
-                    </Tabs.Trigger>
+                    <Tabs.Trigger value="tile">tile</Tabs.Trigger>
+                    <Tabs.Trigger value="status">status</Tabs.Trigger>
+                    <Tabs.Trigger value="data">data</Tabs.Trigger>
                 </Tabs.List>
             </Card>
         </Tabs.Root>

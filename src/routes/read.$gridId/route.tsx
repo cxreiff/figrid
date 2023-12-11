@@ -85,7 +85,7 @@ export default function Route() {
 
     const [command, setCommand] = useState("")
     const [commandLog, setCommandLog] = useState<string[]>([])
-    const [saveData, setSaveData] = useSaveData(user, grid)
+    const [saveData, setSaveData, replaceSave] = useSaveData(user, grid)
 
     const clearCommandLog = () => setCommandLog([])
     const appendToCommandLog = (command: string, message: string) =>
@@ -116,6 +116,9 @@ export default function Route() {
                     itemIdMap={itemIdMap}
                     itemInstanceIdMap={itemInstanceIdMap}
                     player={grid.player}
+                    userId={user?.id || 0}
+                    gridId={grid.id}
+                    replaceSave={replaceSave}
                     handleCommand={handleCommandClosure}
                 />
             }
