@@ -3,12 +3,12 @@ import { TrashIcon } from "@radix-ui/react-icons"
 import { Card } from "~/components/card.tsx"
 import { Image } from "~/components/image.tsx"
 import { Wait } from "~/components/wait.tsx"
-import { TILE_FALLBACK_IMAGE } from "~/routes/read.$gridId/infoTile.tsx"
+import { TILE_FALLBACK_IMAGE } from "~/routes/read.$gridId/area.tsx"
 import type { IdMap, TileWithCoords } from "~/routes/read.$gridId/processing.ts"
 import { useManualSaveData } from "~/utilities/useManualSaveData.ts"
 import { type useSaveData, type SaveData } from "~/utilities/useSaveData.ts"
 
-export function InfoData({
+export function Data({
     userId,
     gridId,
     tileIdMap,
@@ -24,7 +24,7 @@ export function InfoData({
     const [saves, setManualSave, deleteSave] = useManualSaveData(userId, gridId)
 
     return (
-        <Card className="h-full bg-transparent pt-4">
+        <Card className="h-full pt-4">
             <Wait on={saveData}>
                 {(saveData) => {
                     return (

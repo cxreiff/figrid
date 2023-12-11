@@ -9,13 +9,16 @@ import { auth } from "~/auth/auth.server.ts"
 import { Layout } from "~/components/layout.tsx"
 import { Text } from "~/routes/read.$gridId/text.tsx"
 import { Map } from "~/routes/read.$gridId/map.tsx"
-import { Info } from "~/routes/read.$gridId/info.tsx"
 import {
     generateIdMap,
     generateTileCoordsMap,
 } from "~/routes/read.$gridId/processing.ts"
 import { handleCommand } from "~/routes/read.$gridId/commands.ts"
 import { useSaveData } from "~/utilities/useSaveData.ts"
+import { LayoutTabs } from "~/components/layoutTabs.tsx"
+import { Area } from "~/routes/read.$gridId/area.tsx"
+import { Status } from "~/routes/read.$gridId/status.tsx"
+import { Data } from "~/routes/read.$gridId/data.tsx"
 
 const paramsSchema = z.object({ gridId: z.coerce.number() })
 
@@ -110,17 +113,27 @@ export default function Route() {
             user={user}
             title={grid.name}
             left={
-                <Info
-                    saveData={saveData}
-                    tileIdMap={tileIdMap}
-                    itemIdMap={itemIdMap}
-                    itemInstanceIdMap={itemInstanceIdMap}
-                    player={grid.player}
-                    userId={user?.id || 0}
-                    gridId={grid.id}
-                    replaceSave={replaceSave}
-                    handleCommand={handleCommandClosure}
-                />
+                <LayoutTabs names={["area", "status", "data"]}>
+                    <Area
+                        saveData={saveData}
+                        tileIdMap={tileIdMap}
+                        handleCommand={handleCommandClosure}
+                    />
+                    <Status
+                        saveData={saveData}
+                        player={grid.player}
+                        itemIdMap={itemIdMap}
+                        itemInstanceIdMap={itemInstanceIdMap}
+                        handleCommand={handleCommandClosure}
+                    />
+                    <Data
+                        saveData={saveData}
+                        userId={user?.id || 0}
+                        gridId={grid.id}
+                        tileIdMap={tileIdMap}
+                        replaceSave={replaceSave}
+                    />
+                </LayoutTabs>
             }
             right={
                 <Map

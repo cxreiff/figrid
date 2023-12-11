@@ -8,7 +8,7 @@ import type { SaveData } from "~/utilities/useSaveData.ts"
 
 export const TILE_FALLBACK_IMAGE = "https://img.figrid.io/tiles/kitty.png"
 
-export function InfoTile({
+export function Area({
     saveData,
     tileIdMap,
     handleCommand,
@@ -36,7 +36,7 @@ export function InfoTile({
                     }}
                 </Wait>
             </Card>
-            <Card className="h-[calc(50%-1rem)] bg-transparent pt-4">
+            <Card className="h-[calc(50%-1rem)] pt-4">
                 <Wait on={saveData}>
                     {(saveData) => {
                         const tile = tileIdMap[saveData.currentTileId]

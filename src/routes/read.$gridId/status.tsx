@@ -14,7 +14,7 @@ import type { SaveData } from "~/utilities/useSaveData.ts"
 
 const PLAYER_FALLBACK_IMAGE = "https://img.figrid.io/tiles/kitty.png"
 
-export function InfoStatus({
+export function Status({
     saveData,
     player,
     itemIdMap,
@@ -45,7 +45,7 @@ export function InfoStatus({
                     }}
                 </Wait>
             </Card>
-            <Card className="h-[calc(50%-1rem)] bg-transparent pt-4">
+            <Card className="h-[calc(50%-1rem)] pt-4">
                 <Wait on={saveData}>
                     {(saveData) => (
                         <div className="h-full overflow-auto px-5">
