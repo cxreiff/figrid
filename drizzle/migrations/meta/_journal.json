@@ -169,6 +169,20 @@
       "when": 1702090625211,
       "tag": "0023_far_fabian_cortez",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "5",
+      "when": 1702371215845,
+      "tag": "0024_flimsy_hobgoblin",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "5",
+      "when": 1702380313166,
+      "tag": "0025_mysterious_nightcrawler",
+      "breakpoints": true
     }
   ]
 }

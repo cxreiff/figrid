@@ -2,7 +2,7 @@ import type { Dispatch, SetStateAction } from "react"
 import type {
     CharactersSelectModel,
     ItemsSelectModel,
-} from "~/database/schema/grids.server.ts"
+} from "~/database/schema/entities.server.ts"
 import type {
     IdMap,
     ItemInstanceWithItem,
@@ -63,64 +63,17 @@ export function handleCommand(
         case COMMANDS.GO:
             switch (commandTokens[1]) {
                 case SUBCOMMANDS[COMMANDS.GO].NORTH:
-                    if (currentTile.north_id) {
-                        clearCommandLog()
-                        setSaveData("currentTileId", currentTile.north_id)
-                    } else {
-                        appendToCommandLog(
-                            command,
-                            "there is no passage in that direction",
-                        )
-                    }
-                    break
                 case SUBCOMMANDS[COMMANDS.GO].EAST:
-                    if (currentTile.east_id) {
-                        clearCommandLog()
-                        setSaveData("currentTileId", currentTile.east_id)
-                    } else {
-                        appendToCommandLog(
-                            command,
-                            "there is no passage in that direction",
-                        )
-                    }
-                    break
                 case SUBCOMMANDS[COMMANDS.GO].SOUTH:
-                    if (currentTile.south_id) {
-                        clearCommandLog()
-                        setSaveData("currentTileId", currentTile.south_id)
-                    } else {
-                        appendToCommandLog(
-                            command,
-                            "there is no passage in that direction",
-                        )
-                    }
-                    break
                 case SUBCOMMANDS[COMMANDS.GO].WEST:
-                    if (currentTile.west_id) {
-                        clearCommandLog()
-                        setSaveData("currentTileId", currentTile.west_id)
-                    } else {
-                        appendToCommandLog(
-                            command,
-                            "there is no passage in that direction",
-                        )
-                    }
-                    break
                 case SUBCOMMANDS[COMMANDS.GO].UP:
-                    if (currentTile.up_id) {
-                        clearCommandLog()
-                        setSaveData("currentTileId", currentTile.up_id)
-                    } else {
-                        appendToCommandLog(
-                            command,
-                            "there is no passage in that direction",
-                        )
-                    }
-                    break
                 case SUBCOMMANDS[COMMANDS.GO].DOWN:
-                    if (currentTile.down_id) {
+                    const gate = currentTile.gates.find(
+                        ({ type }) => type === commandTokens[1],
+                    )
+                    if (gate) {
                         clearCommandLog()
-                        setSaveData("currentTileId", currentTile.down_id)
+                        setSaveData("currentTileId", gate.to_id)
                     } else {
                         appendToCommandLog(
                             command,
@@ -173,80 +126,18 @@ export function handleCommand(
             }
             switch (commandTokens[1]) {
                 case SUBCOMMANDS[COMMANDS.GO].NORTH:
-                    if (currentTile.north_id) {
-                        appendToCommandLog(
-                            command,
-                            tileIdMap[currentTile.north_id].summary ||
-                                "you don't see anything of interest",
-                        )
-                    } else {
-                        appendToCommandLog(
-                            command,
-                            "there is no exit in that direction",
-                        )
-                    }
-                    break
                 case SUBCOMMANDS[COMMANDS.GO].EAST:
-                    if (currentTile.east_id) {
-                        appendToCommandLog(
-                            command,
-                            tileIdMap[currentTile.east_id].summary ||
-                                "you don't see anything of interest",
-                        )
-                    } else {
-                        appendToCommandLog(
-                            command,
-                            "there is no exit in that direction",
-                        )
-                    }
-                    break
                 case SUBCOMMANDS[COMMANDS.GO].SOUTH:
-                    if (currentTile.south_id) {
-                        appendToCommandLog(
-                            command,
-                            tileIdMap[currentTile.south_id].summary ||
-                                "you don't see anything of interest",
-                        )
-                    } else {
-                        appendToCommandLog(
-                            command,
-                            "there is no exit in that direction",
-                        )
-                    }
-                    break
                 case SUBCOMMANDS[COMMANDS.GO].WEST:
-                    if (currentTile.west_id) {
-                        appendToCommandLog(
-                            command,
-                            tileIdMap[currentTile.west_id].summary ||
-                                "you don't see anything of interest",
-                        )
-                    } else {
-                        appendToCommandLog(
-                            command,
-                            "there is no exit in that direction",
-                        )
-                    }
-                    break
                 case SUBCOMMANDS[COMMANDS.GO].UP:
-                    if (currentTile.up_id) {
-                        appendToCommandLog(
-                            command,
-                            tileIdMap[currentTile.up_id].summary ||
-                                "you don't see anything of interest",
-                        )
-                    } else {
-                        appendToCommandLog(
-                            command,
-                            "there is no exit in that direction",
-                        )
-                    }
-                    break
                 case SUBCOMMANDS[COMMANDS.GO].DOWN:
-                    if (currentTile.down_id) {
+                    const gate = currentTile.gates.find(
+                        ({ type }) => type === commandTokens[1],
+                    )
+                    if (gate) {
                         appendToCommandLog(
                             command,
-                            tileIdMap[currentTile.down_id].summary ||
+                            tileIdMap[gate.to_id].summary ||
                                 "you don't see anything of interest",
                         )
                     } else {

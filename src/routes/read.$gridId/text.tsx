@@ -45,14 +45,9 @@ export function Text({
                             const currentTile =
                                 tileIdMap[saveData.currentTileId]
 
-                            const exitsMessage = commasWithAnd([
-                                currentTile.north_id ? "north" : undefined,
-                                currentTile.east_id ? "east" : undefined,
-                                currentTile.south_id ? "south" : undefined,
-                                currentTile.west_id ? "west" : undefined,
-                                currentTile.up_id ? "up" : undefined,
-                                currentTile.down_id ? "down" : undefined,
-                            ])
+                            const exitsMessage = commasWithAnd(
+                                currentTile.gates.map(({ type }) => type),
+                            )
 
                             return (
                                 <>

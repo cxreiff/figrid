@@ -5,7 +5,7 @@ import { Wait } from "~/components/wait.tsx"
 import type {
     CharactersSelectModel,
     ItemsSelectModel,
-} from "~/database/schema/grids.server.ts"
+} from "~/database/schema/entities.server.ts"
 import type {
     IdMap,
     ItemInstanceWithItem,

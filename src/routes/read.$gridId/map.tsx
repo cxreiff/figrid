@@ -67,23 +67,11 @@ export function Map({
                                 }
 
                                 let handleClick
-                                switch (tileId) {
-                                    case currentTile.north_id:
+                                for (const gate of currentTile.gates) {
+                                    if (tileId === gate.to_id) {
                                         handleClick = () =>
-                                            handleCommand("go north")
-                                        break
-                                    case currentTile.east_id:
-                                        handleClick = () =>
-                                            handleCommand("go east")
-                                        break
-                                    case currentTile.south_id:
-                                        handleClick = () =>
-                                            handleCommand("go south")
-                                        break
-                                    case currentTile.west_id:
-                                        handleClick = () =>
-                                            handleCommand("go west")
-                                        break
+                                            handleCommand(`go ${gate.type}`)
+                                    }
                                 }
 
                                 return (
@@ -100,42 +88,76 @@ export function Map({
                                         }`}
                                         onClick={handleClick}
                                     >
-                                        {mapTile.north_id && (
-                                            <div className="absolute left-0 right-0 top-[-1rem] mx-auto h-4 w-4 bg-[var(--accent-8)]" />
-                                        )}
-                                        {mapTile.east_id && (
-                                            <div className="absolute bottom-0 right-[-1rem] top-0 my-auto h-4 w-4 bg-[var(--accent-8)]" />
-                                        )}
-                                        {mapTile.south_id && (
-                                            <div className="absolute bottom-[-1rem] left-0 right-0 mx-auto h-4 w-4 bg-[var(--accent-8)]" />
-                                        )}
-                                        {mapTile.west_id && (
-                                            <div className="absolute bottom-0 left-[-1rem] top-0 my-auto h-4 w-4 bg-[var(--accent-8)]" />
-                                        )}
-                                        {mapTile.up_id &&
-                                            (tileId ===
-                                            saveData.currentTileId ? (
-                                                <ArrowUpIcon
-                                                    className="absolute left-2 top-2 h-6 w-6 cursor-pointer hover:text-zinc-400"
-                                                    onClick={() =>
-                                                        handleCommand("go up")
-                                                    }
-                                                />
-                                            ) : (
-                                                <ArrowUpIcon className="absolute left-2 top-2 h-6 w-6 text-zinc-400" />
-                                            ))}
-                                        {mapTile.down_id &&
-                                            (tileId ===
-                                            saveData.currentTileId ? (
-                                                <ArrowDownIcon
-                                                    className="absolute bottom-2 left-2 h-6 w-6 cursor-pointer hover:text-zinc-400"
-                                                    onClick={() =>
-                                                        handleCommand("go down")
-                                                    }
-                                                />
-                                            ) : (
-                                                <ArrowDownIcon className="absolute bottom-2 left-2 h-6 w-6 text-zinc-400" />
-                                            ))}
+                                        {mapTile.gates.map((gate) => {
+                                            switch (gate.type) {
+                                                case "north":
+                                                    return (
+                                                        <div
+                                                            key={`${gate.id}`}
+                                                            className="absolute left-0 right-0 top-[-1rem] mx-auto h-4 w-4 bg-[var(--accent-8)]"
+                                                        />
+                                                    )
+                                                case "east":
+                                                    return (
+                                                        <div
+                                                            key={`${gate.id}`}
+                                                            className="absolute bottom-0 right-[-1rem] top-0 my-auto h-4 w-4 bg-[var(--accent-8)]"
+                                                        />
+                                                    )
+                                                case "south":
+                                                    return (
+                                                        <div
+                                                            key={`${gate.id}`}
+                                                            className="absolute bottom-[-1rem] left-0 right-0 mx-auto h-4 w-4 bg-[var(--accent-8)]"
+                                                        />
+                                                    )
+                                                case "west":
+                                                    return (
+                                                        <div
+                                                            key={`${gate.id}`}
+                                                            className="absolute bottom-0 left-[-1rem] top-0 my-auto h-4 w-4 bg-[var(--accent-8)]"
+                                                        />
+                                                    )
+                                                case "up":
+                                                    return tileId ===
+                                                        saveData.currentTileId ? (
+                                                        <ArrowUpIcon
+                                                            key={`${gate.id}`}
+                                                            className="absolute left-2 top-2 h-6 w-6 cursor-pointer hover:text-zinc-400"
+                                                            onClick={() =>
+                                                                handleCommand(
+                                                                    "go up",
+                                                                )
+                                                            }
+                                                        />
+                                                    ) : (
+                                                        <ArrowUpIcon
+                                                            key={`${gate.id}`}
+                                                            className="absolute left-2 top-2 h-6 w-6 text-zinc-400"
+                                                        />
+                                                    )
+                                                case "down":
+                                                    return tileId ===
+                                                        saveData.currentTileId ? (
+                                                        <ArrowDownIcon
+                                                            key={`${gate.id}`}
+                                                            className="absolute bottom-2 left-2 h-6 w-6 cursor-pointer hover:text-zinc-400"
+                                                            onClick={() =>
+                                                                handleCommand(
+                                                                    "go down",
+                                                                )
+                                                            }
+                                                        />
+                                                    ) : (
+                                                        <ArrowDownIcon
+                                                            key={`${gate.id}`}
+                                                            className="absolute bottom-2 left-2 h-6 w-6 text-zinc-400"
+                                                        />
+                                                    )
+                                                default:
+                                                    return null
+                                            }
+                                        })}
                                         {Object.values(
                                             availableItemsMap(
                                                 mapTile,

@@ -4,10 +4,7 @@ export function indicesArray(size: number) {
         .map((x, y) => x + y)
 }
 
-export function commasWithAnd(rawItems: (string | undefined)[]) {
-    const predicate = (item?: string): item is string => item !== undefined
-    const items = rawItems.filter(predicate)
-
+export function commasWithAnd(items: string[]) {
     if (items.length === 0) {
         return ""
     }

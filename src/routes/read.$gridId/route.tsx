@@ -30,6 +30,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
         with: {
             tiles: {
                 with: {
+                    gates: true,
                     item_instances: {
                         with: {
                             item: true,

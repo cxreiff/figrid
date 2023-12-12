@@ -1,10 +1,13 @@
 import type {
+    GatesSelectModel,
+    TilesSelectModel,
+} from "~/database/schema/grids.server.ts"
+import type {
     CharacterInstancesSelectModel,
     CharactersSelectModel,
     ItemInstancesSelectModel,
     ItemsSelectModel,
-    TilesSelectModel,
-} from "~/database/schema/grids.server.ts"
+} from "~/database/schema/entities.server.ts"
 
 type Coords = [number, number, number]
 export type TileWithCoords = TilesSelectModel & {
@@ -12,6 +15,7 @@ export type TileWithCoords = TilesSelectModel & {
     character_instances: (CharacterInstancesSelectModel & {
         character: CharactersSelectModel
     })[]
+    gates: GatesSelectModel[]
     coords?: Coords
 }
 export type ItemInstanceWithItem = ItemInstancesSelectModel & {
@@ -39,15 +43,24 @@ export function generateTileCoordsMap(
         tileIdMap[currentId].coords = currentCoords
 
         const currentTile = tileIdMap[currentId.toString()]
-        for (const [nextId, coordsDiff] of [
-            [currentTile.north_id, [0, -1, 0]],
-            [currentTile.east_id, [1, 0, 0]],
-            [currentTile.south_id, [0, 1, 0]],
-            [currentTile.west_id, [-1, 0, 0]],
-            [currentTile.up_id, [0, 0, 1]],
-            [currentTile.down_id, [0, 0, -1]],
-        ] as const) {
-            if (nextId === null) {
+        const adjacents = currentTile.gates.map(
+            ({ to_id, type }) =>
+                [
+                    to_id,
+                    {
+                        north: [0, -1, 0] as const,
+                        east: [1, 0, 0] as const,
+                        south: [0, 1, 0] as const,
+                        west: [-1, 0, 0] as const,
+                        up: [0, 0, 1] as const,
+                        down: [0, 0, -1] as const,
+                        other: null,
+                    }[type],
+                ] as const,
+        )
+
+        for (const [nextId, coordsDiff] of adjacents) {
+            if (coordsDiff === null) {
                 continue
             }
 
