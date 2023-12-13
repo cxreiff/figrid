@@ -1,10 +1,6 @@
 import { useState } from "react"
-import { useLoaderData } from "@remix-run/react"
-import { json, type LoaderFunctionArgs } from "@vercel/remix"
-import { db } from "~/database/database.server.ts"
-import { eq } from "drizzle-orm"
+import { type LoaderFunctionArgs } from "@vercel/remix"
 import { z } from "zod"
-import { grids } from "~/database/schema/grids.server.ts"
 import { auth } from "~/auth/auth.server.ts"
 import { Layout } from "~/components/layout.tsx"
 import { Text } from "~/routes/read.$gridId/text.tsx"
@@ -12,46 +8,22 @@ import { Map } from "~/routes/read.$gridId/map.tsx"
 import {
     generateIdMap,
     generateTileCoordsMap,
-} from "~/routes/read.$gridId/processing.ts"
+} from "~/routes/read.$gridId/processing.server.ts"
 import { handleCommand } from "~/routes/read.$gridId/commands.ts"
 import { useSaveData } from "~/utilities/useSaveData.ts"
 import { LayoutTabs } from "~/components/layoutTabs.tsx"
 import { Area } from "~/routes/read.$gridId/area.tsx"
 import { Status } from "~/routes/read.$gridId/status.tsx"
 import { Data } from "~/routes/read.$gridId/data.tsx"
+import { gridQuery } from "~/routes/read.$gridId/query.server.ts"
+import { superjson, useSuperLoaderData } from "~/utilities/superjson.ts"
 
 const paramsSchema = z.object({ gridId: z.coerce.number() })
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
     const { gridId } = paramsSchema.parse(params)
 
-    const grid = await db.query.grids.findFirst({
-        where: eq(grids.id, gridId),
-        with: {
-            tiles: {
-                with: {
-                    gates: true,
-                    item_instances: {
-                        with: {
-                            item: true,
-                        },
-                    },
-                    character_instances: {
-                        with: {
-                            character: true,
-                        },
-                    },
-                },
-            },
-            items: true,
-            item_instances: {
-                with: {
-                    item: true,
-                },
-            },
-            player: true,
-        },
-    })
+    const grid = await gridQuery(gridId)
 
     if (!grid) {
         throw new Response(null, {
@@ -61,16 +33,18 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     }
 
     const tileIdMap = generateIdMap(grid.tiles)
+    const eventIdMap = generateIdMap(grid.events)
     const itemIdMap = generateIdMap(grid.items)
     const itemInstanceIdMap = generateIdMap(grid.item_instances)
     const tileCoordsMap = generateTileCoordsMap(tileIdMap, grid.first_id)
 
     const user = await auth.isAuthenticated(request)
 
-    return json({
+    return superjson({
         user,
         grid,
         tileIdMap,
+        eventIdMap,
         itemIdMap,
         itemInstanceIdMap,
         tileCoordsMap,
@@ -82,10 +56,11 @@ export default function Route() {
         user,
         grid,
         tileIdMap,
+        eventIdMap,
         itemIdMap,
         itemInstanceIdMap,
         tileCoordsMap,
-    } = useLoaderData<typeof loader>()
+    } = useSuperLoaderData<typeof loader>()
 
     const [command, setCommand] = useState("")
     const [commandLog, setCommandLog] = useState<string[]>([])
@@ -97,15 +72,17 @@ export default function Route() {
 
     const handleCommandClosure = (command: string) => {
         if (!saveData) return
-        handleCommand(
-            command,
-            saveData,
-            tileIdMap,
-            itemInstanceIdMap,
-            setCommand,
-            appendToCommandLog,
-            clearCommandLog,
-            setSaveData,
+        setCommand(
+            handleCommand(
+                command,
+                saveData,
+                tileIdMap,
+                eventIdMap,
+                itemInstanceIdMap,
+                appendToCommandLog,
+                clearCommandLog,
+                setSaveData,
+            ),
         )
     }
 
@@ -148,6 +125,7 @@ export default function Route() {
                 <Text
                     saveData={saveData}
                     tileIdMap={tileIdMap}
+                    eventIdMap={eventIdMap}
                     command={command}
                     commandLog={commandLog}
                     setCommand={setCommand}

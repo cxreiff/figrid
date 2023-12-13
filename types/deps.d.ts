@@ -7,3 +7,10 @@ declare module "tailwindcss-animate" {
     }
     export = _default
 }
+
+declare module "react-highlight-words" {
+    declare class Highlighter {
+        static default: typeof Highlighter
+    }
+    export = Highlighter
+}

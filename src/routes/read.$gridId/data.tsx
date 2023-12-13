@@ -4,7 +4,10 @@ import { Card } from "~/components/card.tsx"
 import { Image } from "~/components/image.tsx"
 import { Wait } from "~/components/wait.tsx"
 import { TILE_FALLBACK_IMAGE } from "~/routes/read.$gridId/area.tsx"
-import type { IdMap, TileWithCoords } from "~/routes/read.$gridId/processing.ts"
+import type {
+    IdMap,
+    TileWithCoords,
+} from "~/routes/read.$gridId/processing.server.ts"
 import { useManualSaveData } from "~/utilities/useManualSaveData.ts"
 import { type useSaveData, type SaveData } from "~/utilities/useSaveData.ts"
 

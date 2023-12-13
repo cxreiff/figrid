@@ -3,7 +3,10 @@ import { Card } from "~/components/card.tsx"
 import { Image } from "~/components/image.tsx"
 import { Wait } from "~/components/wait.tsx"
 import { availableItemsMap } from "~/routes/read.$gridId/commands.ts"
-import type { IdMap, TileWithCoords } from "~/routes/read.$gridId/processing.ts"
+import type {
+    IdMap,
+    TileWithCoords,
+} from "~/routes/read.$gridId/processing.server.ts"
 import type { SaveData } from "~/utilities/useSaveData.ts"
 
 export const TILE_FALLBACK_IMAGE = "https://img.figrid.io/tiles/kitty.png"

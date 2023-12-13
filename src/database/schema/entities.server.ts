@@ -1,13 +1,10 @@
 import { relations } from "drizzle-orm"
 import { int, mysqlEnum, mysqlTable, unique } from "drizzle-orm/mysql-core"
-import { createInsertSchema, createSelectSchema } from "drizzle-zod"
-import type { z } from "zod"
 import { users } from "~/database/schema/auth.server.ts"
 import { events } from "~/database/schema/events.server.ts"
 import { grids, tiles } from "~/database/schema/grids.server.ts"
 import {
     create_update_timestamps,
-    fixer,
     incrementing_id,
     name_summary_description,
     user_grid_ids,
@@ -41,11 +38,6 @@ export const items_relations = relations(items, ({ one, many }) => ({
     requiring_events: many(events),
 }))
 
-export const items_select_schema = createSelectSchema(items, fixer)
-export const items_insert_schema = createInsertSchema(items, fixer)
-export type ItemsSelectModel = z.infer<typeof items_select_schema>
-export type ItemsInsertModel = z.infer<typeof items_insert_schema>
-
 export const item_instances = mysqlTable("item_instances", {
     ...incrementing_id,
     ...create_update_timestamps,
@@ -78,26 +70,13 @@ export const item_instances_relations = relations(
     }),
 )
 
-export const item_instances_select_schema = createSelectSchema(
-    item_instances,
-    fixer,
-)
-export const item_instances_insert_schema = createInsertSchema(
-    item_instances,
-    fixer,
-)
-export type ItemInstancesSelectModel = z.infer<
-    typeof item_instances_select_schema
->
-export type ItemInstancesInsertModel = z.infer<
-    typeof item_instances_insert_schema
->
-
 export const characters = mysqlTable("characters", {
     ...incrementing_id,
     ...create_update_timestamps,
     ...user_grid_ids,
     ...name_summary_description,
+
+    dialogue_event_id: int("dialogue_event_id"),
 })
 
 export const characters_relations = relations(characters, ({ one, many }) => ({
@@ -109,13 +88,12 @@ export const characters_relations = relations(characters, ({ one, many }) => ({
         fields: [characters.grid_id],
         references: [grids.id],
     }),
+    dialogue_event: one(events, {
+        fields: [characters.dialogue_event_id],
+        references: [events.id],
+    }),
     character_instances: many(character_instances),
 }))
-
-export const characters_select_schema = createSelectSchema(characters, fixer)
-export const characters_insert_schema = createInsertSchema(characters, fixer)
-export type CharactersSelectModel = z.infer<typeof characters_select_schema>
-export type CharactersInsertModel = z.infer<typeof characters_insert_schema>
 
 export const character_instances = mysqlTable("character_instances", {
     ...incrementing_id,
@@ -143,18 +121,3 @@ export const character_instances_relations = relations(
         }),
     }),
 )
-
-export const character_instances_select_schema = createSelectSchema(
-    character_instances,
-    fixer,
-)
-export const character_instances_insert_schema = createInsertSchema(
-    character_instances,
-    fixer,
-)
-export type CharacterInstancesSelectModel = z.infer<
-    typeof character_instances_select_schema
->
-export type CharacterInstancesInsertModel = z.infer<
-    typeof character_instances_insert_schema
->

@@ -7,15 +7,15 @@ import {
 } from "react"
 
 export function TextTyper({
-    text,
+    children: text,
     textRef: externalTextRef,
     onClick,
     className,
     ...props
 }: {
-    text: string
     textRef?: RefObject<HTMLDivElement>
-} & HTMLProps<HTMLDivElement>) {
+    children: string
+} & Omit<HTMLProps<HTMLDivElement>, "children">) {
     const [hidden, setHidden] = useState(text.length)
     const endRef = useRef<HTMLDivElement>(null)
     const internalTextRef = useRef<HTMLDivElement>(null)

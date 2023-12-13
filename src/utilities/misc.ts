@@ -4,7 +4,7 @@ export function indicesArray(size: number) {
         .map((x, y) => x + y)
 }
 
-export function commasWithAnd(items: string[]) {
+export function commasWithConjunction(items: string[], conjunction: string) {
     if (items.length === 0) {
         return ""
     }
@@ -13,5 +13,10 @@ export function commasWithAnd(items: string[]) {
     }
     const firsts = items.slice(0, -1)
     const last = items[items.length - 1]
-    return firsts.join(", ") + " and " + last
+    return firsts.join(", ") + ` ${conjunction} ` + last
+}
+
+export function defined<T>(value: T | null | undefined): value is T {
+    if (value === null || value === undefined) return false
+    return true
 }

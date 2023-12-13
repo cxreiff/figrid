@@ -1,29 +1,9 @@
-import type {
-    GatesSelectModel,
-    TilesSelectModel,
-} from "~/database/schema/grids.server.ts"
-import type {
-    CharacterInstancesSelectModel,
-    CharactersSelectModel,
-    ItemInstancesSelectModel,
-    ItemsSelectModel,
-} from "~/database/schema/entities.server.ts"
+import type { GridQuery } from "~/routes/read.$gridId/query.server.ts"
 
 type Coords = [number, number, number]
-export type TileWithCoords = TilesSelectModel & {
-    item_instances: ItemInstanceWithItem[]
-    character_instances: (CharacterInstancesSelectModel & {
-        character: CharactersSelectModel
-    })[]
-    gates: GatesSelectModel[]
-    coords?: Coords
-}
-export type ItemInstanceWithItem = ItemInstancesSelectModel & {
-    item: ItemsSelectModel
-}
-
 export type CoordsMap = Record<string, number | undefined>
 export type IdMap<T extends { id: number }> = Record<string, T>
+export type TileWithCoords = GridQuery["tiles"][0] & { coords?: Coords }
 
 export function generateIdMap<T extends { id: number }>(elements: T[]) {
     return Object.fromEntries(elements.map((element) => [element.id, element]))

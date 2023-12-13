@@ -2,14 +2,8 @@ import { Button, Table } from "@itsmapleleaf/radix-themes"
 import { Card } from "~/components/card.tsx"
 import { Image } from "~/components/image.tsx"
 import { Wait } from "~/components/wait.tsx"
-import type {
-    CharactersSelectModel,
-    ItemsSelectModel,
-} from "~/database/schema/entities.server.ts"
-import type {
-    IdMap,
-    ItemInstanceWithItem,
-} from "~/routes/read.$gridId/processing.ts"
+import type { IdMap } from "~/routes/read.$gridId/processing.server.ts"
+import type { GridQuery } from "~/routes/read.$gridId/query.server.ts"
 import type { SaveData } from "~/utilities/useSaveData.ts"
 
 const PLAYER_FALLBACK_IMAGE = "https://img.figrid.io/tiles/kitty.png"
@@ -22,9 +16,9 @@ export function Status({
     handleCommand,
 }: {
     saveData?: SaveData
-    player: CharactersSelectModel
-    itemIdMap: IdMap<ItemsSelectModel>
-    itemInstanceIdMap: IdMap<ItemInstanceWithItem>
+    player: GridQuery["player"]
+    itemIdMap: IdMap<GridQuery["items"][0]>
+    itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>
     handleCommand: (command: string) => void
 }) {
     return (

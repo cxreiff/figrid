@@ -1,7 +1,5 @@
 import { relations } from "drizzle-orm"
 import { index, int, mysqlEnum, mysqlTable } from "drizzle-orm/mysql-core"
-import { createInsertSchema, createSelectSchema } from "drizzle-zod"
-import type { z } from "zod"
 import { users } from "~/database/schema/auth.server.ts"
 import {
     character_instances,
@@ -12,7 +10,6 @@ import {
 import { events, locks, requirements } from "~/database/schema/events.server.ts"
 import {
     create_update_timestamps,
-    fixer,
     incrementing_id,
     name_summary_description,
     user_grid_ids,
@@ -53,11 +50,6 @@ export const grids_relations = relations(grids, ({ one, many }) => ({
     character_instances: many(character_instances),
 }))
 
-export const grids_select_schema = createSelectSchema(grids, fixer)
-export const grids_insert_schema = createInsertSchema(grids, fixer)
-export type GridsSelectModel = z.infer<typeof grids_select_schema>
-export type GridsInsertModel = z.infer<typeof grids_insert_schema>
-
 export const tiles = mysqlTable(
     "tiles",
     {
@@ -85,11 +77,6 @@ export const tiles_relations = relations(tiles, ({ one, many }) => ({
     item_instances: many(item_instances),
     character_instances: many(character_instances),
 }))
-
-export const tiles_select_schema = createSelectSchema(tiles, fixer)
-export const tiles_insert_schema = createInsertSchema(tiles, fixer)
-export type TilesSelectModel = z.infer<typeof tiles_select_schema>
-export type TilesInsertModel = z.infer<typeof tiles_insert_schema>
 
 export const gates = mysqlTable("gates", {
     ...incrementing_id,
@@ -136,8 +123,3 @@ export const gates_relations = relations(gates, ({ one, many }) => ({
     }),
     requirements: many(requirements),
 }))
-
-export const gates_select_schema = createSelectSchema(gates, fixer)
-export const gates_insert_schema = createInsertSchema(gates, fixer)
-export type GatesSelectModel = z.infer<typeof gates_select_schema>
-export type GatesInsertModel = z.infer<typeof gates_insert_schema>

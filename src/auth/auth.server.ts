@@ -1,9 +1,5 @@
 import { Authenticator } from "remix-auth"
 import { createCookieSessionStorage } from "@vercel/remix"
-import {
-    type ProfilesSelectModel,
-    type UsersSelectModel,
-} from "~/database/schema/auth.server.ts"
 import { FORM_STRATEGY, formStrategy } from "~/auth/strategies/form.server.ts"
 import {
     GITHUB_STRATEGY,
@@ -11,16 +7,18 @@ import {
 } from "~/auth/strategies/github.server.ts"
 import bcrypt from "~/../resources/bcrypt.min.cjs"
 import { customAlphabet } from "nanoid"
+import type { InferSelectModel } from "drizzle-orm"
+import { type users, type profiles } from "~/database/schema/auth.server.ts"
 
 bcrypt.setRandomFallback((bytes: number) =>
     customAlphabet("0123456789", bytes)().split("").map(Number),
 )
 
 export type AuthUser = Pick<
-    UsersSelectModel,
+    InferSelectModel<typeof users>,
     "id" | "alias" | "email" | "name" | "type"
 > & {
-    profile: Pick<ProfilesSelectModel, "image_url">
+    profile: Pick<InferSelectModel<typeof profiles>, "image_url">
 }
 
 export const SESSION_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 30

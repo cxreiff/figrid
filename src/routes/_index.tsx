@@ -17,7 +17,7 @@ export default function Index() {
     return (
         <>
             <Link to="/read/1">first</Link>
-            <TextTyper text={loremIpsum} className="p-6" />
+            <TextTyper className="p-6">{loremIpsum}</TextTyper>
         </>
     )
 }

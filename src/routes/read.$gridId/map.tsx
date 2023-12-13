@@ -10,7 +10,7 @@ import type {
     CoordsMap,
     IdMap,
     TileWithCoords,
-} from "~/routes/read.$gridId/processing.ts"
+} from "~/routes/read.$gridId/processing.server.ts"
 import { indicesArray } from "~/utilities/misc.ts"
 import type { SaveData } from "~/utilities/useSaveData.ts"
 
@@ -94,28 +94,72 @@ export function Map({
                                                     return (
                                                         <div
                                                             key={`${gate.id}`}
-                                                            className="absolute left-0 right-0 top-[-1rem] mx-auto h-4 w-4 bg-[var(--accent-8)]"
+                                                            className={`absolute -top-2 left-0 right-0 mx-auto h-2 w-4 ${
+                                                                gate.requirements.find(
+                                                                    ({
+                                                                        lock,
+                                                                    }) =>
+                                                                        !saveData.unlocked.includes(
+                                                                            lock.id,
+                                                                        ),
+                                                                )
+                                                                    ? "bg-zinc-400"
+                                                                    : "bg-[var(--accent-8)]"
+                                                            }`}
                                                         />
                                                     )
                                                 case "east":
                                                     return (
                                                         <div
                                                             key={`${gate.id}`}
-                                                            className="absolute bottom-0 right-[-1rem] top-0 my-auto h-4 w-4 bg-[var(--accent-8)]"
+                                                            className={`absolute -right-2 bottom-0 top-0 my-auto h-4 w-2 ${
+                                                                gate.requirements.find(
+                                                                    ({
+                                                                        lock,
+                                                                    }) =>
+                                                                        !saveData.unlocked.includes(
+                                                                            lock.id,
+                                                                        ),
+                                                                )
+                                                                    ? "bg-zinc-400"
+                                                                    : "bg-[var(--accent-8)]"
+                                                            }`}
                                                         />
                                                     )
                                                 case "south":
                                                     return (
                                                         <div
                                                             key={`${gate.id}`}
-                                                            className="absolute bottom-[-1rem] left-0 right-0 mx-auto h-4 w-4 bg-[var(--accent-8)]"
+                                                            className={`absolute -bottom-2 left-0 right-0 mx-auto h-2 w-4 ${
+                                                                gate.requirements.find(
+                                                                    ({
+                                                                        lock,
+                                                                    }) =>
+                                                                        !saveData.unlocked.includes(
+                                                                            lock.id,
+                                                                        ),
+                                                                )
+                                                                    ? "bg-zinc-400"
+                                                                    : "bg-[var(--accent-8)]"
+                                                            }`}
                                                         />
                                                     )
                                                 case "west":
                                                     return (
                                                         <div
                                                             key={`${gate.id}`}
-                                                            className="absolute bottom-0 left-[-1rem] top-0 my-auto h-4 w-4 bg-[var(--accent-8)]"
+                                                            className={`absolute -left-2 bottom-0 top-0 my-auto h-4 w-2 ${
+                                                                gate.requirements.find(
+                                                                    ({
+                                                                        lock,
+                                                                    }) =>
+                                                                        !saveData.unlocked.includes(
+                                                                            lock.id,
+                                                                        ),
+                                                                )
+                                                                    ? "bg-zinc-400"
+                                                                    : "bg-[var(--accent-8)]"
+                                                            }`}
                                                         />
                                                     )
                                                 case "up":

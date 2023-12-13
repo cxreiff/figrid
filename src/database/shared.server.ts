@@ -1,5 +1,4 @@
 import { int, serial, text, timestamp, varchar } from "drizzle-orm/mysql-core"
-import { z } from "zod"
 
 export const incrementing_id = {
     id: serial("id").primaryKey().unique().autoincrement(),
@@ -20,9 +19,4 @@ export const name_summary_description = {
     summary: text("summary"),
     description: text("description"),
     image_url: varchar("image_url", { length: 2083 }),
-}
-
-export const fixer = {
-    created_at: z.string().or(z.date()),
-    updated_at: z.string().or(z.date()),
 }

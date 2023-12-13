@@ -6,13 +6,18 @@ import { Card } from "~/components/card.tsx"
 import { TextTyper } from "~/components/textTyper.tsx"
 import { Wait } from "~/components/wait.tsx"
 import { availableCommands } from "~/routes/read.$gridId/commands.ts"
-import type { IdMap, TileWithCoords } from "~/routes/read.$gridId/processing.ts"
-import { commasWithAnd } from "~/utilities/misc.ts"
+import type {
+    IdMap,
+    TileWithCoords,
+} from "~/routes/read.$gridId/processing.server.ts"
+import type { GridQuery } from "~/routes/read.$gridId/query.server.ts"
+import { commasWithConjunction, defined } from "~/utilities/misc.ts"
 import type { SaveData } from "~/utilities/useSaveData.ts"
 
 export function Text({
     saveData,
     tileIdMap,
+    eventIdMap,
     command,
     commandLog,
     setCommand,
@@ -20,6 +25,7 @@ export function Text({
 }: {
     saveData?: SaveData
     tileIdMap: IdMap<TileWithCoords>
+    eventIdMap: IdMap<GridQuery["events"][0]>
     command: string
     commandLog: string[]
     setCommand: Dispatch<SetStateAction<string>>
@@ -45,37 +51,69 @@ export function Text({
                             const currentTile =
                                 tileIdMap[saveData.currentTileId]
 
-                            const exitsMessage = commasWithAnd(
-                                currentTile.gates.map(({ type }) => type),
+                            const exits = currentTile.gates.map(
+                                ({ type }) => type,
                             )
+                            const exitsMessage = commasWithConjunction(
+                                exits,
+                                "and",
+                            )
+
+                            const options =
+                                saveData.currentEventId &&
+                                eventIdMap[saveData.currentEventId].child_events
+                                    .map((event) => event.trigger)
+                                    .filter(defined)
+                            const optionsMessage =
+                                (options &&
+                                    commasWithConjunction(options, "or")) ||
+                                "[press ENTER to continue]"
 
                             return (
                                 <>
                                     {currentTile.name && (
-                                        <TextTyper
-                                            className="pb-6 italic text-[var(--accent-8)]"
-                                            text={`[${currentTile.name}]`}
-                                        />
+                                        <TextTyper className="pb-6 italic text-[var(--accent-8)]">
+                                            {currentTile.name}
+                                        </TextTyper>
                                     )}
                                     <TextTyper
                                         className="pb-6"
                                         textRef={textRef}
-                                        text={`${
-                                            currentTile.description ||
-                                            "[empty description]"
-                                        }\n\nthere are exits to the ${exitsMessage}.`}
-                                    />
+                                    >
+                                        {(saveData.currentEventId
+                                            ? eventIdMap[
+                                                  saveData.currentEventId
+                                              ].description
+                                            : currentTile.description) ||
+                                            "[empty description]"}
+                                    </TextTyper>
+                                    {saveData.currentEventId ? (
+                                        <TextTyper
+                                            className="pb-6 text-[var(--accent-11)]"
+                                            textRef={textRef}
+                                        >
+                                            {optionsMessage}
+                                        </TextTyper>
+                                    ) : (
+                                        <TextTyper
+                                            className="pb-6 text-[var(--accent-11)]"
+                                            textRef={textRef}
+                                        >
+                                            {`there are exits to the ${exitsMessage}.`}
+                                        </TextTyper>
+                                    )}
                                     {commandLog.map((message, index) => (
                                         <TextTyper
                                             key={index}
-                                            text={message}
                                             className={
                                                 "pb-6 " +
                                                 (index % 2
                                                     ? undefined
                                                     : "text-zinc-500")
                                             }
-                                        />
+                                        >
+                                            {message}
+                                        </TextTyper>
                                     ))}
                                 </>
                             )

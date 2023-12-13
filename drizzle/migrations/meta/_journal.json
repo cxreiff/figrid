@@ -183,6 +183,27 @@
       "when": 1702380313166,
       "tag": "0025_mysterious_nightcrawler",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "5",
+      "when": 1702416806380,
+      "tag": "0026_supreme_ultimo",
+      "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "5",
+      "when": 1702422363576,
+      "tag": "0027_curious_the_enforcers",
+      "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "5",
+      "when": 1702423042546,
+      "tag": "0028_oval_magdalene",
+      "breakpoints": true
     }
   ]
 }

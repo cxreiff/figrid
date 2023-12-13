@@ -1,19 +1,15 @@
-import type { Dispatch, SetStateAction } from "react"
-import type {
-    CharactersSelectModel,
-    ItemsSelectModel,
-} from "~/database/schema/entities.server.ts"
 import type {
     IdMap,
-    ItemInstanceWithItem,
     TileWithCoords,
-} from "~/routes/read.$gridId/processing.ts"
+} from "~/routes/read.$gridId/processing.server.ts"
+import type { GridQuery } from "~/routes/read.$gridId/query.server.ts"
 import type { SaveData, useSaveData } from "~/utilities/useSaveData.ts"
 
 export const COMMANDS = {
     GO: "go",
     LOOK: "look",
     TAKE: "take",
+    TALK: "talk",
 }
 
 export const SUBCOMMANDS = {
@@ -34,14 +30,15 @@ export const SUBCOMMANDS = {
         DOWN: "down",
     },
     [COMMANDS.TAKE]: {},
+    [COMMANDS.TALK]: {},
 }
 
 export function handleCommand(
     rawCommand: string,
     saveData: SaveData,
     tileIdMap: IdMap<TileWithCoords>,
-    itemInstanceIdMap: IdMap<ItemInstanceWithItem>,
-    setCommand: Dispatch<SetStateAction<string>>,
+    eventIdMap: IdMap<GridQuery["events"][0]>,
+    itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>,
     appendToCommandLog: (command: string, message: string) => void,
     clearCommandLog: () => void,
     setSaveData: ReturnType<typeof useSaveData>[1],
@@ -54,8 +51,53 @@ export function handleCommand(
     if (command === "drop items") {
         setSaveData("heldItems", [])
         appendToCommandLog(command, "cleared held items")
-        setCommand("")
-        return
+        return ""
+    }
+
+    if (command === "relock") {
+        setSaveData("unlocked", [])
+        appendToCommandLog(command, "restored locks")
+        return ""
+    }
+
+    if (saveData.currentEventId) {
+        const event = eventIdMap[saveData.currentEventId]
+        if (event.child_events.length === 0) {
+            clearCommandLog()
+            setSaveData("currentEventId", undefined)
+            return ""
+        }
+        const triggeredEvent = event.child_events.find(
+            ({ trigger }) => trigger === command,
+        )
+        if (triggeredEvent) {
+            clearCommandLog()
+            setSaveData("currentEventId", triggeredEvent.id)
+            if (
+                triggeredEvent.unlock_lock_id &&
+                !saveData.unlocked.includes(triggeredEvent.unlock_lock_id)
+            ) {
+                setSaveData("unlocked", [
+                    ...saveData.unlocked,
+                    triggeredEvent.unlock_lock_id,
+                ])
+            }
+            if (triggeredEvent.lock_lock_id) {
+                const index = saveData.unlocked.findIndex(
+                    (id) => id === triggeredEvent.lock_lock_id,
+                )
+                if (index !== -1) {
+                    setSaveData("unlocked", [
+                        ...saveData.unlocked.slice(0, index),
+                        ...saveData.unlocked.slice(index + 1),
+                    ])
+                }
+            }
+            return ""
+        } else {
+            appendToCommandLog(command, "not an option")
+            return ""
+        }
     }
 
     /* REAL COMMANDS */
@@ -71,7 +113,15 @@ export function handleCommand(
                     const gate = currentTile.gates.find(
                         ({ type }) => type === commandTokens[1],
                     )
-                    if (gate) {
+                    const requirement = gate?.requirements.find(
+                        ({ lock }) => !saveData.unlocked.includes(lock.id),
+                    )
+                    if (requirement) {
+                        appendToCommandLog(
+                            command,
+                            requirement.summary || "the way is shut",
+                        )
+                    } else if (gate) {
                         clearCommandLog()
                         setSaveData("currentTileId", gate.to_id)
                     } else {
@@ -80,25 +130,22 @@ export function handleCommand(
                             "there is no passage in that direction",
                         )
                     }
-                    break
+                    return ""
                 default:
-                    handleUnrecognized(
-                        rawCommand,
-                        setCommand,
-                        appendToCommandLog,
-                    )
-                    return
+                    return handleUnrecognized(rawCommand, appendToCommandLog)
             }
-            break
         case COMMANDS.LOOK:
             if (commandTokens.length === 1) {
                 appendToCommandLog(
                     command,
                     currentTile.summary || "you don't see anything of interest",
                 )
-                break
+                return ""
             }
-            let lookables: Array<ItemsSelectModel | CharactersSelectModel>
+            let lookables: Array<
+                | GridQuery["items"][0]
+                | GridQuery["tiles"][0]["character_instances"][0]["character"]
+            >
             lookables = Object.values(
                 availableItemsMap(currentTile, saveData),
             ).concat(
@@ -120,21 +167,28 @@ export function handleCommand(
                         command,
                         lookable.description || "you notice nothing of note",
                     )
-                    setCommand("")
-                    return
+                    return ""
                 }
             }
             switch (commandTokens[1]) {
-                case SUBCOMMANDS[COMMANDS.GO].NORTH:
-                case SUBCOMMANDS[COMMANDS.GO].EAST:
-                case SUBCOMMANDS[COMMANDS.GO].SOUTH:
-                case SUBCOMMANDS[COMMANDS.GO].WEST:
-                case SUBCOMMANDS[COMMANDS.GO].UP:
-                case SUBCOMMANDS[COMMANDS.GO].DOWN:
+                case SUBCOMMANDS[COMMANDS.LOOK].NORTH:
+                case SUBCOMMANDS[COMMANDS.LOOK].EAST:
+                case SUBCOMMANDS[COMMANDS.LOOK].SOUTH:
+                case SUBCOMMANDS[COMMANDS.LOOK].WEST:
+                case SUBCOMMANDS[COMMANDS.LOOK].UP:
+                case SUBCOMMANDS[COMMANDS.LOOK].DOWN:
                     const gate = currentTile.gates.find(
                         ({ type }) => type === commandTokens[1],
                     )
-                    if (gate) {
+                    const requirement = gate?.requirements.find(
+                        ({ lock }) => !saveData.unlocked.includes(lock.id),
+                    )
+                    if (requirement) {
+                        appendToCommandLog(
+                            command,
+                            requirement.description || "the way is shut",
+                        )
+                    } else if (gate) {
                         appendToCommandLog(
                             command,
                             tileIdMap[gate.to_id].summary ||
@@ -146,16 +200,10 @@ export function handleCommand(
                             "there is no exit in that direction",
                         )
                     }
-                    break
+                    return ""
                 default:
-                    handleUnrecognized(
-                        rawCommand,
-                        setCommand,
-                        appendToCommandLog,
-                    )
-                    return
+                    return handleUnrecognized(rawCommand, appendToCommandLog)
             }
-            break
         case COMMANDS.TAKE:
             for (const [instanceId, item] of Object.entries(
                 availableItemsMap(currentTile, saveData),
@@ -169,42 +217,58 @@ export function handleCommand(
                         Number(instanceId),
                     ])
                     appendToCommandLog(command, `you take the ${item.name}`)
-                    setCommand("")
-                    return
+                    return ""
                 }
             }
-            handleUnrecognized(rawCommand, setCommand, appendToCommandLog)
-            return
+            return handleUnrecognized(rawCommand, appendToCommandLog)
+        case COMMANDS.TALK:
+            for (const character of currentTile.character_instances.map(
+                ({ character }) => character,
+            )) {
+                if (
+                    character.name.toLowerCase().trim() ===
+                    commandTokens.slice(1).join(" ").trim()
+                ) {
+                    if (character.dialogue_event_id) {
+                        clearCommandLog()
+                        setSaveData(
+                            "currentEventId",
+                            character.dialogue_event_id,
+                        )
+                    } else {
+                        appendToCommandLog(
+                            command,
+                            "they do not have much to say",
+                        )
+                    }
+                    return ""
+                }
+            }
         default:
-            handleUnrecognized(rawCommand, setCommand, appendToCommandLog)
-            return
+            return handleUnrecognized(rawCommand, appendToCommandLog)
     }
-    setCommand("")
 }
 
 function handleUnrecognized(
     command: string,
-    setCommand: Dispatch<SetStateAction<string>>,
     appendToCommandLog: (command: string, message: string) => void,
 ) {
     if (command === "") {
-        return
+        return ""
     }
 
     const available = availableCommands(command)
     if (available.length > 0) {
-        setCommand(
-            command
-                .trimStart()
-                .split(/\s+/)
-                .slice(0, -1)
-                .concat(available[0])
-                .join(" ")
-                .concat(" "),
-        )
+        return command
+            .trimStart()
+            .split(/\s+/)
+            .slice(0, -1)
+            .concat(available[0])
+            .join(" ")
+            .concat(" ")
     } else {
         appendToCommandLog(command, "i did not understand that")
-        setCommand("")
+        return ""
     }
 }
 
