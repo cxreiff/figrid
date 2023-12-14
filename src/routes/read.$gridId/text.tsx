@@ -1,4 +1,4 @@
-import { TextField } from "@itsmapleleaf/radix-themes"
+import { Button, TextField } from "@itsmapleleaf/radix-themes"
 import { ChevronRightIcon } from "@radix-ui/react-icons"
 import { Form } from "@remix-run/react"
 import { useRef, type Dispatch, type SetStateAction, useEffect } from "react"
@@ -11,12 +11,14 @@ import type {
     TileWithCoords,
 } from "~/routes/read.$gridId/processing.server.ts"
 import type { GridQuery } from "~/routes/read.$gridId/query.server.ts"
-import { commasWithConjunction, defined } from "~/utilities/misc.ts"
+import { commasWithConjunction } from "~/utilities/misc.ts"
 import type { SaveData } from "~/utilities/useSaveData.ts"
 
 export function Text({
     saveData,
     tileIdMap,
+    itemIdMap,
+    itemInstanceIdMap,
     eventIdMap,
     command,
     commandLog,
@@ -25,6 +27,8 @@ export function Text({
 }: {
     saveData?: SaveData
     tileIdMap: IdMap<TileWithCoords>
+    itemIdMap: IdMap<GridQuery["items"][0]>
+    itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>
     eventIdMap: IdMap<GridQuery["events"][0]>
     command: string
     commandLog: string[]
@@ -51,6 +55,11 @@ export function Text({
                             const currentTile =
                                 tileIdMap[saveData.currentTileId]
 
+                            const currentEvent =
+                                saveData.currentEventId !== undefined
+                                    ? eventIdMap[saveData.currentEventId]
+                                    : undefined
+
                             const exits = currentTile.gates.map(
                                 ({ type }) => type,
                             )
@@ -58,16 +67,6 @@ export function Text({
                                 exits,
                                 "and",
                             )
-
-                            const options =
-                                saveData.currentEventId &&
-                                eventIdMap[saveData.currentEventId].child_events
-                                    .map((event) => event.trigger)
-                                    .filter(defined)
-                            const optionsMessage =
-                                (options &&
-                                    commasWithConjunction(options, "or")) ||
-                                "[press ENTER to continue]"
 
                             return (
                                 <>
@@ -87,21 +86,6 @@ export function Text({
                                             : currentTile.description) ||
                                             "[empty description]"}
                                     </TextTyper>
-                                    {saveData.currentEventId ? (
-                                        <TextTyper
-                                            className="pb-6 text-[var(--accent-11)]"
-                                            textRef={textRef}
-                                        >
-                                            {optionsMessage}
-                                        </TextTyper>
-                                    ) : (
-                                        <TextTyper
-                                            className="pb-6 text-[var(--accent-11)]"
-                                            textRef={textRef}
-                                        >
-                                            {`there are exits to the ${exitsMessage}.`}
-                                        </TextTyper>
-                                    )}
                                     {commandLog.map((message, index) => (
                                         <TextTyper
                                             key={index}
@@ -115,6 +99,81 @@ export function Text({
                                             {message}
                                         </TextTyper>
                                     ))}
+                                    {currentEvent ? (
+                                        currentEvent.child_events.length > 0 ? (
+                                            currentEvent.child_events.map(
+                                                ({ trigger, ...event }) => {
+                                                    if (trigger === null) {
+                                                        return null
+                                                    }
+
+                                                    const requiredItem =
+                                                        event.must_have_item_id
+                                                            ? saveData.heldItems
+                                                                  .map(
+                                                                      (
+                                                                          instance_id,
+                                                                      ) =>
+                                                                          itemInstanceIdMap[
+                                                                              instance_id
+                                                                          ]
+                                                                              .item,
+                                                                  )
+                                                                  .find(
+                                                                      (item) =>
+                                                                          item.id ===
+                                                                          event.must_have_item_id,
+                                                                  )
+                                                            : undefined
+
+                                                    const itemMissing =
+                                                        event.must_have_item_id &&
+                                                        !requiredItem
+                                                            ? ` (missing ${
+                                                                  itemIdMap[
+                                                                      event
+                                                                          .must_have_item_id
+                                                                  ].name
+                                                              })`
+                                                            : undefined
+
+                                                    const itemTrade =
+                                                        event.must_have_item_id &&
+                                                        requiredItem
+                                                            ? ` (use ${requiredItem.name})`
+                                                            : undefined
+
+                                                    return (
+                                                        <Button
+                                                            key={event.id}
+                                                            variant="ghost"
+                                                            className="mx-2 mb-3"
+                                                            onClick={() =>
+                                                                handleCommand(
+                                                                    trigger,
+                                                                )
+                                                            }
+                                                            disabled={
+                                                                !!itemMissing
+                                                            }
+                                                        >
+                                                            {trigger}
+                                                            {itemMissing}
+                                                            {itemTrade}
+                                                        </Button>
+                                                    )
+                                                },
+                                            )
+                                        ) : (
+                                            <TextTyper className="pb-6 text-[var(--accent-11)]">
+                                                [press ENTER to continue]
+                                            </TextTyper>
+                                        )
+                                    ) : (
+                                        <TextTyper className="pb-6 text-[var(--accent-11)]">
+                                            {`there are exits to the ${exitsMessage}.`}
+                                        </TextTyper>
+                                    )}
                                 </>
                             )
                         }}

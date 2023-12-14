@@ -7,6 +7,7 @@ export type SaveData = {
     currentEventId?: number
     characterName: string
     heldItems: number[]
+    usedItems: number[]
     unlocked: number[]
 }
 
@@ -18,6 +19,7 @@ export function useSaveData(user: AuthUser | null, grid: GridQuery) {
             currentEventId: undefined,
             characterName: user?.alias || "player",
             heldItems: [],
+            usedItems: [],
             unlocked: [],
         },
     )

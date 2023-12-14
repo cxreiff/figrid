@@ -26,13 +26,19 @@ export function gridQuery(gridId: number) {
                     },
                     character_instances: {
                         with: {
-                            character: true,
+                            character: {
+                                with: {
+                                    dialogue: true,
+                                },
+                            },
                         },
                     },
                 },
             },
             events: {
                 with: {
+                    unlocks: true,
+                    locks: true,
                     child_events: true,
                 },
             },

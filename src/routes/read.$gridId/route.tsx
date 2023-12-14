@@ -95,6 +95,7 @@ export default function Route() {
                     <Area
                         saveData={saveData}
                         tileIdMap={tileIdMap}
+                        eventIdMap={eventIdMap}
                         handleCommand={handleCommandClosure}
                     />
                     <Status
@@ -125,6 +126,8 @@ export default function Route() {
                 <Text
                     saveData={saveData}
                     tileIdMap={tileIdMap}
+                    itemIdMap={itemIdMap}
+                    itemInstanceIdMap={itemInstanceIdMap}
                     eventIdMap={eventIdMap}
                     command={command}
                     commandLog={commandLog}

@@ -75,8 +75,6 @@ export const characters = mysqlTable("characters", {
     ...create_update_timestamps,
     ...user_grid_ids,
     ...name_summary_description,
-
-    dialogue_event_id: int("dialogue_event_id"),
 })
 
 export const characters_relations = relations(characters, ({ one, many }) => ({
@@ -88,10 +86,7 @@ export const characters_relations = relations(characters, ({ one, many }) => ({
         fields: [characters.grid_id],
         references: [grids.id],
     }),
-    dialogue_event: one(events, {
-        fields: [characters.dialogue_event_id],
-        references: [events.id],
-    }),
+    dialogue: many(events),
     character_instances: many(character_instances),
 }))
 

@@ -7,6 +7,7 @@ import type {
     IdMap,
     TileWithCoords,
 } from "~/routes/read.$gridId/processing.server.ts"
+import type { GridQuery } from "~/routes/read.$gridId/query.server.ts"
 import type { SaveData } from "~/utilities/useSaveData.ts"
 
 export const TILE_FALLBACK_IMAGE = "https://img.figrid.io/tiles/kitty.png"
@@ -14,10 +15,12 @@ export const TILE_FALLBACK_IMAGE = "https://img.figrid.io/tiles/kitty.png"
 export function Area({
     saveData,
     tileIdMap,
+    eventIdMap,
     handleCommand,
 }: {
     saveData?: SaveData
     tileIdMap: IdMap<TileWithCoords>
+    eventIdMap: IdMap<GridQuery["events"][0]>
     handleCommand: (command: string) => void
 }) {
     return (
@@ -26,7 +29,11 @@ export function Area({
                 <Wait on={saveData}>
                     {(saveData) => {
                         const tile = tileIdMap[saveData.currentTileId]
-                        const image = tile.image_url || TILE_FALLBACK_IMAGE
+                        const eventImage =
+                            saveData.currentEventId &&
+                            eventIdMap[saveData.currentEventId].image_url
+                        const image =
+                            eventImage || tile.image_url || TILE_FALLBACK_IMAGE
                         return (
                             <div className="flex h-full items-center justify-center">
                                 <Image

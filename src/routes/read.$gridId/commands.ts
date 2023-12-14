@@ -47,16 +47,11 @@ export function handleCommand(
     const command = rawCommand.toLowerCase().trim()
     const commandTokens = splitCommand(command)
 
-    /* DEV COMMANDS */
-    if (command === "drop items") {
+    if (command === "reset") {
         setSaveData("heldItems", [])
-        appendToCommandLog(command, "cleared held items")
-        return ""
-    }
-
-    if (command === "relock") {
+        setSaveData("usedItems", [])
         setSaveData("unlocked", [])
-        appendToCommandLog(command, "restored locks")
+        appendToCommandLog(command, "cleared data")
         return ""
     }
 
@@ -67,40 +62,23 @@ export function handleCommand(
             setSaveData("currentEventId", undefined)
             return ""
         }
-        const triggeredEvent = event.child_events.find(
-            ({ trigger }) => trigger === command,
-        )
-        if (triggeredEvent) {
-            clearCommandLog()
-            setSaveData("currentEventId", triggeredEvent.id)
-            if (
-                triggeredEvent.unlock_lock_id &&
-                !saveData.unlocked.includes(triggeredEvent.unlock_lock_id)
-            ) {
-                setSaveData("unlocked", [
-                    ...saveData.unlocked,
-                    triggeredEvent.unlock_lock_id,
-                ])
-            }
-            if (triggeredEvent.lock_lock_id) {
-                const index = saveData.unlocked.findIndex(
-                    (id) => id === triggeredEvent.lock_lock_id,
-                )
-                if (index !== -1) {
-                    setSaveData("unlocked", [
-                        ...saveData.unlocked.slice(0, index),
-                        ...saveData.unlocked.slice(index + 1),
-                    ])
-                }
-            }
-            return ""
+        const triggeredEventId = event.child_events
+            .filter(getQualifiedEventsFilter(saveData, itemInstanceIdMap))
+            .find(({ trigger }) => trigger === command)?.id
+        if (triggeredEventId) {
+            return handleTriggeredEvent(
+                triggeredEventId,
+                saveData,
+                eventIdMap,
+                clearCommandLog,
+                setSaveData,
+            )
         } else {
             appendToCommandLog(command, "not an option")
             return ""
         }
     }
 
-    /* REAL COMMANDS */
     switch (commandTokens[0]) {
         case COMMANDS.GO:
             switch (commandTokens[1]) {
@@ -229,11 +207,18 @@ export function handleCommand(
                     character.name.toLowerCase().trim() ===
                     commandTokens.slice(1).join(" ").trim()
                 ) {
-                    if (character.dialogue_event_id) {
-                        clearCommandLog()
-                        setSaveData(
-                            "currentEventId",
-                            character.dialogue_event_id,
+                    const dialogue = character.dialogue.filter(
+                        getQualifiedEventsFilter(saveData, itemInstanceIdMap),
+                    )
+                    if (dialogue.length > 0) {
+                        return handleTriggeredEvent(
+                            dialogue[
+                                Math.floor(Math.random() * dialogue.length)
+                            ].id,
+                            saveData,
+                            eventIdMap,
+                            clearCommandLog,
+                            setSaveData,
                         )
                     } else {
                         appendToCommandLog(
@@ -272,6 +257,52 @@ function handleUnrecognized(
     }
 }
 
+function handleTriggeredEvent(
+    eventId: number,
+    saveData: SaveData,
+    eventIdMap: IdMap<GridQuery["events"][0]>,
+    clearCommandLog: () => void,
+    setSaveData: ReturnType<typeof useSaveData>[1],
+) {
+    const triggeredEvent = eventIdMap[eventId]
+    clearCommandLog()
+    setSaveData("currentEventId", triggeredEvent.id)
+    for (const lock of triggeredEvent.unlocks) {
+        if (!saveData.unlocked.includes(lock.id)) {
+            setSaveData("unlocked", [...saveData.unlocked, lock.id])
+        }
+    }
+    for (const lock of triggeredEvent.unlocks) {
+        const index = saveData.unlocked.findIndex((id) => id === lock.id)
+        if (index !== -1) {
+            setSaveData("unlocked", [
+                ...saveData.unlocked.slice(0, index),
+                ...saveData.unlocked.slice(index + 1),
+            ])
+        }
+    }
+    if (triggeredEvent.must_have_item_id) {
+        const index = saveData.heldItems.findIndex(
+            (id) => id === triggeredEvent.must_have_item_id,
+        )
+        if (index !== -1) {
+            setSaveData("heldItems", [
+                ...saveData.heldItems.slice(0, index),
+                ...saveData.heldItems.slice(index + 1),
+            ])
+            if (
+                !saveData.usedItems.includes(triggeredEvent.must_have_item_id)
+            ) {
+                setSaveData("usedItems", [
+                    ...saveData.usedItems,
+                    triggeredEvent.must_have_item_id,
+                ])
+            }
+        }
+    }
+    return ""
+}
+
 export function availableCommands(command: string) {
     const commandTokens = splitCommand(command.toLowerCase())
 
@@ -299,6 +330,38 @@ export function availableItemsMap(tile: TileWithCoords, saveData: SaveData) {
     return Object.fromEntries(
         tile.item_instances
             .filter(({ id }) => !saveData.heldItems.includes(id))
+            .filter(({ id }) => !saveData.usedItems.includes(id))
             .map(({ id, item }) => [id, item]),
     )
+}
+
+function getQualifiedEventsFilter(
+    saveData: SaveData,
+    itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>,
+) {
+    return (
+        event: GridQuery["tiles"][0]["character_instances"][0]["character"]["dialogue"][0],
+    ) => {
+        if (
+            event.must_be_unlocked_id &&
+            !saveData.unlocked.includes(event.must_be_unlocked_id)
+        ) {
+            return false
+        }
+        if (
+            event.must_be_locked_id &&
+            saveData.unlocked.includes(event.must_be_locked_id)
+        ) {
+            return false
+        }
+        if (
+            event.must_have_item_id &&
+            !saveData.heldItems
+                .map((instance_id) => itemInstanceIdMap[instance_id].item.id)
+                .includes(event.must_have_item_id)
+        ) {
+            return false
+        }
+        return true
+    }
 }
