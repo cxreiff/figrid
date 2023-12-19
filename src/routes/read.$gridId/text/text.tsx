@@ -67,6 +67,7 @@ export function Text({
                 command={command}
                 inputRef={inputRef}
                 textRef={textRef}
+                tileIdMap={tileIdMap}
                 eventIdMap={eventIdMap}
                 itemInstanceIdMap={itemInstanceIdMap}
                 setCommand={setCommand}

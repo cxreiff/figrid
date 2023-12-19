@@ -1,5 +1,4 @@
 import { Button } from "@itsmapleleaf/radix-themes"
-import { TextTyper } from "~/components/textTyper.tsx"
 import type { IdMap } from "~/routes/read.$gridId/processing.server.ts"
 import type { GridQuery } from "~/routes/read.$gridId/query.server.ts"
 import type { SaveData } from "~/utilities/useSaveData.ts"
@@ -54,8 +53,12 @@ export function TextOptions({
             )
         })
     ) : (
-        <TextTyper className="pb-6 text-[var(--accent-11)]">
-            [press ENTER to continue]
-        </TextTyper>
+        <Button
+            variant="ghost"
+            className="mx-2 mb-3 text-base"
+            onClick={() => handleCommand("")}
+        >
+            [any command to continue]
+        </Button>
     )
 }

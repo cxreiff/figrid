@@ -4,7 +4,10 @@ import { Form } from "@remix-run/react"
 import type { Dispatch, RefObject, SetStateAction } from "react"
 import { Wait } from "~/components/wait.tsx"
 import { availableCommands } from "~/routes/read.$gridId/commands.ts"
-import type { IdMap } from "~/routes/read.$gridId/processing.server.ts"
+import type {
+    IdMap,
+    TileWithCoords,
+} from "~/routes/read.$gridId/processing.server.ts"
 import type { GridQuery } from "~/routes/read.$gridId/query.server.ts"
 import type { SaveData } from "~/utilities/useSaveData.ts"
 
@@ -13,6 +16,7 @@ export function TextPrompt({
     command,
     textRef,
     inputRef,
+    tileIdMap,
     eventIdMap,
     itemInstanceIdMap,
     setCommand,
@@ -22,6 +26,7 @@ export function TextPrompt({
     command: string
     textRef: RefObject<HTMLDivElement>
     inputRef: RefObject<HTMLInputElement>
+    tileIdMap: IdMap<TileWithCoords>
     eventIdMap: IdMap<GridQuery["events"][0]>
     itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>
     setCommand: Dispatch<SetStateAction<string>>
@@ -50,16 +55,21 @@ export function TextPrompt({
                     autoFocus
                 />
                 <TextField.Input type="submit" hidden />
-                <TextField.Slot className="pr-3 text-zinc-500">
+                <TextField.Slot className="max-w-[0%] justify-end overflow-ellipsis whitespace-nowrap pr-3 text-right text-zinc-500">
                     <Wait on={saveData} asChild>
-                        {(saveData) =>
-                            availableCommands(
+                        {(saveData) => {
+                            const suggestions = availableCommands(
                                 command,
+                                tileIdMap[saveData.currentTileId],
                                 saveData,
                                 eventIdMap,
                                 itemInstanceIdMap,
-                            ).join(", ")
-                        }
+                            )
+                            return suggestions
+                                .slice(0, 4)
+                                .join(", ")
+                                .concat(suggestions.length > 4 ? " ..." : "")
+                        }}
                     </Wait>
                 </TextField.Slot>
             </TextField.Root>

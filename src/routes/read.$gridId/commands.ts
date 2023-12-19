@@ -75,8 +75,14 @@ export function handleCommand(
                 setSaveData,
             )
         } else {
-            appendToCommandLog(command, "not an option")
-            return ""
+            return handleUnrecognized(
+                command,
+                currentTile,
+                saveData,
+                eventIdMap,
+                itemInstanceIdMap,
+                appendToCommandLog,
+            )
         }
     }
 
@@ -113,6 +119,7 @@ export function handleCommand(
                 default:
                     return handleUnrecognized(
                         rawCommand,
+                        currentTile,
                         saveData,
                         eventIdMap,
                         itemInstanceIdMap,
@@ -189,6 +196,7 @@ export function handleCommand(
                 default:
                     return handleUnrecognized(
                         rawCommand,
+                        currentTile,
                         saveData,
                         eventIdMap,
                         itemInstanceIdMap,
@@ -213,6 +221,7 @@ export function handleCommand(
             }
             return handleUnrecognized(
                 rawCommand,
+                currentTile,
                 saveData,
                 eventIdMap,
                 itemInstanceIdMap,
@@ -251,6 +260,7 @@ export function handleCommand(
         default:
             return handleUnrecognized(
                 rawCommand,
+                currentTile,
                 saveData,
                 eventIdMap,
                 itemInstanceIdMap,
@@ -261,6 +271,7 @@ export function handleCommand(
 
 function handleUnrecognized(
     command: string,
+    currentTile: TileWithCoords,
     saveData: SaveData,
     eventIdMap: IdMap<GridQuery["events"][0]>,
     itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>,
@@ -272,6 +283,7 @@ function handleUnrecognized(
 
     const available = availableCommands(
         command,
+        currentTile,
         saveData,
         eventIdMap,
         itemInstanceIdMap,
@@ -338,6 +350,7 @@ function handleTriggeredEvent(
 
 export function availableCommands(
     command: string,
+    currentTile: TileWithCoords,
     saveData: SaveData,
     eventIdMap: IdMap<GridQuery["events"][0]>,
     itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>,
@@ -358,12 +371,28 @@ export function availableCommands(
         return prefixFilter(Object.values(COMMANDS), commandTokens[0])
     }
 
-    return (
-        prefixFilter(
-            Object.values(SUBCOMMANDS[commandTokens[0]] || {}),
-            commandTokens[1],
-        ) || []
-    )
+    let targets = Object.values(SUBCOMMANDS[commandTokens[0]] || {})
+
+    if (
+        commandTokens[0] === COMMANDS.TAKE ||
+        commandTokens[0] === COMMANDS.LOOK
+    ) {
+        targets = targets.concat(
+            Object.values(availableItemsMap(currentTile, saveData)).map(
+                (item) => item.name,
+            ),
+        )
+    }
+
+    if (commandTokens[0] === COMMANDS.LOOK) {
+        targets = targets.concat(
+            currentTile.character_instances.map(
+                (instance) => instance.character.name,
+            ),
+        )
+    }
+
+    return prefixFilter(targets, commandTokens.slice(1).join(" "))
 }
 
 function splitCommand(command: string) {

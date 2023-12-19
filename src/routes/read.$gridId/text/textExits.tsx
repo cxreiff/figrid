@@ -30,7 +30,7 @@ export function TextExits({
                 <Button
                     key={gate.id}
                     variant="ghost"
-                    className="m-0 p-0 text-base"
+                    className="text-base"
                     onClick={() => handleCommand(`go ${gate.type}`)}
                     disabled={!!lock}
                 >
