@@ -3,7 +3,7 @@ import { type LoaderFunctionArgs } from "@vercel/remix"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
 import { Layout } from "~/components/layout.tsx"
-import { Text } from "~/routes/read.$gridId/text.tsx"
+import { Text } from "~/routes/read.$gridId/text/text.tsx"
 import { Map } from "~/routes/read.$gridId/map.tsx"
 import {
     generateIdMap,

@@ -3,6 +3,7 @@ import type {
     TileWithCoords,
 } from "~/routes/read.$gridId/processing.server.ts"
 import type { GridQuery } from "~/routes/read.$gridId/query.server.ts"
+import { defined } from "~/utilities/misc.ts"
 import type { SaveData, useSaveData } from "~/utilities/useSaveData.ts"
 
 export const COMMANDS = {
@@ -110,7 +111,13 @@ export function handleCommand(
                     }
                     return ""
                 default:
-                    return handleUnrecognized(rawCommand, appendToCommandLog)
+                    return handleUnrecognized(
+                        rawCommand,
+                        saveData,
+                        eventIdMap,
+                        itemInstanceIdMap,
+                        appendToCommandLog,
+                    )
             }
         case COMMANDS.LOOK:
             if (commandTokens.length === 1) {
@@ -180,7 +187,13 @@ export function handleCommand(
                     }
                     return ""
                 default:
-                    return handleUnrecognized(rawCommand, appendToCommandLog)
+                    return handleUnrecognized(
+                        rawCommand,
+                        saveData,
+                        eventIdMap,
+                        itemInstanceIdMap,
+                        appendToCommandLog,
+                    )
             }
         case COMMANDS.TAKE:
             for (const [instanceId, item] of Object.entries(
@@ -198,7 +211,13 @@ export function handleCommand(
                     return ""
                 }
             }
-            return handleUnrecognized(rawCommand, appendToCommandLog)
+            return handleUnrecognized(
+                rawCommand,
+                saveData,
+                eventIdMap,
+                itemInstanceIdMap,
+                appendToCommandLog,
+            )
         case COMMANDS.TALK:
             for (const character of currentTile.character_instances.map(
                 ({ character }) => character,
@@ -230,19 +249,33 @@ export function handleCommand(
                 }
             }
         default:
-            return handleUnrecognized(rawCommand, appendToCommandLog)
+            return handleUnrecognized(
+                rawCommand,
+                saveData,
+                eventIdMap,
+                itemInstanceIdMap,
+                appendToCommandLog,
+            )
     }
 }
 
 function handleUnrecognized(
     command: string,
+    saveData: SaveData,
+    eventIdMap: IdMap<GridQuery["events"][0]>,
+    itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>,
     appendToCommandLog: (command: string, message: string) => void,
 ) {
     if (command === "") {
         return ""
     }
 
-    const available = availableCommands(command)
+    const available = availableCommands(
+        command,
+        saveData,
+        eventIdMap,
+        itemInstanceIdMap,
+    )
     if (available.length > 0) {
         return command
             .trimStart()
@@ -303,8 +336,23 @@ function handleTriggeredEvent(
     return ""
 }
 
-export function availableCommands(command: string) {
+export function availableCommands(
+    command: string,
+    saveData: SaveData,
+    eventIdMap: IdMap<GridQuery["events"][0]>,
+    itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>,
+) {
     const commandTokens = splitCommand(command.toLowerCase())
+
+    if (saveData.currentEventId) {
+        return prefixFilter(
+            eventIdMap[saveData.currentEventId].child_events
+                .filter(getQualifiedEventsFilter(saveData, itemInstanceIdMap))
+                .map((event) => event.trigger)
+                .filter(defined),
+            command,
+        )
+    }
 
     if (commandTokens.length === 1) {
         return prefixFilter(Object.values(COMMANDS), commandTokens[0])
