@@ -6,7 +6,7 @@ import {
     item_instances,
     items,
 } from "~/database/schema/entities.server.ts"
-import { gates, grids } from "~/database/schema/grids.server.ts"
+import { gates, grids, tiles } from "~/database/schema/grids.server.ts"
 import {
     create_update_timestamps,
     incrementing_id,
@@ -22,6 +22,7 @@ export const events = mysqlTable("events", {
 
     parent_id: int("parent_id"),
     parent_character_id: int("parent_character_id"),
+    parent_tile_id: int("parent_tile_id"),
     trigger: varchar("trigger", { length: 256 }),
 
     must_have_item_id: int("must_have_item_id"),
@@ -46,6 +47,10 @@ export const events_relations = relations(events, ({ one, many }) => ({
     parent_character: one(characters, {
         fields: [events.parent_character_id],
         references: [characters.id],
+    }),
+    parent_tile: one(tiles, {
+        fields: [events.parent_tile_id],
+        references: [tiles.id],
     }),
     must_have_item: one(items, {
         fields: [events.must_have_item_id],

@@ -55,7 +55,7 @@ export function TextPrompt({
                     autoFocus
                 />
                 <TextField.Input type="submit" hidden />
-                <TextField.Slot className="max-w-[0%] justify-end overflow-ellipsis whitespace-nowrap pr-3 text-right text-zinc-500">
+                <TextField.Slot className="pr-3 text-right text-zinc-500">
                     <Wait on={saveData} asChild>
                         {(saveData) => {
                             const suggestions = availableCommands(
@@ -66,9 +66,9 @@ export function TextPrompt({
                                 itemInstanceIdMap,
                             )
                             return suggestions
-                                .slice(0, 4)
+                                .slice(0, 5)
                                 .join(", ")
-                                .concat(suggestions.length > 4 ? " ..." : "")
+                                .concat(suggestions.length > 5 ? " ..." : "")
                         }}
                     </Wait>
                 </TextField.Slot>

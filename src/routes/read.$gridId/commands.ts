@@ -11,6 +11,7 @@ export const COMMANDS = {
     LOOK: "look",
     TAKE: "take",
     TALK: "talk",
+    EXPLORE: "explore",
 }
 
 export const SUBCOMMANDS = {
@@ -32,6 +33,7 @@ export const SUBCOMMANDS = {
     },
     [COMMANDS.TAKE]: {},
     [COMMANDS.TALK]: {},
+    [COMMANDS.EXPLORE]: {},
 }
 
 export function handleCommand(
@@ -257,6 +259,22 @@ export function handleCommand(
                     return ""
                 }
             }
+        case COMMANDS.EXPLORE:
+            const events = currentTile.events.filter(
+                getQualifiedEventsFilter(saveData, itemInstanceIdMap),
+            )
+            if (events.length > 0) {
+                return handleTriggeredEvent(
+                    events[Math.floor(Math.random() * events.length)].id,
+                    saveData,
+                    eventIdMap,
+                    clearCommandLog,
+                    setSaveData,
+                )
+            } else {
+                appendToCommandLog(command, "there is little to explore here")
+            }
+            return ""
         default:
             return handleUnrecognized(
                 rawCommand,
@@ -417,7 +435,9 @@ function getQualifiedEventsFilter(
     itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>,
 ) {
     return (
-        event: GridQuery["tiles"][0]["character_instances"][0]["character"]["dialogue"][0],
+        event:
+            | GridQuery["tiles"][0]["character_instances"][0]["character"]["dialogue"][0]
+            | GridQuery["tiles"][0]["events"][0],
     ) => {
         if (
             event.must_be_unlocked_id &&

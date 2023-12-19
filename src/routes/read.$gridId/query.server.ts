@@ -10,6 +10,13 @@ export function gridQuery(gridId: number) {
         with: {
             tiles: {
                 with: {
+                    events: {
+                        with: {
+                            unlocks: true,
+                            locks: true,
+                            child_events: true,
+                        },
+                    },
                     gates: {
                         with: {
                             requirements: {

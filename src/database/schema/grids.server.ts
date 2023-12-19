@@ -76,6 +76,7 @@ export const tiles_relations = relations(tiles, ({ one, many }) => ({
     gates_in: many(gates, { relationName: "to" }),
     item_instances: many(item_instances),
     character_instances: many(character_instances),
+    events: many(events),
 }))
 
 export const gates = mysqlTable("gates", {

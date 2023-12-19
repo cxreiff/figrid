@@ -56,7 +56,7 @@ export function Area({
                         return (
                             <div className="h-full overflow-auto px-5">
                                 <h3 className="pb-3 text-zinc-500">items</h3>
-                                <Table.Root className="pb-12">
+                                <Table.Root className="pb-8">
                                     <Table.Body className="align-middle">
                                         {items.length === 0 && (
                                             <Table.Row className="text-zinc-500">
@@ -107,7 +107,7 @@ export function Area({
                                 <h3 className="pb-3 text-zinc-500">
                                     characters
                                 </h3>
-                                <Table.Root>
+                                <Table.Root className="pb-8">
                                     <Table.Body className="align-middle">
                                         {tile.character_instances.length ===
                                             0 && (
@@ -152,6 +152,40 @@ export function Area({
                                                     </Table.Cell>
                                                 </Table.Row>
                                             ),
+                                        )}
+                                    </Table.Body>
+                                </Table.Root>
+                                <h3 className="pb-3 text-zinc-500">
+                                    additional
+                                </h3>
+                                <Table.Root>
+                                    <Table.Body className="align-middle">
+                                        {tile.events.length === 0 && (
+                                            <Table.Row className="text-zinc-500">
+                                                <Table.RowHeaderCell className="shadow-none">
+                                                    &nbsp; &nbsp; no other
+                                                    actions
+                                                </Table.RowHeaderCell>
+                                            </Table.Row>
+                                        )}
+                                        {tile.events.length > 0 && (
+                                            <Table.Row>
+                                                <Table.RowHeaderCell className="w-full">
+                                                    you can the explore the area
+                                                </Table.RowHeaderCell>
+                                                <Table.Cell>
+                                                    <Button
+                                                        variant="ghost"
+                                                        onClick={() =>
+                                                            handleCommand(
+                                                                "explore",
+                                                            )
+                                                        }
+                                                    >
+                                                        explore
+                                                    </Button>{" "}
+                                                </Table.Cell>
+                                            </Table.Row>
                                         )}
                                     </Table.Body>
                                 </Table.Root>
