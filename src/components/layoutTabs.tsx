@@ -1,6 +1,5 @@
-import { Tabs } from "@itsmapleleaf/radix-themes"
+import { Card, Tabs } from "@itsmapleleaf/radix-themes"
 import type { ReactNode } from "react"
-import { Card } from "~/components/card.tsx"
 
 export function LayoutTabs<T extends string[]>({
     names,

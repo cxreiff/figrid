@@ -1,7 +1,7 @@
+import { Card } from "@itsmapleleaf/radix-themes"
 import { Link } from "@remix-run/react"
 import type { ReactNode } from "react"
 import type { AuthUser } from "~/auth/auth.server.ts"
-import { Card } from "~/components/card.tsx"
 import { ProfileButton } from "~/components/profileButton.tsx"
 
 export function Layout({

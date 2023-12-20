@@ -4,7 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
-#app {
+.dark body,
+.dark #theme {
+    --color-page-background: black;
+    --color-panel: black;
+    --color-surface: black;
     --cursor-button: pointer;
 }
 
@@ -31,4 +35,8 @@ input {
 
 .no-card-padding {
     --card-padding: 0;
+}
+
+.rt-TextFieldChrome {
+    background-image: none;
 }

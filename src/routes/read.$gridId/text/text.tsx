@@ -1,5 +1,5 @@
+import { Card } from "@itsmapleleaf/radix-themes"
 import { useRef, type Dispatch, type SetStateAction, useEffect } from "react"
-import { Card } from "~/components/card.tsx"
 import { Wait } from "~/components/wait.tsx"
 import type {
     IdMap,

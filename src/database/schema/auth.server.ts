@@ -84,15 +84,23 @@ export const sessions_relations = relations(sessions, ({ one }) => ({
     }),
 }))
 
-export const connections = mysqlTable("connections", {
-    ...incrementing_id,
-    ...create_update_timestamps,
+export const connections = mysqlTable(
+    "connections",
+    {
+        ...incrementing_id,
+        ...create_update_timestamps,
 
-    provider_name: varchar("provider_name", { length: 256 }).unique().notNull(),
-    provider_id: varchar("provider_id", { length: 256 }).unique().notNull(),
+        provider_name: varchar("provider_name", { length: 256 })
+            .unique()
+            .notNull(),
+        provider_id: varchar("provider_id", { length: 256 }).unique().notNull(),
 
-    user_id: int("user_id"),
-})
+        user_id: int("user_id"),
+    },
+    (t) => ({
+        provider: uniqueIndex("provider").on(t.provider_id, t.provider_name),
+    }),
+)
 
 export const connections_relations = relations(connections, ({ one }) => ({
     user: one(users, {

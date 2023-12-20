@@ -1,5 +1,4 @@
-import { Button, Table } from "@itsmapleleaf/radix-themes"
-import { Card } from "~/components/card.tsx"
+import { Button, Card, Table } from "@itsmapleleaf/radix-themes"
 import { Image } from "~/components/image.tsx"
 import { Wait } from "~/components/wait.tsx"
 import { availableItemsMap } from "~/routes/read.$gridId/commands.ts"
@@ -25,7 +24,7 @@ export function Area({
 }) {
     return (
         <>
-            <Card className="mb-4 h-1/2 bg-zinc-950">
+            <Card className="mb-4 h-1/2">
                 <Wait on={saveData}>
                     {(saveData) => {
                         const tile = tileIdMap[saveData.currentTileId]

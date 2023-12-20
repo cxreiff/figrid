@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm"
+import { and, eq } from "drizzle-orm"
 import { GitHubStrategy } from "remix-auth-github"
 import { z } from "zod"
 import { getSessionExpirationDate } from "~/auth/auth.server.ts"
@@ -12,6 +12,8 @@ import {
 
 export const GITHUB_STRATEGY = "GITHUB_STRATEGY"
 
+const queryResponseParser = z.object({ insertId: z.coerce.number() })
+
 export const gitHubStrategy = new GitHubStrategy(
     {
         clientID: process.env.GITHUB_CLIENT_ID,
@@ -24,46 +26,41 @@ export const gitHubStrategy = new GitHubStrategy(
     async ({ profile }) => {
         const email = profile.emails[0].value
 
-        let user = await db.query.users.findFirst({
-            with: { connections: true, profiles: true },
-            where: eq(users.email, profile.emails[0].value),
+        let connection = await db.query.connections.findFirst({
+            with: { user: { with: { profiles: true } } },
+            where: and(
+                eq(connections.provider_id, profile.id),
+                eq(connections.provider_name, GITHUB_STRATEGY),
+            ),
         })
 
-        if (!user) {
-            let newUser = {
-                email,
-                alias: profile.displayName,
-                name: profile.name.givenName,
-            }
-            const response = await db.insert(users).values(newUser)
-            const { insertId: user_id } = z
-                .object({ insertId: z.coerce.number() })
-                .parse(response)
+        let user = connection?.user
 
+        if (!connection) {
+            const { insertId: user_id } = queryResponseParser.parse(
+                await db.insert(users).values({
+                    email,
+                    alias: profile.displayName,
+                    name: profile.name.givenName,
+                }),
+            )
             await db.insert(profiles).values({
                 user_id,
                 image_url: profile.photos?.[0].value,
             })
+            await db.insert(connections).values({
+                user_id,
+                provider_id: profile.id,
+                provider_name: GITHUB_STRATEGY,
+            })
             user = await db.query.users.findFirst({
-                with: { connections: true, profiles: true },
+                with: { profiles: true },
                 where: eq(users.id, user_id),
             })
         }
 
         if (!user) {
             throw Error("failed to create a user")
-        }
-
-        if (
-            !user.connections
-                .map((connection) => connection.provider_name)
-                .includes(GITHUB_STRATEGY)
-        ) {
-            await db.insert(connections).values({
-                user_id: user.id,
-                provider_id: profile.id,
-                provider_name: GITHUB_STRATEGY,
-            })
         }
 
         await db.insert(sessions).values({

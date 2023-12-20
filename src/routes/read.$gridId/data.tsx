@@ -1,6 +1,5 @@
-import { Button, IconButton } from "@itsmapleleaf/radix-themes"
+import { Button, Card, IconButton } from "@itsmapleleaf/radix-themes"
 import { TrashIcon } from "@radix-ui/react-icons"
-import { Card } from "~/components/card.tsx"
 import { Image } from "~/components/image.tsx"
 import { Wait } from "~/components/wait.tsx"
 import { TILE_FALLBACK_IMAGE } from "~/routes/read.$gridId/area.tsx"

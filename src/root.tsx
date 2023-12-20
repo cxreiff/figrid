@@ -40,15 +40,8 @@ export default function App() {
                 <Links />
             </head>
             <body>
-                <Theme accentColor="ruby">
-                    <div
-                        id="app"
-                        className={
-                            "flex min-h-screen flex-col items-center bg-gradient-to-b from-zinc-800 to-zinc-950 font-sans"
-                        }
-                    >
-                        <Outlet />
-                    </div>
+                <Theme id="theme" accentColor="ruby">
+                    <Outlet />
                 </Theme>
                 <ScrollRestoration />
                 <Scripts />
