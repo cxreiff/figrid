@@ -35,6 +35,9 @@ dependencies:
   '@vercel/remix':
     specifier: ^2.4.0
     version: 2.4.0(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
+  '@vercel/speed-insights':
+    specifier: ^1.0.2
+    version: 1.0.2
   clsx:
     specifier: ^2.0.0
     version: 2.0.0
@@ -3404,6 +3407,11 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     transitivePeerDependencies:
       - typescript
+    dev: false
+
+  /@vercel/speed-insights@1.0.2:
+    resolution: {integrity: sha512-y5HWeB6RmlyVYxJAMrjiDEz8qAIy2cit0fhBq+MD78WaUwQvuBnQlX4+5MuwVTWi46bV3klaRMq83u9zUy1KOg==}
+    requiresBuild: true
     dev: false
 
   /@web3-storage/multipart-parser@1.0.0:

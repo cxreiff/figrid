@@ -10,6 +10,7 @@ import {
 } from "@remix-run/react"
 import { Analytics } from "@vercel/analytics/react"
 import { type LinksFunction, type MetaFunction } from "@vercel/remix"
+import { SpeedInsights } from "@vercel/speed-insights/remix"
 
 import stylesheet from "~/styles.css"
 
@@ -47,6 +48,7 @@ export default function App() {
                 <Scripts />
                 <LiveReload />
                 <Analytics />
+                <SpeedInsights />
             </body>
         </html>
     )
