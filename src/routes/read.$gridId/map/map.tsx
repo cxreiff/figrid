@@ -4,29 +4,21 @@ import {
     CubeIcon,
     PersonIcon,
 } from "@radix-ui/react-icons"
-import { Wait } from "~/components/wait.tsx"
+import { useContext } from "react"
+import { WaitSaveData } from "~/components/waitSaveData.tsx"
 import { availableItemsMap } from "~/routes/read.$gridId/commands.ts"
-import type {
-    CoordsMap,
-    IdMap,
-    TileWithCoords,
-} from "~/routes/read.$gridId/processing.server.ts"
+import type { TileWithCoords } from "~/routes/read.$gridId/processing.server.ts"
+import type { loader } from "~/routes/read.$gridId/route.tsx"
+import { ContextCommand } from "~/utilities/contextCommand.ts"
 import { indicesArray } from "~/utilities/misc.ts"
-import type { SaveData } from "~/utilities/useSaveData.ts"
+import { useSuperLoaderData } from "~/utilities/superjson.ts"
 
 const MAP_DIMENSIONS = { x: 5, y: 13 }
 
-export function Map({
-    saveData,
-    tileIdMap,
-    coordsMap,
-    handleCommand,
-}: {
-    saveData?: SaveData
-    tileIdMap: IdMap<TileWithCoords>
-    coordsMap: CoordsMap
-    handleCommand: (command: string) => void
-}) {
+export function Map() {
+    const { tileIdMap, tileCoordsMap } = useSuperLoaderData<typeof loader>()
+    const handleCommand = useContext(ContextCommand)
+
     const offsetMatrix = indicesArray(MAP_DIMENSIONS.y).map((y) =>
         indicesArray(MAP_DIMENSIONS.x).map((x) => [
             x - Math.ceil(MAP_DIMENSIONS.x / 2),
@@ -43,17 +35,17 @@ export function Map({
             <div className="grid h-full w-full grid-cols-5 gap-3">
                 {offsetMatrix.map((row) =>
                     row.map((offset) => (
-                        <Wait
+                        <WaitSaveData
                             key={offset.join(",")}
-                            on={saveData}
                             meanwhile={<BlankTile />}
                             asChild
                         >
                             {(saveData) => {
-                                const currentTile =
-                                    tileIdMap[saveData.currentTileId]
+                                const currentTile = tileIdMap[
+                                    saveData.currentTileId
+                                ] as TileWithCoords
                                 const tileId =
-                                    coordsMap[
+                                    tileCoordsMap[
                                         [
                                             currentTile.coords![0] + offset[0],
                                             currentTile.coords![1] + offset[1],
@@ -91,64 +83,20 @@ export function Map({
                                         {mapTile.gates.map((gate) => {
                                             switch (gate.type) {
                                                 case "north":
-                                                    return (
-                                                        <div
-                                                            key={`${gate.id}`}
-                                                            className={`absolute -top-2 left-0 right-0 mx-auto h-2 w-4 ${
-                                                                gate.requirements.find(
-                                                                    ({
-                                                                        lock,
-                                                                    }) =>
-                                                                        !saveData.unlocked.includes(
-                                                                            lock.id,
-                                                                        ),
-                                                                )
-                                                                    ? "bg-zinc-400"
-                                                                    : "bg-[var(--accent-8)]"
-                                                            }`}
-                                                        />
-                                                    )
                                                 case "east":
-                                                    return (
-                                                        <div
-                                                            key={`${gate.id}`}
-                                                            className={`absolute -right-2 bottom-0 top-0 my-auto h-4 w-2 ${
-                                                                gate.requirements.find(
-                                                                    ({
-                                                                        lock,
-                                                                    }) =>
-                                                                        !saveData.unlocked.includes(
-                                                                            lock.id,
-                                                                        ),
-                                                                )
-                                                                    ? "bg-zinc-400"
-                                                                    : "bg-[var(--accent-8)]"
-                                                            }`}
-                                                        />
-                                                    )
                                                 case "south":
-                                                    return (
-                                                        <div
-                                                            key={`${gate.id}`}
-                                                            className={`absolute -bottom-2 left-0 right-0 mx-auto h-2 w-4 ${
-                                                                gate.requirements.find(
-                                                                    ({
-                                                                        lock,
-                                                                    }) =>
-                                                                        !saveData.unlocked.includes(
-                                                                            lock.id,
-                                                                        ),
-                                                                )
-                                                                    ? "bg-zinc-400"
-                                                                    : "bg-[var(--accent-8)]"
-                                                            }`}
-                                                        />
-                                                    )
                                                 case "west":
                                                     return (
                                                         <div
                                                             key={`${gate.id}`}
-                                                            className={`absolute -left-2 bottom-0 top-0 my-auto h-4 w-2 ${
+                                                            className={`absolute ${
+                                                                {
+                                                                    north: "-top-2 left-0 right-0 mx-auto h-2 w-4",
+                                                                    east: "-right-2 bottom-0 top-0 my-auto h-4 w-2",
+                                                                    south: "-bottom-2 left-0 right-0 mx-auto h-2 w-4",
+                                                                    west: "-left-2 bottom-0 top-0 my-auto h-4 w-2",
+                                                                }[gate.type]
+                                                            } ${
                                                                 gate.requirements.find(
                                                                     ({
                                                                         lock,
@@ -217,7 +165,7 @@ export function Map({
                                     </div>
                                 )
                             }}
-                        </Wait>
+                        </WaitSaveData>
                     )),
                 )}
             </div>

@@ -1,37 +1,33 @@
 import { TextField } from "@itsmapleleaf/radix-themes"
 import { ChevronRightIcon } from "@radix-ui/react-icons"
 import { Form } from "@remix-run/react"
-import type { Dispatch, RefObject, SetStateAction } from "react"
-import { Wait } from "~/components/wait.tsx"
+import {
+    useContext,
+    type Dispatch,
+    type RefObject,
+    type SetStateAction,
+} from "react"
+import { WaitSaveData } from "~/components/waitSaveData.tsx"
 import { availableCommands } from "~/routes/read.$gridId/commands.ts"
-import type {
-    IdMap,
-    TileWithCoords,
-} from "~/routes/read.$gridId/processing.server.ts"
-import type { GridQuery } from "~/routes/read.$gridId/query.server.ts"
-import type { SaveData } from "~/utilities/useSaveData.ts"
+import type { loader } from "~/routes/read.$gridId/route.tsx"
+import { ContextCommand } from "~/utilities/contextCommand.ts"
+import { useSuperLoaderData } from "~/utilities/superjson.ts"
 
 export function TextPrompt({
-    saveData,
     command,
     textRef,
     inputRef,
-    tileIdMap,
-    eventIdMap,
-    itemInstanceIdMap,
     setCommand,
-    handleCommand,
 }: {
-    saveData?: SaveData
     command: string
     textRef: RefObject<HTMLDivElement>
     inputRef: RefObject<HTMLInputElement>
-    tileIdMap: IdMap<TileWithCoords>
-    eventIdMap: IdMap<GridQuery["events"][0]>
-    itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>
     setCommand: Dispatch<SetStateAction<string>>
-    handleCommand: (command: string) => void
 }) {
+    const { tileIdMap, eventIdMap, itemInstanceIdMap } =
+        useSuperLoaderData<typeof loader>()
+    const handleCommand = useContext(ContextCommand)
+
     return (
         <Form
             className="h-12 border-zinc-700 pb-1"
@@ -56,7 +52,7 @@ export function TextPrompt({
                 />
                 <TextField.Input type="submit" hidden />
                 <TextField.Slot className="pr-3 text-right text-zinc-500">
-                    <Wait on={saveData} asChild>
+                    <WaitSaveData asChild>
                         {(saveData) => {
                             const suggestions = availableCommands(
                                 command,
@@ -70,7 +66,7 @@ export function TextPrompt({
                                 .join(", ")
                                 .concat(suggestions.length > 5 ? " ..." : "")
                         }}
-                    </Wait>
+                    </WaitSaveData>
                 </TextField.Slot>
             </TextField.Root>
         </Form>

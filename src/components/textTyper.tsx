@@ -40,7 +40,7 @@ export function TextTyper({
     useEffect(() => {
         if (hidden > 0) {
             const interval = setTimeout(() => {
-                setHidden((prevHidden) => Math.max(prevHidden - 4, 0))
+                setHidden((prevHidden) => Math.max(prevHidden - 2, 0))
             }, 32)
             return () => clearTimeout(interval)
         } else {

@@ -1,3 +1,6 @@
+export const TILE_FALLBACK_IMAGE = "https://img.figrid.io/tiles/kitty.png"
+export const PLAYER_FALLBACK_IMAGE = "https://img.figrid.io/tiles/kitty.png"
+
 export function indicesArray(size: number) {
     return Array(size)
         .fill(1)

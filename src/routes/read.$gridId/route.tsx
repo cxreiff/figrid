@@ -4,7 +4,7 @@ import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
 import { Layout } from "~/components/layout.tsx"
 import { Text } from "~/routes/read.$gridId/text/text.tsx"
-import { Map } from "~/routes/read.$gridId/map.tsx"
+import { Map } from "~/routes/read.$gridId/map/map.tsx"
 import {
     generateIdMap,
     generateTileCoordsMap,
@@ -12,11 +12,13 @@ import {
 import { handleCommand } from "~/routes/read.$gridId/commands.ts"
 import { useSaveData } from "~/utilities/useSaveData.ts"
 import { LayoutTabs } from "~/components/layoutTabs.tsx"
-import { Area } from "~/routes/read.$gridId/area.tsx"
-import { Status } from "~/routes/read.$gridId/status.tsx"
-import { Data } from "~/routes/read.$gridId/data.tsx"
+import { Area } from "~/routes/read.$gridId/area/area.tsx"
+import { Status } from "~/routes/read.$gridId/status/status.tsx"
+import { Data } from "~/routes/read.$gridId/data/data.tsx"
 import { gridQuery } from "~/routes/read.$gridId/query.server.ts"
 import { superjson, useSuperLoaderData } from "~/utilities/superjson.ts"
+import { ContextSaveData } from "~/utilities/contextSaveData.ts"
+import { ContextCommand } from "~/utilities/contextCommand.ts"
 
 const paramsSchema = z.object({ gridId: z.coerce.number() })
 
@@ -52,15 +54,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 }
 
 export default function Route() {
-    const {
-        user,
-        grid,
-        tileIdMap,
-        eventIdMap,
-        itemIdMap,
-        itemInstanceIdMap,
-        tileCoordsMap,
-    } = useSuperLoaderData<typeof loader>()
+    const { user, grid, tileIdMap, eventIdMap, itemInstanceIdMap } =
+        useSuperLoaderData<typeof loader>()
 
     const [command, setCommand] = useState("")
     const [commandLog, setCommandLog] = useState<string[]>([])
@@ -87,54 +82,29 @@ export default function Route() {
     }
 
     return (
-        <Layout
-            user={user}
-            title={grid.name}
-            left={
-                <LayoutTabs names={["area", "status", "data"]}>
-                    <Area
-                        saveData={saveData}
-                        tileIdMap={tileIdMap}
-                        eventIdMap={eventIdMap}
-                        handleCommand={handleCommandClosure}
-                    />
-                    <Status
-                        saveData={saveData}
-                        player={grid.player}
-                        itemIdMap={itemIdMap}
-                        itemInstanceIdMap={itemInstanceIdMap}
-                        handleCommand={handleCommandClosure}
-                    />
-                    <Data
-                        saveData={saveData}
-                        userId={user?.id || 0}
-                        gridId={grid.id}
-                        tileIdMap={tileIdMap}
-                        replaceSave={replaceSave}
-                    />
-                </LayoutTabs>
-            }
-            right={
-                <Map
-                    saveData={saveData}
-                    tileIdMap={tileIdMap}
-                    coordsMap={tileCoordsMap}
-                    handleCommand={handleCommandClosure}
+        <ContextSaveData.Provider value={saveData}>
+            <ContextCommand.Provider value={handleCommandClosure}>
+                <Layout
+                    user={user}
+                    title={grid.name}
+                    left={
+                        <LayoutTabs names={["area", "status", "data"]}>
+                            <Area />
+                            <Status />
+                            <Data replaceSave={replaceSave} />
+                        </LayoutTabs>
+                    }
+                    right={<Map />}
+                    center={
+                        <Text
+                            saveData={saveData}
+                            command={command}
+                            commandLog={commandLog}
+                            setCommand={setCommand}
+                        />
+                    }
                 />
-            }
-            center={
-                <Text
-                    saveData={saveData}
-                    tileIdMap={tileIdMap}
-                    itemIdMap={itemIdMap}
-                    itemInstanceIdMap={itemInstanceIdMap}
-                    eventIdMap={eventIdMap}
-                    command={command}
-                    commandLog={commandLog}
-                    setCommand={setCommand}
-                    handleCommand={handleCommandClosure}
-                />
-            }
-        />
+            </ContextCommand.Provider>
+        </ContextSaveData.Provider>
     )
 }
