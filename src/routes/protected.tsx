@@ -1,3 +1,4 @@
+import { Button } from "@itsmapleleaf/radix-themes"
 import { Form, useLoaderData } from "@remix-run/react"
 import {
     json,
@@ -23,13 +24,20 @@ export default function Login() {
     const { user } = useLoaderData<typeof loader>()
 
     return (
-        <Form className="flex flex-col gap-2 p-4" method="post">
-            <div>logged in</div>
-            <div>{user.email}</div>
-            <div>{user.alias}</div>
-            <div>{user.name}</div>
-            <div>{user.type}</div>
-            <button type="submit">log out</button>
+        <Form
+            className="flex min-h-screen flex-col items-center justify-center gap-2 p-4"
+            method="post"
+        >
+            <div className="mb-4">logged in</div>
+            <div className="w-fit">
+                <div>{user.email}</div>
+                <div>{user.alias}</div>
+                <div>{user.name}</div>
+                <div>{user.type}</div>
+            </div>
+            <Button type="submit" variant="outline" className="mt-8">
+                log out
+            </Button>
         </Form>
     )
 }

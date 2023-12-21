@@ -5,5 +5,4 @@ import radixPlugin from "tailwindcss-radix"
 export default {
     content: ["./src/**/*.{ts,tsx}"],
     plugins: [animatePlugin, radixPlugin],
-    important: true,
 } satisfies Config

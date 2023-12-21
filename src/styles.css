@@ -40,3 +40,7 @@ input {
 .rt-TextFieldChrome {
     background-image: none;
 }
+
+.rt-BaseButton:where(.rt-variant-outline):where(:hover) {
+    background-color: var(--accent-a2);
+}
