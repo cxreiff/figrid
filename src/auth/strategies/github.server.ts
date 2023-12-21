@@ -27,7 +27,7 @@ export const gitHubStrategy = new GitHubStrategy(
         const email = profile.emails[0].value
 
         let connection = await db.query.connections.findFirst({
-            with: { user: { with: { profiles: true } } },
+            with: { user: { with: { profile: true } } },
             where: and(
                 eq(connections.provider_id, profile.id),
                 eq(connections.provider_name, GITHUB_STRATEGY),
@@ -54,7 +54,7 @@ export const gitHubStrategy = new GitHubStrategy(
                 provider_name: GITHUB_STRATEGY,
             })
             user = await db.query.users.findFirst({
-                with: { profiles: true },
+                with: { profile: true },
                 where: eq(users.id, user_id),
             })
         }
@@ -74,7 +74,7 @@ export const gitHubStrategy = new GitHubStrategy(
             email: user.email,
             name: user.name,
             type: user.type,
-            profile: user.profiles,
+            profile: user.profile,
         }
     },
 )

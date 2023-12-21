@@ -19,7 +19,7 @@ export const formStrategy = new FormStrategy(async ({ form }) => {
         .parse(Object.fromEntries(form))
 
     const user = await db.query.users.findFirst({
-        with: { password: true, profiles: true },
+        with: { password: true, profile: true },
         where: eq(users.email, email),
     })
 
@@ -45,8 +45,6 @@ export const formStrategy = new FormStrategy(async ({ form }) => {
         email: user.email,
         name: user.name,
         type: user.type,
-        profile: {
-            image_url: user.profiles.image_url,
-        },
+        profile: user.profile,
     }
 })

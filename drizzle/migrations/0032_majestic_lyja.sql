@@ -1,0 +1,1 @@
+ALTER TABLE `connections` ADD CONSTRAINT `provider` UNIQUE(`provider_id`,`provider_name`);

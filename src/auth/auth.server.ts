@@ -18,7 +18,7 @@ export type AuthUser = Pick<
     InferSelectModel<typeof users>,
     "id" | "alias" | "email" | "name" | "type"
 > & {
-    profile: Pick<InferSelectModel<typeof profiles>, "image_url">
+    profile: InferSelectModel<typeof profiles>
 }
 
 export const SESSION_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 30
