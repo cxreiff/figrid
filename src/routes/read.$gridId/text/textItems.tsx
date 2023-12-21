@@ -19,16 +19,26 @@ export function TextItems({
             {items.map(({ name, id, summary }) =>
                 summary ? (
                     <span key={id} className="inline-block pr-2">
-                        <TextTyper className="inline-block">
-                            {"you see "}
-                        </TextTyper>
-                        <Button
-                            variant="ghost"
-                            className="text-base"
-                            onClick={() => handleCommand(`look ${name}`)}
-                        >
-                            {summary}
-                        </Button>
+                        {`you see ${summary}`
+                            .split(name)
+                            .flatMap((text, index) => [
+                                <TextTyper key={index} className="inline-block">
+                                    {text}
+                                </TextTyper>,
+                                <Button
+                                    key={index}
+                                    variant="ghost"
+                                    className="text-base"
+                                    onClick={() =>
+                                        handleCommand(`look ${name}`)
+                                    }
+                                >
+                                    <TextTyper className="inline-block">
+                                        {name}
+                                    </TextTyper>
+                                </Button>,
+                            ])
+                            .slice(0, -1)}
                         .
                     </span>
                 ) : null,
