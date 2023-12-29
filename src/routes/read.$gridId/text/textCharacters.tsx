@@ -19,13 +19,13 @@ export function TextCharacters({
                                 .split(name)
                                 .flatMap((text, index) => [
                                     <TextTyper
-                                        key={index}
+                                        key={`text.${index}`}
                                         className="inline-block"
                                     >
                                         {text}
                                     </TextTyper>,
                                     <Button
-                                        key={index}
+                                        key={`button.${index}`}
                                         variant="ghost"
                                         className="text-base"
                                         onClick={() =>

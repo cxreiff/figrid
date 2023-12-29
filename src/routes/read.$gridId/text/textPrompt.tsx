@@ -47,7 +47,19 @@ export function TextPrompt({
                     onChange={(event) =>
                         setCommand(event.target.value.toLowerCase())
                     }
-                    onKeyDown={() => !command && textRef.current?.click()}
+                    onKeyDown={(e) => {
+                        if (
+                            !(
+                                e.altKey ||
+                                e.ctrlKey ||
+                                e.shiftKey ||
+                                e.metaKey
+                            ) &&
+                            !command
+                        ) {
+                            textRef.current?.click()
+                        }
+                    }}
                     autoFocus
                 />
                 <TextField.Input type="submit" hidden />

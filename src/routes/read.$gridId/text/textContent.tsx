@@ -36,7 +36,11 @@ export function TextContent({
                         <TextTyper className="pb-6 italic text-[var(--accent-8)]">
                             {currentEvent?.summary || currentTile.name}
                         </TextTyper>
-                        <TextTyper className="pb-6" textRef={textRef}>
+                        <TextTyper
+                            id={"text-description"}
+                            className="pb-6"
+                            textRef={textRef}
+                        >
                             {(saveData.currentEventId
                                 ? eventIdMap[saveData.currentEventId]
                                       .description

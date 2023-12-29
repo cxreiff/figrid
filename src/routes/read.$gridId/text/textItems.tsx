@@ -22,11 +22,14 @@ export function TextItems({
                         {`you see ${summary}`
                             .split(name)
                             .flatMap((text, index) => [
-                                <TextTyper key={index} className="inline-block">
+                                <TextTyper
+                                    key={`text.${index}`}
+                                    className="inline-block"
+                                >
                                     {text}
                                 </TextTyper>,
                                 <Button
-                                    key={index}
+                                    key={`button.${index}`}
                                     variant="ghost"
                                     className="text-base"
                                     onClick={() =>

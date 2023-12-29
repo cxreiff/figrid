@@ -17,8 +17,20 @@ export function Text({
 }) {
     const inputRef = useRef<HTMLInputElement>(null)
     const textRef = useRef<HTMLDivElement>(null)
+    const scrollRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => inputRef?.current?.focus(), [saveData?.currentTileId])
+
+    useEffect(() => {
+        setTimeout(() => {
+            if (scrollRef.current) {
+                scrollRef.current.scrollTo({
+                    top: scrollRef.current.scrollHeight,
+                    behavior: "smooth",
+                })
+            }
+        }, 64)
+    }, [commandLog.length])
 
     return (
         <div
@@ -29,15 +41,18 @@ export function Text({
             }}
         >
             <Card className="h-[calc(100%-4rem)]">
-                <div className="h-full flex-1 overflow-auto p-5">
+                <div
+                    ref={scrollRef}
+                    className="h-full flex-1 overflow-auto p-5"
+                >
                     <TextContent commandLog={commandLog} textRef={textRef} />
                 </div>
             </Card>
             <TextPrompt
                 command={command}
+                setCommand={setCommand}
                 inputRef={inputRef}
                 textRef={textRef}
-                setCommand={setCommand}
             />
         </div>
     )
