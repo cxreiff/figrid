@@ -33,7 +33,7 @@ export function TextContent({
 
                 return (
                     <>
-                        <TextTyper className="pb-6 italic text-[var(--accent-8)]">
+                        <TextTyper className="pb-6 italic text-accent">
                             {currentEvent?.summary || currentTile.name}
                         </TextTyper>
                         <TextTyper

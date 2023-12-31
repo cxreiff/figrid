@@ -1,4 +1,4 @@
-import { Card } from "@itsmapleleaf/radix-themes"
+import { Card } from "~/components/ui/card.tsx"
 import { DataLocal } from "~/routes/read.$gridId/data/dataLocal.tsx"
 import { type useSaveData } from "~/utilities/useSaveData.ts"
 

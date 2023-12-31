@@ -1,9 +1,15 @@
-import { Button, Table } from "@itsmapleleaf/radix-themes"
 import { useContext } from "react"
 import type { loader } from "~/routes/read.$gridId/route.tsx"
 import { WaitSaveData } from "~/components/waitSaveData.tsx"
 import { ContextCommand } from "~/utilities/contextCommand.ts"
 import { useSuperLoaderData } from "~/utilities/superjson.ts"
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableRow,
+} from "~/components/ui/table.tsx"
+import { Button } from "~/components/ui/button.tsx"
 
 export function AreaAdditional() {
     const { tileIdMap } = useSuperLoaderData<typeof loader>()
@@ -14,23 +20,23 @@ export function AreaAdditional() {
             {(saveData) => {
                 const currentTile = tileIdMap[saveData.currentTileId]
                 return (
-                    <>
-                        <h3 className="pb-3 text-zinc-500">additional</h3>
-                        <Table.Root>
-                            <Table.Body className="align-middle">
+                    <div className="pb-8">
+                        <h3 className="text-muted-foreground">additional</h3>
+                        <Table>
+                            <TableBody className="align-middle">
                                 {currentTile.events.length === 0 && (
-                                    <Table.Row className="text-zinc-500">
-                                        <Table.RowHeaderCell className="shadow-none">
+                                    <TableRow className="text-muted">
+                                        <TableCell className="shadow-none">
                                             &nbsp; &nbsp; no other actions
-                                        </Table.RowHeaderCell>
-                                    </Table.Row>
+                                        </TableCell>
+                                    </TableRow>
                                 )}
                                 {currentTile.events.length > 0 && (
-                                    <Table.Row>
-                                        <Table.RowHeaderCell className="w-full">
+                                    <TableRow>
+                                        <TableCell className="w-full">
                                             you can the explore the area
-                                        </Table.RowHeaderCell>
-                                        <Table.Cell>
+                                        </TableCell>
+                                        <TableCell>
                                             <Button
                                                 variant="ghost"
                                                 onClick={() =>
@@ -39,12 +45,12 @@ export function AreaAdditional() {
                                             >
                                                 explore
                                             </Button>{" "}
-                                        </Table.Cell>
-                                    </Table.Row>
+                                        </TableCell>
+                                    </TableRow>
                                 )}
-                            </Table.Body>
-                        </Table.Root>
-                    </>
+                            </TableBody>
+                        </Table>
+                    </div>
                 )
             }}
         </WaitSaveData>

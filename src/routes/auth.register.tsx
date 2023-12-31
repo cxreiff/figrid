@@ -1,4 +1,3 @@
-import { Button, Separator, TextField } from "@itsmapleleaf/radix-themes"
 import {
     AvatarIcon,
     EnvelopeClosedIcon,
@@ -15,6 +14,9 @@ import {
     hashPassword,
 } from "~/auth/auth.server.ts"
 import { FORM_STRATEGY } from "~/auth/strategies/form.server.ts"
+import { Button } from "~/components/ui/button.tsx"
+import { IconInput } from "~/components/ui/input.tsx"
+import { Separator } from "~/components/ui/separator.tsx"
 import { db } from "~/database/database.server.ts"
 import {
     passwords,
@@ -94,53 +96,46 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function Register() {
     return (
         <div className="flex min-h-screen flex-col items-center justify-center">
-            <Form action="/auth/github" method="post" className="p-4">
-                <Button type="submit" variant="outline">
-                    <GitHubLogoIcon /> Login with GitHub
+            <Form action="/auth/github" method="post" className="w-72">
+                <Button
+                    type="submit"
+                    variant="outline"
+                    className="relative w-full"
+                >
+                    <GitHubLogoIcon className="absolute left-3" />
+                    <span className="w-full px-10">Login with GitHub</span>
                 </Button>
             </Form>
-            <Separator size={"3"} className="my-4" />
-            <Form className="flex w-fit flex-col gap-2 p-4" method="post">
-                <TextField.Root className="mb-2">
-                    <TextField.Slot>
-                        <EnvelopeClosedIcon />
-                    </TextField.Slot>
-                    <TextField.Input
-                        name="email"
-                        type="email"
-                        placeholder="email address"
-                    />
-                </TextField.Root>
-                <TextField.Root className="mb-2">
-                    <TextField.Slot>
-                        <AvatarIcon />
-                    </TextField.Slot>
-                    <TextField.Input
-                        name="alias"
-                        type="text"
-                        placeholder="user alias"
-                    />
-                </TextField.Root>
-                <TextField.Root className="mb-2">
-                    <TextField.Slot>
-                        <LockClosedIcon />
-                    </TextField.Slot>
-                    <TextField.Input
-                        name="password"
-                        type="password"
-                        placeholder="password"
-                    />
-                </TextField.Root>
-                <TextField.Root className="mb-2">
-                    <TextField.Slot>
-                        <LockClosedIcon />
-                    </TextField.Slot>
-                    <TextField.Input
-                        name="confirm"
-                        type="password"
-                        placeholder="confirm password"
-                    />
-                </TextField.Root>
+            <Separator className="my-4 w-64" />
+            <Form className="flex w-72 flex-col gap-2" method="post">
+                <IconInput
+                    className="mb-2"
+                    icon={EnvelopeClosedIcon}
+                    name="email"
+                    type="email"
+                    placeholder="email address"
+                />
+                <IconInput
+                    className="mb-2"
+                    icon={AvatarIcon}
+                    name="alias"
+                    type="text"
+                    placeholder="user alias"
+                />
+                <IconInput
+                    className="mb-2"
+                    icon={LockClosedIcon}
+                    name="password"
+                    type="password"
+                    placeholder="password"
+                />
+                <IconInput
+                    className="mb-2"
+                    icon={LockClosedIcon}
+                    name="confirm"
+                    type="password"
+                    placeholder="confirm password"
+                />
                 <Button type="submit" variant="outline">
                     register
                 </Button>

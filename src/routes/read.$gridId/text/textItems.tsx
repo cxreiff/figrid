@@ -1,5 +1,5 @@
-import { Button } from "@itsmapleleaf/radix-themes"
 import { TextTyper } from "~/components/textTyper.tsx"
+import { Button } from "~/components/ui/button.tsx"
 import { availableItemsMap } from "~/routes/read.$gridId/commands.ts"
 import type { TileWithCoords } from "~/routes/read.$gridId/processing.server.ts"
 import type { SaveData } from "~/utilities/useSaveData.ts"
@@ -30,7 +30,7 @@ export function TextItems({
                                 </TextTyper>,
                                 <Button
                                     key={`button.${index}`}
-                                    variant="ghost"
+                                    variant="inline"
                                     className="text-base"
                                     onClick={() =>
                                         handleCommand(`look ${name}`)

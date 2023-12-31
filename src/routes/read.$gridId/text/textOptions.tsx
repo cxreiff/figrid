@@ -1,4 +1,4 @@
-import { Button } from "@itsmapleleaf/radix-themes"
+import { Button } from "~/components/ui/button.tsx"
 import type { IdMap } from "~/routes/read.$gridId/processing.server.ts"
 import type { GridQuery } from "~/routes/read.$gridId/query.server.ts"
 import type { SaveData } from "~/utilities/useSaveData.ts"
@@ -41,7 +41,7 @@ export function TextOptions({
             return (
                 <Button
                     key={event.id}
-                    variant="ghost"
+                    variant="inline"
                     className="mx-2 mb-3 text-base"
                     onClick={() => handleCommand(trigger)}
                     disabled={!!itemMissing}

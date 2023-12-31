@@ -1,4 +1,3 @@
-import { Button, Separator, TextField } from "@itsmapleleaf/radix-themes"
 import {
     EnvelopeClosedIcon,
     GitHubLogoIcon,
@@ -7,6 +6,9 @@ import {
 import { Form } from "@remix-run/react"
 import { type LoaderFunctionArgs } from "@vercel/remix"
 import { auth } from "~/auth/auth.server.ts"
+import { Button } from "~/components/ui/button.tsx"
+import { Input } from "~/components/ui/input.tsx"
+import { Separator } from "~/components/ui/separator.tsx"
 
 export async function loader({ request }: LoaderFunctionArgs) {
     return auth.isAuthenticated(request, {
@@ -17,37 +19,40 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function Login() {
     return (
         <div className="flex min-h-screen flex-col items-center justify-center">
-            <Form action="/auth/github" method="post" className="p-4">
-                <Button type="submit" variant="outline">
-                    <GitHubLogoIcon /> Login with GitHub
+            <Form action="/auth/github" method="post" className="w-72">
+                <Button
+                    type="submit"
+                    variant="outline"
+                    className="relative w-full"
+                >
+                    <GitHubLogoIcon className="absolute left-3" />
+                    <span className="w-full px-10">Login with GitHub</span>
                 </Button>
             </Form>
-            <Separator size={"3"} className="my-4" />
+            <Separator className="my-4 w-64" />
             <Form
-                className="flex w-fit flex-col gap-2 p-4"
+                className="flex w-72 flex-col gap-2"
                 action="/auth/form"
                 method="post"
             >
-                <TextField.Root className="mb-2">
-                    <TextField.Slot>
-                        <EnvelopeClosedIcon />
-                    </TextField.Slot>
-                    <TextField.Input
+                <div className="relative mb-2 w-full">
+                    <EnvelopeClosedIcon className="absolute left-3 h-full" />
+                    <Input
+                        className="pl-10"
                         name="email"
                         type="email"
                         placeholder="email address"
                     />
-                </TextField.Root>
-                <TextField.Root className="mb-2">
-                    <TextField.Slot>
-                        <LockClosedIcon />
-                    </TextField.Slot>
-                    <TextField.Input
+                </div>
+                <div className="relative mb-2 w-full">
+                    <LockClosedIcon className="absolute left-3 h-full" />
+                    <Input
+                        className="pl-10"
                         name="password"
                         type="password"
                         placeholder="password"
                     />
-                </TextField.Root>
+                </div>
                 <Button variant="outline" type="submit">
                     log in
                 </Button>

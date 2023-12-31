@@ -6,4 +6,6 @@ export default {
     ignoredRouteFiles: ["**/.*"],
     watchPaths: ["./tailwind.config.ts"],
     serverDependenciesToBundle: ["tailwind-merge"],
+    tailwind: true,
+    postcss: true,
 }

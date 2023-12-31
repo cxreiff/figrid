@@ -1,19 +1,11 @@
-@import "@itsmapleleaf/radix-themes/styles.css";
+@import "~/tailwind.css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-.dark body,
-.dark #theme {
-    --color-page-background: black;
-    --color-panel: black;
-    --color-surface: black;
-    --cursor-button: pointer;
-}
-
-input {
-    caret-color: var(--accent-8);
+html {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI (Custom)", Roboto,
+        "Helvetica Neue", "Open Sans (Custom)", system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji";
+    font-weight: 300;
+    caret-color: hsl(var(--accent-foreground));
 }
 
 .faded-edge {
@@ -31,16 +23,4 @@ input {
 
 .pixel-image {
     image-rendering: pixelated;
-}
-
-.no-card-padding {
-    --card-padding: 0;
-}
-
-.rt-TextFieldChrome {
-    background-image: none;
-}
-
-.rt-BaseButton:where(.rt-variant-outline):where(:hover) {
-    background-color: var(--accent-a2);
 }

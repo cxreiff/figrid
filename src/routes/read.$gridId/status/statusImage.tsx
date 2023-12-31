@@ -11,7 +11,7 @@ export function StatusImage() {
             {() => {
                 const image = grid.player.image_url || PLAYER_FALLBACK_IMAGE
                 return (
-                    <div className="flex h-full items-center justify-center pb-8">
+                    <div className="flex h-full items-center justify-center">
                         <Image key={image} src={image} alt="placeholder" />
                     </div>
                 )

@@ -1,4 +1,3 @@
-import { Theme } from "@itsmapleleaf/radix-themes"
 import { cssBundleHref } from "@remix-run/css-bundle"
 import {
     Links,
@@ -7,10 +6,18 @@ import {
     Outlet,
     Scripts,
     ScrollRestoration,
+    useLoaderData,
 } from "@remix-run/react"
 import { Analytics } from "@vercel/analytics/react"
-import { type LinksFunction, type MetaFunction } from "@vercel/remix"
+import {
+    type LinksFunction,
+    type LoaderFunctionArgs,
+    type MetaFunction,
+} from "@vercel/remix"
 import { SpeedInsights } from "@vercel/speed-insights/remix"
+import clsx from "clsx"
+import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from "remix-themes"
+import { themeSessionResolver } from "~/utilities/themeSession.server.ts"
 
 import stylesheet from "~/styles.css"
 
@@ -28,9 +35,19 @@ export const links: LinksFunction = () => [
     { rel: "stylesheet", href: stylesheet },
 ]
 
-export default function App() {
+export async function loader({ request }: LoaderFunctionArgs) {
+    const { getTheme } = await themeSessionResolver(request)
+    return {
+        theme: getTheme(),
+    }
+}
+
+export function App() {
+    const { theme } = useLoaderData<typeof loader>()
+    const [themeClass] = useTheme()
+
     return (
-        <html lang="en" className="dark-theme dark" suppressHydrationWarning>
+        <html lang="en" className={clsx(themeClass)} suppressHydrationWarning>
             <head>
                 <meta charSet="utf-8" />
                 <meta
@@ -38,12 +55,11 @@ export default function App() {
                     content="width=device-width, initial-scale=1"
                 />
                 <Meta />
+                <PreventFlashOnWrongTheme ssrTheme={Boolean(theme)} />
                 <Links />
             </head>
             <body>
-                <Theme id="theme" accentColor="ruby">
-                    <Outlet />
-                </Theme>
+                <Outlet />
                 <ScrollRestoration />
                 <Scripts />
                 <LiveReload />
@@ -51,5 +67,15 @@ export default function App() {
                 <SpeedInsights />
             </body>
         </html>
+    )
+}
+
+export default function Root() {
+    const { theme } = useLoaderData<typeof loader>()
+
+    return (
+        <ThemeProvider specifiedTheme={theme} themeAction="/action/theme">
+            <App />
+        </ThemeProvider>
     )
 }

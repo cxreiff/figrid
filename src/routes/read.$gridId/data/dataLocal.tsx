@@ -1,6 +1,7 @@
-import { Button, Card, IconButton } from "@itsmapleleaf/radix-themes"
 import { TrashIcon } from "@radix-ui/react-icons"
 import { Image } from "~/components/image.tsx"
+import { Button } from "~/components/ui/button.tsx"
+import { Card } from "~/components/ui/card.tsx"
 import { WaitSaveData } from "~/components/waitSaveData.tsx"
 import type { loader } from "~/routes/read.$gridId/route.tsx"
 import { TILE_FALLBACK_IMAGE } from "~/utilities/misc.ts"
@@ -39,8 +40,8 @@ export function DataLocal({
                         .map((save, index) => {
                             const tile = tileIdMap[save.currentTileId]
                             return (
-                                <Card key={index} className="mb-4">
-                                    <div className="flex h-full items-center">
+                                <Card key={index} className="my-4">
+                                    <div className="flex h-full items-center p-2">
                                         <Image
                                             key={tile.image_url}
                                             className="mr-4 h-12 w-12"
@@ -55,27 +56,28 @@ export function DataLocal({
                                         </span>
                                         <Button
                                             className="ml-4"
-                                            variant="outline"
+                                            variant="ghost"
                                             onClick={() => replaceSave(save)}
                                         >
                                             load
                                         </Button>
                                         <Button
                                             className="ml-4"
-                                            variant="outline"
+                                            variant="ghost"
                                             onClick={() =>
                                                 setManualSave(index, saveData)
                                             }
                                         >
                                             save
                                         </Button>
-                                        <IconButton
+                                        <Button
                                             variant="ghost"
+                                            size="icon"
                                             className="ml-4 mr-2"
                                             onClick={() => deleteSave(index)}
                                         >
                                             <TrashIcon />
-                                        </IconButton>
+                                        </Button>
                                     </div>
                                 </Card>
                             )

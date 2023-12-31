@@ -1,9 +1,15 @@
-import { Button, Table } from "@itsmapleleaf/radix-themes"
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableRow,
+} from "~/components/ui/table.tsx"
 import { useContext } from "react"
 import type { loader } from "~/routes/read.$gridId/route.tsx"
 import { WaitSaveData } from "~/components/waitSaveData.tsx"
 import { ContextCommand } from "~/utilities/contextCommand.ts"
 import { useSuperLoaderData } from "~/utilities/superjson.ts"
+import { Button } from "~/components/ui/button.tsx"
 
 export function AreaCharacters() {
     const { tileIdMap } = useSuperLoaderData<typeof loader>()
@@ -14,28 +20,28 @@ export function AreaCharacters() {
             {(saveData) => {
                 const currentTile = tileIdMap[saveData.currentTileId]
                 return (
-                    <>
-                        <h3 className="pb-3 text-zinc-500">characters</h3>
-                        <Table.Root className="pb-8">
-                            <Table.Body className="align-middle">
+                    <div className="pb-8">
+                        <h3 className="text-muted-foreground">characters</h3>
+                        <Table className="pb-12">
+                            <TableBody className="align-middle">
                                 {currentTile.character_instances.length ===
                                     0 && (
-                                    <Table.Row className="text-zinc-500">
-                                        <Table.Cell className="shadow-none">
+                                    <TableRow className="text-muted">
+                                        <TableCell className="shadow-none">
                                             &nbsp; &nbsp; no characters
-                                        </Table.Cell>
-                                    </Table.Row>
+                                        </TableCell>
+                                    </TableRow>
                                 )}
                                 {currentTile.character_instances.map(
                                     ({ character }) => (
-                                        <Table.Row key={character.id}>
-                                            <Table.RowHeaderCell className="w-1/3">
+                                        <TableRow key={character.id}>
+                                            <TableCell className="w-1/3">
                                                 {character.name}
-                                            </Table.RowHeaderCell>
-                                            <Table.Cell className="w-2/3">
+                                            </TableCell>
+                                            <TableCell className="w-2/3">
                                                 {character.summary}
-                                            </Table.Cell>
-                                            <Table.Cell>
+                                            </TableCell>
+                                            <TableCell>
                                                 <Button
                                                     variant="ghost"
                                                     onClick={() =>
@@ -46,8 +52,8 @@ export function AreaCharacters() {
                                                 >
                                                     look
                                                 </Button>
-                                            </Table.Cell>
-                                            <Table.Cell>
+                                            </TableCell>
+                                            <TableCell>
                                                 <Button
                                                     variant="ghost"
                                                     onClick={() =>
@@ -58,13 +64,13 @@ export function AreaCharacters() {
                                                 >
                                                     talk
                                                 </Button>
-                                            </Table.Cell>
-                                        </Table.Row>
+                                            </TableCell>
+                                        </TableRow>
                                     ),
                                 )}
-                            </Table.Body>
-                        </Table.Root>
-                    </>
+                            </TableBody>
+                        </Table>
+                    </div>
                 )
             }}
         </WaitSaveData>

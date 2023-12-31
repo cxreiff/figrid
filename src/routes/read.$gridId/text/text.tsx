@@ -1,4 +1,4 @@
-import { Card } from "@itsmapleleaf/radix-themes"
+import { Card } from "~/components/ui/card.tsx"
 import { useRef, type Dispatch, type SetStateAction, useEffect } from "react"
 import { TextContent } from "~/routes/read.$gridId/text/textContent.tsx"
 import { TextPrompt } from "~/routes/read.$gridId/text/textPrompt.tsx"
@@ -19,7 +19,10 @@ export function Text({
     const textRef = useRef<HTMLDivElement>(null)
     const scrollRef = useRef<HTMLDivElement>(null)
 
-    useEffect(() => inputRef?.current?.focus(), [saveData?.currentTileId])
+    useEffect(
+        () => inputRef?.current?.focus(),
+        [saveData?.currentTileId, saveData?.currentEventId],
+    )
 
     useEffect(() => {
         setTimeout(() => {
@@ -34,13 +37,12 @@ export function Text({
 
     return (
         <div
-            className="flex h-full flex-col gap-4"
+            className="relative h-full flex-col gap-4"
             onClick={() => {
-                inputRef.current?.focus()
                 textRef.current?.click()
             }}
         >
-            <Card className="h-[calc(100%-4rem)]">
+            <Card className="absolute bottom-14 top-0 w-full p-2">
                 <div
                     ref={scrollRef}
                     className="h-full flex-1 overflow-auto p-5"
@@ -48,12 +50,13 @@ export function Text({
                     <TextContent commandLog={commandLog} textRef={textRef} />
                 </div>
             </Card>
-            <TextPrompt
-                command={command}
-                setCommand={setCommand}
-                inputRef={inputRef}
-                textRef={textRef}
-            />
+            <div className="absolute bottom-0 h-10 w-full">
+                <TextPrompt
+                    command={command}
+                    setCommand={setCommand}
+                    inputRef={inputRef}
+                />
+            </div>
         </div>
     )
 }

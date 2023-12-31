@@ -1,5 +1,12 @@
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
+
 export const TILE_FALLBACK_IMAGE = "https://img.figrid.io/tiles/kitty.png"
 export const PLAYER_FALLBACK_IMAGE = "https://img.figrid.io/tiles/kitty.png"
+
+export function cn(...inputs: ClassValue[]) {
+    return twMerge(clsx(inputs))
+}
 
 export function indicesArray(size: number) {
     return Array(size)

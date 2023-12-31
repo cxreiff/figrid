@@ -1,18 +1,14 @@
-import { Avatar } from "@itsmapleleaf/radix-themes"
+import { AvatarIcon } from "@radix-ui/react-icons"
 import { type AuthUser } from "~/auth/auth.server.ts"
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar.tsx"
 
-type ProfileAvatarProps = {
-    user: AuthUser
-}
-
-export function ProfileAvatar({ user }: ProfileAvatarProps) {
-    return (
-        <Avatar
-            className="duration-500 animate-in fade-in"
-            src={user.profile.image_url || ""}
-            fallback={user.alias.slice(0, 3)}
-            color="ruby"
-            size="3"
-        />
+export function ProfileAvatar({ user }: { user: AuthUser | null }) {
+    return user ? (
+        <Avatar className="-m-2 h-7 w-7">
+            <AvatarImage src={user?.profile.image_url || undefined} />
+            <AvatarFallback>{user.alias.slice(0, 3)}</AvatarFallback>
+        </Avatar>
+    ) : (
+        <AvatarIcon className="h-5 w-5" />
     )
 }

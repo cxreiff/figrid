@@ -1,4 +1,4 @@
-import { Card } from "@itsmapleleaf/radix-themes"
+import { Card } from "~/components/ui/card.tsx"
 import { AreaAdditional } from "~/routes/read.$gridId/area/areaAdditional.tsx"
 import { AreaCharacters } from "~/routes/read.$gridId/area/areaCharacters.tsx"
 import { AreaImage } from "~/routes/read.$gridId/area/areaImage.tsx"
@@ -10,8 +10,8 @@ export function Area() {
             <Card className="mb-4 h-1/2">
                 <AreaImage />
             </Card>
-            <Card className="h-[calc(50%-1rem)] pt-4">
-                <div className="h-full overflow-auto px-5">
+            <Card className="h-[calc(50%-1rem)] p-2 pt-4">
+                <div className="h-full overflow-auto p-4">
                     <AreaItems />
                     <AreaCharacters />
                     <AreaAdditional />

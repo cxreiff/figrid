@@ -1,5 +1,11 @@
-import { Card, Tabs } from "@itsmapleleaf/radix-themes"
 import type { ReactNode } from "react"
+import { Card } from "~/components/ui/card.tsx"
+import {
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+} from "~/components/ui/tabs.tsx"
 
 export function LayoutTabs<T extends string[]>({
     names,
@@ -9,28 +15,28 @@ export function LayoutTabs<T extends string[]>({
     children: [...{ [I in keyof T]: ReactNode }]
 }) {
     return (
-        <Tabs.Root
+        <Tabs
             defaultValue={names[0]}
-            className="flex h-full flex-col gap-4"
+            className="relative mt-0 h-full flex-col gap-4"
         >
             {children.map((content, index) => (
-                <Tabs.Content
+                <TabsContent
                     key={names[index]}
                     value={names[index]}
-                    className="h-[calc(100%-4rem)]"
+                    className="absolute bottom-14 top-0 w-full"
                 >
                     {content}
-                </Tabs.Content>
+                </TabsContent>
             ))}
-            <Card className="no-card-padding h-[calc(3rem+1px)]">
-                <Tabs.List className="mx-4 h-[calc(3rem+1px)] shadow-none">
+            <Card className="absolute bottom-0 h-10 w-full">
+                <TabsList className="h-full w-full justify-start">
                     {names.map((name) => (
-                        <Tabs.Trigger key={name} value={name}>
+                        <TabsTrigger key={name} value={name}>
                             {name}
-                        </Tabs.Trigger>
+                        </TabsTrigger>
                     ))}
-                </Tabs.List>
+                </TabsList>
             </Card>
-        </Tabs.Root>
+        </Tabs>
     )
 }
