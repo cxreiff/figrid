@@ -26,7 +26,7 @@ export function Status() {
                     <StatusImage />
                 </Card>
             </ResizablePanel>
-            <ResizableHandle className="bg-transparent" />
+            <ResizableHandle className="bg-transparent hover:bg-muted" />
             <ResizablePanel minSize={20} defaultSize={DEFAULT_LAYOUT_STATUS[1]}>
                 <Card className="h-full p-2 pt-4">
                     <div className="h-full overflow-auto p-4">

@@ -69,13 +69,11 @@ export function Layout({
                         {left}
                     </ResizablePanel>
                     <ResizableHandle
-                        className={`
-                            ${
-                                leftCollapsed
-                                    ? "my-auto h-24 w-1 bg-accent-foreground"
-                                    : "bg-transparent"
-                            }
-                        `}
+                        className={`${
+                            leftCollapsed
+                                ? "my-auto h-24 w-1 bg-accent hover:bg-accent-foreground"
+                                : "h-[calc(100%-4rem)] bg-transparent hover:bg-muted"
+                        }`}
                     />
                     <ResizablePanel
                         className="h-[calc(100vh-4rem)] pb-6"
@@ -85,13 +83,11 @@ export function Layout({
                         {center}
                     </ResizablePanel>
                     <ResizableHandle
-                        className={`
-                        ${
+                        className={`${
                             rightCollapsed
-                                ? "my-auto h-24 w-1 bg-accent-foreground"
-                                : "bg-transparent"
-                        }
-                    `}
+                                ? "my-auto h-24 w-1 bg-accent hover:bg-accent-foreground"
+                                : "h-[calc(100%-4rem)] bg-transparent hover:bg-muted"
+                        }`}
                     />
                     <ResizablePanel
                         className="h-[calc(100vh-4rem)] pb-6"
