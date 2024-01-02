@@ -1,8 +1,19 @@
+import { LayoutIcon } from "@radix-ui/react-icons"
 import { Link } from "@remix-run/react"
-import type { ReactNode } from "react"
+import { type ReactNode, useContext, useState } from "react"
 import type { AuthUser } from "~/auth/auth.server.ts"
 import { ProfileButton } from "~/components/profileButton.tsx"
 import { ThemeToggle } from "~/components/themeToggle.tsx"
+import { Button } from "~/components/ui/button.tsx"
+import {
+    ResizableHandle,
+    ResizablePanel,
+    ResizablePanelGroup,
+} from "~/components/ui/resizable.tsx"
+import {
+    ContextLayout,
+    DEFAULT_LAYOUT_MAIN,
+} from "~/utilities/contextLayout.ts"
 
 export function Layout({
     user,
@@ -17,6 +28,10 @@ export function Layout({
     right?: ReactNode
     center?: ReactNode
 }) {
+    const { mainLayout, resetLayout } = useContext(ContextLayout)
+    const [leftCollapsed, setLeftCollapsed] = useState(false)
+    const [rightCollapsed, setRightCollapsed] = useState(false)
+
     return (
         <div className="relative h-screen w-full gap-3 p-4">
             <div className="absolute inset-x-4 top-0 flex h-16 items-center">
@@ -26,19 +41,69 @@ export function Layout({
                 <hr className="mx-3 flex-1" />
                 <h1 className="p-2">{title}</h1>
                 <hr className="mx-3 flex-1" />
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={resetLayout}
+                    title="reset layout"
+                >
+                    <LayoutIcon className="h-5 w-5" />
+                </Button>
                 <ThemeToggle />
                 <ProfileButton user={user} />
             </div>
-            <main className="absolute inset-x-4 bottom-4 top-16 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-                <div className="grow-1 h-[calc(100vh-4rem)] w-full pb-6 lg:order-2">
-                    {center}
-                </div>
-                <div className="h-[calc(100vh-4rem)] w-full pb-6 md:order-3 md:col-span-2 lg:order-1 lg:col-span-1">
-                    {left}
-                </div>
-                <div className="grow-1 h-[calc(100vh-4rem)] w-full pb-6 md:order-2 lg:order-3">
-                    {right}
-                </div>
+            <main className="absolute inset-x-4 bottom-4 top-16">
+                <ResizablePanelGroup
+                    ref={mainLayout}
+                    direction="horizontal"
+                    className="gap-[0.4rem]"
+                >
+                    <ResizablePanel
+                        className="h-[calc(100vh-4rem)] pb-6"
+                        minSize={20}
+                        defaultSize={DEFAULT_LAYOUT_MAIN[0]}
+                        onCollapse={() => setLeftCollapsed(true)}
+                        onExpand={() => setLeftCollapsed(false)}
+                        collapsible
+                    >
+                        {left}
+                    </ResizablePanel>
+                    <ResizableHandle
+                        className={`
+                            ${
+                                leftCollapsed
+                                    ? "my-auto h-24 w-1 bg-accent-foreground"
+                                    : "bg-transparent"
+                            }
+                        `}
+                    />
+                    <ResizablePanel
+                        className="h-[calc(100vh-4rem)] pb-6"
+                        minSize={20}
+                        defaultSize={DEFAULT_LAYOUT_MAIN[1]}
+                    >
+                        {center}
+                    </ResizablePanel>
+                    <ResizableHandle
+                        className={`
+                        ${
+                            rightCollapsed
+                                ? "my-auto h-24 w-1 bg-accent-foreground"
+                                : "bg-transparent"
+                        }
+                    `}
+                    />
+                    <ResizablePanel
+                        className="h-[calc(100vh-4rem)] pb-6"
+                        minSize={20}
+                        defaultSize={DEFAULT_LAYOUT_MAIN[2]}
+                        onCollapse={() => setRightCollapsed(true)}
+                        onExpand={() => setRightCollapsed(false)}
+                        collapsible
+                    >
+                        {right}
+                    </ResizablePanel>
+                </ResizablePanelGroup>
             </main>
         </div>
     )

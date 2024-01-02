@@ -19,6 +19,10 @@ import { gridQuery } from "~/routes/read.$gridId/query.server.ts"
 import { superjson, useSuperLoaderData } from "~/utilities/superjson.ts"
 import { ContextSaveData } from "~/utilities/contextSaveData.ts"
 import { ContextCommand } from "~/utilities/contextCommand.ts"
+import {
+    ContextLayout,
+    useInitialLayoutContext,
+} from "~/utilities/contextLayout.ts"
 
 const paramsSchema = z.object({ gridId: z.coerce.number() })
 
@@ -84,26 +88,28 @@ export default function Route() {
     return (
         <ContextSaveData.Provider value={saveData}>
             <ContextCommand.Provider value={handleCommandClosure}>
-                <Layout
-                    user={user}
-                    title={grid.name}
-                    left={
-                        <LayoutTabs names={["area", "status", "data"]}>
-                            <Area />
-                            <Status />
-                            <Data replaceSave={replaceSave} />
-                        </LayoutTabs>
-                    }
-                    right={<Map />}
-                    center={
-                        <Text
-                            saveData={saveData}
-                            command={command}
-                            commandLog={commandLog}
-                            setCommand={setCommand}
-                        />
-                    }
-                />
+                <ContextLayout.Provider value={useInitialLayoutContext()}>
+                    <Layout
+                        user={user}
+                        title={grid.name}
+                        left={
+                            <LayoutTabs names={["area", "status", "data"]}>
+                                <Area />
+                                <Status />
+                                <Data replaceSave={replaceSave} />
+                            </LayoutTabs>
+                        }
+                        right={<Map />}
+                        center={
+                            <Text
+                                saveData={saveData}
+                                command={command}
+                                commandLog={commandLog}
+                                setCommand={setCommand}
+                            />
+                        }
+                    />
+                </ContextLayout.Provider>
             </ContextCommand.Provider>
         </ContextSaveData.Provider>
     )

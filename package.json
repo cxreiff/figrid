@@ -41,7 +41,7 @@
         "nanoid": "^5.0.4",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "react-resizable-panels": "^1.0.5",
+        "react-resizable-panels": "^1.0.7",
         "remix-auth": "^3.6.0",
         "remix-auth-form": "^1.4.0",
         "remix-auth-github": "^1.6.0",
