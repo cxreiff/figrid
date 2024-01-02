@@ -7,7 +7,7 @@ import { AreaItems } from "~/routes/read.$gridId/area/areaItems.tsx"
 export function Area() {
     return (
         <>
-            <Card className="mb-4 h-1/2">
+            <Card className="mb-4 h-1/2 p-4">
                 <AreaImage />
             </Card>
             <Card className="h-[calc(50%-1rem)] p-2 pt-4">

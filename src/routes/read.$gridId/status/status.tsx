@@ -5,7 +5,7 @@ import { StatusInventory } from "~/routes/read.$gridId/status/statusInventory.ts
 export function Status() {
     return (
         <>
-            <Card className="mb-4 h-1/2">
+            <Card className="mb-4 h-1/2 p-4">
                 <StatusImage />
             </Card>
             <Card className="h-[calc(50%-1rem)] p-2 pt-4">
