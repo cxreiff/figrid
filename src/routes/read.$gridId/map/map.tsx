@@ -49,7 +49,6 @@ export function Map() {
                                 <WaitSaveData
                                     key={offset.join(",")}
                                     meanwhile={<BlankTile />}
-                                    asChild
                                 >
                                     {(saveData) => {
                                         const currentTile = tileIdMap[

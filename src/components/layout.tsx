@@ -1,6 +1,7 @@
 import { LayoutIcon } from "@radix-ui/react-icons"
 import { Link } from "@remix-run/react"
-import { type ReactNode, useContext, useState } from "react"
+import { type ReactNode, useState, type RefObject } from "react"
+import type { ImperativePanelGroupHandle } from "react-resizable-panels"
 import type { AuthUser } from "~/auth/auth.server.ts"
 import { ProfileButton } from "~/components/profileButton.tsx"
 import { ThemeToggle } from "~/components/themeToggle.tsx"
@@ -10,7 +11,7 @@ import {
     ResizablePanel,
     ResizablePanelGroup,
 } from "~/components/ui/resizable.tsx"
-import { ContextLayout } from "~/utilities/contextLayout.ts"
+import { cn } from "~/utilities/misc.ts"
 
 export function Layout({
     user,
@@ -18,17 +19,23 @@ export function Layout({
     left,
     right,
     center,
+    layoutRef,
+    initialLayout,
+    onSaveLayout,
+    onResetLayout,
 }: {
     user: AuthUser | null
     title: string
     left?: ReactNode
     right?: ReactNode
     center?: ReactNode
+    layoutRef: RefObject<ImperativePanelGroupHandle> | null
+    initialLayout: number[]
+    onSaveLayout: () => void
+    onResetLayout: () => void
 }) {
-    const { mainLayout, initialLayout, resetLayout, saveLayout } =
-        useContext(ContextLayout)
-    const [leftCollapsed, setLeftCollapsed] = useState(false)
-    const [rightCollapsed, setRightCollapsed] = useState(false)
+    const [leftCollapsed, setLeftCollapsed] = useState(initialLayout[0] < 20)
+    const [rightCollapsed, setRightCollapsed] = useState(initialLayout[2] < 20)
 
     return (
         <div className="relative h-screen w-full gap-3 p-4">
@@ -39,7 +46,7 @@ export function Layout({
                 <hr className="mx-3 flex-1" />
                 <h1 className="p-2">{title}</h1>
                 <hr className="mx-3 flex-1" />
-                <Button variant="ghost" size="icon" onClick={resetLayout}>
+                <Button variant="ghost" size="icon" onClick={onResetLayout}>
                     <LayoutIcon className="h-5 w-5" />
                 </Button>
                 <ThemeToggle />
@@ -47,15 +54,15 @@ export function Layout({
             </div>
             <main className="absolute inset-x-4 bottom-4 top-16">
                 <ResizablePanelGroup
-                    ref={mainLayout}
+                    ref={layoutRef}
                     direction="horizontal"
                     className="gap-[0.4rem]"
-                    onLayout={saveLayout}
+                    onLayout={onSaveLayout}
                 >
                     <ResizablePanel
                         className="h-[calc(100vh-4rem)] pb-6"
                         minSize={20}
-                        defaultSize={initialLayout.main[0]}
+                        defaultSize={initialLayout[0]}
                         onCollapse={() => setLeftCollapsed(true)}
                         onExpand={() => setLeftCollapsed(false)}
                         collapsible
@@ -63,30 +70,28 @@ export function Layout({
                         {left}
                     </ResizablePanel>
                     <ResizableHandle
-                        className={`${
-                            leftCollapsed
-                                ? "my-auto h-24 w-1 rounded-lg bg-accent hover:bg-accent-foreground"
-                                : "h-[calc(100%-4rem)] bg-transparent hover:bg-muted"
-                        }`}
+                        neighborCollapsed={leftCollapsed}
+                        className={cn({
+                            "h-[calc(100%-4rem)]": !leftCollapsed,
+                        })}
                     />
                     <ResizablePanel
                         className="h-[calc(100vh-4rem)] pb-6"
                         minSize={20}
-                        defaultSize={initialLayout.main[1]}
+                        defaultSize={initialLayout[1]}
                     >
                         {center}
                     </ResizablePanel>
                     <ResizableHandle
-                        className={`${
-                            rightCollapsed
-                                ? "my-auto h-24 w-1 rounded-lg bg-accent hover:bg-accent-foreground"
-                                : "h-[calc(100%-4rem)] bg-transparent hover:bg-muted"
-                        }`}
+                        neighborCollapsed={rightCollapsed}
+                        className={cn({
+                            "h-[calc(100%-4rem)]": !rightCollapsed,
+                        })}
                     />
                     <ResizablePanel
                         className="h-[calc(100vh-4rem)] pb-6"
                         minSize={20}
-                        defaultSize={initialLayout.main[2]}
+                        defaultSize={initialLayout[2]}
                         onCollapse={() => setRightCollapsed(true)}
                         onExpand={() => setRightCollapsed(false)}
                         collapsible

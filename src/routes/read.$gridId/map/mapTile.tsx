@@ -32,7 +32,7 @@ export function MapTile({
                 width: `${TILE_DIMENSIONS.x}rem`,
                 height: `${TILE_DIMENSIONS.y}rem`,
             }}
-            className={`relative box-border border-2 border-secondary-foreground duration-300 animate-in fade-in ${
+            className={`relative box-border border-2 border-secondary-foreground ${
                 handleClick
                     ? "cursor-pointer transition-colors duration-500 before:absolute before:inset-2 before:rounded-lg before:bg-transparent hover:before:bg-[hsla(var(--accent)/0.4)]"
                     : ""

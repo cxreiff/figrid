@@ -70,6 +70,7 @@ export default function Route() {
     const [command, setCommand] = useState("")
     const [commandLog, setCommandLog] = useState<string[]>([])
     const [saveData, setSaveData, replaceSave] = useSaveData(user, grid)
+    const layoutContext = useInitialLayoutContext(layout)
 
     const clearCommandLog = () => setCommandLog([])
     const appendToCommandLog = (command: string, message: string) =>
@@ -94,7 +95,7 @@ export default function Route() {
     return (
         <ContextSaveData.Provider value={saveData}>
             <ContextCommand.Provider value={handleCommandClosure}>
-                <ContextLayout.Provider value={useInitialLayoutContext(layout)}>
+                <ContextLayout.Provider value={layoutContext}>
                     <Layout
                         user={user}
                         title={grid.name}
@@ -114,6 +115,10 @@ export default function Route() {
                                 setCommand={setCommand}
                             />
                         }
+                        layoutRef={layoutContext.mainLayout}
+                        initialLayout={layoutContext.initialLayout.main}
+                        onSaveLayout={layoutContext.saveLayout}
+                        onResetLayout={layoutContext.resetLayout}
                     />
                 </ContextLayout.Provider>
             </ContextCommand.Provider>
