@@ -3,7 +3,7 @@ import { createThemeSessionResolver } from "remix-themes"
 
 const isProduction = process.env.NODE_ENV === "production"
 
-const sessionStorage = createCookieSessionStorage({
+const sessionTheme = createCookieSessionStorage({
     cookie: {
         name: "theme",
         path: "/",
@@ -14,4 +14,4 @@ const sessionStorage = createCookieSessionStorage({
     },
 })
 
-export const themeSessionResolver = createThemeSessionResolver(sessionStorage)
+export const themeSessionResolver = createThemeSessionResolver(sessionTheme)

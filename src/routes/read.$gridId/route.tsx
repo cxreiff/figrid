@@ -21,8 +21,10 @@ import { ContextSaveData } from "~/utilities/contextSaveData.ts"
 import { ContextCommand } from "~/utilities/contextCommand.ts"
 import {
     ContextLayout,
+    layoutCookieSchema,
     useInitialLayoutContext,
 } from "~/utilities/contextLayout.ts"
+import { getSessionLayout } from "~/utilities/sessionLayout.server.ts"
 
 const paramsSchema = z.object({ gridId: z.coerce.number() })
 
@@ -46,6 +48,9 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
     const user = await auth.isAuthenticated(request)
 
+    const sessionLayout = await getSessionLayout(request.headers.get("Cookie"))
+    const layout = layoutCookieSchema.parse(sessionLayout.data)
+
     return superjson({
         user,
         grid,
@@ -54,11 +59,12 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
         itemIdMap,
         itemInstanceIdMap,
         tileCoordsMap,
+        layout,
     })
 }
 
 export default function Route() {
-    const { user, grid, tileIdMap, eventIdMap, itemInstanceIdMap } =
+    const { user, grid, tileIdMap, eventIdMap, itemInstanceIdMap, layout } =
         useSuperLoaderData<typeof loader>()
 
     const [command, setCommand] = useState("")
@@ -88,7 +94,7 @@ export default function Route() {
     return (
         <ContextSaveData.Provider value={saveData}>
             <ContextCommand.Provider value={handleCommandClosure}>
-                <ContextLayout.Provider value={useInitialLayoutContext()}>
+                <ContextLayout.Provider value={useInitialLayoutContext(layout)}>
                     <Layout
                         user={user}
                         title={grid.name}

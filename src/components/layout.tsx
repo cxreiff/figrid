@@ -10,10 +10,7 @@ import {
     ResizablePanel,
     ResizablePanelGroup,
 } from "~/components/ui/resizable.tsx"
-import {
-    ContextLayout,
-    DEFAULT_LAYOUT_MAIN,
-} from "~/utilities/contextLayout.ts"
+import { ContextLayout } from "~/utilities/contextLayout.ts"
 
 export function Layout({
     user,
@@ -28,7 +25,8 @@ export function Layout({
     right?: ReactNode
     center?: ReactNode
 }) {
-    const { mainLayout, resetLayout } = useContext(ContextLayout)
+    const { mainLayout, initialLayout, resetLayout, saveLayout } =
+        useContext(ContextLayout)
     const [leftCollapsed, setLeftCollapsed] = useState(false)
     const [rightCollapsed, setRightCollapsed] = useState(false)
 
@@ -41,12 +39,7 @@ export function Layout({
                 <hr className="mx-3 flex-1" />
                 <h1 className="p-2">{title}</h1>
                 <hr className="mx-3 flex-1" />
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={resetLayout}
-                    title="reset layout"
-                >
+                <Button variant="ghost" size="icon" onClick={resetLayout}>
                     <LayoutIcon className="h-5 w-5" />
                 </Button>
                 <ThemeToggle />
@@ -57,11 +50,12 @@ export function Layout({
                     ref={mainLayout}
                     direction="horizontal"
                     className="gap-[0.4rem]"
+                    onLayout={saveLayout}
                 >
                     <ResizablePanel
                         className="h-[calc(100vh-4rem)] pb-6"
                         minSize={20}
-                        defaultSize={DEFAULT_LAYOUT_MAIN[0]}
+                        defaultSize={initialLayout.main[0]}
                         onCollapse={() => setLeftCollapsed(true)}
                         onExpand={() => setLeftCollapsed(false)}
                         collapsible
@@ -71,28 +65,28 @@ export function Layout({
                     <ResizableHandle
                         className={`${
                             leftCollapsed
-                                ? "my-auto h-24 w-1 bg-accent hover:bg-accent-foreground"
+                                ? "my-auto h-24 w-1 rounded-lg bg-accent hover:bg-accent-foreground"
                                 : "h-[calc(100%-4rem)] bg-transparent hover:bg-muted"
                         }`}
                     />
                     <ResizablePanel
                         className="h-[calc(100vh-4rem)] pb-6"
                         minSize={20}
-                        defaultSize={DEFAULT_LAYOUT_MAIN[1]}
+                        defaultSize={initialLayout.main[1]}
                     >
                         {center}
                     </ResizablePanel>
                     <ResizableHandle
                         className={`${
                             rightCollapsed
-                                ? "my-auto h-24 w-1 bg-accent hover:bg-accent-foreground"
+                                ? "my-auto h-24 w-1 rounded-lg bg-accent hover:bg-accent-foreground"
                                 : "h-[calc(100%-4rem)] bg-transparent hover:bg-muted"
                         }`}
                     />
                     <ResizablePanel
                         className="h-[calc(100vh-4rem)] pb-6"
                         minSize={20}
-                        defaultSize={DEFAULT_LAYOUT_MAIN[2]}
+                        defaultSize={initialLayout.main[2]}
                         onCollapse={() => setRightCollapsed(true)}
                         onExpand={() => setRightCollapsed(false)}
                         collapsible

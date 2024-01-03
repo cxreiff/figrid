@@ -17,7 +17,7 @@ import {
 import { SpeedInsights } from "@vercel/speed-insights/remix"
 import clsx from "clsx"
 import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from "remix-themes"
-import { themeSessionResolver } from "~/utilities/themeSession.server.ts"
+import { themeSessionResolver } from "~/utilities/sessionTheme.server.ts"
 
 import stylesheet from "~/styles.css"
 

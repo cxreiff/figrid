@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from "clsx"
+import { useEffect, useMemo, useRef } from "react"
 import { twMerge } from "tailwind-merge"
 
 export const TILE_FALLBACK_IMAGE = "https://img.figrid.io/tiles/kitty.png"
@@ -29,4 +30,34 @@ export function commasWithConjunction(items: string[], conjunction: string) {
 export function defined<T>(value: T | null | undefined): value is T {
     if (value === null || value === undefined) return false
     return true
+}
+
+function debounce<Callback extends (...args: Parameters<Callback>) => void>(
+    fn: Callback,
+    delay: number,
+) {
+    let timer: ReturnType<typeof setTimeout> | null = null
+    return (...args: Parameters<Callback>) => {
+        if (timer) clearTimeout(timer)
+        timer = setTimeout(() => {
+            fn(...args)
+        }, delay)
+    }
+}
+
+export function useDebounce<
+    Callback extends (...args: Parameters<Callback>) => ReturnType<Callback>,
+>(callback: Callback, delay: number) {
+    const callbackRef = useRef(callback)
+    useEffect(() => {
+        callbackRef.current = callback
+    })
+    return useMemo(
+        () =>
+            debounce(
+                (...args: Parameters<Callback>) => callbackRef.current(...args),
+                delay,
+            ),
+        [delay],
+    )
 }
