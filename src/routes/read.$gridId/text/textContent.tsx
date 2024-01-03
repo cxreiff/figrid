@@ -44,8 +44,7 @@ export function TextContent({
                             {(saveData.currentEventId
                                 ? eventIdMap[saveData.currentEventId]
                                       .description
-                                : currentTile.description) ||
-                                "[empty description]"}
+                                : currentTile.description) || ""}
                         </TextTyper>
                         {!currentEvent ? (
                             <>

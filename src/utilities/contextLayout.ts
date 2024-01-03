@@ -5,8 +5,8 @@ import { z } from "zod"
 import { useDebounce } from "~/utilities/misc.ts"
 
 export const DEFAULT_LAYOUT_MAIN = [30, 40, 30]
-export const DEFAULT_LAYOUT_AREA = [50, 50]
-export const DEFAULT_LAYOUT_STATUS = [50, 50]
+export const DEFAULT_LAYOUT_AREA = [45, 55]
+export const DEFAULT_LAYOUT_STATUS = [45, 55]
 
 export const layoutCookieSchema = z.object({
     main: z.array(z.number().min(0).max(100)).length(3).optional(),

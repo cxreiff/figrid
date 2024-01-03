@@ -54,7 +54,7 @@ export function TextOptions({
         })
     ) : (
         <Button
-            variant="ghost"
+            variant="inline"
             className="mx-2 mb-3 text-base"
             onClick={() => handleCommand("")}
         >

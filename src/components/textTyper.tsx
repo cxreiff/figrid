@@ -29,7 +29,7 @@ export function TextTyper({
     useEffect(() => {
         if (hidden > 0) {
             const interval = setTimeout(() => {
-                setHidden((prevHidden) => Math.max(prevHidden - 2, 0))
+                setHidden((prevHidden) => Math.max(prevHidden - 3, 0))
             }, 32)
             return () => clearTimeout(interval)
         }
@@ -45,7 +45,9 @@ export function TextTyper({
             }}
         >
             <noscript>{text}</noscript>
-            <div ref={textRef}>{hidden ? text.slice(0, -hidden) : text}</div>
+            <div ref={textRef}>
+                {hidden ? text.slice(0, -hidden) || " " : text}
+            </div>
         </div>
     )
 }
