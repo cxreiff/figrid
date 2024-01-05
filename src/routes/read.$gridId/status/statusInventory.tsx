@@ -35,10 +35,7 @@ export function StatusInventory() {
                                         itemInstanceIdMap[instanceId].item_id
                                     ]
                                 return (
-                                    <TableRow
-                                        key={item.id}
-                                        className="duration-500 animate-in fade-in"
-                                    >
+                                    <TableRow key={item.id}>
                                         <TableCell className="w-1/3">
                                             {item.name}
                                         </TableCell>

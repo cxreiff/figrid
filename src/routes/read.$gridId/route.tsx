@@ -25,10 +25,15 @@ import {
     useInitialLayoutContext,
 } from "~/utilities/contextLayout.ts"
 import { getSessionLayout } from "~/utilities/sessionLayout.server.ts"
+import { Button } from "~/components/ui/button.tsx"
+import { Link } from "@remix-run/react"
+import { Pencil2Icon } from "@radix-ui/react-icons"
 
 const paramsSchema = z.object({ gridId: z.coerce.number() })
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
+    const user = await auth.isAuthenticated(request)
+
     const { gridId } = paramsSchema.parse(params)
 
     const grid = await gridQuery(gridId)
@@ -45,8 +50,6 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     const itemIdMap = generateIdMap(grid.items)
     const itemInstanceIdMap = generateIdMap(grid.item_instances)
     const tileCoordsMap = generateTileCoordsMap(tileIdMap, grid.first_id)
-
-    const user = await auth.isAuthenticated(request)
 
     const sessionLayout = await getSessionLayout(request.headers.get("Cookie"))
     const layout = layoutCookieSchema.parse(sessionLayout.data)
@@ -106,7 +109,6 @@ export default function Route() {
                                 <Data replaceSave={replaceSave} />
                             </LayoutTabs>
                         }
-                        right={<Map />}
                         center={
                             <Text
                                 saveData={saveData}
@@ -115,8 +117,25 @@ export default function Route() {
                                 setCommand={setCommand}
                             />
                         }
-                        layoutRef={layoutContext.mainLayout}
-                        initialLayout={layoutContext.initialLayout.main}
+                        right={<Map />}
+                        iconButtons={
+                            grid.id === user?.id
+                                ? [
+                                      <Button
+                                          key={1}
+                                          variant="ghost"
+                                          size="icon"
+                                          asChild
+                                      >
+                                          <Link to={`/write/${grid.id}`}>
+                                              <Pencil2Icon className="h-5 w-5" />
+                                          </Link>
+                                      </Button>,
+                                  ]
+                                : undefined
+                        }
+                        layoutRef={layoutContext.readLayoutRef}
+                        initialLayout={layoutContext.initialLayout.read}
                         onSaveLayout={layoutContext.saveLayout}
                         onResetLayout={layoutContext.resetLayout}
                     />

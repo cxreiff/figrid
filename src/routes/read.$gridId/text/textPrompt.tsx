@@ -7,7 +7,7 @@ import {
     type SetStateAction,
 } from "react"
 import { Card } from "~/components/ui/card.tsx"
-import { Input } from "~/components/ui/input.tsx"
+import { InputWithIcon } from "~/components/ui/input.tsx"
 import { WaitSaveData } from "~/components/waitSaveData.tsx"
 import { availableCommands } from "~/routes/read.$gridId/commands.ts"
 import type { loader } from "~/routes/read.$gridId/route.tsx"
@@ -36,7 +36,6 @@ export function TextPrompt({
                     handleCommand(command)
                 }}
             >
-                <ChevronRightIcon className="absolute left-2 h-full" />
                 <WaitSaveData className="absolute right-3 flex h-full items-center text-muted-foreground">
                     {(saveData) => {
                         const suggestions = availableCommands(
@@ -52,8 +51,9 @@ export function TextPrompt({
                             .concat(suggestions.length > 5 ? " ..." : "")
                     }}
                 </WaitSaveData>
-                <Input
-                    className="h-full border-none pl-7"
+                <InputWithIcon
+                    icon={ChevronRightIcon}
+                    className="h-full border-none [&>input]:border-none [&>input]:pl-7 [&>svg]:left-2"
                     ref={inputRef}
                     value={command}
                     onChange={(event) =>

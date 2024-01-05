@@ -8,6 +8,10 @@ html {
     caret-color: hsl(var(--accent-foreground));
 }
 
+::selection {
+    background: hsl(var(--accent));
+}
+
 .faded-edge {
     --mask: radial-gradient(
             rgba(0, 0, 0, 1) 0,

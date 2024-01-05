@@ -15,7 +15,7 @@ import {
 } from "~/auth/auth.server.ts"
 import { FORM_STRATEGY } from "~/auth/strategies/form.server.ts"
 import { Button } from "~/components/ui/button.tsx"
-import { IconInput } from "~/components/ui/input.tsx"
+import { InputWithIcon } from "~/components/ui/input.tsx"
 import { Separator } from "~/components/ui/separator.tsx"
 import { db } from "~/database/database.server.ts"
 import {
@@ -100,7 +100,7 @@ export default function Register() {
                 <Button
                     type="submit"
                     variant="outline"
-                    className="relative w-full"
+                    className="relative w-full bg-card"
                 >
                     <GitHubLogoIcon className="absolute left-3" />
                     <span className="w-full px-10">Login with GitHub</span>
@@ -108,35 +108,35 @@ export default function Register() {
             </Form>
             <Separator className="my-4 w-64" />
             <Form className="flex w-72 flex-col gap-2" method="post">
-                <IconInput
-                    className="mb-2"
+                <InputWithIcon
+                    className="bg-card"
                     icon={EnvelopeClosedIcon}
                     name="email"
                     type="email"
                     placeholder="email address"
                 />
-                <IconInput
-                    className="mb-2"
+                <InputWithIcon
+                    className="bg-card"
                     icon={AvatarIcon}
                     name="alias"
                     type="text"
                     placeholder="user alias"
                 />
-                <IconInput
-                    className="mb-2"
+                <InputWithIcon
+                    className="bg-card"
                     icon={LockClosedIcon}
                     name="password"
                     type="password"
                     placeholder="password"
                 />
-                <IconInput
-                    className="mb-2"
+                <InputWithIcon
+                    className="bg-card"
                     icon={LockClosedIcon}
                     name="confirm"
                     type="password"
                     placeholder="confirm password"
                 />
-                <Button type="submit" variant="outline">
+                <Button type="submit" variant="outline" className="bg-card">
                     register
                 </Button>
             </Form>

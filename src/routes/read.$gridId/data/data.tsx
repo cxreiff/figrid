@@ -8,10 +8,8 @@ export function Data({
     replaceSave: ReturnType<typeof useSaveData>[2]
 }) {
     return (
-        <Card className="h-full pt-4">
-            <div className="h-full overflow-auto px-5">
-                <DataLocal replaceSave={replaceSave} />
-            </div>
+        <Card className="h-full p-4 pb-0">
+            <DataLocal replaceSave={replaceSave} />
         </Card>
     )
 }

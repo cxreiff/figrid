@@ -1,3 +1,4 @@
+import type { IconProps } from "@radix-ui/react-icons/dist/types.js"
 import * as React from "react"
 
 import { cn } from "~/utilities/misc.ts"
@@ -11,7 +12,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             <input
                 type={type}
                 className={cn(
-                    "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-foreground disabled:cursor-not-allowed disabled:opacity-50",
+                    "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-foreground disabled:cursor-not-allowed disabled:opacity-50",
                     className,
                 )}
                 ref={ref}
@@ -24,19 +25,19 @@ Input.displayName = "Input"
 
 export interface IconInputProps
     extends React.InputHTMLAttributes<HTMLInputElement> {
-    icon: ({ className }: { className: string }) => React.ReactNode
+    icon: (props: IconProps) => React.ReactNode
 }
 
-const IconInput = React.forwardRef<HTMLSpanElement, IconInputProps>(
+const InputWithIcon = React.forwardRef<HTMLInputElement, IconInputProps>(
     ({ icon: Icon, className, ...props }, ref) => {
         return (
-            <span className={cn("relative", className)}>
-                <Icon className="absolute left-3 h-full" />
-                <Input className={"pl-10"} {...props} />
+            <span className={cn("relative block h-9 rounded-lg", className)}>
+                <Icon className="absolute inset-y-0 left-3 h-full" />
+                <Input ref={ref} className={"h-full pl-10"} {...props} />
             </span>
         )
     },
 )
-IconInput.displayName = "IconInput"
+InputWithIcon.displayName = "IconInput"
 
-export { Input, IconInput }
+export { Input, InputWithIcon }

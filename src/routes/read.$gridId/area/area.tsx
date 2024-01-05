@@ -12,7 +12,11 @@ import { AreaItems } from "~/routes/read.$gridId/area/areaItems.tsx"
 import { ContextLayout } from "~/utilities/contextLayout.ts"
 
 export function Area() {
-    const { areaLayout, saveLayout, initialLayout } = useContext(ContextLayout)
+    const {
+        areaLayoutRef: areaLayout,
+        saveLayout,
+        initialLayout,
+    } = useContext(ContextLayout)
     const [topCollapsed, setTopCollapsed] = useState(initialLayout.area[0] < 20)
     const [bottomCollapsed, setBottomCollapsed] = useState(
         initialLayout.area[1] < 20,

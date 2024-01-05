@@ -87,7 +87,7 @@ export function MapTile({
                                 }
                                 disabled={
                                     tileId !== saveData.currentTileId ||
-                                    !saveData.currentEventId
+                                    !!saveData.currentEventId
                                 }
                                 variant="ghost"
                                 size="icon"
@@ -111,7 +111,7 @@ export function MapTile({
                                 }
                                 disabled={
                                     tileId !== saveData.currentTileId ||
-                                    !saveData.currentEventId
+                                    !!saveData.currentEventId
                                 }
                                 variant="ghost"
                                 size="icon"

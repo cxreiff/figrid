@@ -19,6 +19,7 @@ export function Layout({
     left,
     right,
     center,
+    iconButtons,
     layoutRef,
     initialLayout,
     onSaveLayout,
@@ -29,6 +30,7 @@ export function Layout({
     left?: ReactNode
     right?: ReactNode
     center?: ReactNode
+    iconButtons?: ReactNode
     layoutRef: RefObject<ImperativePanelGroupHandle> | null
     initialLayout: number[]
     onSaveLayout: () => void
@@ -46,6 +48,7 @@ export function Layout({
                 <hr className="mx-3 flex-1" />
                 <h1 className="p-2">{title}</h1>
                 <hr className="mx-3 flex-1" />
+                {iconButtons}
                 <Button variant="ghost" size="icon" onClick={onResetLayout}>
                     <LayoutIcon className="h-5 w-5" />
                 </Button>
@@ -56,7 +59,7 @@ export function Layout({
                 <ResizablePanelGroup
                     ref={layoutRef}
                     direction="horizontal"
-                    className="gap-[0.4rem]"
+                    className="gap-1.5"
                     onLayout={onSaveLayout}
                 >
                     <ResizablePanel

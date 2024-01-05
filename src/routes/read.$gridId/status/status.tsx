@@ -10,8 +10,11 @@ import { StatusInventory } from "~/routes/read.$gridId/status/statusInventory.ts
 import { ContextLayout } from "~/utilities/contextLayout.ts"
 
 export function Status() {
-    const { statusLayout, saveLayout, initialLayout } =
-        useContext(ContextLayout)
+    const {
+        statusLayoutRef: statusLayout,
+        saveLayout,
+        initialLayout,
+    } = useContext(ContextLayout)
     const [topCollapsed, setTopCollapsed] = useState(
         initialLayout.status[0] < 20,
     )

@@ -1,4 +1,4 @@
-import { TrashIcon } from "@radix-ui/react-icons"
+import { PlusIcon, TrashIcon } from "@radix-ui/react-icons"
 import { Image } from "~/components/image.tsx"
 import { Button } from "~/components/ui/button.tsx"
 import { Card } from "~/components/ui/card.tsx"
@@ -8,6 +8,7 @@ import { TILE_FALLBACK_IMAGE } from "~/utilities/misc.ts"
 import { useSuperLoaderData } from "~/utilities/superjson.ts"
 import { useManualSaveData } from "~/utilities/useManualSaveData.ts"
 import { type useSaveData } from "~/utilities/useSaveData.ts"
+import { LayoutTitledScrolls } from "~/components/layoutTitledScrolls.tsx"
 
 export function DataLocal({
     replaceSave,
@@ -21,26 +22,31 @@ export function DataLocal({
     )
 
     return (
-        <WaitSaveData>
-            {(saveData) => (
-                <>
-                    <h3 className="pb-3 text-zinc-500">
-                        local
+        <LayoutTitledScrolls
+            title="local"
+            actionSlot={
+                <WaitSaveData>
+                    {(saveData) => (
                         <Button
-                            className="float-right m-0"
                             variant="ghost"
+                            size="icon"
                             onClick={() =>
                                 setManualSave(saves.length, saveData)
                             }
                         >
-                            create new...
+                            <PlusIcon />
                         </Button>
-                    </h3>
-                    {saves
-                        .map((save, index) => {
-                            const tile = tileIdMap[save.currentTileId]
-                            return (
-                                <Card key={index} className="my-4">
+                    )}
+                </WaitSaveData>
+            }
+        >
+            {saves
+                .map((save, index) => {
+                    const tile = tileIdMap[save.currentTileId]
+                    return (
+                        <WaitSaveData key={index} className="h-full">
+                            {(saveData) => (
+                                <Card key={index} className="mb-4">
                                     <div className="flex h-full items-center p-2">
                                         <Image
                                             key={tile.image_url}
@@ -80,11 +86,11 @@ export function DataLocal({
                                         </Button>
                                     </div>
                                 </Card>
-                            )
-                        })
-                        .reverse()}
-                </>
-            )}
-        </WaitSaveData>
+                            )}
+                        </WaitSaveData>
+                    )
+                })
+                .reverse()}
+        </LayoutTitledScrolls>
     )
 }

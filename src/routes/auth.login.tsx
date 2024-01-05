@@ -7,7 +7,7 @@ import { Form } from "@remix-run/react"
 import { type LoaderFunctionArgs } from "@vercel/remix"
 import { auth } from "~/auth/auth.server.ts"
 import { Button } from "~/components/ui/button.tsx"
-import { Input } from "~/components/ui/input.tsx"
+import { InputWithIcon } from "~/components/ui/input.tsx"
 import { Separator } from "~/components/ui/separator.tsx"
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -23,7 +23,7 @@ export default function Login() {
                 <Button
                     type="submit"
                     variant="outline"
-                    className="relative w-full"
+                    className="relative w-full bg-card"
                 >
                     <GitHubLogoIcon className="absolute left-3" />
                     <span className="w-full px-10">Login with GitHub</span>
@@ -35,25 +35,21 @@ export default function Login() {
                 action="/auth/form"
                 method="post"
             >
-                <div className="relative mb-2 w-full">
-                    <EnvelopeClosedIcon className="absolute left-3 h-full" />
-                    <Input
-                        className="pl-10"
-                        name="email"
-                        type="email"
-                        placeholder="email address"
-                    />
-                </div>
-                <div className="relative mb-2 w-full">
-                    <LockClosedIcon className="absolute left-3 h-full" />
-                    <Input
-                        className="pl-10"
-                        name="password"
-                        type="password"
-                        placeholder="password"
-                    />
-                </div>
-                <Button variant="outline" type="submit">
+                <InputWithIcon
+                    icon={EnvelopeClosedIcon}
+                    className="bg-card"
+                    name="email"
+                    type="email"
+                    placeholder="email address"
+                />
+                <InputWithIcon
+                    icon={LockClosedIcon}
+                    className="bg-card"
+                    name="password"
+                    type="password"
+                    placeholder="password"
+                />
+                <Button variant="outline" type="submit" className="bg-card">
                     log in
                 </Button>
             </Form>
