@@ -1,6 +1,6 @@
 import { DoubleArrowDownIcon, DoubleArrowUpIcon } from "@radix-ui/react-icons"
 import { useParams } from "@remix-run/react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { ButtonIcon } from "~/components/buttonIcon.tsx"
 import { LayoutTitledScrolls } from "~/components/layoutTitledScrolls.tsx"
 import {
@@ -17,10 +17,6 @@ const ACCORDION_KEYS = ["gates", "characters", "items", "events"]
 export function Details() {
     const [expanded, setExpanded] = useState<string[]>([])
     const { resourceType } = paramsSchema.partial().parse(useParams())
-
-    useEffect(() => {
-        setExpanded(ACCORDION_KEYS)
-    }, [])
 
     return (
         <Card className="h-full p-4 pb-0">

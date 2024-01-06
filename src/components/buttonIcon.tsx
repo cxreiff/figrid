@@ -1,22 +1,40 @@
 import type { IconProps } from "@radix-ui/react-icons/dist/types.js"
 import { Button, type ButtonProps } from "~/components/ui/button.tsx"
+import { cn } from "~/utilities/misc.ts"
 
 export function ButtonIcon({
     children,
+    className,
+    variant = "ghost",
     icon: Icon,
     ...props
 }: ButtonProps & {
     icon: (props: IconProps) => React.ReactNode
 }) {
+    const iconLeft = !!children && variant !== "ghost" && variant !== "inline"
+
     return (
         <Button
-            className="rounded-md"
-            variant="ghost"
+            className={cn("relative rounded-md", className)}
+            variant={variant}
             size={children ? "default" : "icon"}
             {...props}
         >
-            {children}
-            <Icon className={children ? "ml-1" : undefined} />
+            <Icon
+                className={cn({
+                    "absolute left-3": iconLeft,
+                    "mr-2": !!children && !iconLeft,
+                })}
+            />
+            {children && (
+                <span
+                    className={cn({
+                        "w-full px-10": iconLeft,
+                    })}
+                >
+                    {children}
+                </span>
+            )}
         </Button>
     )
 }

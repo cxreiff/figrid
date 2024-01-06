@@ -41,7 +41,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     if (!grid) {
         throw new Response(null, {
             status: 404,
-            statusText: "Not Found",
+            statusText: "not found",
         })
     }
 

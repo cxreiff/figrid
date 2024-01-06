@@ -89,7 +89,7 @@ export default function Route() {
                 center={
                     <LayoutTabs names={["editor", "map"]}>
                         <Card className="h-full p-4">
-                            <Outlet context={grid} />
+                            <Outlet />
                         </Card>
                         <Card className="h-full"></Card>
                     </LayoutTabs>

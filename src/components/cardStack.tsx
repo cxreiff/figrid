@@ -58,7 +58,7 @@ export function CardStack<TData extends { id: number; name: string }, TValue>({
                 </>
             }
             subheaderSlot={
-                <div className="flex gap-2">
+                <div className="flex gap-3">
                     <Card className="flex-1">
                         <InputWithIcon
                             className="[&>input]:border-none"
