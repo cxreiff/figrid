@@ -20,7 +20,6 @@ import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from "remix-themes"
 import { themeSessionResolver } from "~/utilities/sessionTheme.server.ts"
 
 import stylesheet from "~/styles.css"
-import { TooltipProvider } from "~/components/ui/tooltip.tsx"
 
 export const config = { runtime: "edge" }
 
@@ -76,9 +75,7 @@ export default function Root() {
 
     return (
         <ThemeProvider specifiedTheme={theme} themeAction="/action/theme">
-            <TooltipProvider>
-                <App />
-            </TooltipProvider>
+            <App />
         </ThemeProvider>
     )
 }

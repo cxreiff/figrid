@@ -31,7 +31,7 @@ export interface IconInputProps
 const InputWithIcon = React.forwardRef<HTMLInputElement, IconInputProps>(
     ({ icon: Icon, className, ...props }, ref) => {
         return (
-            <span className={cn("relative block h-9 rounded-lg", className)}>
+            <span className={cn("relative block h-9 rounded-md", className)}>
                 <Icon className="absolute inset-y-0 left-3 h-full" />
                 <Input ref={ref} className={"h-full pl-10"} {...props} />
             </span>

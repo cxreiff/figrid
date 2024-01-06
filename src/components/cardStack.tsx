@@ -3,6 +3,8 @@ import {
     DragHandleDots1Icon,
     MagnifyingGlassIcon,
     PlusIcon,
+    TextAlignJustifyIcon,
+    TokensIcon,
 } from "@radix-ui/react-icons"
 import {
     type ColumnDef,
@@ -13,11 +15,11 @@ import {
     getFilteredRowModel,
 } from "@tanstack/react-table"
 import { useState } from "react"
+import { ButtonGroup } from "~/components/buttonGroup.tsx"
 import { LayoutTitledScrolls } from "~/components/layoutTitledScrolls.tsx"
 import { Button } from "~/components/ui/button.tsx"
 import { Card } from "~/components/ui/card.tsx"
 import { InputWithIcon } from "~/components/ui/input.tsx"
-import type { SelectedResource } from "~/routes/write.$gridId/route.tsx"
 import { cn } from "~/utilities/misc.ts"
 
 export function CardStack<TData extends { id: number; name: string }, TValue>({
@@ -28,10 +30,11 @@ export function CardStack<TData extends { id: number; name: string }, TValue>({
 }: {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
-    selected: SelectedResource
+    selected?: number
     onSelection: (id: number) => void
 }) {
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+    const [mode, setMode] = useState<"mini" | "full">("full")
 
     const table = useReactTable({
         data,
@@ -48,33 +51,46 @@ export function CardStack<TData extends { id: number; name: string }, TValue>({
         <LayoutTitledScrolls
             title="tiles"
             actionSlot={
-                <Button
-                    key="create"
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => {}}
-                >
-                    <PlusIcon />
-                </Button>
+                <>
+                    <Button variant="ghost" size="icon" onClick={() => {}}>
+                        <PlusIcon />
+                    </Button>
+                </>
             }
-            subheadSlot={
-                <Card>
-                    <InputWithIcon
-                        className="[&>input]:border-none"
-                        icon={MagnifyingGlassIcon}
-                        placeholder="filter by name..."
-                        value={
-                            (table
-                                .getColumn("name")
-                                ?.getFilterValue() as string) ?? ""
-                        }
-                        onChange={(event) =>
-                            table
-                                .getColumn("name")
-                                ?.setFilterValue(event.target.value)
-                        }
+            subheaderSlot={
+                <div className="flex gap-2">
+                    <Card className="flex-1">
+                        <InputWithIcon
+                            className="[&>input]:border-none"
+                            icon={MagnifyingGlassIcon}
+                            placeholder="filter by name..."
+                            value={
+                                (table
+                                    .getColumn("name")
+                                    ?.getFilterValue() as string) ?? ""
+                            }
+                            onChange={(event) =>
+                                table
+                                    .getColumn("name")
+                                    ?.setFilterValue(event.target.value)
+                            }
+                        />
+                    </Card>
+                    <ButtonGroup
+                        options={[
+                            {
+                                key: "full",
+                                icon: TextAlignJustifyIcon,
+                            },
+                            {
+                                key: "mini",
+                                icon: TokensIcon,
+                            },
+                        ]}
+                        selected={mode}
+                        onSelect={setMode}
                     />
-                </Card>
+                </div>
             }
         >
             {table.getRowModel().rows?.length ? (
@@ -82,14 +98,13 @@ export function CardStack<TData extends { id: number; name: string }, TValue>({
                     <Button
                         key={row.id}
                         variant="ghost"
-                        className={cn(
-                            "mb-3 flex items-center gap-3 px-3 py-6",
-                            {
-                                "border-accent bg-[hsla(var(--accent)/0.1)]":
-                                    selected?.id === row.original.id &&
-                                    selected?.type === "tile",
-                            },
-                        )}
+                        className={cn("mb-3 h-auto items-center p-3", {
+                            "flex gap-3": mode === "full",
+                            "mr-3 inline-block whitespace-nowrap [&>div]:inline-block [&>svg:first-child]:mr-2 [&>svg:first-child]:inline-block":
+                                mode === "mini",
+                            "border-accent bg-[hsla(var(--accent)/0.4)]":
+                                selected === row.original.id,
+                        })}
                         onClick={() => onSelection(row.original.id)}
                         asChild
                     >
@@ -106,7 +121,9 @@ export function CardStack<TData extends { id: number; name: string }, TValue>({
                                     )}
                                 </div>
                             ))}
-                            <ChevronRightIcon />
+                            <ChevronRightIcon
+                                className={cn({ hidden: mode === "mini" })}
+                            />
                         </Card>
                     </Button>
                 ))

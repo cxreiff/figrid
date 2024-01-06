@@ -11,6 +11,9 @@ export function writeGridQuery(gridId: number) {
         where: eq(grids.id, gridId),
         with: {
             tiles: true,
+            characters: true,
+            items: true,
+            events: true,
         },
     })
 }

@@ -42,7 +42,7 @@ export function Layout({
     return (
         <div className="relative h-screen w-full gap-3 p-4">
             <div className="absolute inset-x-4 top-0 flex h-16 items-center">
-                <Link to="/">
+                <Link to="/" className="ml-2">
                     <strong className="text-accent-foreground">figrid</strong>
                 </Link>
                 <hr className="mx-3 flex-1" />

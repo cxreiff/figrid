@@ -10,7 +10,7 @@ export function Image({
     return (
         <img
             className={tailwindMerge.twMerge(
-                "pixel-image m-auto h-full w-auto max-w-full rounded-lg object-contain",
+                "pixel-image m-auto h-full w-auto max-w-full rounded-md object-contain",
                 className,
             )}
             style={{

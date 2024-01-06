@@ -34,7 +34,7 @@ export function MapTile({
             }}
             className={`relative box-border border-2 border-secondary-foreground ${
                 handleClick
-                    ? "cursor-pointer transition-colors duration-500 before:absolute before:inset-2 before:rounded-lg before:bg-transparent hover:before:bg-[hsla(var(--accent)/0.4)]"
+                    ? "cursor-pointer transition-colors duration-500 before:absolute before:inset-2 before:rounded-md before:bg-transparent hover:before:bg-[hsla(var(--accent)/0.4)]"
                     : ""
             } ${
                 tileId === saveData.currentTileId
