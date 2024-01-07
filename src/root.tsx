@@ -15,11 +15,16 @@ import {
     type MetaFunction,
 } from "@vercel/remix"
 import { SpeedInsights } from "@vercel/speed-insights/remix"
-import clsx from "clsx"
-import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from "remix-themes"
+import { PreventFlashOnWrongTheme, ThemeProvider } from "remix-themes"
 import { themeSessionResolver } from "~/utilities/sessionTheme.server.ts"
 
 import stylesheet from "~/styles.css"
+import {
+    ContextThemeTransition,
+    useThemeTransitionInitialContext,
+} from "~/utilities/contextThemeTransition.ts"
+import { useContext } from "react"
+import { cn } from "~/utilities/misc.ts"
 
 export const config = { runtime: "edge" }
 
@@ -42,12 +47,20 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
 }
 
-export function App() {
+function App() {
     const { theme } = useLoaderData<typeof loader>()
-    const [themeClass] = useTheme()
+    const { themeTransitioning, theme: themeClass } = useContext(
+        ContextThemeTransition,
+    )
 
     return (
-        <html lang="en" className={clsx(themeClass)} suppressHydrationWarning>
+        <html
+            lang="en"
+            className={cn(themeClass, {
+                "theme-transition": themeTransitioning,
+            })}
+            suppressHydrationWarning
+        >
             <head>
                 <meta charSet="utf-8" />
                 <meta
@@ -70,12 +83,22 @@ export function App() {
     )
 }
 
+function AppWithThemeTransition() {
+    return (
+        <ContextThemeTransition.Provider
+            value={useThemeTransitionInitialContext()}
+        >
+            <App />
+        </ContextThemeTransition.Provider>
+    )
+}
+
 export default function Root() {
     const { theme } = useLoaderData<typeof loader>()
 
     return (
         <ThemeProvider specifiedTheme={theme} themeAction="/action/theme">
-            <App />
+            <AppWithThemeTransition />
         </ThemeProvider>
     )
 }

@@ -53,7 +53,7 @@ export function TextPrompt({
                 </WaitSaveData>
                 <InputWithIcon
                     icon={ChevronRightIcon}
-                    className="h-full border-none [&>input]:border-none [&>input]:pl-7 [&>svg]:left-2"
+                    className="h-full border-none shadow-none [&>input]:border-none [&>input]:pl-7 [&>svg]:left-2"
                     ref={inputRef}
                     value={command}
                     onChange={(event) =>

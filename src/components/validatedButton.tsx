@@ -5,6 +5,7 @@ import type { ButtonProps } from "~/components/ui/button.tsx"
 
 export function ValidatedButton({
     icon: Icon,
+    type = "button",
     disabled,
     ...props
 }: ButtonProps & { icon: (props: IconProps) => React.ReactNode }) {
@@ -13,6 +14,7 @@ export function ValidatedButton({
     return (
         <ButtonIcon
             icon={Icon}
+            type={type}
             disabled={isSubmitting || disabled}
             {...props}
         />

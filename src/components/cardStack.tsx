@@ -6,6 +6,7 @@ import {
     TextAlignJustifyIcon,
     TokensIcon,
 } from "@radix-ui/react-icons"
+import { useLocation, useSearchParams } from "@remix-run/react"
 import {
     type ColumnDef,
     flexRender,
@@ -15,26 +16,42 @@ import {
     getFilteredRowModel,
 } from "@tanstack/react-table"
 import { useState } from "react"
+import { z } from "zod"
 import { ButtonGroup } from "~/components/buttonGroup.tsx"
 import { LayoutTitledScrolls } from "~/components/layoutTitledScrolls.tsx"
 import { Button } from "~/components/ui/button.tsx"
 import { Card } from "~/components/ui/card.tsx"
 import { InputWithIcon } from "~/components/ui/input.tsx"
+import type { ResourceType } from "~/routes/write.$gridId/route.tsx"
 import { cn } from "~/utilities/misc.ts"
 
 export function CardStack<TData extends { id: number; name: string }, TValue>({
     columns,
+    type,
     data,
     selected,
     onSelection,
+    onCreate,
 }: {
     columns: ColumnDef<TData, TValue>[]
+    type: ResourceType
     data: TData[]
     selected?: number
     onSelection: (id: number) => void
+    onCreate?: () => void
 }) {
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [mode, setMode] = useState<"mini" | "full">("full")
+
+    const duplicating = !!z.coerce
+        .number()
+        .optional()
+        .parse(useSearchParams()[0].get("duplicate"))
+
+    const { pathname } = useLocation()
+    const [, , , resourceType, createOrId] = pathname.split("/")
+    const creating =
+        resourceType === type && createOrId === "create" && !duplicating
 
     const table = useReactTable({
         data,
@@ -49,10 +66,19 @@ export function CardStack<TData extends { id: number; name: string }, TValue>({
 
     return (
         <LayoutTitledScrolls
-            title="tiles"
+            title={type}
             actionSlot={
                 <>
-                    <Button variant="ghost" size="icon" onClick={() => {}}>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className={cn({
+                            "border-accent bg-[hsla(var(--accent)/0.4)]":
+                                creating,
+                        })}
+                        onClick={onCreate}
+                        disabled={!onCreate}
+                    >
                         <PlusIcon />
                     </Button>
                 </>

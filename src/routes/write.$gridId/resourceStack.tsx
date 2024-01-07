@@ -17,9 +17,11 @@ export function ResourceStack({ type }: { type: ResourceType }) {
         <Card className="h-full p-4 pb-0">
             <CardStack
                 columns={[{ accessorKey: "name" }]}
+                type={type}
                 data={grid[type]}
                 selected={type === resourceType ? resourceId : undefined}
                 onSelection={(id) => navigate(`${type}/${id}`)}
+                onCreate={() => navigate(`${type}/create`)}
             />
         </Card>
     )

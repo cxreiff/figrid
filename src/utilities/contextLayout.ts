@@ -50,10 +50,10 @@ export function useInitialLayoutContext(
     const areaLayoutRef = useRef<ImperativePanelGroupHandle>(null)
     const statusLayoutRef = useRef<ImperativePanelGroupHandle>(null)
     const writeLayoutRef = useRef<ImperativePanelGroupHandle>(null)
-    const layoutFetcher = useFetcher()
+    const fetcher = useFetcher()
 
     const saveLayout = useDebounce(() => {
-        layoutFetcher.submit(
+        fetcher.submit(
             {
                 data: JSON.stringify({
                     read: readLayoutRef.current?.getLayout(),
@@ -71,7 +71,7 @@ export function useInitialLayoutContext(
         areaLayoutRef.current?.setLayout(DEFAULT_LAYOUT_AREA)
         statusLayoutRef.current?.setLayout(DEFAULT_LAYOUT_STATUS)
         writeLayoutRef.current?.setLayout(DEFAULT_LAYOUT_WRITE)
-        layoutFetcher.submit(null, {
+        fetcher.submit(null, {
             action: "/action/layout/delete",
             method: "post",
         })

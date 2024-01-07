@@ -7,14 +7,16 @@ import { paramsSchema as parentParamsSchema } from "~/routes/write.$gridId/route
 import { characters, items } from "~/database/schema/entities.server.ts"
 import { events } from "~/database/schema/events.server.ts"
 import { superjson, useSuperLoaderData } from "~/utilities/superjson.ts"
-import { useParams } from "@remix-run/react"
+import { useFetcher, useNavigate, useParams } from "@remix-run/react"
 import { LayoutTitled } from "~/components/layoutTitled.tsx"
-import { CopyIcon, FileIcon, ResetIcon } from "@radix-ui/react-icons"
+import { CopyIcon, FileIcon, ResetIcon, TrashIcon } from "@radix-ui/react-icons"
 import { ValidatedInput } from "~/components/validatedInput.tsx"
 import { ValidatedTextArea } from "~/components/validatedTextArea.tsx"
 import { ValidatedForm, validationError } from "remix-validated-form"
 import { withZod } from "@remix-validated-form/with-zod"
 import { ValidatedButton } from "~/components/validatedButton.tsx"
+import { DeleteResourceDialog } from "~/components/deleteResourceDialog.tsx"
+import { useState } from "react"
 
 export const paramsSchema = z.object({
     resourceType: z.enum(["tiles", "characters", "items", "events"]),
@@ -67,7 +69,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
-    const { gridId, resourceId } = parentParamsSchema
+    const { gridId, resourceType, resourceId } = parentParamsSchema
         .merge(paramsSchema)
         .parse(params)
 
@@ -77,15 +79,46 @@ export async function action({ request, params }: ActionFunctionArgs) {
         return validationError(data.error)
     }
 
-    return await db
-        .update(tiles)
-        .set(data.data)
-        .where(and(eq(tiles.id, resourceId), eq(tiles.grid_id, gridId)))
+    switch (resourceType) {
+        case "tiles":
+            return await db
+                .update(tiles)
+                .set(data.data)
+                .where(and(eq(tiles.id, resourceId), eq(tiles.grid_id, gridId)))
+        case "characters":
+            return await db
+                .update(characters)
+                .set(data.data)
+                .where(
+                    and(
+                        eq(characters.id, resourceId),
+                        eq(characters.grid_id, gridId),
+                    ),
+                )
+        case "items":
+            return await db
+                .update(items)
+                .set(data.data)
+                .where(and(eq(items.id, resourceId), eq(items.grid_id, gridId)))
+        case "events":
+            return await db
+                .update(events)
+                .set(data.data)
+                .where(
+                    and(eq(events.id, resourceId), eq(events.grid_id, gridId)),
+                )
+    }
 }
 
 export default function Route() {
     const { resource } = useSuperLoaderData<typeof loader>()
-    const { resourceType, resourceId } = paramsSchema.parse(useParams())
+    const { gridId, resourceType, resourceId } = paramsSchema
+        .merge(parentParamsSchema)
+        .parse(useParams())
+    const navigate = useNavigate()
+
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+    const fetcher = useFetcher()
 
     return (
         <ValidatedForm
@@ -104,19 +137,29 @@ export default function Route() {
                 footerSlot={
                     <div className="flex gap-4">
                         <ValidatedButton
+                            icon={TrashIcon}
+                            variant="outline"
+                            onClick={() => setDeleteModalOpen(true)}
+                        />
+                        <ValidatedButton
+                            variant="outline"
+                            icon={CopyIcon}
+                            className="flex-1"
+                            onClick={() =>
+                                navigate(
+                                    `/write/${gridId}/${resourceType}/create?duplicate=${resourceId}`,
+                                )
+                            }
+                        >
+                            duplicate
+                        </ValidatedButton>
+                        <ValidatedButton
                             type="reset"
                             variant="outline"
                             icon={ResetIcon}
                             className="flex-1"
                         >
                             revert
-                        </ValidatedButton>
-                        <ValidatedButton
-                            variant="outline"
-                            icon={CopyIcon}
-                            className="flex-1"
-                        >
-                            duplicate
                         </ValidatedButton>
                         <ValidatedButton
                             type="submit"
@@ -126,6 +169,16 @@ export default function Route() {
                         >
                             save
                         </ValidatedButton>
+                        <DeleteResourceDialog
+                            open={deleteModalOpen}
+                            onOpenChange={setDeleteModalOpen}
+                            onConfirm={() =>
+                                fetcher.submit(null, {
+                                    action: `delete`,
+                                    method: "POST",
+                                })
+                            }
+                        />
                     </div>
                 }
             >
