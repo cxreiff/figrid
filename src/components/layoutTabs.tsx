@@ -21,13 +21,13 @@ export function LayoutTabs<T extends string[]>({
             defaultValue={defaultTab}
             className="relative mt-0 h-full flex-col gap-4"
         >
-            {children.map((content, index) => (
+            {children.map((child, index) => (
                 <TabsContent
                     key={names[index]}
                     value={names[index]}
                     className="absolute bottom-14 top-0 w-full"
                 >
-                    {content}
+                    {child}
                 </TabsContent>
             ))}
             <Card className="absolute bottom-0 h-10 w-full">

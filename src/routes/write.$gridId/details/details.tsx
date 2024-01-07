@@ -1,22 +1,25 @@
 import { DoubleArrowDownIcon, DoubleArrowUpIcon } from "@radix-ui/react-icons"
 import { useParams } from "@remix-run/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ButtonIcon } from "~/components/buttonIcon.tsx"
+import { LayoutAccordion } from "~/components/layoutAccordion.tsx"
 import { LayoutTitledScrolls } from "~/components/layoutTitledScrolls.tsx"
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "~/components/ui/accordion.tsx"
 import { Card } from "~/components/ui/card.tsx"
 import { paramsSchema } from "~/routes/write.$gridId.$resourceType.$resourceId/route.tsx"
+import { DetailsCharacters } from "~/routes/write.$gridId/details/detailsCharacters.tsx"
+import { DetailsEvents } from "~/routes/write.$gridId/details/detailsEvents.tsx"
+import { DetailsItems } from "~/routes/write.$gridId/details/detailsItems.tsx"
+import { DetailsTiles } from "~/routes/write.$gridId/details/detailsTiles.tsx"
 
 const ACCORDION_KEYS = ["gates", "characters", "items", "events"]
 
 export function Details() {
     const [expanded, setExpanded] = useState<string[]>([])
     const { resourceType } = paramsSchema.partial().parse(useParams())
+
+    useEffect(() => {
+        setExpanded([])
+    }, [resourceType])
 
     return (
         <Card className="h-full p-4 pb-0">
@@ -36,30 +39,34 @@ export function Details() {
                         </>
                     }
                 >
-                    <Accordion
-                        type="multiple"
-                        value={expanded}
-                        onValueChange={setExpanded}
-                    >
-                        <AccordionItem value="gates">
-                            <AccordionTrigger>gates</AccordionTrigger>
-                            <AccordionContent>list of gates</AccordionContent>
-                        </AccordionItem>
-                        <AccordionItem value="characters">
-                            <AccordionTrigger>characters</AccordionTrigger>
-                            <AccordionContent>
-                                list of characters
-                            </AccordionContent>
-                        </AccordionItem>
-                        <AccordionItem value="items">
-                            <AccordionTrigger>items</AccordionTrigger>
-                            <AccordionContent>list of items</AccordionContent>
-                        </AccordionItem>
-                        <AccordionItem value="events">
-                            <AccordionTrigger>events</AccordionTrigger>
-                            <AccordionContent>list of events</AccordionContent>
-                        </AccordionItem>
-                    </Accordion>
+                    {
+                        {
+                            tiles: (
+                                <DetailsTiles
+                                    expanded={expanded}
+                                    setExpanded={setExpanded}
+                                />
+                            ),
+                            characters: (
+                                <DetailsCharacters
+                                    expanded={expanded}
+                                    setExpanded={setExpanded}
+                                />
+                            ),
+                            items: (
+                                <DetailsItems
+                                    expanded={expanded}
+                                    setExpanded={setExpanded}
+                                />
+                            ),
+                            events: (
+                                <DetailsEvents
+                                    expanded={expanded}
+                                    setExpanded={setExpanded}
+                                />
+                            ),
+                        }[resourceType]
+                    }
                 </LayoutTitledScrolls>
             )}
         </Card>
