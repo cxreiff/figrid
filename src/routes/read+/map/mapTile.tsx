@@ -6,21 +6,27 @@ import {
 } from "@radix-ui/react-icons"
 import { useContext } from "react"
 import { Button } from "~/components/ui/button.tsx"
-import { availableItemsMap } from "~/routes/read+/commands.ts"
+import {
+    availableItemsMap,
+    splitRequirements,
+} from "~/routes/read+/commands.ts"
 import { TILE_DIMENSIONS } from "~/routes/read+/map/map.tsx"
-import type { TileWithCoords } from "~/routes/read+/processing.server.ts"
+import type { IdMap, TileWithCoords } from "~/routes/read+/processing.server.ts"
 import { ContextCommand } from "~/lib/contextCommand.ts"
 import type { SaveData } from "~/lib/useSaveData.ts"
+import type { GridQuery } from "~/routes/read+/query.server.ts"
 
 export function MapTile({
     saveData,
     tileId,
     mapTile,
+    itemInstanceIdMap,
     handleClick,
 }: {
     saveData: SaveData
     tileId: number
     mapTile: TileWithCoords
+    itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>
     handleClick?: () => void
 }) {
     const handleCommand = useContext(ContextCommand)
@@ -49,6 +55,12 @@ export function MapTile({
                     case "east":
                     case "south":
                     case "west":
+                        const { unfulfilledLocks, unfulfilledItems } =
+                            splitRequirements(
+                                saveData,
+                                itemInstanceIdMap,
+                                gate.requirements,
+                            )
                         return (
                             <div
                                 key={`${gate.id}`}
@@ -60,12 +72,8 @@ export function MapTile({
                                         west: "-left-2 bottom-0 top-0 my-auto h-4 w-2 border-y-2 border-y-secondary-foreground",
                                     }[gate.type]
                                 } ${
-                                    gate.requirements.find(
-                                        ({ lock }) =>
-                                            !saveData.unlocked.includes(
-                                                lock.id,
-                                            ),
-                                    )
+                                    [...unfulfilledLocks, ...unfulfilledItems]
+                                        .length > 0
                                         ? "bg-secondary-foreground"
                                         : "bg-card"
                                 }`}

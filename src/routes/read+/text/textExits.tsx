@@ -1,15 +1,19 @@
 import { TextTyper } from "~/components/textTyper.tsx"
 import { Button } from "~/components/ui/button.tsx"
-import type { TileWithCoords } from "~/routes/read+/processing.server.ts"
+import type { IdMap, TileWithCoords } from "~/routes/read+/processing.server.ts"
 import type { SaveData } from "~/lib/useSaveData.ts"
+import { splitRequirements } from "~/routes/read+/commands.ts"
+import type { GridQuery } from "~/routes/read+/query.server.ts"
 
 export function TextExits({
     saveData,
     currentTile,
+    itemInstanceIdMap,
     handleCommand,
 }: {
     saveData: SaveData
     currentTile: TileWithCoords
+    itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>
     handleCommand: (command: string) => void
 }) {
     const exitsPrefix =
@@ -21,10 +25,19 @@ export function TextExits({
 
     const exitsButtons = currentTile.gates
         .map((gate) => {
-            const lock = gate.requirements.find(
-                (gate) => !saveData.unlocked.includes(gate.lock_id),
+            const { unfulfilledLocks, unfulfilledItems } = splitRequirements(
+                saveData,
+                itemInstanceIdMap,
+                gate.requirements,
             )
-            const lockMessage = lock ? ` (${lock.summary})` : undefined
+            const unfulfilled = [...unfulfilledLocks, ...unfulfilledItems]
+            const unfulfilledMessage =
+                unfulfilled.length > 0
+                    ? ` (${unfulfilled
+                          .map((requirement) => requirement.summary)
+                          .join(" ")
+                          .trim()})`
+                    : undefined
 
             return (
                 <Button
@@ -32,10 +45,10 @@ export function TextExits({
                     variant="inline"
                     className="text-base"
                     onClick={() => handleCommand(`look ${gate.type}`)}
-                    disabled={!!lock}
+                    disabled={unfulfilled.length > 0}
                 >
                     {gate.type}
-                    {lockMessage}
+                    {unfulfilledMessage}
                 </Button>
             )
         })

@@ -63,6 +63,7 @@ export function TextContent({
                             <TextOptions
                                 saveData={saveData}
                                 currentEvent={currentEvent}
+                                eventIdMap={eventIdMap}
                                 itemIdMap={itemIdMap}
                                 itemInstanceIdMap={itemInstanceIdMap}
                                 handleCommand={handleCommand}
@@ -71,6 +72,7 @@ export function TextContent({
                             <TextExits
                                 saveData={saveData}
                                 currentTile={currentTile}
+                                itemInstanceIdMap={itemInstanceIdMap}
                                 handleCommand={handleCommand}
                             />
                         )}

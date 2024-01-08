@@ -232,6 +232,41 @@
       "when": 1703139063788,
       "tag": "0032_majestic_lyja",
       "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "5",
+      "when": 1704681841458,
+      "tag": "0033_lean_winter_soldier",
+      "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "5",
+      "when": 1704682323313,
+      "tag": "0034_sloppy_secret_warriors",
+      "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "5",
+      "when": 1704682820173,
+      "tag": "0035_brave_tempest",
+      "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "5",
+      "when": 1704683803076,
+      "tag": "0036_vengeful_joystick",
+      "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "5",
+      "when": 1704702381535,
+      "tag": "0037_broken_daredevil",
+      "breakpoints": true
     }
   ]
 }

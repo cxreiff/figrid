@@ -2,40 +2,58 @@ import { Button } from "~/components/ui/button.tsx"
 import type { IdMap } from "~/routes/read+/processing.server.ts"
 import type { GridQuery } from "~/routes/read+/query.server.ts"
 import type { SaveData } from "~/lib/useSaveData.ts"
+import { splitRequirements } from "~/routes/read+/commands.ts"
 
 export function TextOptions({
     saveData,
     currentEvent,
+    eventIdMap,
     itemIdMap,
     itemInstanceIdMap,
     handleCommand,
 }: {
     saveData: SaveData
     currentEvent: GridQuery["events"][0]
+    eventIdMap: IdMap<GridQuery["events"][0]>
     itemIdMap: IdMap<GridQuery["items"][0]>
     itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>
     handleCommand: (command: string) => void
 }) {
     return currentEvent.child_events.length > 0 ? (
-        currentEvent.child_events.map(({ trigger, ...event }) => {
-            if (trigger === null) {
+        currentEvent.child_events.map((event) => {
+            if (event.trigger === null) {
                 return null
             }
 
-            const requiredItem = event.must_have_item_id
-                ? saveData.heldItems
-                      .map((instance_id) => itemInstanceIdMap[instance_id].item)
-                      .find((item) => item.id === event.must_have_item_id)
-                : undefined
+            const { unfulfilledLocks, unfulfilledItems, fulfilledItems } =
+                splitRequirements(
+                    saveData,
+                    itemInstanceIdMap,
+                    eventIdMap[event.id].requirements,
+                )
 
-            const itemMissing =
-                event.must_have_item_id && !requiredItem
-                    ? ` (missing ${itemIdMap[event.must_have_item_id].name})`
+            const unfulfilled = [...unfulfilledLocks, ...unfulfilledItems]
+
+            if (unfulfilled.find((requirement) => !requirement.visible)) {
+                return null
+            }
+
+            const unfulfilledMessage =
+                unfulfilled.length > 0
+                    ? ` (${unfulfilled
+                          .map((requirement) => requirement.summary)
+                          .join(" ")
+                          .trim()})`
                     : undefined
 
-            const itemTrade =
-                event.must_have_item_id && requiredItem
-                    ? ` (use ${requiredItem.name})`
+            const tradeMessage =
+                fulfilledItems.length > 0
+                    ? ` (use ${fulfilledItems
+                          .map(
+                              (requirement) =>
+                                  itemIdMap[requirement.item_id].name,
+                          )
+                          .join(", ")})`
                     : undefined
 
             return (
@@ -43,12 +61,12 @@ export function TextOptions({
                     key={event.id}
                     variant="inline"
                     className="mx-2 mb-3 text-base"
-                    onClick={() => handleCommand(trigger)}
-                    disabled={!!itemMissing}
+                    onClick={() => handleCommand(event.trigger || "")}
+                    disabled={unfulfilled.length > 0}
                 >
-                    {trigger}
-                    {itemMissing}
-                    {itemTrade}
+                    {event.trigger}
+                    {unfulfilledMessage}
+                    {tradeMessage}
                 </Button>
             )
         })

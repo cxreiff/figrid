@@ -1,7 +1,7 @@
 import { relations } from "drizzle-orm"
 import { int, mysqlEnum, mysqlTable, unique } from "drizzle-orm/mysql-core"
 import { users } from "~/database/schema/auth.server.ts"
-import { events } from "~/database/schema/events.server.ts"
+import { events, requirements } from "~/database/schema/events.server.ts"
 import { grids, tiles } from "~/database/schema/grids.server.ts"
 import {
     create_update_timestamps,
@@ -36,6 +36,7 @@ export const items_relations = relations(items, ({ one, many }) => ({
     }),
     item_instances: many(item_instances),
     requiring_events: many(events),
+    requirements: many(requirements),
 }))
 
 export const item_instances = mysqlTable("item_instances", {

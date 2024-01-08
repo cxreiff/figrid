@@ -1,0 +1,1 @@
+ALTER TABLE `requirements` ADD `visible` boolean DEFAULT true NOT NULL;

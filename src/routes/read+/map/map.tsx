@@ -13,7 +13,8 @@ const MAP_DIMENSIONS = { x: 13, y: 19 }
 export const TILE_DIMENSIONS = { x: 6, y: 6 }
 
 export function Map() {
-    const { tileIdMap, tileCoordsMap } = useSuperLoaderData<typeof loader>()
+    const { tileIdMap, tileCoordsMap, itemInstanceIdMap } =
+        useSuperLoaderData<typeof loader>()
     const handleCommand = useContext(ContextCommand)
 
     const BlankTile = () => (
@@ -88,6 +89,9 @@ export function Map() {
                                                 saveData={saveData}
                                                 tileId={tileId}
                                                 mapTile={mapTile}
+                                                itemInstanceIdMap={
+                                                    itemInstanceIdMap
+                                                }
                                                 handleClick={handleClick}
                                             />
                                         )

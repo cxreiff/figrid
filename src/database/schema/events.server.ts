@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm"
-import { int, mysqlTable, varchar } from "drizzle-orm/mysql-core"
+import { boolean, int, mysqlTable, varchar } from "drizzle-orm/mysql-core"
 import { users } from "~/database/schema/auth.server.ts"
 import {
     characters,
@@ -24,10 +24,6 @@ export const events = mysqlTable("events", {
     parent_character_id: int("parent_character_id"),
     parent_tile_id: int("parent_tile_id"),
     trigger: varchar("trigger", { length: 256 }),
-
-    must_have_item_id: int("must_have_item_id"),
-    must_be_unlocked_id: int("must_be_unlocked_id"),
-    must_be_locked_id: int("must_be_locked_id"),
 })
 
 export const events_relations = relations(events, ({ one, many }) => ({
@@ -52,21 +48,9 @@ export const events_relations = relations(events, ({ one, many }) => ({
         fields: [events.parent_tile_id],
         references: [tiles.id],
     }),
-    must_have_item: one(items, {
-        fields: [events.must_have_item_id],
-        references: [items.id],
-    }),
-    must_be_unlocked: one(locks, {
-        fields: [events.must_be_unlocked_id],
-        references: [locks.id],
-    }),
-    must_be_locked: one(locks, {
-        fields: [events.must_be_locked_id],
-        references: [locks.id],
-    }),
     child_events: many(events, { relationName: "child" }),
-    unlocks: many(locks, { relationName: "unlocks" }),
-    locks: many(locks, { relationName: "locks" }),
+    unlocks_locks: many(locks, { relationName: "unlocks" }),
+    locks_locks: many(locks, { relationName: "locks" }),
     items_received: many(item_instances),
     requirements: many(requirements),
 }))
@@ -109,9 +93,15 @@ export const requirements = mysqlTable("requirements", {
     ...user_grid_ids,
     ...name_summary_description,
 
-    lock_id: int("lock_id").notNull(),
+    lock_id: int("lock_id"),
+    item_id: int("item_id"),
+
     event_id: int("event_id"),
     gate_id: int("gate_id"),
+
+    inverse: boolean("inverse").default(false).notNull(),
+    visible: boolean("visible").default(true).notNull(),
+    consumes: boolean("consumes").default(false).notNull(),
 })
 
 export const requirements_relations = relations(requirements, ({ one }) => ({
@@ -126,6 +116,10 @@ export const requirements_relations = relations(requirements, ({ one }) => ({
     lock: one(locks, {
         fields: [requirements.lock_id],
         references: [locks.id],
+    }),
+    item: one(items, {
+        fields: [requirements.item_id],
+        references: [items.id],
     }),
     event: one(events, {
         fields: [requirements.event_id],

@@ -2,15 +2,10 @@ import { DoubleArrowDownIcon, DoubleArrowUpIcon } from "@radix-ui/react-icons"
 import { useParams } from "@remix-run/react"
 import { useEffect, useState } from "react"
 import { ButtonIcon } from "~/components/buttonIcon.tsx"
+import { LayoutAccordion } from "~/components/layoutAccordion.tsx"
 import { LayoutTitledScrolls } from "~/components/layoutTitledScrolls.tsx"
 import { Card } from "~/components/ui/card.tsx"
 import { paramsSchema } from "~/routes/write+/+$gridId.$resourceType.$resourceId.tsx"
-import { DetailsCharacters } from "~/routes/write+/details/detailsCharacters.tsx"
-import { DetailsEvents } from "~/routes/write+/details/detailsEvents.tsx"
-import { DetailsItems } from "~/routes/write+/details/detailsItems.tsx"
-import { DetailsTiles } from "~/routes/write+/details/detailsTiles.tsx"
-
-const ACCORDION_KEYS = ["gates", "characters", "items", "events"]
 
 export function Details() {
     const [expanded, setExpanded] = useState<string[]>([])
@@ -19,6 +14,30 @@ export function Details() {
     useEffect(() => {
         setExpanded([])
     }, [resourceType])
+
+    const ACCORDION_SECTIONS = {
+        tiles: {
+            gates: "list of gates",
+            characters: "list of characters",
+            items: "list of items",
+            events: "list of events",
+        },
+        characters: {
+            tiles: "list of character instances in tiles",
+            dialogue: "list of dialogue events",
+        },
+        items: {
+            tiles: "list of item instances in tiles",
+            events: "list of item instances in events",
+        },
+        events: {
+            parent: "parent can be character, tile, or event with trigger",
+            children: "list of child events",
+            locks: "list of locks that are locked or unlocked by event",
+            items: "list of items that are granted by event",
+            requirements: "list of requirements to trigger event",
+        },
+    }
 
     return (
         <Card className="h-full p-4 pb-0">
@@ -33,39 +52,24 @@ export function Details() {
                             />
                             <ButtonIcon
                                 icon={DoubleArrowDownIcon}
-                                onClick={() => setExpanded(ACCORDION_KEYS)}
+                                onClick={() =>
+                                    setExpanded(
+                                        Object.keys(
+                                            ACCORDION_SECTIONS[resourceType],
+                                        ),
+                                    )
+                                }
                             />
                         </>
                     }
                 >
-                    {
-                        {
-                            tiles: (
-                                <DetailsTiles
-                                    expanded={expanded}
-                                    setExpanded={setExpanded}
-                                />
-                            ),
-                            characters: (
-                                <DetailsCharacters
-                                    expanded={expanded}
-                                    setExpanded={setExpanded}
-                                />
-                            ),
-                            items: (
-                                <DetailsItems
-                                    expanded={expanded}
-                                    setExpanded={setExpanded}
-                                />
-                            ),
-                            events: (
-                                <DetailsEvents
-                                    expanded={expanded}
-                                    setExpanded={setExpanded}
-                                />
-                            ),
-                        }[resourceType]
-                    }
+                    <LayoutAccordion
+                        key={resourceType}
+                        expanded={expanded}
+                        setExpanded={setExpanded}
+                    >
+                        {ACCORDION_SECTIONS[resourceType]}
+                    </LayoutAccordion>
                 </LayoutTitledScrolls>
             )}
         </Card>

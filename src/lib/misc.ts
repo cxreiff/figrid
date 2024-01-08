@@ -2,6 +2,10 @@ import { type ClassValue, clsx } from "clsx"
 import { useEffect, useMemo, useRef } from "react"
 import { twMerge } from "tailwind-merge"
 
+export type Replace<T, Key extends keyof T, New> = Omit<T, Key> & {
+    [P in Key]: New
+}
+
 export const TILE_FALLBACK_IMAGE = "https://img.figrid.io/tiles/kitty.png"
 export const PLAYER_FALLBACK_IMAGE = "https://img.figrid.io/tiles/kitty.png"
 
