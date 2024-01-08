@@ -16,15 +16,15 @@ import {
 } from "@vercel/remix"
 import { SpeedInsights } from "@vercel/speed-insights/remix"
 import { PreventFlashOnWrongTheme, ThemeProvider } from "remix-themes"
-import { themeSessionResolver } from "~/utilities/sessionTheme.server.ts"
+import { themeSessionResolver } from "~/lib/sessionTheme.server.ts"
 
 import stylesheet from "~/styles.css"
 import {
     ContextThemeTransition,
     useThemeTransitionInitialContext,
-} from "~/utilities/contextThemeTransition.ts"
+} from "~/lib/contextThemeTransition.ts"
 import { useContext } from "react"
-import { cn } from "~/utilities/misc.ts"
+import { cn } from "~/lib/misc.ts"
 
 export const config = { runtime: "edge" }
 
@@ -97,7 +97,7 @@ export default function Root() {
     const { theme } = useLoaderData<typeof loader>()
 
     return (
-        <ThemeProvider specifiedTheme={theme} themeAction="/action/theme">
+        <ThemeProvider specifiedTheme={theme} themeAction="/actions/theme">
             <AppWithThemeTransition />
         </ThemeProvider>
     )

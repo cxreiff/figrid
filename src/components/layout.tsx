@@ -11,7 +11,7 @@ import {
     ResizablePanel,
     ResizablePanelGroup,
 } from "~/components/ui/resizable.tsx"
-import { cn } from "~/utilities/misc.ts"
+import { cn } from "~/lib/misc.ts"
 
 export function Layout({
     user,

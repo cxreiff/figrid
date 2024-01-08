@@ -1,7 +1,7 @@
 import type { IconProps } from "@radix-ui/react-icons/dist/types.js"
 import type { ReactNode } from "react"
 import { ButtonIcon } from "~/components/buttonIcon.tsx"
-import { cn } from "~/utilities/misc.ts"
+import { cn } from "~/lib/misc.ts"
 
 type Option<T> = {
     key: T

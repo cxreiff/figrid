@@ -22,8 +22,8 @@ import { LayoutTitledScrolls } from "~/components/layoutTitledScrolls.tsx"
 import { Button } from "~/components/ui/button.tsx"
 import { Card } from "~/components/ui/card.tsx"
 import { InputWithIcon } from "~/components/ui/input.tsx"
-import type { ResourceType } from "~/routes/write.$gridId/route.tsx"
-import { cn } from "~/utilities/misc.ts"
+import type { ResourceType } from "~/routes/write+/+$gridId.tsx"
+import { cn } from "~/lib/misc.ts"
 
 export function CardStack<TData extends { id: number; name: string }, TValue>({
     columns,

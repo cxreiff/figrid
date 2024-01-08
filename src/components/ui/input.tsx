@@ -1,7 +1,7 @@
 import type { IconProps } from "@radix-ui/react-icons/dist/types.js"
 import * as React from "react"
 
-import { cn } from "~/utilities/misc.ts"
+import { cn } from "~/lib/misc.ts"
 
 export interface InputProps
     extends React.InputHTMLAttributes<HTMLInputElement> {}

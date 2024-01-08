@@ -3,7 +3,7 @@ import { useContext } from "react"
 import { Theme } from "remix-themes"
 
 import { Button } from "~/components/ui/button.tsx"
-import { ContextThemeTransition } from "~/utilities/contextThemeTransition.ts"
+import { ContextThemeTransition } from "~/lib/contextThemeTransition.ts"
 
 export function ThemeToggle() {
     const { theme, triggerThemeTransition } = useContext(ContextThemeTransition)

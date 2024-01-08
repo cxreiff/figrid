@@ -104,6 +104,9 @@ dependencies:
   remix-auth-github:
     specifier: ^1.6.0
     version: 1.6.0(@remix-run/server-runtime@1.19.3)(remix-auth@3.6.0)
+  remix-custom-routes:
+    specifier: ^1.0.1
+    version: 1.0.1
   remix-themes:
     specifier: ^1.2.2
     version: 1.2.2(@remix-run/react@2.4.0)(@remix-run/server-runtime@1.19.3)
@@ -157,6 +160,9 @@ devDependencies:
   eslint-plugin-drizzle:
     specifier: ^0.2.2
     version: 0.2.2(eslint@8.56.0)
+  glob:
+    specifier: ^10.3.10
+    version: 10.3.10
   mysql2:
     specifier: ^3.6.5
     version: 3.6.5
@@ -7759,6 +7765,10 @@ packages:
       '@remix-run/react': 2.4.0(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
       '@remix-run/server-runtime': 1.19.3
       uuid: 8.3.2
+    dev: false
+
+  /remix-custom-routes@1.0.1:
+    resolution: {integrity: sha512-nC9IFAHskzx0djXOA4KnRck8x2uDWtDw2cT0bN8XaOSlBumm5t+TOUKET6hiXMjMyjkr4FqqpH7lotD68dOA7A==}
     dev: false
 
   /remix-themes@1.2.2(@remix-run/react@2.4.0)(@remix-run/server-runtime@1.19.3):

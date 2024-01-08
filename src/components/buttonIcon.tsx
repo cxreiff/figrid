@@ -1,6 +1,6 @@
 import type { IconProps } from "@radix-ui/react-icons/dist/types.js"
 import { Button, type ButtonProps } from "~/components/ui/button.tsx"
-import { cn } from "~/utilities/misc.ts"
+import { cn } from "~/lib/misc.ts"
 
 export function ButtonIcon({
     children,
