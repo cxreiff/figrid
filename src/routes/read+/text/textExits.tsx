@@ -3,7 +3,7 @@ import { Button } from "~/components/ui/button.tsx"
 import type { IdMap, TileWithCoords } from "~/routes/read+/processing.server.ts"
 import type { SaveData } from "~/lib/useSaveData.ts"
 import { splitRequirements } from "~/routes/read+/commands.ts"
-import type { GridQuery } from "~/routes/read+/query.server.ts"
+import type { GridQuery } from "~/routes/read+/queries.server.ts"
 
 export function TextExits({
     saveData,

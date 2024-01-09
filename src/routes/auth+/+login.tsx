@@ -6,6 +6,7 @@ import {
 import { Form } from "@remix-run/react"
 import { type LoaderFunctionArgs } from "@vercel/remix"
 import { auth } from "~/auth/auth.server.ts"
+import { ButtonIcon } from "~/components/buttonIcon.tsx"
 import { Button } from "~/components/ui/button.tsx"
 import { InputWithIcon } from "~/components/ui/input.tsx"
 import { Separator } from "~/components/ui/separator.tsx"
@@ -20,14 +21,15 @@ export default function Login() {
     return (
         <div className="flex min-h-screen flex-col items-center justify-center">
             <Form action="/auth/github" method="post" className="w-72">
-                <Button
+                <ButtonIcon
+                    icon={GitHubLogoIcon}
                     type="submit"
                     variant="outline"
-                    className="relative w-full bg-card"
+                    alignIcon="left"
+                    className="w-full bg-card pr-6"
                 >
-                    <GitHubLogoIcon className="absolute left-3" />
-                    <span className="w-full px-10">Login with GitHub</span>
-                </Button>
+                    Login with GitHub
+                </ButtonIcon>
             </Form>
             <Separator className="my-4 w-64" />
             <Form

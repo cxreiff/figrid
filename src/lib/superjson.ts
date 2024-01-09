@@ -1,4 +1,4 @@
-import { useActionData, useLoaderData } from "@remix-run/react"
+import { useActionData, useLoaderData, useMatches } from "@remix-run/react"
 import * as _superjson from "superjson"
 
 export type SuperJsonFunction = <Data>(
@@ -44,5 +44,15 @@ export function useSuperActionData<
     const data = useActionData()
     return data
         ? _superjson.deserialize(data as _superjson.SuperJSONResult)
+        : null
+}
+
+export function useSuperMatch<T = AppData>(
+    route: string,
+): UseDataFunctionReturn<T> | null {
+    const matches = useMatches()
+    const match = matches.find(({ id }) => id === route)
+    return match
+        ? _superjson.deserialize(match.data as _superjson.SuperJSONResult)
         : null
 }

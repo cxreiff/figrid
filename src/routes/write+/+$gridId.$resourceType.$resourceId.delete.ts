@@ -8,8 +8,8 @@ import { paramsSchema } from "~/routes/write+/+$gridId.$resourceType.$resourceId
 import { paramsSchema as parentParamsSchema } from "~/routes/write+/+$gridId.tsx"
 
 export async function action({ params }: ActionFunctionArgs) {
-    const { gridId, resourceType, resourceId } = parentParamsSchema
-        .merge(paramsSchema)
+    const { gridId, resourceType, resourceId } = paramsSchema
+        .merge(parentParamsSchema)
         .parse(params)
 
     switch (resourceType) {

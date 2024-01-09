@@ -14,7 +14,7 @@ import { TILE_DIMENSIONS } from "~/routes/read+/map/map.tsx"
 import type { IdMap, TileWithCoords } from "~/routes/read+/processing.server.ts"
 import { ContextCommand } from "~/lib/contextCommand.ts"
 import type { SaveData } from "~/lib/useSaveData.ts"
-import type { GridQuery } from "~/routes/read+/query.server.ts"
+import type { GridQuery } from "~/routes/read+/queries.server.ts"
 
 export function MapTile({
     saveData,

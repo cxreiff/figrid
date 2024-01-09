@@ -15,6 +15,7 @@ export function ValidatedButton({
         <ButtonIcon
             icon={Icon}
             type={type}
+            alignIcon="left"
             disabled={isSubmitting || disabled}
             {...props}
         />

@@ -7,11 +7,13 @@ export function ButtonIcon({
     className,
     variant = "ghost",
     icon: Icon,
+    alignIcon = "left",
     ...props
 }: ButtonProps & {
     icon: (props: IconProps) => React.ReactNode
+    alignIcon?: "left" | "right"
 }) {
-    const iconLeft = !!children && variant !== "ghost" && variant !== "inline"
+    const iconAtEdge = !!children && variant !== "ghost" && variant !== "inline"
 
     return (
         <Button
@@ -22,14 +24,19 @@ export function ButtonIcon({
         >
             <Icon
                 className={cn({
-                    "absolute left-3": iconLeft,
-                    "mr-2": !!children && !iconLeft,
+                    "absolute": iconAtEdge,
+                    "left-3": iconAtEdge && alignIcon === "left",
+                    "right-3": iconAtEdge && alignIcon === "right",
+                    "mr-2": !!children && !iconAtEdge && alignIcon === "left",
+                    "ml-2": !!children && !iconAtEdge && alignIcon === "right",
                 })}
             />
             {children && (
                 <span
                     className={cn({
-                        "w-full px-10": iconLeft,
+                        "w-full": iconAtEdge,
+                        "pl-6 pr-2": iconAtEdge && alignIcon === "left",
+                        "pl-2 pr-6": iconAtEdge && alignIcon === "right",
                     })}
                 >
                     {children}

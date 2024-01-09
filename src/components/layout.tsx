@@ -80,7 +80,7 @@ export function Layout({
                     />
                     <ResizablePanel
                         className="h-[calc(100vh-4rem)] pb-6"
-                        minSize={20}
+                        minSize={25}
                         defaultSize={initialLayout[1]}
                     >
                         {center}

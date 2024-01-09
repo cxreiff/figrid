@@ -17,6 +17,7 @@ import { withZod } from "@remix-validated-form/with-zod"
 import { ValidatedButton } from "~/components/validatedButton.tsx"
 import { DeleteResourceDialog } from "~/components/deleteResourceDialog.tsx"
 import { useState } from "react"
+import { writeTileQuery } from "~/routes/write+/queries.server.ts"
 
 export const paramsSchema = z.object({
     resourceType: z.enum(["tiles", "characters", "items", "events"]),
@@ -37,9 +38,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
     let resource
     switch (resourceType) {
         case "tiles":
-            resource = await db.query.tiles.findFirst({
-                where: eq(tiles.id, resourceId),
-            })
+            resource = await writeTileQuery(resourceId)
             break
         case "characters":
             resource = await db.query.characters.findFirst({
@@ -69,8 +68,8 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
-    const { gridId, resourceType, resourceId } = parentParamsSchema
-        .merge(paramsSchema)
+    const { gridId, resourceType, resourceId } = paramsSchema
+        .merge(parentParamsSchema)
         .parse(params)
 
     const data = await formSchema.validate(await request.formData())

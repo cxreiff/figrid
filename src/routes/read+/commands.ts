@@ -1,5 +1,5 @@
 import type { IdMap, TileWithCoords } from "~/routes/read+/processing.server.ts"
-import type { GridQuery } from "~/routes/read+/query.server.ts"
+import type { GridQuery } from "~/routes/read+/queries.server.ts"
 import { defined, type Replace } from "~/lib/misc.ts"
 import type { SaveData, useSaveData } from "~/lib/useSaveData.ts"
 import type { InferSelectModel } from "drizzle-orm"

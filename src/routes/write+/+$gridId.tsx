@@ -8,7 +8,7 @@ import { LayoutTabs } from "~/components/layoutTabs.tsx"
 import { Button } from "~/components/ui/button.tsx"
 import { Card } from "~/components/ui/card.tsx"
 import { Details } from "~/routes/write+/details/details.tsx"
-import { writeGridQuery } from "~/routes/write+/query.server.ts"
+import { writeGridQuery } from "~/routes/write+/queries.server.ts"
 import { ResourceStack } from "~/routes/write+/resourceStack.tsx"
 import {
     ContextLayout,

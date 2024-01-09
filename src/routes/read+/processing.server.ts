@@ -1,4 +1,4 @@
-import type { GridQuery } from "~/routes/read+/query.server.ts"
+import type { GridQuery } from "~/routes/read+/queries.server.ts"
 
 type Coords = [number, number, number]
 export type CoordsMap = Record<string, number | undefined>
