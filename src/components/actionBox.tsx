@@ -36,12 +36,12 @@ export function ActionBox<T extends { id: string | number; label: string }>({
                     role="combobox"
                     aria-expanded={open}
                     className={cn(
-                        "h-full w-full justify-between px-2 py-1 shadow",
+                        "h-full w-full justify-between p-1 shadow",
                         className,
                     )}
                     {...props}
                 >
-                    <div className="px-2">{children}</div>
+                    <div className="px-3">{children}</div>
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center">
                         <PlusIcon className="h-4 w-4" />
                     </div>
@@ -55,7 +55,7 @@ export function ActionBox<T extends { id: string | number; label: string }>({
                         {options.map((option) => (
                             <CommandItem
                                 key={option.id}
-                                className="cursor-pointer"
+                                className="cursor-pointer hover:bg-[hsla(var(--accent)/0.4)]"
                                 onSelect={() => {
                                     onOptionSelect(option)
                                     setOpen(false)

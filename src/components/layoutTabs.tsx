@@ -9,16 +9,22 @@ import {
 
 export function LayoutTabs<T extends string[]>({
     names,
-    defaultTab = names[0],
+    defaultValue = names[0],
+    value,
+    onValueChange,
     children,
 }: {
     names: readonly [...T]
-    defaultTab?: (typeof names)[number]
+    defaultValue?: (typeof names)[number]
+    value?: (typeof names)[number]
+    onValueChange?: (value: (typeof names)[number]) => void
     children: [...{ [I in keyof T]: ReactNode }]
 }) {
     return (
         <Tabs
-            defaultValue={defaultTab}
+            defaultValue={defaultValue}
+            value={value}
+            onValueChange={onValueChange}
             className="relative mt-0 h-full flex-col gap-4"
         >
             {children.map((child, index) => (

@@ -17,7 +17,8 @@ import {
 } from "~/lib/contextLayout.ts"
 import { getSessionLayout } from "~/lib/sessionLayout.server.ts"
 import { superjson, useSuperLoaderData } from "~/lib/superjson.ts"
-import { paramsSchema as childParamsSchema } from "~/routes/write+/+$gridId.$resourceType.$resourceId.tsx"
+import { paramsSchema as childParamsSchema } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
+import { useEffect, useState } from "react"
 
 export const RESOURCE_TYPES = {
     TILES: "tiles",
@@ -67,8 +68,13 @@ export default function Route() {
     const { user, grid, layout } = useSuperLoaderData<typeof loader>()
 
     const { resourceType } = childParamsSchema.partial().parse(useParams())
+    const [resourceTab, setResourceTab] = useState(resourceType)
 
     const layoutContext = useInitialLayoutContext(layout)
+
+    useEffect(() => {
+        setResourceTab(resourceType)
+    }, [resourceType])
 
     return (
         <ContextLayout.Provider value={layoutContext}>
@@ -78,7 +84,8 @@ export default function Route() {
                 left={
                     <LayoutTabs
                         names={Object.values(RESOURCE_TYPES)}
-                        defaultTab={resourceType}
+                        value={resourceTab}
+                        onValueChange={setResourceTab}
                     >
                         <ResourceStack type={RESOURCE_TYPES.TILES} />
                         <ResourceStack type={RESOURCE_TYPES.CHARACTERS} />
@@ -94,7 +101,12 @@ export default function Route() {
                         <Card className="h-full"></Card>
                     </LayoutTabs>
                 }
-                right={<Details />}
+                right={
+                    <LayoutTabs names={["details", "grid"]}>
+                        <Details />
+                        <Card className="h-full"></Card>
+                    </LayoutTabs>
+                }
                 iconButtons={
                     <>
                         <Button variant="ghost" size="icon" asChild>

@@ -76,8 +76,8 @@ function App() {
                 <ScrollRestoration />
                 <Scripts />
                 <LiveReload />
-                <Analytics />
-                <SpeedInsights />
+                <Analytics debug={false} />
+                <SpeedInsights debug={false} />
             </body>
         </html>
     )

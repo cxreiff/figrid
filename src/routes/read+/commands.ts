@@ -3,7 +3,8 @@ import type { GridQuery } from "~/routes/read+/queries.server.ts"
 import { defined, type Replace } from "~/lib/misc.ts"
 import type { SaveData, useSaveData } from "~/lib/useSaveData.ts"
 import type { InferSelectModel } from "drizzle-orm"
-import type { requirements, events } from "~/database/schema/events.server.ts"
+import { type events } from "~/database/schema/events.server.ts"
+import type { requirements } from "~/database/schema/requirements.server.ts"
 
 export const COMMANDS = {
     GO: "go",
@@ -255,13 +256,15 @@ export function handleCommand(
                     character.name.toLowerCase().trim() ===
                     commandTokens.slice(1).join(" ").trim()
                 ) {
-                    const dialogue = character.dialogue.filter(
-                        getQualifiedEventsFilter(
-                            saveData,
-                            itemInstanceIdMap,
-                            eventIdMap,
-                        ),
-                    )
+                    const dialogue = character.event_instances
+                        .map(({ event }) => event)
+                        .filter(
+                            getQualifiedEventsFilter(
+                                saveData,
+                                itemInstanceIdMap,
+                                eventIdMap,
+                            ),
+                        )
                     if (dialogue.length > 0) {
                         return handleTriggeredEvent(
                             dialogue[
@@ -283,13 +286,15 @@ export function handleCommand(
                 }
             }
         case COMMANDS.EXPLORE:
-            const events = currentTile.events.filter(
-                getQualifiedEventsFilter(
-                    saveData,
-                    itemInstanceIdMap,
-                    eventIdMap,
-                ),
-            )
+            const events = currentTile.event_instances
+                .map(({ event }) => event)
+                .filter(
+                    getQualifiedEventsFilter(
+                        saveData,
+                        itemInstanceIdMap,
+                        eventIdMap,
+                    ),
+                )
             if (events.length > 0) {
                 return handleTriggeredEvent(
                     events[Math.floor(Math.random() * events.length)].id,
@@ -471,8 +476,8 @@ function getQualifiedEventsFilter(
     itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>,
     eventIdMap: IdMap<GridQuery["events"][0]>,
 ) {
-    return (eventWithoutRelations: InferSelectModel<typeof events>) => {
-        const event = eventIdMap[eventWithoutRelations.id]
+    return (possibleEvent: InferSelectModel<typeof events>) => {
+        const event = eventIdMap[possibleEvent.id]
 
         for (const requirement of event.requirements) {
             if (requirement.lock_id) {

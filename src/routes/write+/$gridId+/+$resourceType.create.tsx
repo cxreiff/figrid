@@ -5,9 +5,8 @@ import {
     type LoaderFunctionArgs,
 } from "@vercel/remix"
 import { db } from "~/database/database.server.ts"
-import { tiles } from "~/database/schema/grids.server.ts"
 import { paramsSchema as parentParamsSchema } from "~/routes/write+/+$gridId.tsx"
-import { characters, items } from "~/database/schema/entities.server.ts"
+import { characters } from "~/database/schema/characters.server.ts"
 import { events } from "~/database/schema/events.server.ts"
 import { useNavigate, useParams } from "@remix-run/react"
 import { LayoutTitled } from "~/components/layoutTitled.tsx"
@@ -20,6 +19,8 @@ import { ValidatedButton } from "~/components/validatedButton.tsx"
 import { auth } from "~/auth/auth.server.ts"
 import { eq } from "drizzle-orm"
 import { superjson, useSuperLoaderData } from "~/lib/superjson.ts"
+import { tiles } from "~/database/schema/tiles.server.ts"
+import { items } from "~/database/schema/items.server.ts"
 
 export const paramsSchema = z.object({
     resourceType: z.enum(["tiles", "characters", "items", "events"]),

@@ -14,8 +14,14 @@ export const user_grid_ids = {
     grid_id: int("grid_id").notNull(),
 }
 
+export const grid_resource_fields = {
+    ...incrementing_id,
+    ...create_update_timestamps,
+    ...user_grid_ids,
+}
+
 export const name_summary_description = {
-    name: varchar("name", { length: 256 }).notNull(),
+    name: varchar("name", { length: 256 }).notNull().unique(),
     summary: text("summary"),
     description: text("description"),
     image_url: varchar("image_url", { length: 2083 }),

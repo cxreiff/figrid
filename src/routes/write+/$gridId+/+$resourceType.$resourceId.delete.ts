@@ -1,10 +1,11 @@
 import { redirect, type ActionFunctionArgs } from "@vercel/remix"
 import { and, eq } from "drizzle-orm"
 import { db } from "~/database/database.server.ts"
-import { characters, items } from "~/database/schema/entities.server.ts"
+import { characters } from "~/database/schema/characters.server.ts"
 import { events } from "~/database/schema/events.server.ts"
-import { tiles } from "~/database/schema/grids.server.ts"
-import { paramsSchema } from "~/routes/write+/+$gridId.$resourceType.$resourceId.tsx"
+import { items } from "~/database/schema/items.server.ts"
+import { tiles } from "~/database/schema/tiles.server.ts"
+import { paramsSchema } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
 import { paramsSchema as parentParamsSchema } from "~/routes/write+/+$gridId.tsx"
 
 export async function action({ params }: ActionFunctionArgs) {

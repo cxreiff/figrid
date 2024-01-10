@@ -5,25 +5,31 @@ import { ButtonIcon } from "~/components/buttonIcon.tsx"
 import { LayoutAccordion } from "~/components/layoutAccordion.tsx"
 import { LayoutTitledScrolls } from "~/components/layoutTitledScrolls.tsx"
 import { Card } from "~/components/ui/card.tsx"
-import { paramsSchema } from "~/routes/write+/+$gridId.$resourceType.$resourceId.tsx"
+import { paramsSchema } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
+import { DetailsCharactersEvents } from "~/routes/write+/details/detailsCharactersEvents.tsx"
+import { DetailsCharactersTiles } from "~/routes/write+/details/detailsCharactersTiles.tsx"
+import { DetailsTilesCharacters } from "~/routes/write+/details/detailsTilesCharacters.tsx"
+import { DetailsTilesEvents } from "~/routes/write+/details/detailsTilesEvents.tsx"
 import { DetailsTilesGates } from "~/routes/write+/details/detailsTilesGates.tsx"
 import { DetailsTilesItems } from "~/routes/write+/details/detailsTilesItems.tsx"
 
 export function Details() {
     const [expanded, setExpanded] = useState<string[]>([])
-    const { resourceType } = paramsSchema.partial().parse(useParams())
+    const { resourceType, resourceId } = paramsSchema
+        .partial()
+        .parse(useParams())
 
     const ACCORDION_SECTIONS = useMemo(
         () => ({
             tiles: {
                 gates: <DetailsTilesGates />,
-                characters: "list of characters",
+                characters: <DetailsTilesCharacters />,
                 items: <DetailsTilesItems />,
-                events: "list of events",
+                events: <DetailsTilesEvents />,
             },
             characters: {
-                tiles: "list of character instances in tiles",
-                dialogue: "list of dialogue events",
+                tiles: <DetailsCharactersTiles />,
+                events: <DetailsCharactersEvents />,
             },
             items: {
                 tiles: "list of item instances in tiles",
@@ -46,7 +52,7 @@ export function Details() {
 
     return (
         <Card className="h-full p-4 pb-0">
-            {resourceType && (
+            {resourceType && resourceId && (
                 <LayoutTitledScrolls
                     title="details"
                     actionSlot={

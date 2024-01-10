@@ -1,18 +1,20 @@
 import { relations } from "drizzle-orm"
-import { index, int, mysqlEnum, mysqlTable } from "drizzle-orm/mysql-core"
+import { int, mysqlTable } from "drizzle-orm/mysql-core"
 import { users } from "~/database/schema/auth.server.ts"
 import {
     character_instances,
     characters,
-    item_instances,
-    items,
-} from "~/database/schema/entities.server.ts"
-import { events, locks, requirements } from "~/database/schema/events.server.ts"
+} from "~/database/schema/characters.server.ts"
+import { events } from "~/database/schema/events.server.ts"
+import { gates } from "~/database/schema/gates.server.ts"
+import { item_instances, items } from "~/database/schema/items.server.ts"
+import { locks } from "~/database/schema/locks.server.ts"
+import { requirements } from "~/database/schema/requirements.server.ts"
+import { tiles } from "~/database/schema/tiles.server.ts"
 import {
     create_update_timestamps,
     incrementing_id,
     name_summary_description,
-    user_grid_ids,
 } from "~/database/shared.server.ts"
 
 export const grids = mysqlTable("grids", {
@@ -48,79 +50,4 @@ export const grids_relations = relations(grids, ({ one, many }) => ({
     characters: many(characters),
     item_instances: many(item_instances),
     character_instances: many(character_instances),
-}))
-
-export const tiles = mysqlTable(
-    "tiles",
-    {
-        ...incrementing_id,
-        ...create_update_timestamps,
-        ...user_grid_ids,
-        ...name_summary_description,
-    },
-    (t) => ({
-        grid_id: index("grid_id").on(t.grid_id),
-    }),
-)
-
-export const tiles_relations = relations(tiles, ({ one, many }) => ({
-    user: one(users, {
-        fields: [tiles.user_id],
-        references: [users.id],
-    }),
-    grid: one(grids, {
-        fields: [tiles.grid_id],
-        references: [grids.id],
-    }),
-    gates: many(gates, { relationName: "from" }),
-    gates_in: many(gates, { relationName: "to" }),
-    item_instances: many(item_instances),
-    character_instances: many(character_instances),
-    events: many(events),
-}))
-
-export const gates = mysqlTable("gates", {
-    ...incrementing_id,
-    ...create_update_timestamps,
-    ...user_grid_ids,
-
-    type: mysqlEnum("type", [
-        "north",
-        "east",
-        "south",
-        "west",
-        "up",
-        "down",
-        "other",
-    ]).notNull(),
-
-    from_id: int("from_id").notNull(),
-    to_id: int("to_id").notNull(),
-    event_id: int("event_id"),
-})
-
-export const gates_relations = relations(gates, ({ one, many }) => ({
-    user: one(users, {
-        fields: [gates.user_id],
-        references: [users.id],
-    }),
-    grid: one(grids, {
-        fields: [gates.grid_id],
-        references: [grids.id],
-    }),
-    from: one(tiles, {
-        fields: [gates.from_id],
-        references: [tiles.id],
-        relationName: "from",
-    }),
-    to: one(tiles, {
-        fields: [gates.to_id],
-        references: [tiles.id],
-        relationName: "to",
-    }),
-    event: one(events, {
-        fields: [gates.event_id],
-        references: [events.id],
-    }),
-    requirements: many(requirements),
 }))

@@ -2,9 +2,8 @@ import { z } from "zod"
 import { type ActionFunctionArgs, type LoaderFunctionArgs } from "@vercel/remix"
 import { and, eq } from "drizzle-orm"
 import { db } from "~/database/database.server.ts"
-import { tiles } from "~/database/schema/grids.server.ts"
 import { paramsSchema as parentParamsSchema } from "~/routes/write+/+$gridId.tsx"
-import { characters, items } from "~/database/schema/entities.server.ts"
+import { characters } from "~/database/schema/characters.server.ts"
 import { events } from "~/database/schema/events.server.ts"
 import { superjson, useSuperLoaderData } from "~/lib/superjson.ts"
 import { useFetcher, useNavigate, useParams } from "@remix-run/react"
@@ -17,7 +16,12 @@ import { withZod } from "@remix-validated-form/with-zod"
 import { ValidatedButton } from "~/components/validatedButton.tsx"
 import { DeleteResourceDialog } from "~/components/deleteResourceDialog.tsx"
 import { useState } from "react"
-import { writeTileQuery } from "~/routes/write+/queries.server.ts"
+import {
+    writeCharacterQuery,
+    writeTileQuery,
+} from "~/routes/write+/queries.server.ts"
+import { items } from "~/database/schema/items.server.ts"
+import { tiles } from "~/database/schema/tiles.server.ts"
 
 export const paramsSchema = z.object({
     resourceType: z.enum(["tiles", "characters", "items", "events"]),
@@ -41,9 +45,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
             resource = await writeTileQuery(resourceId)
             break
         case "characters":
-            resource = await db.query.characters.findFirst({
-                where: eq(characters.id, resourceId),
-            })
+            resource = await writeCharacterQuery(resourceId)
             break
         case "items":
             resource = await db.query.items.findFirst({

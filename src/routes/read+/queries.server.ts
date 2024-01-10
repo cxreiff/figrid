@@ -10,11 +10,15 @@ export function gridQuery(gridId: number) {
         with: {
             tiles: {
                 with: {
-                    events: {
+                    event_instances: {
                         with: {
-                            unlocks_locks: true,
-                            locks_locks: true,
-                            child_events: true,
+                            event: {
+                                with: {
+                                    unlocks_locks: true,
+                                    locks_locks: true,
+                                    child_events: true,
+                                },
+                            },
                         },
                     },
                     gates: {
@@ -31,7 +35,11 @@ export function gridQuery(gridId: number) {
                         with: {
                             character: {
                                 with: {
-                                    dialogue: true,
+                                    event_instances: {
+                                        with: {
+                                            event: true,
+                                        },
+                                    },
                                 },
                             },
                         },

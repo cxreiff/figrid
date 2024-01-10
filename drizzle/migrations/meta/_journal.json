@@ -267,6 +267,20 @@
       "when": 1704702381535,
       "tag": "0037_broken_daredevil",
       "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "5",
+      "when": 1704845027408,
+      "tag": "0038_eminent_rafael_vega",
+      "breakpoints": true
+    },
+    {
+      "idx": 39,
+      "version": "5",
+      "when": 1704846474530,
+      "tag": "0039_bored_mantis",
+      "breakpoints": true
     }
   ]
 }

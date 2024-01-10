@@ -24,14 +24,14 @@ export function AreaAdditional() {
                         <h3 className="text-muted-foreground">additional</h3>
                         <Table>
                             <TableBody className="align-middle">
-                                {currentTile.events.length === 0 && (
+                                {currentTile.event_instances.length === 0 && (
                                     <TableRow className="text-muted">
                                         <TableCell className="shadow-none">
                                             &nbsp; &nbsp; no other actions
                                         </TableCell>
                                     </TableRow>
                                 )}
-                                {currentTile.events.length > 0 && (
+                                {currentTile.event_instances.length > 0 && (
                                     <TableRow>
                                         <TableCell className="w-full">
                                             you can the explore the area
