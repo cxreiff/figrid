@@ -1,6 +1,5 @@
 import { relations } from "drizzle-orm"
 import { int, mysqlTable } from "drizzle-orm/mysql-core"
-import { users } from "~/database/schema/auth.server.ts"
 import { event_instances } from "~/database/schema/events.server.ts"
 import { grids } from "~/database/schema/grids.server.ts"
 import { tiles } from "~/database/schema/tiles.server.ts"
@@ -15,10 +14,6 @@ export const characters = mysqlTable("characters", {
 })
 
 export const characters_relations = relations(characters, ({ one, many }) => ({
-    user: one(users, {
-        fields: [characters.user_id],
-        references: [users.id],
-    }),
     grid: one(grids, {
         fields: [characters.grid_id],
         references: [grids.id],

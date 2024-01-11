@@ -8,7 +8,6 @@ import * as gatesSchema from "~/database/schema/gates.server.ts"
 import * as gridsSchema from "~/database/schema/grids.server.ts"
 import * as itemsSchema from "~/database/schema/items.server.ts"
 import * as locksSchema from "~/database/schema/locks.server.ts"
-import * as requirementsSchema from "~/database/schema/requirements.server.ts"
 import * as tilesSchema from "~/database/schema/tiles.server.ts"
 
 export const db = remember("db", () =>
@@ -21,7 +20,6 @@ export const db = remember("db", () =>
             ...gridsSchema,
             ...itemsSchema,
             ...locksSchema,
-            ...requirementsSchema,
             ...tilesSchema,
         },
     }),

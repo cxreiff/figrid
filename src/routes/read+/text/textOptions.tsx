@@ -2,7 +2,8 @@ import { Button } from "~/components/ui/button.tsx"
 import type { IdMap } from "~/routes/read+/processing.server.ts"
 import type { GridQuery } from "~/routes/read+/queries.server.ts"
 import type { SaveData } from "~/lib/useSaveData.ts"
-import { splitRequirements } from "~/routes/read+/commands.ts"
+import { splitLocks } from "~/routes/read+/commands.ts"
+import { defined } from "~/lib/misc.ts"
 
 export function TextOptions({
     saveData,
@@ -25,34 +26,32 @@ export function TextOptions({
                 return null
             }
 
-            const { unfulfilledLocks, unfulfilledItems, fulfilledItems } =
-                splitRequirements(
-                    saveData,
-                    itemInstanceIdMap,
-                    eventIdMap[event.id].requirements,
-                )
+            const { fulfilled, unfulfilled } = splitLocks(
+                eventIdMap[event.id].locked_by,
+                saveData,
+                itemInstanceIdMap,
+            )
 
-            const unfulfilled = [...unfulfilledLocks, ...unfulfilledItems]
-
-            if (unfulfilled.find((requirement) => !requirement.visible)) {
+            if (unfulfilled.find(({ visible }) => !visible)) {
                 return null
             }
 
             const unfulfilledMessage =
                 unfulfilled.length > 0
                     ? ` (${unfulfilled
-                          .map((requirement) => requirement.summary)
+                          .map(({ lock }) => lock.summary)
                           .join(" ")
                           .trim()})`
                     : undefined
 
+            const fulfilledItemIds = fulfilled
+                .map(({ lock }) => lock.required_item_id)
+                .filter(defined)
+
             const tradeMessage =
-                fulfilledItems.length > 0
-                    ? ` (use ${fulfilledItems
-                          .map(
-                              (requirement) =>
-                                  itemIdMap[requirement.item_id].name,
-                          )
+                fulfilledItemIds.length > 0
+                    ? ` (use ${fulfilledItemIds
+                          .map((itemId) => itemIdMap[itemId].name)
                           .join(", ")})`
                     : undefined
 

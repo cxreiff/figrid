@@ -6,10 +6,7 @@ import {
 } from "@radix-ui/react-icons"
 import { useContext } from "react"
 import { Button } from "~/components/ui/button.tsx"
-import {
-    availableItemsMap,
-    splitRequirements,
-} from "~/routes/read+/commands.ts"
+import { availableItemsMap, splitLocks } from "~/routes/read+/commands.ts"
 import { TILE_DIMENSIONS } from "~/routes/read+/map/map.tsx"
 import type { IdMap, TileWithCoords } from "~/routes/read+/processing.server.ts"
 import { ContextCommand } from "~/lib/contextCommand.ts"
@@ -55,12 +52,11 @@ export function MapTile({
                     case "east":
                     case "south":
                     case "west":
-                        const { unfulfilledLocks, unfulfilledItems } =
-                            splitRequirements(
-                                saveData,
-                                itemInstanceIdMap,
-                                gate.requirements,
-                            )
+                        const { unfulfilled } = splitLocks(
+                            gate.locked_by,
+                            saveData,
+                            itemInstanceIdMap,
+                        )
                         return (
                             <div
                                 key={`${gate.id}`}
@@ -72,8 +68,7 @@ export function MapTile({
                                         west: "-left-2 bottom-0 top-0 my-auto h-4 w-2 border-y-2 border-y-secondary-foreground",
                                     }[gate.type]
                                 } ${
-                                    [...unfulfilledLocks, ...unfulfilledItems]
-                                        .length > 0
+                                    unfulfilled.length > 0
                                         ? "bg-secondary-foreground"
                                         : "bg-card"
                                 }`}

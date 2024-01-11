@@ -1,9 +1,8 @@
 import { relations } from "drizzle-orm"
 import { int, mysqlEnum, mysqlTable } from "drizzle-orm/mysql-core"
-import { users } from "~/database/schema/auth.server.ts"
 import { events } from "~/database/schema/events.server.ts"
 import { grids } from "~/database/schema/grids.server.ts"
-import { requirements } from "~/database/schema/requirements.server.ts"
+import { lock_instances } from "~/database/schema/locks.server.ts"
 import { tiles } from "~/database/schema/tiles.server.ts"
 import { grid_resource_fields } from "~/database/shared.server.ts"
 
@@ -26,10 +25,6 @@ export const gates = mysqlTable("gates", {
 })
 
 export const gates_relations = relations(gates, ({ one, many }) => ({
-    user: one(users, {
-        fields: [gates.user_id],
-        references: [users.id],
-    }),
     grid: one(grids, {
         fields: [gates.grid_id],
         references: [grids.id],
@@ -48,5 +43,5 @@ export const gates_relations = relations(gates, ({ one, many }) => ({
         fields: [gates.event_id],
         references: [events.id],
     }),
-    requirements: many(requirements),
+    locked_by: many(lock_instances),
 }))

@@ -1,9 +1,8 @@
 import { relations } from "drizzle-orm"
 import { int, mysqlEnum, mysqlTable, unique } from "drizzle-orm/mysql-core"
-import { users } from "~/database/schema/auth.server.ts"
 import { events } from "~/database/schema/events.server.ts"
 import { grids } from "~/database/schema/grids.server.ts"
-import { requirements } from "~/database/schema/requirements.server.ts"
+import { locks } from "~/database/schema/locks.server.ts"
 import { tiles } from "~/database/schema/tiles.server.ts"
 import {
     grid_resource_fields,
@@ -24,16 +23,11 @@ export const items = mysqlTable(
 )
 
 export const items_relations = relations(items, ({ one, many }) => ({
-    user: one(users, {
-        fields: [items.user_id],
-        references: [users.id],
-    }),
     grid: one(grids, {
-        fields: [items.user_id],
+        fields: [items.grid_id],
         references: [grids.id],
     }),
-    requiring_events: many(events),
-    requirements: many(requirements),
+    unlocks_locks: many(locks),
     instances: many(item_instances),
 }))
 

@@ -1,6 +1,5 @@
 import { relations } from "drizzle-orm"
 import { index, mysqlTable } from "drizzle-orm/mysql-core"
-import { users } from "~/database/schema/auth.server.ts"
 import { character_instances } from "~/database/schema/characters.server.ts"
 import { event_instances } from "~/database/schema/events.server.ts"
 import { gates } from "~/database/schema/gates.server.ts"
@@ -23,10 +22,6 @@ export const tiles = mysqlTable(
 )
 
 export const tiles_relations = relations(tiles, ({ one, many }) => ({
-    user: one(users, {
-        fields: [tiles.user_id],
-        references: [users.id],
-    }),
     grid: one(grids, {
         fields: [tiles.grid_id],
         references: [grids.id],

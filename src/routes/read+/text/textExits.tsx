@@ -2,8 +2,8 @@ import { TextTyper } from "~/components/textTyper.tsx"
 import { Button } from "~/components/ui/button.tsx"
 import type { IdMap, TileWithCoords } from "~/routes/read+/processing.server.ts"
 import type { SaveData } from "~/lib/useSaveData.ts"
-import { splitRequirements } from "~/routes/read+/commands.ts"
 import type { GridQuery } from "~/routes/read+/queries.server.ts"
+import { splitLocks } from "~/routes/read+/commands.ts"
 
 export function TextExits({
     saveData,
@@ -25,16 +25,15 @@ export function TextExits({
 
     const exitsButtons = currentTile.gates
         .map((gate) => {
-            const { unfulfilledLocks, unfulfilledItems } = splitRequirements(
+            const { unfulfilled } = splitLocks(
+                gate.locked_by,
                 saveData,
                 itemInstanceIdMap,
-                gate.requirements,
             )
-            const unfulfilled = [...unfulfilledLocks, ...unfulfilledItems]
             const unfulfilledMessage =
                 unfulfilled.length > 0
                     ? ` (${unfulfilled
-                          .map((requirement) => requirement.summary)
+                          .map(({ lock }) => lock.summary)
                           .join(" ")
                           .trim()})`
                     : undefined

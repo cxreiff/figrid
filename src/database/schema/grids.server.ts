@@ -8,8 +8,7 @@ import {
 import { events } from "~/database/schema/events.server.ts"
 import { gates } from "~/database/schema/gates.server.ts"
 import { item_instances, items } from "~/database/schema/items.server.ts"
-import { locks } from "~/database/schema/locks.server.ts"
-import { requirements } from "~/database/schema/requirements.server.ts"
+import { lock_instances, locks } from "~/database/schema/locks.server.ts"
 import { tiles } from "~/database/schema/tiles.server.ts"
 import {
     create_update_timestamps,
@@ -45,9 +44,9 @@ export const grids_relations = relations(grids, ({ one, many }) => ({
     gates: many(gates),
     events: many(events),
     locks: many(locks),
-    requirements: many(requirements),
+    lock_instances: many(lock_instances),
     items: many(items),
-    characters: many(characters),
     item_instances: many(item_instances),
+    characters: many(characters),
     character_instances: many(character_instances),
 }))

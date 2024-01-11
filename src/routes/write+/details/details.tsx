@@ -8,6 +8,14 @@ import { Card } from "~/components/ui/card.tsx"
 import { paramsSchema } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
 import { DetailsCharactersEvents } from "~/routes/write+/details/detailsCharactersEvents.tsx"
 import { DetailsCharactersTiles } from "~/routes/write+/details/detailsCharactersTiles.tsx"
+import { DetailsEventsChildren } from "~/routes/write+/details/detailsEventsChildren.tsx"
+import { DetailsEventsItems } from "~/routes/write+/details/detailsEventsItems.tsx"
+import { DetailsEventsLock } from "~/routes/write+/details/detailsEventsLock.tsx"
+import { DetailsEventsParent } from "~/routes/write+/details/detailsEventsParent.tsx"
+import { DetailsEventsRequirements } from "~/routes/write+/details/detailsEventsRequirements.tsx"
+import { DetailsEventsUnlock } from "~/routes/write+/details/detailsEventsUnlock.tsx"
+import { DetailsItemsEvents } from "~/routes/write+/details/detailsItemsEvents.tsx"
+import { DetailsItemsTiles } from "~/routes/write+/details/detailsItemsTiles.tsx"
 import { DetailsTilesCharacters } from "~/routes/write+/details/detailsTilesCharacters.tsx"
 import { DetailsTilesEvents } from "~/routes/write+/details/detailsTilesEvents.tsx"
 import { DetailsTilesGates } from "~/routes/write+/details/detailsTilesGates.tsx"
@@ -32,15 +40,16 @@ export function Details() {
                 events: <DetailsCharactersEvents />,
             },
             items: {
-                tiles: "list of item instances in tiles",
-                events: "list of item instances in events",
+                tiles: <DetailsItemsTiles />,
+                events: <DetailsItemsEvents />,
             },
             events: {
-                parent: "parent can be character, tile, or event with trigger",
-                children: "list of child events",
-                locks: "list of locks that are locked or unlocked by event",
-                items: "list of items that are granted by event",
-                requirements: "list of requirements to trigger event",
+                parent: <DetailsEventsParent />,
+                children: <DetailsEventsChildren />,
+                unlock: <DetailsEventsUnlock />,
+                lock: <DetailsEventsLock />,
+                items: <DetailsEventsItems />,
+                requirements: <DetailsEventsRequirements />,
             },
         }),
         [],

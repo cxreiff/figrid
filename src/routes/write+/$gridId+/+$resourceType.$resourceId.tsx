@@ -18,6 +18,8 @@ import { DeleteResourceDialog } from "~/components/deleteResourceDialog.tsx"
 import { useState } from "react"
 import {
     writeCharacterQuery,
+    writeEventQuery,
+    writeItemQuery,
     writeTileQuery,
 } from "~/routes/write+/queries.server.ts"
 import { items } from "~/database/schema/items.server.ts"
@@ -48,14 +50,10 @@ export async function loader({ params }: LoaderFunctionArgs) {
             resource = await writeCharacterQuery(resourceId)
             break
         case "items":
-            resource = await db.query.items.findFirst({
-                where: eq(items.id, resourceId),
-            })
+            resource = await writeItemQuery(resourceId)
             break
         case "events":
-            resource = await db.query.events.findFirst({
-                where: eq(events.id, resourceId),
-            })
+            resource = await writeEventQuery(resourceId)
             break
     }
 

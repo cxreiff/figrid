@@ -9,6 +9,7 @@ export type SaveData = {
     heldItems: number[]
     usedItems: number[]
     unlocked: number[]
+    unlockedInstances: number[]
 }
 
 export function useSaveData(user: AuthUser | null, grid: GridQuery) {
@@ -21,6 +22,7 @@ export function useSaveData(user: AuthUser | null, grid: GridQuery) {
             heldItems: [],
             usedItems: [],
             unlocked: [],
+            unlockedInstances: [],
         },
     )
     function setSaveData<T extends keyof SaveData>(key: T, value: SaveData[T]) {

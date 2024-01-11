@@ -10,11 +10,11 @@ import { paramsSchema as gridIdParamsSchema } from "~/routes/write+/+$gridId.tsx
 const paramsSchema = z.object({
     resourceId: z.coerce.number(),
     linkedType: z.enum(["tiles", "events"]),
-    instanceId: z.coerce.number(),
+    linkId: z.coerce.number(),
 })
 
 export async function action({ request, params }: ActionFunctionArgs) {
-    const { gridId, resourceId, linkedType, instanceId } = paramsSchema
+    const { gridId, resourceId, linkedType, linkId } = paramsSchema
         .merge(gridIdParamsSchema)
         .parse(params)
 
@@ -32,7 +32,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
                     and(
                         eq(character_instances.grid_id, gridId),
                         eq(character_instances.character_id, resourceId),
-                        eq(character_instances.id, instanceId),
+                        eq(character_instances.id, linkId),
                     ),
                 )
             break
@@ -43,7 +43,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
                     and(
                         eq(event_instances.grid_id, gridId),
                         eq(event_instances.parent_character_id, resourceId),
-                        eq(event_instances.id, instanceId),
+                        eq(event_instances.id, linkId),
                     ),
                 )
             break

@@ -1,7 +1,9 @@
 import { eq } from "drizzle-orm"
 import { db } from "~/database/database.server.ts"
 import { characters } from "~/database/schema/characters.server.ts"
+import { events } from "~/database/schema/events.server.ts"
 import { grids } from "~/database/schema/grids.server.ts"
+import { items } from "~/database/schema/items.server.ts"
 import { tiles } from "~/database/schema/tiles.server.ts"
 
 export type WriteGridQuery = NonNullable<
@@ -16,6 +18,11 @@ export function writeGridQuery(gridId: number) {
             characters: true,
             items: true,
             events: true,
+            locks: {
+                with: {
+                    instances: true,
+                },
+            },
         },
     })
 }
@@ -30,7 +37,7 @@ export function writeTileQuery(tileId: number) {
         with: {
             gates: {
                 with: {
-                    requirements: true,
+                    locked_by: true,
                     to: true,
                 },
             },
@@ -48,7 +55,7 @@ export function writeTileQuery(tileId: number) {
                 with: {
                     event: {
                         with: {
-                            requirements: true,
+                            locked_by: true,
                         },
                     },
                 },
@@ -73,6 +80,56 @@ export function writeCharacterQuery(characterId: number) {
             event_instances: {
                 with: {
                     event: true,
+                },
+            },
+        },
+    })
+}
+
+export type WriteItemQuery = NonNullable<
+    Awaited<ReturnType<typeof writeItemQuery>>
+>
+
+export function writeItemQuery(itemId: number) {
+    return db.query.items.findFirst({
+        where: eq(items.id, itemId),
+        with: {
+            instances: {
+                with: {
+                    tile: true,
+                    event: true,
+                },
+            },
+        },
+    })
+}
+
+export type WriteEventQuery = NonNullable<
+    Awaited<ReturnType<typeof writeEventQuery>>
+>
+
+export function writeEventQuery(eventId: number) {
+    return db.query.events.findFirst({
+        where: eq(events.id, eventId),
+        with: {
+            parent: true,
+            child_events: true,
+            instances: {
+                with: {
+                    parent_character: true,
+                    parent_tile: true,
+                },
+            },
+            grants: {
+                with: {
+                    item: true,
+                },
+            },
+            trigger_unlock: true,
+            trigger_lock: true,
+            locked_by: {
+                with: {
+                    lock: true,
                 },
             },
         },
