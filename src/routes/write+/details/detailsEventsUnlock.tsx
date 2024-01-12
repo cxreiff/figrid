@@ -15,11 +15,11 @@ export function DetailsEventsUnlock() {
     return (
         <Wait on={resource}>
             {(resource) =>
-                resource.trigger_unlock ? (
+                resource.triggers_unlock ? (
                     <DetailsResourceCard
-                        linkedResource={resource.trigger_unlock}
-                        navigateUrl={`locks/${resource.trigger_unlock.id}`}
-                        unlinkUrl={`/write/${grid.id}/events/${resource.id}/unlock/${resource.trigger_unlock.id}/unlink`}
+                        linkedResource={resource.triggers_unlock}
+                        navigateUrl={`locks/${resource.triggers_unlock.id}`}
+                        unlinkUrl={`/write/${grid.id}/events/${resource.id}/unlock/${resource.triggers_unlock.id}/unlink`}
                     />
                 ) : (
                     <DetailsResourceLinker

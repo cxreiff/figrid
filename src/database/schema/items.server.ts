@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm"
-import { int, mysqlEnum, mysqlTable, unique } from "drizzle-orm/mysql-core"
+import { int, mysqlEnum, mysqlTable } from "drizzle-orm/mysql-core"
 import { events } from "~/database/schema/events.server.ts"
 import { grids } from "~/database/schema/grids.server.ts"
 import { locks } from "~/database/schema/locks.server.ts"
@@ -9,26 +9,22 @@ import {
     name_summary_description,
 } from "~/database/shared.server.ts"
 
-export const items = mysqlTable(
-    "items",
-    {
-        ...grid_resource_fields,
-        ...name_summary_description,
+export const items = mysqlTable("items", {
+    ...grid_resource_fields,
+    ...name_summary_description,
 
-        type: mysqlEnum("type", ["key", "pass"]),
-    },
-    (t) => ({
-        unique_name: unique("unique_name").on(t.id, t.name),
-    }),
-)
+    type: mysqlEnum("type", ["key", "pass", "other"])
+        .default("other")
+        .notNull(),
+})
 
 export const items_relations = relations(items, ({ one, many }) => ({
     grid: one(grids, {
         fields: [items.grid_id],
         references: [grids.id],
     }),
-    unlocks_locks: many(locks),
     instances: many(item_instances),
+    required_by: many(locks),
 }))
 
 export const item_instances = mysqlTable("item_instances", {

@@ -1,1 +1,0 @@
-ALTER TABLE `items` ADD CONSTRAINT `unique_name` UNIQUE(`id`,`name`);

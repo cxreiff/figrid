@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm"
 import { db } from "~/database/database.server.ts"
 import { characters } from "~/database/schema/characters.server.ts"
 import { events } from "~/database/schema/events.server.ts"
+import { gates } from "~/database/schema/gates.server.ts"
 import { grids } from "~/database/schema/grids.server.ts"
 import { items } from "~/database/schema/items.server.ts"
 import { tiles } from "~/database/schema/tiles.server.ts"
@@ -18,6 +19,7 @@ export function writeGridQuery(gridId: number) {
             characters: true,
             items: true,
             events: true,
+            gates: true,
             locks: {
                 with: {
                     instances: true,
@@ -35,10 +37,10 @@ export function writeTileQuery(tileId: number) {
     return db.query.tiles.findFirst({
         where: eq(tiles.id, tileId),
         with: {
-            gates: {
+            gates_out: {
                 with: {
-                    locked_by: true,
-                    to: true,
+                    lock_instances: true,
+                    to_tile: true,
                 },
             },
             character_instances: {
@@ -55,7 +57,7 @@ export function writeTileQuery(tileId: number) {
                 with: {
                     event: {
                         with: {
-                            locked_by: true,
+                            lock_instances: true,
                         },
                     },
                 },
@@ -113,25 +115,65 @@ export function writeEventQuery(eventId: number) {
         where: eq(events.id, eventId),
         with: {
             parent: true,
-            child_events: true,
+            children: true,
             instances: {
                 with: {
                     parent_character: true,
                     parent_tile: true,
                 },
             },
-            grants: {
+            item_instances: {
                 with: {
                     item: true,
                 },
             },
-            trigger_unlock: true,
-            trigger_lock: true,
-            locked_by: {
+            triggers_unlock: true,
+            triggers_lock: true,
+            lock_instances: {
                 with: {
                     lock: true,
                 },
             },
+        },
+    })
+}
+
+export type WriteGateQuery = NonNullable<
+    Awaited<ReturnType<typeof writeGateQuery>>
+>
+
+export function writeGateQuery(gateId: number) {
+    return db.query.gates.findFirst({
+        where: eq(gates.id, gateId),
+        with: {
+            from_tile: true,
+            to_tile: true,
+            lock_instances: {
+                with: {
+                    lock: true,
+                },
+            },
+        },
+    })
+}
+
+export type WriteLockQuery = NonNullable<
+    Awaited<ReturnType<typeof writeLockQuery>>
+>
+
+export function writeLockQuery(gateId: number) {
+    return db.query.locks.findFirst({
+        where: eq(gates.id, gateId),
+        with: {
+            instances: {
+                with: {
+                    gate: true,
+                    event: true,
+                },
+            },
+            required_item: true,
+            unlocking_events: true,
+            locking_events: true,
         },
     })
 }

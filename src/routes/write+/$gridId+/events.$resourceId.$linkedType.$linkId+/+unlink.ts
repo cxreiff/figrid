@@ -65,12 +65,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
             await db
                 .update(events)
                 .set({
-                    trigger_unlock_id: null,
+                    triggers_unlock_id: null,
                 })
                 .where(
                     and(
                         eq(events.grid_id, gridId),
-                        eq(events.trigger_unlock_id, linkId),
+                        eq(events.triggers_unlock_id, linkId),
                         eq(events.id, resourceId),
                     ),
                 )
@@ -79,12 +79,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
             await db
                 .update(events)
                 .set({
-                    trigger_lock_id: null,
+                    triggers_lock_id: null,
                 })
                 .where(
                     and(
                         eq(events.grid_id, gridId),
-                        eq(events.trigger_lock_id, linkId),
+                        eq(events.triggers_lock_id, linkId),
                         eq(events.id, resourceId),
                     ),
                 )

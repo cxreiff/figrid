@@ -46,14 +46,14 @@ export function MapTile({
             }`}
             onClick={handleClick}
         >
-            {mapTile.gates.map((gate) => {
+            {mapTile.gates_out.map((gate) => {
                 switch (gate.type) {
                     case "north":
                     case "east":
                     case "south":
                     case "west":
                         const { unfulfilled } = splitLocks(
-                            gate.locked_by,
+                            gate.lock_instances,
                             saveData,
                             itemInstanceIdMap,
                         )
@@ -70,7 +70,9 @@ export function MapTile({
                                 } ${
                                     unfulfilled.length > 0
                                         ? "bg-secondary-foreground"
-                                        : "bg-card"
+                                        : tileId === saveData.currentTileId
+                                          ? "bg-accent"
+                                          : "bg-card"
                                 }`}
                             />
                         )

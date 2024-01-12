@@ -1,1 +1,0 @@
-ALTER TABLE `requirements` ADD `inverse` boolean DEFAULT false NOT NULL;

@@ -17,16 +17,16 @@ export function TextExits({
     handleCommand: (command: string) => void
 }) {
     const exitsPrefix =
-        currentTile.gates.length > 0
-            ? `there ${currentTile.gates.length === 1 ? "is an" : "are"} exit${
-                  currentTile.gates.length === 1 ? "" : "s"
-              } `
+        currentTile.gates_out.length > 0
+            ? `there ${
+                  currentTile.gates_out.length === 1 ? "is an" : "are"
+              } exit${currentTile.gates_out.length === 1 ? "" : "s"} `
             : "there are no exits."
 
-    const exitsButtons = currentTile.gates
+    const exitsButtons = currentTile.gates_out
         .map((gate) => {
             const { unfulfilled } = splitLocks(
-                gate.locked_by,
+                gate.lock_instances,
                 saveData,
                 itemInstanceIdMap,
             )
@@ -53,9 +53,9 @@ export function TextExits({
         })
         .flatMap((button, index) => [
             button,
-            index === currentTile.gates.length - 1
+            index === currentTile.gates_out.length - 1
                 ? "."
-                : index === currentTile.gates.length - 2
+                : index === currentTile.gates_out.length - 2
                   ? " and "
                   : ", ",
         ])

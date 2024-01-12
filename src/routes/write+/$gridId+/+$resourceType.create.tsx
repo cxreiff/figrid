@@ -21,9 +21,10 @@ import { eq } from "drizzle-orm"
 import { superjson, useSuperLoaderData } from "~/lib/superjson.ts"
 import { tiles } from "~/database/schema/tiles.server.ts"
 import { items } from "~/database/schema/items.server.ts"
+import { locks } from "~/database/schema/locks.server.ts"
 
 export const paramsSchema = z.object({
-    resourceType: z.enum(["tiles", "characters", "items", "events"]),
+    resourceType: z.enum(["tiles", "characters", "items", "events", "locks"]),
 })
 
 export const formSchema = withZod(
@@ -62,6 +63,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
             case "events":
                 resource = await db.query.events.findFirst({
                     where: eq(events.id, duplicate),
+                })
+            case "locks":
+                resource = await db.query.events.findFirst({
+                    where: eq(locks.id, duplicate),
                 })
                 break
         }
@@ -109,6 +114,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
                 .insert(events)
                 .values({ ...data.data, grid_id: gridId, user_id: user.id })
             break
+        case "locks":
+            response = await db
+                .insert(locks)
+                .values({ ...data.data, grid_id: gridId, user_id: user.id })
     }
 
     return redirect(`/write/${gridId}/${resourceType}/${response.insertId}`)
@@ -175,6 +184,7 @@ export default function Route() {
                                     characters: "character",
                                     items: "item",
                                     events: "event",
+                                    locks: "lock",
                                 }[resourceType]
                             }
                         </ValidatedButton>

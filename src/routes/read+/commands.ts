@@ -60,12 +60,12 @@ export function handleCommand(
 
     if (saveData.currentEventId) {
         const event = eventIdMap[saveData.currentEventId]
-        if (event.child_events.length === 0) {
+        if (event.children.length === 0) {
             clearCommandLog()
             setSaveData("currentEventId", undefined)
             return ""
         }
-        const triggeredEventId = event.child_events
+        const triggeredEventId = event.children
             .filter(
                 getQualifiedEventsFilter(
                     saveData,
@@ -104,12 +104,12 @@ export function handleCommand(
                 case SUBCOMMANDS[COMMANDS.GO].WEST:
                 case SUBCOMMANDS[COMMANDS.GO].UP:
                 case SUBCOMMANDS[COMMANDS.GO].DOWN:
-                    const gate = currentTile.gates.find(
+                    const gate = currentTile.gates_out.find(
                         ({ type }) => type === commandTokens[1],
                     )
 
                     const { unfulfilled } = splitLocks(
-                        gate?.locked_by || [],
+                        gate?.lock_instances || [],
                         saveData,
                         itemInstanceIdMap,
                     )
@@ -124,7 +124,7 @@ export function handleCommand(
                         )
                     } else if (gate) {
                         clearCommandLog()
-                        setSaveData("currentTileId", gate.to_id)
+                        setSaveData("currentTileId", gate.to_tile_id)
                     } else {
                         appendToCommandLog(
                             command,
@@ -185,12 +185,12 @@ export function handleCommand(
                 case SUBCOMMANDS[COMMANDS.LOOK].WEST:
                 case SUBCOMMANDS[COMMANDS.LOOK].UP:
                 case SUBCOMMANDS[COMMANDS.LOOK].DOWN:
-                    const gate = currentTile.gates.find(
+                    const gate = currentTile.gates_out.find(
                         ({ type }) => type === commandTokens[1],
                     )
 
                     const { unfulfilled } = splitLocks(
-                        gate?.locked_by || [],
+                        gate?.lock_instances || [],
                         saveData,
                         itemInstanceIdMap,
                     )
@@ -206,7 +206,7 @@ export function handleCommand(
                     } else if (gate) {
                         appendToCommandLog(
                             command,
-                            tileIdMap[gate.to_id].summary ||
+                            gate.summary ||
                                 "you don't see anything of interest",
                         )
                     } else {
@@ -368,18 +368,18 @@ function handleTriggeredEvent(
     setSaveData("currentEventId", triggeredEvent.id)
 
     if (
-        triggeredEvent.trigger_unlock &&
-        !saveData.unlocked.includes(triggeredEvent.trigger_unlock.id)
+        triggeredEvent.triggers_unlock &&
+        !saveData.unlocked.includes(triggeredEvent.triggers_unlock.id)
     ) {
         setSaveData("unlocked", [
             ...saveData.unlocked,
-            triggeredEvent.trigger_unlock.id,
+            triggeredEvent.triggers_unlock.id,
         ])
     }
 
-    if (triggeredEvent.trigger_lock) {
+    if (triggeredEvent.triggers_lock) {
         const index = saveData.unlocked.findIndex(
-            (id) => id === triggeredEvent.trigger_lock?.id,
+            (id) => id === triggeredEvent.triggers_lock?.id,
         )
         if (index !== -1) {
             setSaveData("unlocked", [
@@ -389,7 +389,7 @@ function handleTriggeredEvent(
         }
     }
 
-    for (const { lock } of triggeredEvent.locked_by) {
+    for (const { lock } of triggeredEvent.lock_instances) {
         if (lock.required_item_id) {
             const index = saveData.heldItems.findIndex(
                 (instanceId) =>
@@ -414,7 +414,7 @@ function handleTriggeredEvent(
         }
     }
 
-    for (const itemInstance of triggeredEvent.grants) {
+    for (const itemInstance of triggeredEvent.item_instances) {
         if (!saveData.heldItems.includes(itemInstance.id)) {
             setSaveData("heldItems", [...saveData.heldItems, itemInstance.id])
         }
@@ -434,7 +434,7 @@ export function availableCommands(
 
     if (saveData.currentEventId) {
         return prefixFilter(
-            eventIdMap[saveData.currentEventId].child_events
+            eventIdMap[saveData.currentEventId].children
                 .filter(
                     getQualifiedEventsFilter(
                         saveData,
@@ -501,7 +501,7 @@ function getQualifiedEventsFilter(
     return (possibleEvent: InferSelectModel<typeof events>) => {
         const event = eventIdMap[possibleEvent.id]
 
-        for (const lockInstance of event.locked_by) {
+        for (const lockInstance of event.lock_instances) {
             if (!isLockFulfilled(lockInstance, saveData, itemInstanceIdMap)) {
                 return false
             }
@@ -512,7 +512,7 @@ function getQualifiedEventsFilter(
 }
 
 function isLockFulfilled(
-    lockInstance: GridQuery["events"][0]["locked_by"][0],
+    lockInstance: GridQuery["events"][0]["lock_instances"][0],
     saveData: SaveData,
     itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>,
 ) {
@@ -540,13 +540,13 @@ function isLockFulfilled(
 }
 
 export function splitLocks(
-    lockInstances: GridQuery["events"][0]["locked_by"][0][],
+    lockInstances: GridQuery["events"][0]["lock_instances"][0][],
     saveData: SaveData,
     itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>,
 ) {
     return lockInstances.reduce<{
-        fulfilled: GridQuery["events"][0]["locked_by"][0][]
-        unfulfilled: GridQuery["events"][0]["locked_by"][0][]
+        fulfilled: GridQuery["events"][0]["lock_instances"][0][]
+        unfulfilled: GridQuery["events"][0]["lock_instances"][0][]
     }>(
         ({ fulfilled, unfulfilled }, lockInstance) => {
             if (isLockFulfilled(lockInstance, saveData, itemInstanceIdMap)) {

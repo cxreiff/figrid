@@ -19,14 +19,23 @@ import { useState } from "react"
 import {
     writeCharacterQuery,
     writeEventQuery,
+    writeGateQuery,
     writeItemQuery,
+    writeLockQuery,
     writeTileQuery,
 } from "~/routes/write+/queries.server.ts"
 import { items } from "~/database/schema/items.server.ts"
 import { tiles } from "~/database/schema/tiles.server.ts"
 
 export const paramsSchema = z.object({
-    resourceType: z.enum(["tiles", "characters", "items", "events"]),
+    resourceType: z.enum([
+        "tiles",
+        "characters",
+        "items",
+        "events",
+        "gates",
+        "locks",
+    ]),
     resourceId: z.coerce.number(),
 })
 
@@ -54,6 +63,12 @@ export async function loader({ params }: LoaderFunctionArgs) {
             break
         case "events":
             resource = await writeEventQuery(resourceId)
+            break
+        case "gates":
+            resource = await writeGateQuery(resourceId)
+            break
+        case "locks":
+            resource = await writeLockQuery(resourceId)
             break
     }
 

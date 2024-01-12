@@ -74,8 +74,10 @@ export function Map() {
 
                                         let handleClick
                                         if (!saveData.currentEventId) {
-                                            for (const gate of currentTile.gates) {
-                                                if (tileId === gate.to_id) {
+                                            for (const gate of currentTile.gates_out) {
+                                                if (
+                                                    tileId === gate.to_tile_id
+                                                ) {
                                                     handleClick = () =>
                                                         handleCommand(
                                                             `go ${gate.type}`,

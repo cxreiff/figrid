@@ -5,7 +5,7 @@ import {
     character_instances,
     characters,
 } from "~/database/schema/characters.server.ts"
-import { events } from "~/database/schema/events.server.ts"
+import { event_instances, events } from "~/database/schema/events.server.ts"
 import { gates } from "~/database/schema/gates.server.ts"
 import { item_instances, items } from "~/database/schema/items.server.ts"
 import { lock_instances, locks } from "~/database/schema/locks.server.ts"
@@ -24,7 +24,7 @@ export const grids = mysqlTable("grids", {
     user_id: int("user_id").notNull(),
 
     player_id: int("player_id").notNull(),
-    first_id: int("first_tile").notNull(),
+    first_tile_id: int("first_tile_id").notNull(),
 })
 
 export const grids_relations = relations(grids, ({ one, many }) => ({
@@ -32,8 +32,8 @@ export const grids_relations = relations(grids, ({ one, many }) => ({
         fields: [grids.user_id],
         references: [users.id],
     }),
-    first: one(tiles, {
-        fields: [grids.first_id],
+    first_tile: one(tiles, {
+        fields: [grids.first_tile_id],
         references: [tiles.id],
     }),
     player: one(characters, {
@@ -43,6 +43,7 @@ export const grids_relations = relations(grids, ({ one, many }) => ({
     tiles: many(tiles),
     gates: many(gates),
     events: many(events),
+    event_instances: many(event_instances),
     locks: many(locks),
     lock_instances: many(lock_instances),
     items: many(items),

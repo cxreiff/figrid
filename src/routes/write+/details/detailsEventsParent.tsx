@@ -27,7 +27,9 @@ export function DetailsEventsParent() {
                         getLinkUrl={(id) =>
                             `/write/${grid.id}/events/${resource.id}/parent/${id}/link`
                         }
-                        options={grid.events}
+                        options={grid.events.filter(
+                            ({ id }) => resource.id !== id,
+                        )}
                     />
                 )
             }

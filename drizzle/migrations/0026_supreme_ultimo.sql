@@ -1,1 +1,0 @@
-ALTER TABLE `characters` ADD `dialogue_event_id` int;

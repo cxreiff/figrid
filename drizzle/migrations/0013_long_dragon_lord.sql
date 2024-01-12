@@ -1,1 +1,0 @@
-CREATE INDEX `grid_id` ON `tiles` (`grid_id`);

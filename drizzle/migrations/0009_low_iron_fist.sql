@@ -1,1 +1,0 @@
-ALTER TABLE `passwords` DROP COLUMN `salt`;

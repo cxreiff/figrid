@@ -14,16 +14,16 @@ export function gridQuery(gridId: number) {
                         with: {
                             event: {
                                 with: {
-                                    child_events: true,
-                                    trigger_lock: true,
-                                    trigger_unlock: true,
+                                    children: true,
+                                    triggers_lock: true,
+                                    triggers_unlock: true,
                                 },
                             },
                         },
                     },
-                    gates: {
+                    gates_out: {
                         with: {
-                            locked_by: {
+                            lock_instances: {
                                 with: {
                                     lock: true,
                                 },
@@ -52,15 +52,15 @@ export function gridQuery(gridId: number) {
             },
             events: {
                 with: {
-                    child_events: true,
-                    trigger_lock: true,
-                    trigger_unlock: true,
-                    locked_by: {
+                    children: true,
+                    triggers_lock: true,
+                    triggers_unlock: true,
+                    lock_instances: {
                         with: {
                             lock: true,
                         },
                     },
-                    grants: true,
+                    item_instances: true,
                 },
             },
             items: true,

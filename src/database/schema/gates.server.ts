@@ -1,13 +1,17 @@
 import { relations } from "drizzle-orm"
 import { int, mysqlEnum, mysqlTable } from "drizzle-orm/mysql-core"
-import { events } from "~/database/schema/events.server.ts"
+import { event_instances } from "~/database/schema/events.server.ts"
 import { grids } from "~/database/schema/grids.server.ts"
 import { lock_instances } from "~/database/schema/locks.server.ts"
 import { tiles } from "~/database/schema/tiles.server.ts"
-import { grid_resource_fields } from "~/database/shared.server.ts"
+import {
+    grid_resource_fields,
+    name_summary_description,
+} from "~/database/shared.server.ts"
 
 export const gates = mysqlTable("gates", {
     ...grid_resource_fields,
+    ...name_summary_description,
 
     type: mysqlEnum("type", [
         "north",
@@ -19,9 +23,8 @@ export const gates = mysqlTable("gates", {
         "other",
     ]).notNull(),
 
-    from_id: int("from_id").notNull(),
-    to_id: int("to_id").notNull(),
-    event_id: int("event_id"),
+    from_tile_id: int("from_tile_id").notNull(),
+    to_tile_id: int("to_tile_id").notNull(),
 })
 
 export const gates_relations = relations(gates, ({ one, many }) => ({
@@ -29,19 +32,16 @@ export const gates_relations = relations(gates, ({ one, many }) => ({
         fields: [gates.grid_id],
         references: [grids.id],
     }),
-    from: one(tiles, {
-        fields: [gates.from_id],
+    from_tile: one(tiles, {
+        fields: [gates.from_tile_id],
         references: [tiles.id],
         relationName: "from",
     }),
-    to: one(tiles, {
-        fields: [gates.to_id],
+    to_tile: one(tiles, {
+        fields: [gates.to_tile_id],
         references: [tiles.id],
         relationName: "to",
     }),
-    event: one(events, {
-        fields: [gates.event_id],
-        references: [events.id],
-    }),
-    locked_by: many(lock_instances),
+    event_instances: many(event_instances),
+    lock_instances: many(lock_instances),
 }))

@@ -14,6 +14,7 @@ import {
     useReactTable,
     type ColumnFiltersState,
     getFilteredRowModel,
+    getSortedRowModel,
 } from "@tanstack/react-table"
 import { useState } from "react"
 import { z } from "zod"
@@ -59,8 +60,10 @@ export function CardStack<TData extends { id: number; name: string }, TValue>({
         getCoreRowModel: getCoreRowModel(),
         onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(),
+        getSortedRowModel: getSortedRowModel(),
         state: {
             columnFilters,
+            sorting: [{ desc: false, id: "name" }],
         },
     })
 
@@ -68,7 +71,7 @@ export function CardStack<TData extends { id: number; name: string }, TValue>({
         <LayoutTitledScrolls
             title={type}
             actionSlot={
-                <>
+                onCreate && (
                     <Button
                         variant="ghost"
                         size="icon"
@@ -77,11 +80,10 @@ export function CardStack<TData extends { id: number; name: string }, TValue>({
                                 creating,
                         })}
                         onClick={onCreate}
-                        disabled={!onCreate}
                     >
                         <PlusIcon />
                     </Button>
-                </>
+                )
             }
             subheaderSlot={
                 <div className="flex gap-3">

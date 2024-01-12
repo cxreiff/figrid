@@ -1,1 +1,0 @@
-ALTER TABLE `characters` DROP COLUMN `dialogue_event_id`;

@@ -10,7 +10,7 @@ export function DetailsResourceCard<T extends { id: number; name: string }>({
 }: {
     linkedResource: T
     navigateUrl: string
-    unlinkUrl: string
+    unlinkUrl?: string
 }) {
     const navigate = useNavigate()
     const fetcher = useFetcher()
@@ -22,15 +22,17 @@ export function DetailsResourceCard<T extends { id: number; name: string }>({
                 icon={EnterIcon}
                 onClick={() => navigate(navigateUrl)}
             />
-            <ButtonIcon
-                icon={Cross2Icon}
-                onClick={() => {
-                    fetcher.submit(null, {
-                        action: unlinkUrl,
-                        method: "POST",
-                    })
-                }}
-            />
+            {unlinkUrl && (
+                <ButtonIcon
+                    icon={Cross2Icon}
+                    onClick={() => {
+                        fetcher.submit(null, {
+                            action: unlinkUrl,
+                            method: "POST",
+                        })
+                    }}
+                />
+            )}
         </Card>
     )
 }

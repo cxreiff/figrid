@@ -15,7 +15,7 @@ export function DetailsEventsItems() {
     return (
         <Wait on={resource}>
             {(resource) => [
-                resource.grants.map(({ id, item }) => (
+                resource.item_instances.map(({ id, item }) => (
                     <DetailsResourceCard
                         key={id}
                         linkedResource={item}

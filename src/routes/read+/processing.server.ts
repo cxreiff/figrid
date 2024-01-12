@@ -23,10 +23,10 @@ export function generateTileCoordsMap(
         tileIdMap[currentId].coords = currentCoords
 
         const currentTile = tileIdMap[currentId.toString()]
-        const adjacents = currentTile.gates.map(
-            ({ to_id, type }) =>
+        const adjacents = currentTile.gates_out.map(
+            ({ to_tile_id, type }) =>
                 [
-                    to_id,
+                    to_tile_id,
                     {
                         north: [0, -1, 0] as const,
                         east: [1, 0, 0] as const,

@@ -36,13 +36,13 @@ export const character_instances_relations = relations(
             fields: [character_instances.grid_id],
             references: [grids.id],
         }),
-        tile: one(tiles, {
-            fields: [character_instances.tile_id],
-            references: [tiles.id],
-        }),
         character: one(characters, {
             fields: [character_instances.character_id],
             references: [characters.id],
+        }),
+        tile: one(tiles, {
+            fields: [character_instances.tile_id],
+            references: [tiles.id],
         }),
     }),
 )

@@ -25,6 +25,8 @@ export const RESOURCE_TYPES = {
     CHARACTERS: "characters",
     ITEMS: "items",
     EVENTS: "events",
+    GATES: "gates",
+    LOCKS: "locks",
 } as const
 export type ResourceType = (typeof RESOURCE_TYPES)[keyof typeof RESOURCE_TYPES]
 export type SelectedResource = { id: number; type: ResourceType } | undefined
@@ -91,6 +93,8 @@ export default function Route() {
                         <ResourceStack type={RESOURCE_TYPES.CHARACTERS} />
                         <ResourceStack type={RESOURCE_TYPES.ITEMS} />
                         <ResourceStack type={RESOURCE_TYPES.EVENTS} />
+                        <ResourceStack type={RESOURCE_TYPES.GATES} />
+                        <ResourceStack type={RESOURCE_TYPES.LOCKS} />
                     </LayoutTabs>
                 }
                 center={

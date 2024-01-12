@@ -52,7 +52,7 @@ export const passwords = mysqlTable("passwords", {
 
     hash: text("hash").notNull(),
 
-    user_id: int("user_id"),
+    user_id: int("user_id").primaryKey(),
 })
 
 export const passwords_relations = relations(passwords, ({ one }) => ({

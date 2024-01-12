@@ -1,1 +1,0 @@
-ALTER TABLE `requirements` ADD `consumes` boolean DEFAULT false NOT NULL;

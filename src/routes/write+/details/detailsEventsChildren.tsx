@@ -15,7 +15,7 @@ export function DetailsEventsChildren() {
     return (
         <Wait on={resource}>
             {(resource) => [
-                resource.child_events.map((event) => (
+                resource.children.map((event) => (
                     <DetailsResourceCard
                         key={event.id}
                         linkedResource={event}

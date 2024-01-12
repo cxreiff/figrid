@@ -69,7 +69,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
             await db
                 .update(events)
                 .set({
-                    trigger_unlock_id: linkId,
+                    triggers_unlock_id: linkId,
                 })
                 .where(eq(events.id, resourceId))
             break
@@ -77,7 +77,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
             await db
                 .update(events)
                 .set({
-                    trigger_lock_id: linkId,
+                    triggers_lock_id: linkId,
                 })
                 .where(eq(events.id, resourceId))
             break

@@ -20,14 +20,14 @@ export function TextOptions({
     itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>
     handleCommand: (command: string) => void
 }) {
-    return currentEvent.child_events.length > 0 ? (
-        currentEvent.child_events.map((event) => {
+    return currentEvent.children.length > 0 ? (
+        currentEvent.children.map((event) => {
             if (event.trigger === null) {
                 return null
             }
 
             const { fulfilled, unfulfilled } = splitLocks(
-                eventIdMap[event.id].locked_by,
+                eventIdMap[event.id].lock_instances,
                 saveData,
                 itemInstanceIdMap,
             )

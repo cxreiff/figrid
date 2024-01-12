@@ -21,7 +21,11 @@ export function ResourceStack({ type }: { type: ResourceType }) {
                 data={grid[type]}
                 selected={type === resourceType ? resourceId : undefined}
                 onSelection={(id) => navigate(`${type}/${id}`)}
-                onCreate={() => navigate(`${type}/create`)}
+                onCreate={
+                    type !== "gates"
+                        ? () => navigate(`${type}/create`)
+                        : undefined
+                }
             />
         </Card>
     )

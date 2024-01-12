@@ -37,7 +37,7 @@ export function LayoutTabs<T extends string[]>({
                 </TabsContent>
             ))}
             <Card className="absolute bottom-0 h-10 w-full">
-                <TabsList className="h-full w-full justify-start">
+                <TabsList className="h-full w-full justify-start overflow-x-auto">
                     {names.map((name) => (
                         <TabsTrigger key={name} value={name}>
                             {name}
