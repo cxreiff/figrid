@@ -2,7 +2,10 @@ import { Button } from "~/components/ui/button.tsx"
 import type { IdMap } from "~/routes/read+/processing.server.ts"
 import type { GridQuery } from "~/routes/read+/queries.server.ts"
 import type { SaveData } from "~/lib/useSaveData.ts"
-import { splitLocks } from "~/routes/read+/commands.ts"
+import {
+    splitLockInstances,
+    splitUnfulfilledLockInstances,
+} from "~/routes/read+/commands.ts"
 import { defined } from "~/lib/misc.ts"
 
 export function TextOptions({
@@ -26,8 +29,13 @@ export function TextOptions({
                 return null
             }
 
-            const { fulfilled, unfulfilled } = splitLocks(
+            const { fulfilled, unfulfilled } = splitLockInstances(
                 eventIdMap[event.id].lock_instances,
+                saveData,
+            )
+
+            const { missingItem, noItem } = splitUnfulfilledLockInstances(
+                unfulfilled,
                 saveData,
                 itemInstanceIdMap,
             )
@@ -61,7 +69,7 @@ export function TextOptions({
                     variant="inline"
                     className="mx-2 mb-3 text-base"
                     onClick={() => handleCommand(event.trigger || "")}
-                    disabled={unfulfilled.length > 0}
+                    disabled={missingItem.length + noItem.length > 0}
                 >
                     {event.trigger}
                     {unfulfilledMessage}

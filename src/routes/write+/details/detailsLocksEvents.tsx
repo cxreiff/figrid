@@ -35,7 +35,6 @@ export function DetailsLocksEvents() {
                     }
                     options={grid.events.filter(
                         (event) =>
-                            event.parent_id === null &&
                             !resource.instances.find(
                                 ({ event_id }) => event.id === event_id,
                             ),

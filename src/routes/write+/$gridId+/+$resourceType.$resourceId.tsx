@@ -26,6 +26,7 @@ import {
 } from "~/routes/write+/queries.server.ts"
 import { items } from "~/database/schema/items.server.ts"
 import { tiles } from "~/database/schema/tiles.server.ts"
+import { locks } from "~/database/schema/locks.server.ts"
 
 export const paramsSchema = z.object({
     resourceType: z.enum([
@@ -93,35 +94,43 @@ export async function action({ request, params }: ActionFunctionArgs) {
         return validationError(data.error)
     }
 
+    let response
     switch (resourceType) {
         case "tiles":
-            return await db
+            response = await db
                 .update(tiles)
                 .set(data.data)
-                .where(and(eq(tiles.id, resourceId), eq(tiles.grid_id, gridId)))
+                .where(and(eq(tiles.grid_id, gridId), eq(tiles.id, resourceId)))
         case "characters":
-            return await db
+            response = await db
                 .update(characters)
                 .set(data.data)
                 .where(
                     and(
-                        eq(characters.id, resourceId),
                         eq(characters.grid_id, gridId),
+                        eq(characters.id, resourceId),
                     ),
                 )
         case "items":
-            return await db
+            response = await db
                 .update(items)
                 .set(data.data)
-                .where(and(eq(items.id, resourceId), eq(items.grid_id, gridId)))
+                .where(and(eq(items.grid_id, gridId), eq(items.id, resourceId)))
         case "events":
-            return await db
+            response = await db
                 .update(events)
                 .set(data.data)
                 .where(
-                    and(eq(events.id, resourceId), eq(events.grid_id, gridId)),
+                    and(eq(events.grid_id, gridId), eq(events.id, resourceId)),
                 )
+        case "locks":
+            response = await db
+                .update(locks)
+                .set(data.data)
+                .where(and(eq(locks.grid_id, gridId), eq(locks.id, resourceId)))
     }
+
+    return response
 }
 
 export default function Route() {

@@ -72,7 +72,6 @@ export function TextContent({
                             <TextExits
                                 saveData={saveData}
                                 currentTile={currentTile}
-                                itemInstanceIdMap={itemInstanceIdMap}
                                 handleCommand={handleCommand}
                             />
                         )}

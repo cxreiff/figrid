@@ -10,6 +10,7 @@ export const COMMANDS = {
     LOOK: "look",
     TAKE: "take",
     TALK: "talk",
+    USE: "use",
     EXPLORE: "explore",
 }
 
@@ -32,6 +33,7 @@ export const SUBCOMMANDS = {
     },
     [COMMANDS.TAKE]: {},
     [COMMANDS.TALK]: {},
+    [COMMANDS.USE]: {},
     [COMMANDS.EXPLORE]: {},
 }
 
@@ -108,10 +110,17 @@ export function handleCommand(
                         ({ type }) => type === commandTokens[1],
                     )
 
-                    const { unfulfilled } = splitLocks(
+                    if (!gate) {
+                        appendToCommandLog(
+                            command,
+                            "there is no passage in that direction",
+                        )
+                        return ""
+                    }
+
+                    const { unfulfilled } = splitLockInstances(
                         gate?.lock_instances || [],
                         saveData,
-                        itemInstanceIdMap,
                     )
 
                     if (unfulfilled.length > 0) {
@@ -122,15 +131,11 @@ export function handleCommand(
                                 .join(" ")
                                 .trim() || "the way is shut",
                         )
-                    } else if (gate) {
-                        clearCommandLog()
-                        setSaveData("currentTileId", gate.to_tile_id)
-                    } else {
-                        appendToCommandLog(
-                            command,
-                            "there is no passage in that direction",
-                        )
+                        return ""
                     }
+
+                    clearCommandLog()
+                    setSaveData("currentTileId", gate.to_tile_id)
                     return ""
                 default:
                     return handleUnrecognized(
@@ -189,10 +194,9 @@ export function handleCommand(
                         ({ type }) => type === commandTokens[1],
                     )
 
-                    const { unfulfilled } = splitLocks(
+                    const { unfulfilled } = splitLockInstances(
                         gate?.lock_instances || [],
                         saveData,
-                        itemInstanceIdMap,
                     )
 
                     if (unfulfilled.length > 0) {
@@ -287,6 +291,53 @@ export function handleCommand(
                     return ""
                 }
             }
+        case COMMANDS.USE:
+            const itemInstanceId = saveData.heldItems.find(
+                (instanceId) =>
+                    itemInstanceIdMap[instanceId]?.item.name
+                        .toLowerCase()
+                        .trim() === commandTokens.slice(1).join(" ").trim(),
+            )
+
+            if (itemInstanceId) {
+                const itemInstance = itemInstanceIdMap[itemInstanceId]
+                const unlockableLockInstance = currentTile.gates_out
+                    .flatMap(({ lock_instances }) => lock_instances)
+                    .find(
+                        ({ lock }) =>
+                            lock.required_item_id === itemInstance.item_id,
+                    )
+                if (unlockableLockInstance) {
+                    setSaveData("unlockedInstances", [
+                        ...saveData.unlockedInstances,
+                        unlockableLockInstance.id,
+                    ])
+                    if (unlockableLockInstance.lock.consumes) {
+                        exhaustItem(
+                            itemInstance.item.id,
+                            saveData,
+                            setSaveData,
+                            itemInstanceIdMap,
+                        )
+                    }
+                    appendToCommandLog(
+                        command,
+                        `used ${itemInstance.item.name} on the ${
+                            `${unlockableLockInstance.gate?.type} ` || ""
+                        }exit`,
+                    )
+                    return ""
+                }
+            }
+
+            return handleUnrecognized(
+                rawCommand,
+                currentTile,
+                saveData,
+                eventIdMap,
+                itemInstanceIdMap,
+                appendToCommandLog,
+            )
         case COMMANDS.EXPLORE:
             const events = currentTile.event_instances
                 .map(({ event }) => event)
@@ -390,27 +441,13 @@ function handleTriggeredEvent(
     }
 
     for (const { lock } of triggeredEvent.lock_instances) {
-        if (lock.required_item_id) {
-            const index = saveData.heldItems.findIndex(
-                (instanceId) =>
-                    itemInstanceIdMap[instanceId].item_id ===
-                    lock.required_item_id,
+        if (lock.required_item_id && lock.consumes) {
+            exhaustItem(
+                lock.required_item_id,
+                saveData,
+                setSaveData,
+                itemInstanceIdMap,
             )
-            if (index !== -1) {
-                if (lock.consumes) {
-                    const itemInstanceId = saveData.heldItems[index]
-                    setSaveData("heldItems", [
-                        ...saveData.heldItems.slice(0, index),
-                        ...saveData.heldItems.slice(index + 1),
-                    ])
-                    if (!saveData.usedItems.includes(itemInstanceId)) {
-                        setSaveData("usedItems", [
-                            ...saveData.usedItems,
-                            itemInstanceId,
-                        ])
-                    }
-                }
-            }
         }
     }
 
@@ -502,8 +539,16 @@ function getQualifiedEventsFilter(
         const event = eventIdMap[possibleEvent.id]
 
         for (const lockInstance of event.lock_instances) {
-            if (!isLockFulfilled(lockInstance, saveData, itemInstanceIdMap)) {
-                return false
+            if (!isLockFulfilled(lockInstance, saveData)) {
+                if (
+                    !hasHeldItem(
+                        lockInstance.lock.required_item_id,
+                        saveData,
+                        itemInstanceIdMap,
+                    )
+                ) {
+                    return false
+                }
             }
         }
 
@@ -514,61 +559,110 @@ function getQualifiedEventsFilter(
 function isLockFulfilled(
     lockInstance: GridQuery["events"][0]["lock_instances"][0],
     saveData: SaveData,
-    itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>,
 ) {
     const unlocked =
         saveData.unlocked.includes(lockInstance.lock.id) ||
         saveData.unlockedInstances.includes(lockInstance.id)
 
-    if (unlocked !== lockInstance.inverse) {
-        return true
-    }
-
-    if (lockInstance.lock.required_item_id) {
-        const hasItem = hasHeldItem(
-            saveData,
-            itemInstanceIdMap,
-            lockInstance.lock.required_item_id,
-        )
-
-        if (hasItem !== lockInstance.inverse) {
-            return true
-        }
-    }
-
-    return false
+    return unlocked !== lockInstance.inverse
 }
 
-export function splitLocks(
-    lockInstances: GridQuery["events"][0]["lock_instances"][0][],
+export function splitLockInstances(
+    lockInstances:
+        | GridQuery["events"][0]["lock_instances"]
+        | GridQuery["tiles"][0]["gates_out"][0]["lock_instances"],
     saveData: SaveData,
-    itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>,
 ) {
     return lockInstances.reduce<{
         fulfilled: GridQuery["events"][0]["lock_instances"][0][]
         unfulfilled: GridQuery["events"][0]["lock_instances"][0][]
     }>(
         ({ fulfilled, unfulfilled }, lockInstance) => {
-            if (isLockFulfilled(lockInstance, saveData, itemInstanceIdMap)) {
-                fulfilled.push(lockInstance)
-            } else {
-                unfulfilled.push(lockInstance)
+            return isLockFulfilled(lockInstance, saveData)
+                ? {
+                      fulfilled: [...fulfilled, lockInstance],
+                      unfulfilled,
+                  }
+                : {
+                      fulfilled,
+                      unfulfilled: [...unfulfilled, lockInstance],
+                  }
+        },
+        { fulfilled: [], unfulfilled: [] },
+    )
+}
+
+export function splitUnfulfilledLockInstances(
+    lockInstances:
+        | GridQuery["events"][0]["lock_instances"]
+        | GridQuery["tiles"][0]["gates_out"][0]["lock_instances"],
+    saveData: SaveData,
+    itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>,
+) {
+    return lockInstances.reduce<{
+        holdingItem: GridQuery["events"][0]["lock_instances"][0][]
+        missingItem: GridQuery["events"][0]["lock_instances"][0][]
+        noItem: GridQuery["events"][0]["lock_instances"][0][]
+    }>(
+        ({ holdingItem, missingItem, noItem }, lockInstance) => {
+            if (!lockInstance.lock.required_item_id) {
+                return {
+                    holdingItem,
+                    missingItem,
+                    noItem: [...noItem, lockInstance],
+                }
             }
-            return { fulfilled, unfulfilled }
+            return hasHeldItem(
+                lockInstance.lock.required_item_id,
+                saveData,
+                itemInstanceIdMap,
+            )
+                ? {
+                      holdingItem: [...holdingItem, lockInstance],
+                      missingItem,
+                      noItem,
+                  }
+                : {
+                      holdingItem,
+                      missingItem: [...missingItem, lockInstance],
+                      noItem,
+                  }
         },
-        {
-            fulfilled: [],
-            unfulfilled: [],
-        },
+        { holdingItem: [], missingItem: [], noItem: [] },
     )
 }
 
 function hasHeldItem(
+    itemId: GridQuery["items"][0]["id"] | null,
     saveData: SaveData,
     itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>,
-    item_id: GridQuery["items"][0]["id"],
 ) {
+    if (itemId === null) {
+        return false
+    }
+
     return saveData.heldItems
         .map((instance_id) => itemInstanceIdMap[instance_id].item.id)
-        .includes(item_id)
+        .includes(itemId)
+}
+
+function exhaustItem(
+    itemId: number,
+    saveData: SaveData,
+    setSaveData: ReturnType<typeof useSaveData>[1],
+    itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>,
+) {
+    const index = saveData.heldItems.findIndex(
+        (instanceId) => itemInstanceIdMap[instanceId].item_id === itemId,
+    )
+    if (index !== -1) {
+        const itemInstanceId = saveData.heldItems[index]
+        setSaveData("heldItems", [
+            ...saveData.heldItems.slice(0, index),
+            ...saveData.heldItems.slice(index + 1),
+        ])
+        if (!saveData.usedItems.includes(itemInstanceId)) {
+            setSaveData("usedItems", [...saveData.usedItems, itemInstanceId])
+        }
+    }
 }

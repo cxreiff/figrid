@@ -6,7 +6,10 @@ import {
 } from "@radix-ui/react-icons"
 import { useContext } from "react"
 import { Button } from "~/components/ui/button.tsx"
-import { availableItemsMap, splitLocks } from "~/routes/read+/commands.ts"
+import {
+    availableItemsMap,
+    splitLockInstances,
+} from "~/routes/read+/commands.ts"
 import { TILE_DIMENSIONS } from "~/routes/read+/map/map.tsx"
 import type { IdMap, TileWithCoords } from "~/routes/read+/processing.server.ts"
 import { ContextCommand } from "~/lib/contextCommand.ts"
@@ -52,10 +55,9 @@ export function MapTile({
                     case "east":
                     case "south":
                     case "west":
-                        const { unfulfilled } = splitLocks(
+                        const { unfulfilled } = splitLockInstances(
                             gate.lock_instances,
                             saveData,
-                            itemInstanceIdMap,
                         )
                         return (
                             <div

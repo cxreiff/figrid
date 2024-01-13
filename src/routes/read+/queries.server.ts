@@ -25,7 +25,12 @@ export function gridQuery(gridId: number) {
                         with: {
                             lock_instances: {
                                 with: {
-                                    lock: true,
+                                    gate: true,
+                                    lock: {
+                                        with: {
+                                            required_item: true,
+                                        },
+                                    },
                                 },
                             },
                         },
@@ -57,7 +62,11 @@ export function gridQuery(gridId: number) {
                     triggers_unlock: true,
                     lock_instances: {
                         with: {
-                            lock: true,
+                            lock: {
+                                with: {
+                                    required_item: true,
+                                },
+                            },
                         },
                     },
                     item_instances: true,
