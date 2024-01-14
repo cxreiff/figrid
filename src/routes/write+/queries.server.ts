@@ -15,9 +15,20 @@ export function writeGridQuery(gridId: number) {
     return db.query.grids.findFirst({
         where: eq(grids.id, gridId),
         with: {
-            tiles: true,
+            tiles: {
+                with: {
+                    gates_out: {
+                        with: {
+                            lock_instances: true,
+                        },
+                    },
+                    character_instances: true,
+                    item_instances: true,
+                },
+            },
             characters: true,
             items: true,
+            item_instances: true,
             events: true,
             gates: true,
             locks: {

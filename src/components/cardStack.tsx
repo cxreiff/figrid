@@ -15,6 +15,7 @@ import {
     type ColumnFiltersState,
     getFilteredRowModel,
     getSortedRowModel,
+    type SortingState,
 } from "@tanstack/react-table"
 import { useState } from "react"
 import { z } from "zod"
@@ -43,6 +44,7 @@ export function CardStack<TData extends { id: number; name: string }, TValue>({
 }) {
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [mode, setMode] = useState<"mini" | "full">("full")
+    const [sorting] = useState<SortingState>([{ desc: false, id: "name" }])
 
     const duplicating = !!z.coerce
         .number()
@@ -63,7 +65,7 @@ export function CardStack<TData extends { id: number; name: string }, TValue>({
         getSortedRowModel: getSortedRowModel(),
         state: {
             columnFilters,
-            sorting: [{ desc: false, id: "name" }],
+            sorting,
         },
     })
 

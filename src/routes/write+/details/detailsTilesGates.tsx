@@ -24,10 +24,10 @@ export function DetailsTilesGates() {
     return (
         <Wait on={resource}>
             {(resource) => [
-                resource.gates_out.map(({ id, to_tile }) => (
+                resource.gates_out.map(({ id, to_tile, type }) => (
                     <DetailsResourceCard
                         key={id}
-                        linkedResource={to_tile}
+                        linkedResource={{ ...to_tile, type }}
                         navigateUrl={`tiles/${to_tile.id}`}
                         unlinkUrl={`/write/${grid.id}/tiles/${resource.id}/tiles/${id}/unlink`}
                     />

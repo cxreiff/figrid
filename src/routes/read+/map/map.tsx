@@ -13,12 +13,17 @@ const MAP_DIMENSIONS = { x: 13, y: 19 }
 export const TILE_DIMENSIONS = { x: 6, y: 6 }
 
 export function Map() {
-    const { tileIdMap, tileCoordsMap, itemInstanceIdMap } =
-        useSuperLoaderData<typeof loader>()
+    const { tileIdMap, tileCoordsMap } = useSuperLoaderData<typeof loader>()
     const handleCommand = useContext(ContextCommand)
 
     const BlankTile = () => (
-        <div className="h-24 border border-dashed border-muted-foreground opacity-50" />
+        <div
+            style={{
+                width: `${TILE_DIMENSIONS.x}rem`,
+                height: `${TILE_DIMENSIONS.y}rem`,
+            }}
+            className="border border-dashed border-muted-foreground opacity-50"
+        />
     )
 
     const offsetMatrix = indicesArray(MAP_DIMENSIONS.y).map((y) =>
@@ -89,11 +94,7 @@ export function Map() {
                                         return (
                                             <MapTile
                                                 saveData={saveData}
-                                                tileId={tileId}
                                                 mapTile={mapTile}
-                                                itemInstanceIdMap={
-                                                    itemInstanceIdMap
-                                                }
                                                 handleClick={handleClick}
                                             />
                                         )

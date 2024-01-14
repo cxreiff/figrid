@@ -19,6 +19,11 @@ import { getSessionLayout } from "~/lib/sessionLayout.server.ts"
 import { superjson, useSuperLoaderData } from "~/lib/superjson.ts"
 import { paramsSchema as childParamsSchema } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
 import { useEffect, useState } from "react"
+import { Map } from "~/routes/write+/map/map.tsx"
+import {
+    generateIdMap,
+    generateTileCoordsMap,
+} from "~/routes/read+/processing.server.ts"
 
 export const RESOURCE_TYPES = {
     TILES: "tiles",
@@ -59,10 +64,19 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     const sessionLayout = await getSessionLayout(request.headers.get("Cookie"))
     const layout = layoutCookieSchema.parse(sessionLayout.data)
 
+    const tileIdMap = generateIdMap(grid.tiles)
+    const tileCoordsMap = generateTileCoordsMap(tileIdMap, grid.first_tile_id)
+    const gateIdMap = generateIdMap(grid.gates)
+    const itemInstanceIdMap = generateIdMap(grid.item_instances)
+
     return superjson({
         user,
         grid,
         layout,
+        tileIdMap,
+        tileCoordsMap,
+        gateIdMap,
+        itemInstanceIdMap,
     })
 }
 
@@ -102,7 +116,9 @@ export default function Route() {
                         <Card className="h-full p-4">
                             <Outlet />
                         </Card>
-                        <Card className="h-full"></Card>
+                        <Card className="h-full">
+                            <Map />
+                        </Card>
                     </LayoutTabs>
                 }
                 right={

@@ -1,21 +1,25 @@
 import type { GridQuery } from "~/routes/read+/queries.server.ts"
+import type { WriteGridQuery } from "~/routes/write+/queries.server.ts"
 
 type Coords = [number, number, number]
 export type CoordsMap = Record<string, number | undefined>
 export type IdMap<T extends { id: number }> = Record<string, T>
 export type TileWithCoords = GridQuery["tiles"][0] & { coords?: Coords }
+export type WriteTileWithCoords = WriteGridQuery["tiles"][0] & {
+    coords?: Coords
+}
 
 export function generateIdMap<T extends { id: number }>(elements: T[]) {
     return Object.fromEntries(elements.map((element) => [element.id, element]))
 }
 
 export function generateTileCoordsMap(
-    tileIdMap: IdMap<TileWithCoords>,
+    tileIdMap: IdMap<TileWithCoords | WriteTileWithCoords>,
     firstId: number,
 ) {
     function generateTileCoordsMapInner(
         tileCoordsMap: CoordsMap,
-        tileIdMap: IdMap<TileWithCoords>,
+        tileIdMap: IdMap<TileWithCoords | WriteTileWithCoords>,
         currentId: number,
         currentCoords: Coords,
     ) {

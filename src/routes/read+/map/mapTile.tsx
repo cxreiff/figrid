@@ -11,29 +11,24 @@ import {
     splitLockInstances,
 } from "~/routes/read+/commands.ts"
 import { TILE_DIMENSIONS } from "~/routes/read+/map/map.tsx"
-import type { IdMap, TileWithCoords } from "~/routes/read+/processing.server.ts"
+import type { TileWithCoords } from "~/routes/read+/processing.server.ts"
 import { ContextCommand } from "~/lib/contextCommand.ts"
 import type { SaveData } from "~/lib/useSaveData.ts"
-import type { GridQuery } from "~/routes/read+/queries.server.ts"
 
 export function MapTile({
     saveData,
-    tileId,
     mapTile,
-    itemInstanceIdMap,
     handleClick,
 }: {
     saveData: SaveData
-    tileId: number
     mapTile: TileWithCoords
-    itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>
     handleClick?: () => void
 }) {
     const handleCommand = useContext(ContextCommand)
 
     return (
         <div
-            key={tileId}
+            key={mapTile.id}
             style={{
                 width: `${TILE_DIMENSIONS.x}rem`,
                 height: `${TILE_DIMENSIONS.y}rem`,
@@ -43,7 +38,7 @@ export function MapTile({
                     ? "cursor-pointer transition-colors duration-500 before:absolute before:inset-2 before:rounded-md before:bg-transparent hover:before:bg-[hsla(var(--accent)/0.4)]"
                     : ""
             } ${
-                tileId === saveData.currentTileId
+                mapTile.id === saveData.currentTileId
                     ? "shadow-[inset_hsl(var(--accent))_0_0_0_0.3rem]"
                     : ""
             }`}
@@ -72,7 +67,7 @@ export function MapTile({
                                 } ${
                                     unfulfilled.length > 0
                                         ? "bg-secondary-foreground"
-                                        : tileId === saveData.currentTileId
+                                        : mapTile.id === saveData.currentTileId
                                           ? "bg-accent"
                                           : "bg-card"
                                 }`}
@@ -83,17 +78,17 @@ export function MapTile({
                             <Button
                                 key={`${gate.id}`}
                                 className={`absolute left-3 top-3 h-6 w-6 disabled:text-secondary-foreground ${
-                                    tileId === saveData.currentTileId
+                                    mapTile.id === saveData.currentTileId
                                         ? "text-accent-foreground"
                                         : "text-secondary-foreground"
                                 }`}
                                 onClick={
-                                    tileId === saveData.currentTileId
+                                    mapTile.id === saveData.currentTileId
                                         ? () => handleCommand("go up")
                                         : undefined
                                 }
                                 disabled={
-                                    tileId !== saveData.currentTileId ||
+                                    mapTile.id !== saveData.currentTileId ||
                                     !!saveData.currentEventId
                                 }
                                 variant="ghost"
@@ -107,17 +102,17 @@ export function MapTile({
                             <Button
                                 key={`${gate.id}`}
                                 className={`absolute bottom-3 left-3 h-6 w-6 disabled:text-secondary-foreground ${
-                                    tileId === saveData.currentTileId
+                                    mapTile.id === saveData.currentTileId
                                         ? "text-accent-foreground"
                                         : "text-secondary-foreground"
                                 }`}
                                 onClick={
-                                    tileId === saveData.currentTileId
+                                    mapTile.id === saveData.currentTileId
                                         ? () => handleCommand("go down")
                                         : undefined
                                 }
                                 disabled={
-                                    tileId !== saveData.currentTileId ||
+                                    mapTile.id !== saveData.currentTileId ||
                                     !!saveData.currentEventId
                                 }
                                 variant="ghost"

@@ -46,10 +46,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     }
 
     const tileIdMap = generateIdMap(grid.tiles)
+    const tileCoordsMap = generateTileCoordsMap(tileIdMap, grid.first_tile_id)
     const eventIdMap = generateIdMap(grid.events)
     const itemIdMap = generateIdMap(grid.items)
     const itemInstanceIdMap = generateIdMap(grid.item_instances)
-    const tileCoordsMap = generateTileCoordsMap(tileIdMap, grid.first_tile_id)
 
     const sessionLayout = await getSessionLayout(request.headers.get("Cookie"))
     const layout = layoutCookieSchema.parse(sessionLayout.data)
@@ -58,10 +58,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
         user,
         grid,
         tileIdMap,
+        tileCoordsMap,
         eventIdMap,
         itemIdMap,
         itemInstanceIdMap,
-        tileCoordsMap,
         layout,
     })
 }
