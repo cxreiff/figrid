@@ -1,10 +1,4 @@
-import {
-    ArrowDownIcon,
-    ArrowUpIcon,
-    CubeIcon,
-    PersonIcon,
-} from "@radix-ui/react-icons"
-import { Button } from "~/components/ui/button.tsx"
+import { ThickArrowDownIcon, ThickArrowUpIcon } from "@radix-ui/react-icons"
 import { TILE_DIMENSIONS } from "~/routes/write+/map/map.tsx"
 import type { WriteTileWithCoords } from "~/routes/read+/processing.server.ts"
 import { useNavigate, useParams } from "@remix-run/react"
@@ -35,7 +29,11 @@ export function MapTile({
                 before:inset-1 before:rounded-md before:bg-transparent ${
                     current && resourceType === "tiles"
                         ? "shadow-[inset_hsl(var(--accent))_0_0_0_0.2rem]"
-                        : "cursor-pointer hover:shadow-[inset_hsl(var(--accent))_0_0_0_0.2rem] has-[div:hover]:cursor-auto has-[div:hover]:shadow-none"
+                        : `
+                            cursor-pointer hover:shadow-[inset_hsl(var(--accent))_0_0_0_0.2rem]
+                            has-[button:hover]:cursor-auto has-[div:hover]:cursor-auto
+                            has-[button:hover]:shadow-none has-[div:hover]:shadow-none
+                        `
                 }
             `}
             onClick={() => navigate(`tiles/${mapTile.id}`)}
@@ -78,44 +76,46 @@ export function MapTile({
                         )
                     case "up":
                         return (
-                            <Button
+                            <div
                                 key={`${gate.id}`}
-                                className="absolute left-1 top-1 h-4 w-4 text-accent-foreground"
+                                className={`absolute right-2 top-2 -m-0.5 h-5 w-5 rounded-none p-0.5 text-muted-foreground ${
+                                    resourceId === gate.id
+                                        ? "shadow-[inset_hsl(var(--accent))_0_0_0_0.2rem]"
+                                        : "cursor-pointer hover:shadow-[inset_hsl(var(--accent))_0_0_0_0.2rem]"
+                                } ${
+                                    gate.lock_instances.length > 0
+                                        ? "bg-secondary-foreground text-card"
+                                        : "bg-card"
+                                }`}
                                 onClick={(event) => {
                                     event.stopPropagation()
-                                    navigate(`tiles/${gate.to_tile_id}`)
+                                    navigate(`gates/${gate.id}`)
                                 }}
-                                variant="ghost"
-                                size="icon"
                             >
-                                <ArrowUpIcon className="h-full w-full" />
-                            </Button>
+                                <ThickArrowUpIcon className="h-full w-full" />
+                            </div>
                         )
                     case "down":
                         return (
-                            <Button
+                            <div
                                 key={`${gate.id}`}
-                                className="absolute bottom-1 left-1 h-4 w-4 text-accent-foreground"
+                                className={`absolute bottom-2 right-2 -m-0.5 h-5 w-5 rounded-none p-0.5 text-muted-foreground ${
+                                    resourceId === gate.id
+                                        ? "shadow-[inset_hsl(var(--accent))_0_0_0_0.2rem]"
+                                        : "cursor-pointer hover:shadow-[inset_hsl(var(--accent))_0_0_0_0.2rem]"
+                                }`}
                                 onClick={(event) => {
                                     event.stopPropagation()
-                                    navigate(`tiles/${gate.to_tile_id}`)
+                                    navigate(`gates/${gate.id}`)
                                 }}
-                                variant="ghost"
-                                size="icon"
                             >
-                                <ArrowDownIcon className="h-full w-full" />
-                            </Button>
+                                <ThickArrowDownIcon className="h-full w-full" />
+                            </div>
                         )
                     default:
                         return null
                 }
             })}
-            {mapTile.item_instances.length > 0 && (
-                <CubeIcon className="absolute bottom-1 right-1 h-4 w-4 text-secondary-foreground" />
-            )}
-            {mapTile.character_instances.length > 0 && (
-                <PersonIcon className="absolute right-1 top-1 h-4 w-4 text-secondary-foreground" />
-            )}
         </div>
     )
 }

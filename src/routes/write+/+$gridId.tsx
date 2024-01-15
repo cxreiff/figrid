@@ -122,12 +122,12 @@ export default function Route() {
                 }
                 center={
                     <LayoutTabs
-                        names={["editor", "map"]}
+                        names={["map", "editor"]}
                         value={mainTab}
                         onValueChange={setMainTab}
                     >
-                        <Outlet />
                         <Map />
+                        <Outlet />
                     </LayoutTabs>
                 }
                 right={

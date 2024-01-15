@@ -2,16 +2,25 @@ import { Card } from "~/components/ui/card.tsx"
 import { MapTile } from "~/routes/write+/map/mapTile.tsx"
 import { defined, indicesArray } from "~/lib/misc.ts"
 
-import type { loader } from "~/routes/write+/+$gridId.tsx"
+import type { ResourceType, loader } from "~/routes/write+/+$gridId.tsx"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
 import { paramsSchema } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
-import { useParams } from "@remix-run/react"
-import { useEffect, useState } from "react"
-import type { WriteTileWithCoords } from "~/routes/read+/processing.server.ts"
+import { useLocation, useParams } from "@remix-run/react"
+import { useEffect, useMemo, useState } from "react"
+import type {
+    IdMap,
+    WriteTileWithCoords,
+} from "~/routes/read+/processing.server.ts"
 import { MapTileCreate } from "~/routes/write+/map/mapTileCreate.tsx"
+import { ButtonIcon } from "~/components/buttonIcon.tsx"
+import { ThickArrowDownIcon, ThickArrowUpIcon } from "@radix-ui/react-icons"
+import type { WriteGridQuery } from "~/routes/write+/queries.server.ts"
+import { usePrevious } from "~/lib/usePrevious.ts"
 
 const MAP_DIMENSIONS = { x: 13, y: 19 }
-export const TILE_DIMENSIONS = { x: 3, y: 3 }
+export const TILE_DIMENSIONS = { x: 4, y: 4 }
+
+const ORIGIN = [0, 0, 0] as const
 
 export function Map() {
     const { resourceType, resourceId } = paramsSchema
@@ -21,29 +30,37 @@ export function Map() {
     const { grid, tileIdMap, tileCoordsMap, gateIdMap } =
         useSuperLoaderData<typeof loader>()
 
-    const currentTileId =
-        resourceId !== undefined
-            ? resourceType === "tiles"
-                ? resourceId
-                : resourceType === "gates"
-                  ? gateIdMap[resourceId].from_tile_id
-                  : undefined
-            : undefined
+    const { pathname } = useLocation()
+    const previousPathname = usePrevious(pathname, "")
 
-    const currentTile: WriteTileWithCoords | undefined = currentTileId
-        ? tileIdMap[currentTileId]
-        : undefined
-
-    const [focusedTileId, setFocusedTileId] = useState<number>(
-        currentTile && currentTile.coords ? currentTile.id : grid.first_tile_id,
+    const currentTile = useMemo(
+        () => getCurrentTile(resourceType, resourceId, tileIdMap, gateIdMap),
+        [resourceType, resourceId, tileIdMap, gateIdMap],
     )
-    const focusedTile: WriteTileWithCoords = tileIdMap[focusedTileId]
+
+    const [focusedCoords, setFocusedCoords] = useState<
+        readonly [number, number, number]
+    >(currentTile && currentTile.coords ? currentTile.coords : ORIGIN)
+
+    const increaseZ = () =>
+        setFocusedCoords([
+            focusedCoords[0],
+            focusedCoords[1],
+            focusedCoords[2] + 1,
+        ])
+
+    const decreaseZ = () =>
+        setFocusedCoords([
+            focusedCoords[0],
+            focusedCoords[1],
+            focusedCoords[2] - 1,
+        ])
 
     useEffect(() => {
-        if (currentTile && currentTile.coords) {
-            setFocusedTileId(currentTile.id)
+        if (currentTile?.coords && previousPathname !== pathname) {
+            setFocusedCoords(currentTile.coords)
         }
-    }, [currentTile])
+    }, [currentTile, pathname, previousPathname])
 
     const offsetMatrix = indicesArray(MAP_DIMENSIONS.y).map((y) =>
         indicesArray(MAP_DIMENSIONS.x).map(
@@ -72,9 +89,9 @@ export function Map() {
                         {offsetMatrix.map((row) =>
                             row.map((offset) => {
                                 const currentCoords = [
-                                    focusedTile.coords![0] + offset[0],
-                                    focusedTile.coords![1] + offset[1],
-                                    focusedTile.coords![2],
+                                    focusedCoords[0] + offset[0],
+                                    focusedCoords[1] + offset[1],
+                                    focusedCoords[2],
                                 ] as const
 
                                 const tileId =
@@ -142,6 +159,11 @@ export function Map() {
                     </div>
                 </div>
             </div>
+            <div className="absolute right-3 top-3 flex flex-col items-center justify-center">
+                <ButtonIcon icon={ThickArrowUpIcon} onClick={increaseZ} />
+                <span>{focusedCoords[2]}</span>
+                <ButtonIcon icon={ThickArrowDownIcon} onClick={decreaseZ} />
+            </div>
         </Card>
     )
 }
@@ -155,4 +177,25 @@ function getNeighboringCoordinates(coords: readonly [number, number, number]) {
         ["up", [coords[0], coords[1], coords[2] + 1]],
         ["down", [coords[0], coords[1], coords[2] - 1]],
     ] as const
+}
+
+function getCurrentTile(
+    resourceType: ResourceType | undefined,
+    resourceId: number | undefined,
+    tileIdMap: IdMap<WriteGridQuery["tiles"][0]>,
+    gateIdMap: IdMap<WriteGridQuery["gates"][0]>,
+): WriteTileWithCoords | undefined {
+    if (resourceId === undefined) {
+        return undefined
+    }
+
+    if (resourceType === "tiles") {
+        return tileIdMap[resourceId]
+    }
+
+    if (resourceType === "gates") {
+        return tileIdMap[gateIdMap[resourceId].from_tile_id]
+    }
+
+    return undefined
 }

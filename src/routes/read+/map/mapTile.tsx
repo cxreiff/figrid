@@ -1,6 +1,6 @@
 import {
-    ArrowDownIcon,
-    ArrowUpIcon,
+    ThickArrowDownIcon,
+    ThickArrowUpIcon,
     CubeIcon,
     PersonIcon,
 } from "@radix-ui/react-icons"
@@ -77,7 +77,7 @@ export function MapTile({
                         return (
                             <Button
                                 key={`${gate.id}`}
-                                className={`absolute left-3 top-3 h-6 w-6 disabled:text-secondary-foreground ${
+                                className={`absolute right-3 top-3 h-6 w-6 disabled:text-secondary-foreground ${
                                     mapTile.id === saveData.currentTileId
                                         ? "text-accent-foreground"
                                         : "text-secondary-foreground"
@@ -94,14 +94,14 @@ export function MapTile({
                                 variant="ghost"
                                 size="icon"
                             >
-                                <ArrowUpIcon className="h-full w-full" />
+                                <ThickArrowUpIcon className="h-full w-full" />
                             </Button>
                         )
                     case "down":
                         return (
                             <Button
                                 key={`${gate.id}`}
-                                className={`absolute bottom-3 left-3 h-6 w-6 disabled:text-secondary-foreground ${
+                                className={`absolute bottom-3 right-3 h-6 w-6 disabled:text-secondary-foreground ${
                                     mapTile.id === saveData.currentTileId
                                         ? "text-accent-foreground"
                                         : "text-secondary-foreground"
@@ -118,7 +118,7 @@ export function MapTile({
                                 variant="ghost"
                                 size="icon"
                             >
-                                <ArrowDownIcon className="h-full w-full" />
+                                <ThickArrowDownIcon className="h-full w-full" />
                             </Button>
                         )
                     default:
@@ -126,10 +126,10 @@ export function MapTile({
                 }
             })}
             {Object.values(availableItemsMap(mapTile, saveData)).length > 0 && (
-                <CubeIcon className="absolute bottom-3 right-3 h-6 w-6 text-secondary-foreground" />
+                <CubeIcon className="absolute left-3 top-3 h-6 w-6 text-secondary-foreground" />
             )}
             {mapTile.character_instances.length > 0 && (
-                <PersonIcon className="absolute right-3 top-3 h-6 w-6 text-secondary-foreground" />
+                <PersonIcon className="absolute bottom-3 left-3 h-6 w-6 text-secondary-foreground" />
             )}
         </div>
     )
