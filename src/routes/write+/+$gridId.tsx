@@ -1,5 +1,5 @@
 import { PlayIcon } from "@radix-ui/react-icons"
-import { Link, Outlet, useParams } from "@remix-run/react"
+import { Link, Outlet, useLocation, useParams } from "@remix-run/react"
 import type { LoaderFunctionArgs } from "@vercel/remix"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
@@ -85,12 +85,21 @@ export default function Route() {
 
     const { resourceType } = childParamsSchema.partial().parse(useParams())
     const [resourceTab, setResourceTab] = useState(resourceType)
+    const [mainTab, setMainTab] = useState<"map" | "editor">("map")
+
+    const { pathname } = useLocation()
 
     const layoutContext = useInitialLayoutContext(layout)
 
     useEffect(() => {
         setResourceTab(resourceType)
     }, [resourceType])
+
+    useEffect(() => {
+        if (pathname.endsWith("create")) {
+            setMainTab("editor")
+        }
+    }, [pathname])
 
     return (
         <ContextLayout.Provider value={layoutContext}>
@@ -112,13 +121,13 @@ export default function Route() {
                     </LayoutTabs>
                 }
                 center={
-                    <LayoutTabs names={["editor", "map"]}>
-                        <Card className="h-full p-4">
-                            <Outlet />
-                        </Card>
-                        <Card className="h-full">
-                            <Map />
-                        </Card>
+                    <LayoutTabs
+                        names={["editor", "map"]}
+                        value={mainTab}
+                        onValueChange={setMainTab}
+                    >
+                        <Outlet />
+                        <Map />
                     </LayoutTabs>
                 }
                 right={

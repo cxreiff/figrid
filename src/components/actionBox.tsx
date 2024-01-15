@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { PlusIcon } from "@radix-ui/react-icons"
 import { cn } from "~/lib/misc.ts"
 import { Button, type ButtonProps } from "~/components/ui/button.tsx"
 import {
@@ -14,36 +13,43 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "~/components/ui/popover.tsx"
+import type { IconProps } from "@radix-ui/react-icons/dist/types.js"
 
 export function ActionBox<T extends { id: string | number; label: string }>({
     children,
     className,
     options,
+    icon: Icon,
     onOptionSelect,
     ...props
 }: ButtonProps & {
-    className: string
+    className?: string
     options: T[]
+    icon: (props: IconProps) => React.ReactNode
     onOptionSelect: (selectedId: T) => void
 }) {
     const [open, setOpen] = useState(false)
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
+            <PopoverTrigger aria-expanded={open} {...props} asChild>
                 <Button
-                    variant="outline"
                     role="combobox"
+                    variant="ghost"
                     aria-expanded={open}
                     className={cn(
-                        "h-full w-full justify-between p-1 shadow",
+                        "h-full w-full items-center justify-between p-1",
+                        {
+                            "justify-center": !children,
+                            "justify-between": !!children,
+                        },
                         className,
                     )}
                     {...props}
                 >
-                    <div className="px-3">{children}</div>
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center">
-                        <PlusIcon className="h-4 w-4" />
+                    {children}
+                    <div className="flex h-9 w-9 items-center justify-center">
+                        <Icon />
                     </div>
                 </Button>
             </PopoverTrigger>

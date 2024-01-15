@@ -15,25 +15,13 @@ export function MapTile({
     mapTile,
 }: {
     current: boolean
-    mapTile?: WriteTileWithCoords
+    mapTile: WriteTileWithCoords
 }) {
     const { resourceType, resourceId } = paramsSchema
         .partial()
         .parse(useParams())
 
     const navigate = useNavigate()
-
-    if (!mapTile) {
-        return (
-            <div
-                style={{
-                    width: `${TILE_DIMENSIONS.x}rem`,
-                    height: `${TILE_DIMENSIONS.y}rem`,
-                }}
-                className="border border-dashed border-muted-foreground opacity-50"
-            />
-        )
-    }
 
     return (
         <div
@@ -92,10 +80,11 @@ export function MapTile({
                         return (
                             <Button
                                 key={`${gate.id}`}
-                                className="absolute left-2 top-2 h-4 w-4 text-accent-foreground"
-                                onClick={() =>
+                                className="absolute left-1 top-1 h-4 w-4 text-accent-foreground"
+                                onClick={(event) => {
+                                    event.stopPropagation()
                                     navigate(`tiles/${gate.to_tile_id}`)
-                                }
+                                }}
                                 variant="ghost"
                                 size="icon"
                             >
@@ -106,10 +95,11 @@ export function MapTile({
                         return (
                             <Button
                                 key={`${gate.id}`}
-                                className="absolute bottom-2 left-2 h-4 w-4 text-accent-foreground"
-                                onClick={() =>
+                                className="absolute bottom-1 left-1 h-4 w-4 text-accent-foreground"
+                                onClick={(event) => {
+                                    event.stopPropagation()
                                     navigate(`tiles/${gate.to_tile_id}`)
-                                }
+                                }}
                                 variant="ghost"
                                 size="icon"
                             >

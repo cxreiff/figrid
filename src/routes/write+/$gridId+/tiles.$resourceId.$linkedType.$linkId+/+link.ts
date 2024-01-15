@@ -9,24 +9,22 @@ import { paramsSchema as gridIdParamsSchema } from "~/routes/write+/+$gridId.tsx
 
 const paramsSchema = z.object({
     resourceId: z.coerce.number(),
-    linkedType: z.enum(["tiles", "characters", "items", "events"]),
+    linkedType: z.enum(["characters", "items", "events"]),
     linkId: z.coerce.number(),
 })
 
 export async function action({ request, params }: ActionFunctionArgs) {
-    const { gridId, resourceId, linkedType, linkId } = paramsSchema
-        .merge(gridIdParamsSchema)
-        .parse(params)
-
     const user = await auth.isAuthenticated(request)
 
     if (!user) {
         return redirect("/auth/login")
     }
 
+    const { gridId, resourceId, linkedType, linkId } = paramsSchema
+        .merge(gridIdParamsSchema)
+        .parse(params)
+
     switch (linkedType) {
-        case "tiles":
-            break
         case "characters":
             await db.insert(character_instances).values({
                 grid_id: gridId,

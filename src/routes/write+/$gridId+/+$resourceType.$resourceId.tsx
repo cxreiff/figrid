@@ -27,6 +27,7 @@ import {
 import { items } from "~/database/schema/items.server.ts"
 import { tiles } from "~/database/schema/tiles.server.ts"
 import { locks } from "~/database/schema/locks.server.ts"
+import { Card } from "~/components/ui/card.tsx"
 
 export const paramsSchema = z.object({
     resourceType: z.enum([
@@ -144,76 +145,84 @@ export default function Route() {
     const fetcher = useFetcher()
 
     return (
-        <ValidatedForm
-            key={`${resourceId}.${resourceType}`}
-            validator={formSchema}
-            defaultValues={{
-                name: resource.name,
-                summary: resource.summary || "",
-                description: resource.description || "",
-            }}
-            method="POST"
-            autoComplete="off"
-            className="h-full"
-        >
-            <LayoutTitled
-                footerSlot={
-                    <div className="flex gap-4">
-                        <ValidatedButton
-                            icon={TrashIcon}
-                            variant="outline"
-                            onClick={() => setDeleteModalOpen(true)}
-                        />
-                        <ValidatedButton
-                            variant="outline"
-                            icon={CopyIcon}
-                            className="flex-1"
-                            onClick={() =>
-                                navigate(
-                                    `/write/${gridId}/${resourceType}/create?duplicate=${resourceId}`,
-                                )
-                            }
-                        >
-                            duplicate
-                        </ValidatedButton>
-                        <ValidatedButton
-                            type="reset"
-                            variant="outline"
-                            icon={ResetIcon}
-                            className="flex-1"
-                        >
-                            revert
-                        </ValidatedButton>
-                        <ValidatedButton
-                            type="submit"
-                            variant="outline"
-                            icon={FileIcon}
-                            className="flex-1"
-                        >
-                            save
-                        </ValidatedButton>
-                        <DeleteResourceDialog
-                            open={deleteModalOpen}
-                            onOpenChange={setDeleteModalOpen}
-                            onConfirm={() =>
-                                fetcher.submit(null, {
-                                    action: `delete`,
-                                    method: "POST",
-                                })
-                            }
-                        />
-                    </div>
-                }
+        <Card className="h-full p-4">
+            <ValidatedForm
+                key={`${resourceId}.${resourceType}`}
+                validator={formSchema}
+                defaultValues={{
+                    name: resource.name,
+                    summary: resource.summary || "",
+                    description: resource.description || "",
+                }}
+                method="POST"
+                autoComplete="off"
+                className="h-full"
             >
-                <ValidatedInput id="name" label="name" noAutocomplete />
-                <ValidatedInput id="summary" label="summary" noAutocomplete />
-                <ValidatedTextArea
-                    className="h-[calc(100%-11.75rem)] [&>textarea]:h-full [&>textarea]:resize-none"
-                    id="description"
-                    label="description"
-                    noAutocomplete
-                />
-            </LayoutTitled>
-        </ValidatedForm>
+                <LayoutTitled
+                    footerSlot={
+                        <div className="flex gap-4">
+                            {resourceType !== "gates" && (
+                                <ValidatedButton
+                                    icon={TrashIcon}
+                                    variant="outline"
+                                    onClick={() => setDeleteModalOpen(true)}
+                                />
+                            )}
+                            <ValidatedButton
+                                variant="outline"
+                                icon={CopyIcon}
+                                className="flex-1"
+                                onClick={() =>
+                                    navigate(
+                                        `/write/${gridId}/${resourceType}/create?duplicate=${resourceId}`,
+                                    )
+                                }
+                            >
+                                duplicate
+                            </ValidatedButton>
+                            <ValidatedButton
+                                type="reset"
+                                variant="outline"
+                                icon={ResetIcon}
+                                className="flex-1"
+                            >
+                                revert
+                            </ValidatedButton>
+                            <ValidatedButton
+                                type="submit"
+                                variant="outline"
+                                icon={FileIcon}
+                                className="flex-1"
+                            >
+                                save
+                            </ValidatedButton>
+                            <DeleteResourceDialog
+                                open={deleteModalOpen}
+                                onOpenChange={setDeleteModalOpen}
+                                onConfirm={() =>
+                                    fetcher.submit(null, {
+                                        action: `delete`,
+                                        method: "POST",
+                                    })
+                                }
+                            />
+                        </div>
+                    }
+                >
+                    <ValidatedInput id="name" label="name" noAutocomplete />
+                    <ValidatedInput
+                        id="summary"
+                        label="summary"
+                        noAutocomplete
+                    />
+                    <ValidatedTextArea
+                        className="h-[calc(100%-11.75rem)] [&>textarea]:h-full [&>textarea]:resize-none"
+                        id="description"
+                        label="description"
+                        noAutocomplete
+                    />
+                </LayoutTitled>
+            </ValidatedForm>
+        </Card>
     )
 }

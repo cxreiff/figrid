@@ -22,6 +22,7 @@ import { superjson, useSuperLoaderData } from "~/lib/superjson.ts"
 import { tiles } from "~/database/schema/tiles.server.ts"
 import { items } from "~/database/schema/items.server.ts"
 import { locks } from "~/database/schema/locks.server.ts"
+import { Card } from "~/components/ui/card.tsx"
 
 export const paramsSchema = z.object({
     resourceType: z.enum(["tiles", "characters", "items", "events", "locks"]),
@@ -132,74 +133,80 @@ export default function Route() {
     const navigate = useNavigate()
 
     return (
-        <ValidatedForm
-            key={resourceType}
-            validator={formSchema}
-            defaultValues={
-                resource && {
-                    name: `${resource.name} duplicate`,
-                    summary: resource.summary || "",
-                    description: resource.description || "",
+        <Card className="h-full p-4">
+            <ValidatedForm
+                key={resourceType}
+                validator={formSchema}
+                defaultValues={
+                    resource && {
+                        name: `${resource.name} duplicate`,
+                        summary: resource.summary || "",
+                        description: resource.description || "",
+                    }
                 }
-            }
-            method="POST"
-            autoComplete="off"
-            className="h-full"
-        >
-            <LayoutTitled
-                footerSlot={
-                    <div className="flex gap-4">
-                        <ValidatedButton
-                            variant="outline"
-                            icon={Cross2Icon}
-                            className="flex-1"
-                            onClick={() =>
-                                resource
-                                    ? navigate(
-                                          `/write/${gridId}/${resourceType}/${resource.id}`,
-                                      )
-                                    : navigate(`/write/${gridId}`)
-                            }
-                        >
-                            cancel
-                        </ValidatedButton>
-                        <ValidatedButton
-                            type="reset"
-                            variant="outline"
-                            icon={ResetIcon}
-                            className="flex-1"
-                        >
-                            revert
-                        </ValidatedButton>
-                        <ValidatedButton
-                            type="submit"
-                            variant="outline"
-                            icon={FileIcon}
-                            className="w-1/3"
-                        >
-                            create{" "}
-                            {
-                                {
-                                    tiles: "tile",
-                                    characters: "character",
-                                    items: "item",
-                                    events: "event",
-                                    locks: "lock",
-                                }[resourceType]
-                            }
-                        </ValidatedButton>
-                    </div>
-                }
+                method="POST"
+                autoComplete="off"
+                className="h-full"
             >
-                <ValidatedInput id="name" label="name" noAutocomplete />
-                <ValidatedInput id="summary" label="summary" noAutocomplete />
-                <ValidatedTextArea
-                    className="h-[calc(100%-11.75rem)] [&>textarea]:h-full [&>textarea]:resize-none"
-                    id="description"
-                    label="description"
-                    noAutocomplete
-                />
-            </LayoutTitled>
-        </ValidatedForm>
+                <LayoutTitled
+                    footerSlot={
+                        <div className="flex gap-4">
+                            <ValidatedButton
+                                variant="outline"
+                                icon={Cross2Icon}
+                                className="flex-1"
+                                onClick={() =>
+                                    resource
+                                        ? navigate(
+                                              `/write/${gridId}/${resourceType}/${resource.id}`,
+                                          )
+                                        : navigate(`/write/${gridId}`)
+                                }
+                            >
+                                cancel
+                            </ValidatedButton>
+                            <ValidatedButton
+                                type="reset"
+                                variant="outline"
+                                icon={ResetIcon}
+                                className="flex-1"
+                            >
+                                revert
+                            </ValidatedButton>
+                            <ValidatedButton
+                                type="submit"
+                                variant="outline"
+                                icon={FileIcon}
+                                className="w-1/3"
+                            >
+                                create{" "}
+                                {
+                                    {
+                                        tiles: "tile",
+                                        characters: "character",
+                                        items: "item",
+                                        events: "event",
+                                        locks: "lock",
+                                    }[resourceType]
+                                }
+                            </ValidatedButton>
+                        </div>
+                    }
+                >
+                    <ValidatedInput id="name" label="name" noAutocomplete />
+                    <ValidatedInput
+                        id="summary"
+                        label="summary"
+                        noAutocomplete
+                    />
+                    <ValidatedTextArea
+                        className="h-[calc(100%-11.75rem)] [&>textarea]:h-full [&>textarea]:resize-none"
+                        id="description"
+                        label="description"
+                        noAutocomplete
+                    />
+                </LayoutTitled>
+            </ValidatedForm>
+        </Card>
     )
 }

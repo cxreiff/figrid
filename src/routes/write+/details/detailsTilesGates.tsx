@@ -29,7 +29,6 @@ export function DetailsTilesGates() {
                         key={id}
                         linkedResource={{ ...to_tile, type }}
                         navigateUrl={`tiles/${to_tile.id}`}
-                        unlinkUrl={`/write/${grid.id}/tiles/${resource.id}/tiles/${id}/unlink`}
                     />
                 )),
                 <DetailsResourceLinker

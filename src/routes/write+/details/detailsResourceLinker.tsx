@@ -1,3 +1,4 @@
+import { PlusIcon } from "@radix-ui/react-icons"
 import { useFetcher } from "@remix-run/react"
 import { ActionBox } from "~/components/actionBox.tsx"
 
@@ -14,7 +15,9 @@ export function DetailsResourceLinker<
 
     return (
         <ActionBox
-            className="w-full"
+            icon={PlusIcon}
+            variant="outline"
+            className="shadow"
             options={options.map((character) => ({
                 id: character.id,
                 label: character.name,
@@ -26,7 +29,7 @@ export function DetailsResourceLinker<
                 })
             }
         >
-            link resource
+            <div className="px-3">link resource</div>
         </ActionBox>
     )
 }
