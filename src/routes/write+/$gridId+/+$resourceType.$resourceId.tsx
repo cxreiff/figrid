@@ -28,6 +28,7 @@ import { items } from "~/database/schema/items.server.ts"
 import { tiles } from "~/database/schema/tiles.server.ts"
 import { locks } from "~/database/schema/locks.server.ts"
 import { Card } from "~/components/ui/card.tsx"
+import { auth } from "~/auth/auth.server.ts"
 
 export const paramsSchema = z.object({
     resourceType: z.enum([
@@ -49,28 +50,34 @@ export const formSchema = withZod(
     }),
 )
 
-export async function loader({ params }: LoaderFunctionArgs) {
-    const { resourceType, resourceId } = paramsSchema.parse(params)
+export async function loader({ request, params }: LoaderFunctionArgs) {
+    const user = await auth.isAuthenticated(request, {
+        failureRedirect: "/auth/login",
+    })
+
+    const { gridId, resourceType, resourceId } = paramsSchema
+        .merge(parentParamsSchema)
+        .parse(params)
 
     let resource
     switch (resourceType) {
         case "tiles":
-            resource = await writeTileQuery(resourceId)
+            resource = await writeTileQuery(user.id, gridId, resourceId)
             break
         case "characters":
-            resource = await writeCharacterQuery(resourceId)
+            resource = await writeCharacterQuery(user.id, gridId, resourceId)
             break
         case "items":
-            resource = await writeItemQuery(resourceId)
+            resource = await writeItemQuery(user.id, gridId, resourceId)
             break
         case "events":
-            resource = await writeEventQuery(resourceId)
+            resource = await writeEventQuery(user.id, gridId, resourceId)
             break
         case "gates":
-            resource = await writeGateQuery(resourceId)
+            resource = await writeGateQuery(user.id, gridId, resourceId)
             break
         case "locks":
-            resource = await writeLockQuery(resourceId)
+            resource = await writeLockQuery(user.id, gridId, resourceId)
             break
     }
 
@@ -85,6 +92,10 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
+    const user = await auth.isAuthenticated(request, {
+        failureRedirect: "/auth/login",
+    })
+
     const { gridId, resourceType, resourceId } = paramsSchema
         .merge(parentParamsSchema)
         .parse(params)
@@ -101,13 +112,20 @@ export async function action({ request, params }: ActionFunctionArgs) {
             response = await db
                 .update(tiles)
                 .set(data.data)
-                .where(and(eq(tiles.grid_id, gridId), eq(tiles.id, resourceId)))
+                .where(
+                    and(
+                        eq(tiles.user_id, user.id),
+                        eq(tiles.grid_id, gridId),
+                        eq(tiles.id, resourceId),
+                    ),
+                )
         case "characters":
             response = await db
                 .update(characters)
                 .set(data.data)
                 .where(
                     and(
+                        eq(characters.user_id, user.id),
                         eq(characters.grid_id, gridId),
                         eq(characters.id, resourceId),
                     ),
@@ -116,19 +134,35 @@ export async function action({ request, params }: ActionFunctionArgs) {
             response = await db
                 .update(items)
                 .set(data.data)
-                .where(and(eq(items.grid_id, gridId), eq(items.id, resourceId)))
+                .where(
+                    and(
+                        eq(items.user_id, user.id),
+                        eq(items.grid_id, gridId),
+                        eq(items.id, resourceId),
+                    ),
+                )
         case "events":
             response = await db
                 .update(events)
                 .set(data.data)
                 .where(
-                    and(eq(events.grid_id, gridId), eq(events.id, resourceId)),
+                    and(
+                        eq(items.user_id, user.id),
+                        eq(events.grid_id, gridId),
+                        eq(events.id, resourceId),
+                    ),
                 )
         case "locks":
             response = await db
                 .update(locks)
                 .set(data.data)
-                .where(and(eq(locks.grid_id, gridId), eq(locks.id, resourceId)))
+                .where(
+                    and(
+                        eq(items.user_id, user.id),
+                        eq(locks.grid_id, gridId),
+                        eq(locks.id, resourceId),
+                    ),
+                )
     }
 
     return response

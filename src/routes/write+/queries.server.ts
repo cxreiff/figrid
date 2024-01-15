@@ -1,19 +1,20 @@
-import { eq } from "drizzle-orm"
+import { and, eq } from "drizzle-orm"
 import { db } from "~/database/database.server.ts"
 import { characters } from "~/database/schema/characters.server.ts"
 import { events } from "~/database/schema/events.server.ts"
 import { gates } from "~/database/schema/gates.server.ts"
 import { grids } from "~/database/schema/grids.server.ts"
 import { items } from "~/database/schema/items.server.ts"
+import { locks } from "~/database/schema/locks.server.ts"
 import { tiles } from "~/database/schema/tiles.server.ts"
 
 export type WriteGridQuery = NonNullable<
     Awaited<ReturnType<typeof writeGridQuery>>
 >
 
-export function writeGridQuery(gridId: number) {
+export function writeGridQuery(userId: number, gridId: number) {
     return db.query.grids.findFirst({
-        where: eq(grids.id, gridId),
+        where: and(eq(grids.user_id, userId), eq(grids.id, gridId)),
         with: {
             tiles: {
                 with: {
@@ -44,9 +45,13 @@ export type WriteTileQuery = NonNullable<
     Awaited<ReturnType<typeof writeTileQuery>>
 >
 
-export function writeTileQuery(tileId: number) {
+export function writeTileQuery(userId: number, gridId: number, tileId: number) {
     return db.query.tiles.findFirst({
-        where: eq(tiles.id, tileId),
+        where: and(
+            eq(tiles.user_id, userId),
+            eq(tiles.grid_id, gridId),
+            eq(tiles.id, tileId),
+        ),
         with: {
             gates_out: {
                 with: {
@@ -81,9 +86,17 @@ export type WriteCharacterQuery = NonNullable<
     Awaited<ReturnType<typeof writeCharacterQuery>>
 >
 
-export function writeCharacterQuery(characterId: number) {
+export function writeCharacterQuery(
+    userId: number,
+    gridId: number,
+    characterId: number,
+) {
     return db.query.characters.findFirst({
-        where: eq(characters.id, characterId),
+        where: and(
+            eq(characters.user_id, userId),
+            eq(characters.grid_id, gridId),
+            eq(characters.id, characterId),
+        ),
         with: {
             instances: {
                 with: {
@@ -103,9 +116,13 @@ export type WriteItemQuery = NonNullable<
     Awaited<ReturnType<typeof writeItemQuery>>
 >
 
-export function writeItemQuery(itemId: number) {
+export function writeItemQuery(userId: number, gridId: number, itemId: number) {
     return db.query.items.findFirst({
-        where: eq(items.id, itemId),
+        where: and(
+            eq(items.user_id, userId),
+            eq(items.grid_id, gridId),
+            eq(items.id, itemId),
+        ),
         with: {
             instances: {
                 with: {
@@ -121,16 +138,24 @@ export type WriteEventQuery = NonNullable<
     Awaited<ReturnType<typeof writeEventQuery>>
 >
 
-export function writeEventQuery(eventId: number) {
+export function writeEventQuery(
+    userId: number,
+    gridId: number,
+    eventId: number,
+) {
     return db.query.events.findFirst({
-        where: eq(events.id, eventId),
+        where: and(
+            eq(events.user_id, userId),
+            eq(events.grid_id, gridId),
+            eq(events.id, eventId),
+        ),
         with: {
             parent: true,
             children: true,
             instances: {
                 with: {
-                    parent_character: true,
-                    parent_tile: true,
+                    character: true,
+                    tile: true,
                 },
             },
             item_instances: {
@@ -153,9 +178,13 @@ export type WriteGateQuery = NonNullable<
     Awaited<ReturnType<typeof writeGateQuery>>
 >
 
-export function writeGateQuery(gateId: number) {
+export function writeGateQuery(userId: number, gridId: number, gateId: number) {
     return db.query.gates.findFirst({
-        where: eq(gates.id, gateId),
+        where: and(
+            eq(gates.user_id, userId),
+            eq(gates.grid_id, gridId),
+            eq(gates.id, gateId),
+        ),
         with: {
             from_tile: true,
             to_tile: true,
@@ -172,9 +201,13 @@ export type WriteLockQuery = NonNullable<
     Awaited<ReturnType<typeof writeLockQuery>>
 >
 
-export function writeLockQuery(gateId: number) {
+export function writeLockQuery(userId: number, gridId: number, lockId: number) {
     return db.query.locks.findFirst({
-        where: eq(gates.id, gateId),
+        where: and(
+            eq(locks.user_id, userId),
+            eq(locks.grid_id, gridId),
+            eq(locks.id, lockId),
+        ),
         with: {
             instances: {
                 with: {

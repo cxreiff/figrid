@@ -1,5 +1,5 @@
-import { redirect, type ActionFunctionArgs } from "@vercel/remix"
-import { eq } from "drizzle-orm"
+import { type ActionFunctionArgs } from "@vercel/remix"
+import { and, eq } from "drizzle-orm"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
 import { db } from "~/database/database.server.ts"
@@ -22,15 +22,13 @@ const paramsSchema = z.object({
 })
 
 export async function action({ request, params }: ActionFunctionArgs) {
+    const user = await auth.isAuthenticated(request, {
+        failureRedirect: "/auth/login",
+    })
+
     const { gridId, resourceId, linkedType, linkId } = paramsSchema
         .merge(gridIdParamsSchema)
         .parse(params)
-
-    const user = await auth.isAuthenticated(request)
-
-    if (!user) {
-        return redirect("/auth/login")
-    }
 
     switch (linkedType) {
         case "parent":
@@ -39,7 +37,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
                 .set({
                     parent_id: linkId,
                 })
-                .where(eq(events.id, resourceId))
+                .where(
+                    and(
+                        eq(events.user_id, user.id),
+                        eq(events.grid_id, gridId),
+                        eq(events.id, resourceId),
+                    ),
+                )
             break
         case "children":
             await db
@@ -47,14 +51,20 @@ export async function action({ request, params }: ActionFunctionArgs) {
                 .set({
                     parent_id: resourceId,
                 })
-                .where(eq(events.id, linkId))
+                .where(
+                    and(
+                        eq(events.user_id, user.id),
+                        eq(events.grid_id, gridId),
+                        eq(events.id, linkId),
+                    ),
+                )
             break
         case "items":
             await db.insert(item_instances).values({
-                grid_id: gridId,
                 user_id: user.id,
-                item_id: linkId,
+                grid_id: gridId,
                 event_id: resourceId,
+                item_id: linkId,
             })
             break
         case "requirements":
@@ -71,7 +81,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
                 .set({
                     triggers_unlock_id: linkId,
                 })
-                .where(eq(events.id, resourceId))
+                .where(
+                    and(
+                        eq(events.user_id, user.id),
+                        eq(events.grid_id, gridId),
+                        eq(events.id, resourceId),
+                    ),
+                )
             break
         case "lock":
             await db
@@ -79,7 +95,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
                 .set({
                     triggers_lock_id: linkId,
                 })
-                .where(eq(events.id, resourceId))
+                .where(
+                    and(
+                        eq(events.user_id, user.id),
+                        eq(events.grid_id, gridId),
+                        eq(events.id, resourceId),
+                    ),
+                )
             break
     }
 

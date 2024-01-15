@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm"
-import { int, mysqlEnum, mysqlTable } from "drizzle-orm/mysql-core"
+import { boolean, int, mysqlEnum, mysqlTable } from "drizzle-orm/mysql-core"
 import { event_instances } from "~/database/schema/events.server.ts"
 import { grids } from "~/database/schema/grids.server.ts"
 import { lock_instances } from "~/database/schema/locks.server.ts"
@@ -25,6 +25,8 @@ export const gates = mysqlTable("gates", {
 
     from_tile_id: int("from_tile_id").notNull(),
     to_tile_id: int("to_tile_id").notNull(),
+
+    active: boolean("active").default(true).notNull(),
 })
 
 export const gates_relations = relations(gates, ({ one, many }) => ({

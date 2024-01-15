@@ -1,4 +1,4 @@
-import { redirect, type ActionFunctionArgs } from "@vercel/remix"
+import { type ActionFunctionArgs } from "@vercel/remix"
 import { and, eq } from "drizzle-orm"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
@@ -14,15 +14,13 @@ const paramsSchema = z.object({
 })
 
 export async function action({ request, params }: ActionFunctionArgs) {
+    const user = await auth.isAuthenticated(request, {
+        failureRedirect: "/auth/login",
+    })
+
     const { gridId, resourceId, linkedType, linkId } = paramsSchema
         .merge(gridIdParamsSchema)
         .parse(params)
-
-    const user = await auth.isAuthenticated(request)
-
-    if (!user) {
-        return redirect("/auth/login")
-    }
 
     switch (linkedType) {
         case "tiles":
@@ -30,6 +28,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
                 .delete(character_instances)
                 .where(
                     and(
+                        eq(character_instances.user_id, user.id),
                         eq(character_instances.grid_id, gridId),
                         eq(character_instances.character_id, resourceId),
                         eq(character_instances.id, linkId),
@@ -41,8 +40,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
                 .delete(event_instances)
                 .where(
                     and(
+                        eq(event_instances.user_id, user.id),
                         eq(event_instances.grid_id, gridId),
-                        eq(event_instances.parent_character_id, resourceId),
+                        eq(event_instances.character_id, resourceId),
                         eq(event_instances.id, linkId),
                     ),
                 )

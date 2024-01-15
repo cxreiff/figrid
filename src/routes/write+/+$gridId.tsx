@@ -41,11 +41,13 @@ export const paramsSchema = z.object({
 })
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-    const user = await auth.isAuthenticated(request)
+    const user = await auth.isAuthenticated(request, {
+        failureRedirect: "/auth/login",
+    })
 
     const { gridId } = paramsSchema.parse(params)
 
-    const grid = await writeGridQuery(gridId)
+    const grid = await writeGridQuery(user.id, gridId)
 
     if (!grid) {
         throw new Response(null, {

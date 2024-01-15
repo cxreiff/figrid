@@ -6,6 +6,18 @@ export type Replace<T, Key extends keyof T, New> = Omit<T, Key> & {
     [P in Key]: New
 }
 
+type StrictEntries<T> = {
+    [K in keyof T]-?: [K, T[K]]
+}[keyof T][]
+
+export function strictEntries<T extends object>(obj: T) {
+    return Object.entries(obj) as StrictEntries<T>
+}
+
+export function strictKeys<T extends object>(obj: T) {
+    return Object.keys(obj) as Array<keyof T>
+}
+
 export const TILE_FALLBACK_IMAGE = "https://img.figrid.io/tiles/kitty.png"
 export const PLAYER_FALLBACK_IMAGE = "https://img.figrid.io/tiles/kitty.png"
 

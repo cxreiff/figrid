@@ -22,15 +22,15 @@ export const locks_relations = relations(locks, ({ one, many }) => ({
         fields: [locks.grid_id],
         references: [grids.id],
     }),
+    required_item: one(items, {
+        fields: [locks.required_item_id],
+        references: [items.id],
+    }),
     unlocking_events: many(events, {
         relationName: "unlocks",
     }),
     locking_events: many(events, {
         relationName: "locks",
-    }),
-    required_item: one(items, {
-        fields: [locks.required_item_id],
-        references: [items.id],
     }),
     instances: many(lock_instances),
 }))

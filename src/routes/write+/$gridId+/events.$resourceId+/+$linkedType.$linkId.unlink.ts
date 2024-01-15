@@ -1,4 +1,4 @@
-import { redirect, type ActionFunctionArgs } from "@vercel/remix"
+import { type ActionFunctionArgs } from "@vercel/remix"
 import { and, eq } from "drizzle-orm"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
@@ -22,15 +22,13 @@ const paramsSchema = z.object({
 })
 
 export async function action({ request, params }: ActionFunctionArgs) {
+    const user = await auth.isAuthenticated(request, {
+        failureRedirect: "/auth/login",
+    })
+
     const { gridId, resourceId, linkedType, linkId } = paramsSchema
         .merge(gridIdParamsSchema)
         .parse(params)
-
-    const user = await auth.isAuthenticated(request)
-
-    if (!user) {
-        return redirect("/auth/login")
-    }
 
     switch (linkedType) {
         case "parent":
@@ -41,6 +39,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
                 })
                 .where(
                     and(
+                        eq(events.user_id, user.id),
                         eq(events.grid_id, gridId),
                         eq(events.parent_id, linkId),
                         eq(events.id, resourceId),
@@ -55,6 +54,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
                 })
                 .where(
                     and(
+                        eq(events.user_id, user.id),
                         eq(events.grid_id, gridId),
                         eq(events.parent_id, resourceId),
                         eq(events.id, linkId),
@@ -69,6 +69,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
                 })
                 .where(
                     and(
+                        eq(events.user_id, user.id),
                         eq(events.grid_id, gridId),
                         eq(events.triggers_unlock_id, linkId),
                         eq(events.id, resourceId),
@@ -83,6 +84,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
                 })
                 .where(
                     and(
+                        eq(events.user_id, user.id),
                         eq(events.grid_id, gridId),
                         eq(events.triggers_lock_id, linkId),
                         eq(events.id, resourceId),
@@ -94,6 +96,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
                 .delete(item_instances)
                 .where(
                     and(
+                        eq(item_instances.user_id, user.id),
                         eq(item_instances.grid_id, gridId),
                         eq(item_instances.event_id, resourceId),
                         eq(item_instances.item_id, linkId),
@@ -105,6 +108,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
                 .delete(lock_instances)
                 .where(
                     and(
+                        eq(lock_instances.user_id, user.id),
                         eq(lock_instances.grid_id, gridId),
                         eq(lock_instances.event_id, resourceId),
                         eq(lock_instances.lock_id, linkId),

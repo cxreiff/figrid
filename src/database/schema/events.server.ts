@@ -52,9 +52,9 @@ export const event_instances = mysqlTable("event_instances", {
     ...grid_resource_fields,
 
     event_id: int("event_id").notNull(),
-    parent_tile_id: int("parent_tile_id"),
-    parent_character_id: int("parent_character_id"),
-    parent_gate_id: int("parent_gate_id"),
+    tile_id: int("tile_id"),
+    character_id: int("character_id"),
+    gate_id: int("gate_id"),
 })
 
 export const event_instances_relations = relations(
@@ -68,16 +68,16 @@ export const event_instances_relations = relations(
             fields: [event_instances.event_id],
             references: [events.id],
         }),
-        parent_character: one(characters, {
-            fields: [event_instances.parent_character_id],
+        character: one(characters, {
+            fields: [event_instances.character_id],
             references: [characters.id],
         }),
-        parent_tile: one(tiles, {
-            fields: [event_instances.parent_tile_id],
+        tile: one(tiles, {
+            fields: [event_instances.tile_id],
             references: [tiles.id],
         }),
-        parent_gate: one(gates, {
-            fields: [event_instances.parent_gate_id],
+        gate: one(gates, {
+            fields: [event_instances.gate_id],
             references: [gates.id],
         }),
     }),

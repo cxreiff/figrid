@@ -105,18 +105,13 @@ export function Map() {
                                     const neighbors = getNeighboringCoordinates(
                                         currentCoords,
                                     )
-                                        .map(
-                                            ([type, coords]) =>
-                                                [
-                                                    type,
-                                                    tileCoordsMap[
-                                                        coords.join(",")
-                                                    ],
-                                                ] as const,
-                                        )
-                                        .map(([type, tileId]) =>
-                                            tileId !== undefined
-                                                ? ([type, tileId] as const)
+                                        .map(([type, coords]) => ({
+                                            type,
+                                            id: tileCoordsMap[coords.join(",")],
+                                        }))
+                                        .map(({ type, id }) =>
+                                            id !== undefined
+                                                ? { type, id }
                                                 : undefined,
                                         )
                                         .filter(defined)
