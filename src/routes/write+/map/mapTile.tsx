@@ -78,14 +78,14 @@ export function MapTile({
                         return (
                             <div
                                 key={`${gate.id}`}
-                                className={`absolute right-2 top-2 -m-0.5 h-5 w-5 rounded-none p-0.5 text-muted-foreground ${
+                                className={`absolute right-2 top-2 -m-0.5 h-5 w-5 rounded-none p-0.5 ${
                                     resourceId === gate.id
                                         ? "shadow-[inset_hsl(var(--accent))_0_0_0_0.2rem]"
                                         : "cursor-pointer hover:shadow-[inset_hsl(var(--accent))_0_0_0_0.2rem]"
                                 } ${
                                     gate.lock_instances.length > 0
                                         ? "bg-secondary-foreground text-card"
-                                        : "bg-card"
+                                        : "bg-card text-muted-foreground"
                                 }`}
                                 onClick={(event) => {
                                     event.stopPropagation()
@@ -99,10 +99,14 @@ export function MapTile({
                         return (
                             <div
                                 key={`${gate.id}`}
-                                className={`absolute bottom-2 right-2 -m-0.5 h-5 w-5 rounded-none p-0.5 text-muted-foreground ${
+                                className={`absolute bottom-2 right-2 -m-0.5 h-5 w-5 rounded-none p-0.5 ${
                                     resourceId === gate.id
                                         ? "shadow-[inset_hsl(var(--accent))_0_0_0_0.2rem]"
                                         : "cursor-pointer hover:shadow-[inset_hsl(var(--accent))_0_0_0_0.2rem]"
+                                } ${
+                                    gate.lock_instances.length > 0
+                                        ? "bg-secondary-foreground text-card"
+                                        : "bg-card text-muted-foreground"
                                 }`}
                                 onClick={(event) => {
                                     event.stopPropagation()
