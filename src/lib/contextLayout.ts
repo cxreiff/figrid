@@ -4,10 +4,10 @@ import type { ImperativePanelGroupHandle } from "react-resizable-panels"
 import { z } from "zod"
 import { useDebounce } from "~/lib/misc.ts"
 
-const DEFAULT_LAYOUT_READ = [30, 40, 30]
+const DEFAULT_LAYOUT_READ = [27, 46, 27]
 const DEFAULT_LAYOUT_AREA = [45, 55]
 const DEFAULT_LAYOUT_STATUS = [45, 55]
-const DEFAULT_LAYOUT_WRITE = [30, 40, 30]
+const DEFAULT_LAYOUT_WRITE = [27, 46, 27]
 
 export const layoutCookieSchema = z.object({
     read: z.array(z.number().min(0).max(100)).length(3).optional(),

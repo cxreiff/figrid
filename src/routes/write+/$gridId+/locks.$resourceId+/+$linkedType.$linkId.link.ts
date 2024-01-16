@@ -1,13 +1,14 @@
 import { redirect, type ActionFunctionArgs } from "@vercel/remix"
+import { and, eq } from "drizzle-orm"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
 import { db } from "~/database/database.server.ts"
-import { lock_instances } from "~/database/schema/locks.server.ts"
+import { lock_instances, locks } from "~/database/schema/locks.server.ts"
 import { paramsSchema as gridIdParamsSchema } from "~/routes/write+/+$gridId.tsx"
 
 const paramsSchema = z.object({
     resourceId: z.coerce.number(),
-    linkedType: z.enum(["events", "gates"]),
+    linkedType: z.enum(["item", "events", "gates"]),
     linkId: z.coerce.number(),
 })
 
@@ -23,6 +24,18 @@ export async function action({ request, params }: ActionFunctionArgs) {
     }
 
     switch (linkedType) {
+        case "item":
+            await db
+                .update(locks)
+                .set({ required_item_id: linkId })
+                .where(
+                    and(
+                        eq(locks.user_id, user.id),
+                        eq(locks.grid_id, gridId),
+                        eq(locks.id, resourceId),
+                    ),
+                )
+            break
         case "events":
             await db.insert(lock_instances).values({
                 grid_id: gridId,
