@@ -2,7 +2,7 @@ import { useState } from "react"
 import { type LoaderFunctionArgs } from "@vercel/remix"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
-import { Layout } from "~/components/layout.tsx"
+import { Layout } from "~/components/layout/layout.tsx"
 import { Text } from "~/routes/read+/text/text.tsx"
 import { Map } from "~/routes/read+/map/map.tsx"
 import {
@@ -11,7 +11,7 @@ import {
 } from "~/routes/read+/processing.server.ts"
 import { handleCommand } from "~/routes/read+/commands.ts"
 import { useSaveData } from "~/lib/useSaveData.ts"
-import { LayoutTabs } from "~/components/layoutTabs.tsx"
+import { LayoutTabs } from "~/components/layout/layoutTabs.tsx"
 import { Area } from "~/routes/read+/area/area.tsx"
 import { Status } from "~/routes/read+/status/status.tsx"
 import { Data } from "~/routes/read+/data/data.tsx"
@@ -102,22 +102,6 @@ export default function Route() {
                     <Layout
                         user={user}
                         title={grid.name}
-                        left={
-                            <LayoutTabs names={["area", "status", "data"]}>
-                                <Area />
-                                <Status />
-                                <Data replaceSave={replaceSave} />
-                            </LayoutTabs>
-                        }
-                        center={
-                            <Text
-                                saveData={saveData}
-                                command={command}
-                                commandLog={commandLog}
-                                setCommand={setCommand}
-                            />
-                        }
-                        right={<Map />}
                         iconButtons={
                             grid.id === user?.id
                                 ? [
@@ -136,9 +120,23 @@ export default function Route() {
                         }
                         layoutRef={layoutContext.readLayoutRef}
                         initialLayout={layoutContext.initialLayout.read}
+                        minSizes={layoutContext.minSizes.read}
                         onSaveLayout={layoutContext.saveLayout}
                         onResetLayout={layoutContext.resetLayout}
-                    />
+                    >
+                        <LayoutTabs names={["area", "status", "data"]}>
+                            <Area />
+                            <Status />
+                            <Data replaceSave={replaceSave} />
+                        </LayoutTabs>
+                        <Text
+                            saveData={saveData}
+                            command={command}
+                            commandLog={commandLog}
+                            setCommand={setCommand}
+                        />
+                        <Map />
+                    </Layout>
                 </ContextLayout.Provider>
             </ContextCommand.Provider>
         </ContextSaveData.Provider>

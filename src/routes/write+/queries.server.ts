@@ -188,6 +188,11 @@ export function writeGateQuery(userId: number, gridId: number, gateId: number) {
         with: {
             from_tile: true,
             to_tile: true,
+            event_instances: {
+                with: {
+                    event: true,
+                },
+            },
             lock_instances: {
                 with: {
                     lock: true,

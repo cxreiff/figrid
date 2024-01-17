@@ -3,8 +3,8 @@ import { Link, Outlet, useLocation, useParams } from "@remix-run/react"
 import type { LoaderFunctionArgs } from "@vercel/remix"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
-import { Layout } from "~/components/layout.tsx"
-import { LayoutTabs } from "~/components/layoutTabs.tsx"
+import { Layout } from "~/components/layout/layout.tsx"
+import { LayoutTabs } from "~/components/layout/layoutTabs.tsx"
 import { Button } from "~/components/ui/button.tsx"
 import { Card } from "~/components/ui/card.tsx"
 import { Details } from "~/routes/write+/details/details.tsx"
@@ -108,36 +108,6 @@ export default function Route() {
             <Layout
                 user={user}
                 title={`${grid.name} - editing`}
-                left={
-                    <LayoutTabs
-                        names={Object.values(RESOURCE_TYPES)}
-                        value={resourceTab}
-                        onValueChange={setResourceTab}
-                    >
-                        <ResourceStack type={RESOURCE_TYPES.TILES} />
-                        <ResourceStack type={RESOURCE_TYPES.CHARACTERS} />
-                        <ResourceStack type={RESOURCE_TYPES.ITEMS} />
-                        <ResourceStack type={RESOURCE_TYPES.EVENTS} />
-                        <ResourceStack type={RESOURCE_TYPES.GATES} />
-                        <ResourceStack type={RESOURCE_TYPES.LOCKS} />
-                    </LayoutTabs>
-                }
-                center={
-                    <LayoutTabs
-                        names={["map", "editor"]}
-                        value={mainTab}
-                        onValueChange={setMainTab}
-                    >
-                        <Map />
-                        <Outlet />
-                    </LayoutTabs>
-                }
-                right={
-                    <LayoutTabs names={["details", "grid"]}>
-                        <Details />
-                        <Card className="h-full"></Card>
-                    </LayoutTabs>
-                }
                 iconButtons={
                     <>
                         <Button variant="ghost" size="icon" asChild>
@@ -149,9 +119,35 @@ export default function Route() {
                 }
                 layoutRef={layoutContext.writeLayoutRef}
                 initialLayout={layoutContext.initialLayout.write}
+                minSizes={layoutContext.minSizes.write}
                 onSaveLayout={layoutContext.saveLayout}
                 onResetLayout={layoutContext.resetLayout}
-            />
+            >
+                <LayoutTabs
+                    names={Object.values(RESOURCE_TYPES)}
+                    value={resourceTab}
+                    onValueChange={setResourceTab}
+                >
+                    <ResourceStack type={RESOURCE_TYPES.TILES} />
+                    <ResourceStack type={RESOURCE_TYPES.CHARACTERS} />
+                    <ResourceStack type={RESOURCE_TYPES.ITEMS} />
+                    <ResourceStack type={RESOURCE_TYPES.EVENTS} />
+                    <ResourceStack type={RESOURCE_TYPES.GATES} />
+                    <ResourceStack type={RESOURCE_TYPES.LOCKS} />
+                </LayoutTabs>
+                <LayoutTabs
+                    names={["map", "editor"]}
+                    value={mainTab}
+                    onValueChange={setMainTab}
+                >
+                    <Map />
+                    <Outlet />
+                </LayoutTabs>
+                <LayoutTabs names={["details", "grid"]}>
+                    <Details />
+                    <Card className="h-full"></Card>
+                </LayoutTabs>
+            </Layout>
         </ContextLayout.Provider>
     )
 }

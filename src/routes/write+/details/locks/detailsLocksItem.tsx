@@ -15,6 +15,9 @@ export function DetailsLocksItem() {
     )?.resource as WriteLockQuery
 
     const fetcher = useFetcher()
+    const consumes = fetcher.formData
+        ? fetcher.formData.get("consumes") === "true"
+        : resource.consumes
 
     return (
         <Wait on={resource}>
@@ -32,9 +35,8 @@ export function DetailsLocksItem() {
                                 label="consumes item"
                                 description="unlocking this lock with an item will consume the item."
                                 id="consumes"
-                                checked={resource.consumes}
+                                checked={consumes}
                                 onCheckedChange={(checked) => {
-                                    console.debug(checked)
                                     fetcher.submit(
                                         { consumes: checked === true },
                                         {

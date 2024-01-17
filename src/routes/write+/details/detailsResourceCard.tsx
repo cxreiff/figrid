@@ -2,6 +2,7 @@ import { Cross2Icon, EnterIcon } from "@radix-ui/react-icons"
 import { useFetcher, useNavigate } from "@remix-run/react"
 import { ButtonIcon } from "~/components/buttonIcon.tsx"
 import { Card } from "~/components/ui/card.tsx"
+import { cn } from "~/lib/misc.ts"
 
 export function DetailsResourceCard<
     T extends { id: number; name: string; type?: string },
@@ -18,7 +19,11 @@ export function DetailsResourceCard<
     const fetcher = useFetcher()
 
     return (
-        <Card className="mb-2 flex items-center p-1 shadow-sm">
+        <Card
+            className={cn("mb-2 flex items-center p-1 shadow-sm", {
+                "opacity-50": fetcher.state !== "idle",
+            })}
+        >
             {linkedResource.type && (
                 <span className="w-14 px-3 text-muted-foreground">
                     {linkedResource.type}

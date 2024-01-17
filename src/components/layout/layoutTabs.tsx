@@ -1,5 +1,6 @@
 import { type ReactNode } from "react"
 import { Card } from "~/components/ui/card.tsx"
+import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area.tsx"
 import {
     Tabs,
     TabsContent,
@@ -37,13 +38,16 @@ export function LayoutTabs<T extends string[]>({
                 </TabsContent>
             ))}
             <Card className="absolute bottom-0 h-10 w-full">
-                <TabsList className="h-full w-full justify-start overflow-x-auto">
-                    {names.map((name) => (
-                        <TabsTrigger key={name} value={name}>
-                            {name}
-                        </TabsTrigger>
-                    ))}
-                </TabsList>
+                <ScrollArea className="h-full w-full [&>div>div]:!block [&>div>div]:h-full">
+                    <TabsList className="h-full justify-start">
+                        {names.map((name) => (
+                            <TabsTrigger key={name} value={name}>
+                                {name}
+                            </TabsTrigger>
+                        ))}
+                    </TabsList>
+                    <ScrollBar orientation="horizontal" className="hidden" />
+                </ScrollArea>
             </Card>
         </Tabs>
     )

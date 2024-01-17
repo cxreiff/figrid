@@ -14,25 +14,23 @@ import {
 import { cn } from "~/lib/misc.ts"
 
 export function Layout({
+    children,
     user,
     title,
-    left,
-    right,
-    center,
     iconButtons,
     layoutRef,
     initialLayout,
+    minSizes,
     onSaveLayout,
     onResetLayout,
 }: {
+    children: [ReactNode, ReactNode, ReactNode]
     user: AuthUser | null
     title: string
-    left?: ReactNode
-    right?: ReactNode
-    center?: ReactNode
     iconButtons?: ReactNode
     layoutRef: RefObject<ImperativePanelGroupHandle> | null
-    initialLayout: number[]
+    initialLayout: readonly [number, number, number]
+    minSizes: readonly [number, number, number]
     onSaveLayout: () => void
     onResetLayout: () => void
 }) {
@@ -64,13 +62,13 @@ export function Layout({
                 >
                     <ResizablePanel
                         className="h-[calc(100vh-4rem)] pb-6"
-                        minSize={20}
+                        minSize={minSizes[0]}
                         defaultSize={initialLayout[0]}
                         onCollapse={() => setLeftCollapsed(true)}
                         onExpand={() => setLeftCollapsed(false)}
                         collapsible
                     >
-                        {left}
+                        {children[0]}
                     </ResizablePanel>
                     <ResizableHandle
                         neighborCollapsed={leftCollapsed}
@@ -80,10 +78,10 @@ export function Layout({
                     />
                     <ResizablePanel
                         className="h-[calc(100vh-4rem)] pb-6"
-                        minSize={25}
+                        minSize={minSizes[1]}
                         defaultSize={initialLayout[1]}
                     >
-                        {center}
+                        {children[1]}
                     </ResizablePanel>
                     <ResizableHandle
                         neighborCollapsed={rightCollapsed}
@@ -93,13 +91,13 @@ export function Layout({
                     />
                     <ResizablePanel
                         className="h-[calc(100vh-4rem)] pb-6"
-                        minSize={20}
+                        minSize={minSizes[2]}
                         defaultSize={initialLayout[2]}
                         onCollapse={() => setRightCollapsed(true)}
                         onExpand={() => setRightCollapsed(false)}
                         collapsible
                     >
-                        {right}
+                        {children[2]}
                     </ResizablePanel>
                 </ResizablePanelGroup>
             </main>

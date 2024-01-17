@@ -1,61 +1,29 @@
-import { useContext, useState } from "react"
+import { useContext } from "react"
 import { Card } from "~/components/ui/card.tsx"
-import {
-    ResizableHandle,
-    ResizablePanel,
-    ResizablePanelGroup,
-} from "~/components/ui/resizable.tsx"
 import { StatusImage } from "~/routes/read+/status/statusImage.tsx"
 import { StatusInventory } from "~/routes/read+/status/statusInventory.tsx"
 import { ContextLayout } from "~/lib/contextLayout.ts"
+import { LayoutVerticalSplit } from "~/components/layout/layoutVerticalSplit.tsx"
 
 export function Status() {
-    const {
-        statusLayoutRef: statusLayout,
-        saveLayout,
-        initialLayout,
-    } = useContext(ContextLayout)
-    const [topCollapsed, setTopCollapsed] = useState(
-        initialLayout.status[0] < 20,
-    )
-    const [bottomCollapsed, setBottomCollapsed] = useState(
-        initialLayout.status[1] < 20,
-    )
+    const { statusLayoutRef, initialLayout, minSizes, saveLayout } =
+        useContext(ContextLayout)
 
     return (
-        <ResizablePanelGroup
-            ref={statusLayout}
-            direction="vertical"
-            className="gap-2"
-            onLayout={saveLayout}
+        <LayoutVerticalSplit
+            layoutRef={statusLayoutRef}
+            initialLayout={initialLayout.status}
+            minSizes={minSizes.status}
+            onSaveLayout={saveLayout}
         >
-            <ResizablePanel
-                minSize={20}
-                defaultSize={initialLayout.status[0]}
-                onCollapse={() => setTopCollapsed(true)}
-                onExpand={() => setTopCollapsed(false)}
-                collapsible
-            >
-                <Card className="mb-4 h-full p-4">
-                    <StatusImage />
-                </Card>
-            </ResizablePanel>
-            <ResizableHandle
-                neighborCollapsed={topCollapsed || bottomCollapsed}
-            />
-            <ResizablePanel
-                minSize={20}
-                defaultSize={initialLayout.status[1]}
-                onCollapse={() => setBottomCollapsed(true)}
-                onExpand={() => setBottomCollapsed(false)}
-                collapsible
-            >
-                <Card className="h-full p-2 pt-4">
-                    <div className="h-full overflow-auto p-4">
-                        <StatusInventory />
-                    </div>
-                </Card>
-            </ResizablePanel>
-        </ResizablePanelGroup>
+            <Card className="mb-4 h-full p-4">
+                <StatusImage />
+            </Card>
+            <Card className="h-full p-2 pt-4">
+                <div className="h-full overflow-auto p-4">
+                    <StatusInventory />
+                </div>
+            </Card>
+        </LayoutVerticalSplit>
     )
 }

@@ -8,7 +8,7 @@ import { TILE_FALLBACK_IMAGE } from "~/lib/misc.ts"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
 import { useManualSaveData } from "~/lib/useManualSaveData.ts"
 import { type useSaveData } from "~/lib/useSaveData.ts"
-import { LayoutTitledScrolls } from "~/components/layoutTitledScrolls.tsx"
+import { LayoutTitledScrolls } from "~/components/layout/layoutTitledScrolls.tsx"
 
 export function DataLocal({
     replaceSave,
