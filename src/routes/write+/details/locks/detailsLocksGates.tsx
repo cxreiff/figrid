@@ -22,6 +22,7 @@ export function DetailsLocksGates() {
                             gate && (
                                 <DetailsResourceCard
                                     key={id}
+                                    label={gate.type}
                                     linkedResource={gate}
                                     navigateUrl={`tiles/${gate.id}`}
                                     unlinkUrl={`/write/${grid.id}/locks/${resource.id}/gates/${id}/unlink`}

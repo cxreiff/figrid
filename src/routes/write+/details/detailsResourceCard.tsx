@@ -7,10 +7,12 @@ import { cn } from "~/lib/misc.ts"
 export function DetailsResourceCard<
     T extends { id: number; name: string; type?: string },
 >({
+    label,
     linkedResource,
     navigateUrl,
     unlinkUrl,
 }: {
+    label?: string
     linkedResource: T
     navigateUrl: string
     unlinkUrl?: string
@@ -24,10 +26,8 @@ export function DetailsResourceCard<
                 "opacity-50": fetcher.state !== "idle",
             })}
         >
-            {linkedResource.type && (
-                <span className="w-14 px-3 text-muted-foreground">
-                    {linkedResource.type}
-                </span>
+            {label && (
+                <span className="w-14 px-3 text-muted-foreground">{label}</span>
             )}
             <span className="flex-1 px-3">{linkedResource.name}</span>
             <ButtonIcon

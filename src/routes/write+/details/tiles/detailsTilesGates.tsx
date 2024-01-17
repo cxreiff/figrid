@@ -27,7 +27,8 @@ export function DetailsTilesGates() {
                 resource.gates_out.map(({ id, to_tile, type }) => (
                     <DetailsResourceCard
                         key={id}
-                        linkedResource={{ ...to_tile, type }}
+                        label={type}
+                        linkedResource={to_tile}
                         navigateUrl={`tiles/${to_tile.id}`}
                     />
                 )),

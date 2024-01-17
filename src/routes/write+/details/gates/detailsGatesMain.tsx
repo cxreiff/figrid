@@ -1,7 +1,7 @@
 import { useSuperMatch } from "~/lib/superjson.ts"
 import type { WriteGateQuery } from "~/routes/write+/queries.server.ts"
 import { type loader as childLoader } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
-import { DetailsLabeledCard } from "~/routes/write+/details/detailsLabeledCard.tsx"
+import { DetailsResourceCard } from "~/routes/write+/details/detailsResourceCard.tsx"
 
 export function DetailsGatesMain() {
     const resource = useSuperMatch<typeof childLoader>(
@@ -10,15 +10,15 @@ export function DetailsGatesMain() {
 
     return (
         <>
-            <DetailsLabeledCard
+            <DetailsResourceCard
                 label="from"
                 navigateUrl={`tiles/${resource.from_tile_id}`}
-                resource={resource.from_tile}
+                linkedResource={resource.from_tile}
             />
-            <DetailsLabeledCard
+            <DetailsResourceCard
                 label="to"
                 navigateUrl={`tiles/${resource.to_tile_id}`}
-                resource={resource.to_tile}
+                linkedResource={resource.to_tile}
             />
         </>
     )

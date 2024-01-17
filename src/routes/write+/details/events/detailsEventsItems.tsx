@@ -18,6 +18,7 @@ export function DetailsEventsItems() {
                 resource.item_instances.map(({ id, item }) => (
                     <DetailsResourceCard
                         key={id}
+                        label={item.type}
                         linkedResource={item}
                         navigateUrl={`items/${item.id}`}
                         unlinkUrl={`/write/${grid.id}/events/${resource.id}/items/${id}/unlink`}

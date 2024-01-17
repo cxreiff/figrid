@@ -1,8 +1,6 @@
 import { useParams } from "@remix-run/react"
-import { useContext, useMemo, useState } from "react"
-import { LayoutVerticalSplit } from "~/components/layout/layoutVerticalSplit.tsx"
+import { useMemo, useState } from "react"
 import { Card } from "~/components/ui/card.tsx"
-import { ContextLayout } from "~/lib/contextLayout.ts"
 import { paramsSchema } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
 import { DetailsCharactersEvents } from "~/routes/write+/details/characters/detailsCharactersEvents.tsx"
 import { DetailsCharactersTiles } from "~/routes/write+/details/characters/detailsCharactersTiles.tsx"
@@ -26,14 +24,12 @@ import { DetailsTilesCharacters } from "~/routes/write+/details/tiles/detailsTil
 import { DetailsTilesEvents } from "~/routes/write+/details/tiles/detailsTilesEvents.tsx"
 import { DetailsTilesGates } from "~/routes/write+/details/tiles/detailsTilesGates.tsx"
 import { DetailsTilesItems } from "~/routes/write+/details/tiles/detailsTilesItems.tsx"
+import { ResourcePlaceholder } from "~/routes/write+/resourcePlaceholder.tsx"
 
 export function Details() {
     const { resourceType, resourceId } = paramsSchema
         .partial()
         .parse(useParams())
-
-    const { detailsLayoutRef, initialLayout, minSizes, saveLayout } =
-        useContext(ContextLayout)
 
     const expandedStateMap = {
         tiles: useState<string[]>([]),
@@ -101,25 +97,28 @@ export function Details() {
     const MainSection = resourceType ? mainSectionMap[resourceType] : undefined
 
     return (
-        <LayoutVerticalSplit
-            layoutRef={detailsLayoutRef}
-            initialLayout={initialLayout.details}
-            minSizes={minSizes.details}
-            onSaveLayout={saveLayout}
-        >
-            <DetailsActions />
-            {resourceType && resourceId ? (
-                <DetailsInfo
-                    expanded={expanded}
-                    setExpanded={setExpanded}
-                    mainSection={MainSection}
-                    accordionSection={accordionSectionMap[resourceType]}
-                />
-            ) : (
-                <Card className="flex h-full w-full justify-center px-3 pt-8 text-muted">
-                    select a resource
-                </Card>
-            )}
-        </LayoutVerticalSplit>
+        <div className="flex h-full flex-col gap-3">
+            <Card className="flex-1 p-4 pb-0">
+                {resourceType && resourceId ? (
+                    <DetailsInfo
+                        resourceType={resourceType}
+                        resourceId={resourceId}
+                        expanded={expanded}
+                        setExpanded={setExpanded}
+                        mainSection={MainSection}
+                        accordionSection={accordionSectionMap[resourceType]}
+                    />
+                ) : (
+                    <ResourcePlaceholder />
+                )}
+            </Card>
+            <Card className="flex-0 p-4">
+                {resourceType && resourceId ? (
+                    <DetailsActions />
+                ) : (
+                    <ResourcePlaceholder />
+                )}
+            </Card>
+        </div>
     )
 }

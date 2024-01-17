@@ -5,14 +5,15 @@ import { AreaCharacters } from "~/routes/read+/area/areaCharacters.tsx"
 import { AreaImage } from "~/routes/read+/area/areaImage.tsx"
 import { AreaItems } from "~/routes/read+/area/areaItems.tsx"
 import { ContextLayout } from "~/lib/contextLayout.ts"
-import { LayoutVerticalSplit } from "~/components/layout/layoutVerticalSplit.tsx"
+import { LayoutSplit } from "~/components/layout/layoutSplit.tsx"
 
 export function Area() {
     const { areaLayoutRef, initialLayout, minSizes, saveLayout } =
         useContext(ContextLayout)
 
     return (
-        <LayoutVerticalSplit
+        <LayoutSplit
+            direction="vertical"
             layoutRef={areaLayoutRef}
             initialLayout={initialLayout.area}
             minSizes={minSizes.area}
@@ -28,6 +29,6 @@ export function Area() {
                     <AreaAdditional />
                 </div>
             </Card>
-        </LayoutVerticalSplit>
+        </LayoutSplit>
     )
 }

@@ -3,14 +3,15 @@ import { Card } from "~/components/ui/card.tsx"
 import { StatusImage } from "~/routes/read+/status/statusImage.tsx"
 import { StatusInventory } from "~/routes/read+/status/statusInventory.tsx"
 import { ContextLayout } from "~/lib/contextLayout.ts"
-import { LayoutVerticalSplit } from "~/components/layout/layoutVerticalSplit.tsx"
+import { LayoutSplit } from "~/components/layout/layoutSplit.tsx"
 
 export function Status() {
     const { statusLayoutRef, initialLayout, minSizes, saveLayout } =
         useContext(ContextLayout)
 
     return (
-        <LayoutVerticalSplit
+        <LayoutSplit
+            direction="vertical"
             layoutRef={statusLayoutRef}
             initialLayout={initialLayout.status}
             minSizes={minSizes.status}
@@ -24,6 +25,6 @@ export function Status() {
                     <StatusInventory />
                 </div>
             </Card>
-        </LayoutVerticalSplit>
+        </LayoutSplit>
     )
 }

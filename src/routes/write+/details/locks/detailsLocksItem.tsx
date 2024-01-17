@@ -25,6 +25,7 @@ export function DetailsLocksItem() {
                 resource.required_item ? (
                     <div>
                         <DetailsResourceCard
+                            label={resource.required_item.type}
                             linkedResource={resource.required_item}
                             navigateUrl={`items/${resource.required_item_id}`}
                             unlinkUrl={`/write/${grid.id}/locks/${resource.id}/item/${resource.required_item_id}/unlink`}
