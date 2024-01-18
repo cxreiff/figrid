@@ -6,11 +6,13 @@ export function ValidatedInput({
     id,
     label,
     noAutocomplete = false,
+    disabled,
     className,
 }: {
     id: string
     label: string
     noAutocomplete?: boolean
+    disabled?: boolean
     className?: string
 }) {
     const { error, getInputProps } = useField(id)
@@ -28,6 +30,7 @@ export function ValidatedInput({
                 autoComplete={noAutocomplete ? "off" : undefined}
                 {...getInputProps({
                     id,
+                    disabled,
                     placeholder: `${label}...`,
                     className: "mb-4 h-9",
                     onChange: () => setFieldTouched(id, true),

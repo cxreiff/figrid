@@ -1,5 +1,6 @@
 import { eq } from "drizzle-orm"
 import { db } from "~/database/database.server.ts"
+import { gates } from "~/database/schema/gates.server.ts"
 import { grids } from "~/database/schema/grids.server.ts"
 
 export type GridQuery = NonNullable<Awaited<ReturnType<typeof gridQuery>>>
@@ -34,6 +35,7 @@ export function gridQuery(gridId: number) {
                                 },
                             },
                         },
+                        where: eq(gates.active, true),
                     },
                     item_instances: {
                         with: {

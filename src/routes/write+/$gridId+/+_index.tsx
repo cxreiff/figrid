@@ -4,7 +4,7 @@ import { ResourcePlaceholder } from "~/routes/write+/resourcePlaceholder.tsx"
 export default function Route() {
     return (
         <Card className="h-full">
-            <ResourcePlaceholder />
+            <ResourcePlaceholder>select a resource</ResourcePlaceholder>
         </Card>
     )
 }

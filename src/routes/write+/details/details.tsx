@@ -98,25 +98,27 @@ export function Details() {
 
     return (
         <div className="flex h-full flex-col gap-3">
-            <Card className="flex-1 p-4 pb-0">
+            <Card className="min-h-0 flex-1 p-4 pb-0">
                 {resourceType && resourceId ? (
                     <DetailsInfo
                         resourceType={resourceType}
-                        resourceId={resourceId}
                         expanded={expanded}
                         setExpanded={setExpanded}
                         mainSection={MainSection}
                         accordionSection={accordionSectionMap[resourceType]}
                     />
                 ) : (
-                    <ResourcePlaceholder />
+                    <ResourcePlaceholder>select a resource</ResourcePlaceholder>
                 )}
             </Card>
             <Card className="flex-0 p-4">
                 {resourceType && resourceId ? (
-                    <DetailsActions />
+                    <DetailsActions
+                        resourceType={resourceType}
+                        resourceId={resourceId}
+                    />
                 ) : (
-                    <ResourcePlaceholder />
+                    <ResourcePlaceholder>select a resource</ResourcePlaceholder>
                 )}
             </Card>
         </div>

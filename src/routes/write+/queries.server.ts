@@ -31,7 +31,11 @@ export function writeGridQuery(userId: number, gridId: number) {
             items: true,
             item_instances: true,
             events: true,
-            gates: true,
+            gates: {
+                with: {
+                    from_tile: true,
+                },
+            },
             locks: {
                 with: {
                     instances: true,

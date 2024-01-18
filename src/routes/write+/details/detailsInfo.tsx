@@ -7,14 +7,12 @@ import type { ResourceType } from "~/routes/write+/+$gridId.tsx"
 
 export function DetailsInfo({
     resourceType,
-    resourceId,
     expanded,
     setExpanded,
     mainSection: MainSection,
     accordionSection,
 }: {
     resourceType: ResourceType
-    resourceId: number
     expanded: string[]
     setExpanded: Dispatch<string[]>
     mainSection?: () => ReactNode

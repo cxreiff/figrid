@@ -6,9 +6,9 @@ import { paramsSchema as parentParamsSchema } from "~/routes/write+/+$gridId.tsx
 import { characters } from "~/database/schema/characters.server.ts"
 import { events } from "~/database/schema/events.server.ts"
 import { superjson, useSuperLoaderData } from "~/lib/superjson.ts"
-import { useFetcher, useNavigate, useParams } from "@remix-run/react"
+import { useFetcher, useParams } from "@remix-run/react"
 import { LayoutTitled } from "~/components/layout/layoutTitled.tsx"
-import { CopyIcon, FileIcon, ResetIcon, TrashIcon } from "@radix-ui/react-icons"
+import { FileIcon, ResetIcon } from "@radix-ui/react-icons"
 import { ValidatedInput } from "~/components/validated/validatedInput.tsx"
 import { ValidatedTextArea } from "~/components/validated/validatedTextArea.tsx"
 import { ValidatedForm, validationError } from "remix-validated-form"
@@ -29,6 +29,7 @@ import { tiles } from "~/database/schema/tiles.server.ts"
 import { locks } from "~/database/schema/locks.server.ts"
 import { Card } from "~/components/ui/card.tsx"
 import { auth } from "~/auth/auth.server.ts"
+import { ResourcePlaceholder } from "~/routes/write+/resourcePlaceholder.tsx"
 
 export const paramsSchema = z.object({
     resourceType: z.enum([
@@ -106,10 +107,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
         return validationError(data.error)
     }
 
-    let response
     switch (resourceType) {
         case "tiles":
-            response = await db
+            return db
                 .update(tiles)
                 .set(data.data)
                 .where(
@@ -120,7 +120,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
                     ),
                 )
         case "characters":
-            response = await db
+            return db
                 .update(characters)
                 .set(data.data)
                 .where(
@@ -131,7 +131,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
                     ),
                 )
         case "items":
-            response = await db
+            return db
                 .update(items)
                 .set(data.data)
                 .where(
@@ -142,7 +142,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
                     ),
                 )
         case "events":
-            response = await db
+            return db
                 .update(events)
                 .set(data.data)
                 .where(
@@ -153,7 +153,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
                     ),
                 )
         case "locks":
-            response = await db
+            return db
                 .update(locks)
                 .set(data.data)
                 .where(
@@ -164,19 +164,22 @@ export async function action({ request, params }: ActionFunctionArgs) {
                     ),
                 )
     }
-
-    return response
 }
 
 export default function Route() {
     const { resource } = useSuperLoaderData<typeof loader>()
-    const { gridId, resourceType, resourceId } = paramsSchema
-        .merge(parentParamsSchema)
-        .parse(useParams())
-    const navigate = useNavigate()
+    const { resourceType, resourceId } = paramsSchema.parse(useParams())
 
     const [deleteModalOpen, setDeleteModalOpen] = useState(false)
     const fetcher = useFetcher()
+
+    if (resourceType === "gates") {
+        return (
+            <Card className="h-full p-4">
+                <ResourcePlaceholder>gate fields are fixed</ResourcePlaceholder>
+            </Card>
+        )
+    }
 
     return (
         <Card className="h-full p-4">
@@ -195,25 +198,6 @@ export default function Route() {
                 <LayoutTitled
                     footerSlot={
                         <div className="flex gap-4">
-                            {resourceType !== "gates" && (
-                                <ValidatedButton
-                                    icon={TrashIcon}
-                                    variant="outline"
-                                    onClick={() => setDeleteModalOpen(true)}
-                                />
-                            )}
-                            <ValidatedButton
-                                variant="outline"
-                                icon={CopyIcon}
-                                className="flex-1"
-                                onClick={() =>
-                                    navigate(
-                                        `/write/${gridId}/${resourceType}/create?duplicate=${resourceId}`,
-                                    )
-                                }
-                            >
-                                duplicate
-                            </ValidatedButton>
                             <ValidatedButton
                                 type="reset"
                                 variant="outline"

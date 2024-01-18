@@ -1,11 +1,9 @@
 import { redirect, type ActionFunctionArgs } from "@vercel/remix"
-import { and, eq, inArray } from "drizzle-orm"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
 import { db } from "~/database/database.server.ts"
 import { gates } from "~/database/schema/gates.server.ts"
-import { tiles } from "~/database/schema/tiles.server.ts"
-import { defined, strictEntries } from "~/lib/misc.ts"
+import { strictEntries } from "~/lib/misc.ts"
 import { zodSearchParams } from "~/lib/parsers.ts"
 import { paramsSchema as parentParamsSchema } from "~/routes/write+/+$gridId.tsx"
 
@@ -50,37 +48,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
     ).map(([type, id]) => ({ type, id }))
 
     await db.transaction(async (tx) => {
-        const tile = await db.query.tiles.findFirst({
-            where: and(
-                eq(tiles.user_id, user.id),
-                eq(tiles.grid_id, gridId),
-                eq(tiles.id, resourceId),
-            ),
-        })
-
-        if (!tile) {
-            throw new Response(null, { status: 404 })
-        }
-
-        const neighborTiles = await db
-            .select({ id: tiles.id, name: tiles.name })
-            .from(tiles)
-            .where(
-                and(
-                    eq(tiles.user_id, user.id),
-                    eq(tiles.grid_id, gridId),
-                    inArray(
-                        tiles.id,
-                        neighbors.map(({ id }) => id).filter(defined),
-                    ),
-                ),
-            )
-
-        const neighborNameMap = neighborTiles.reduce<Record<number, string>>(
-            (prev, { id, name }) => ({ ...prev, [id]: name }),
-            {},
-        )
-
         for (const neighbor of neighbors) {
             if (!neighbor.id) {
                 continue
@@ -93,7 +60,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
                     from_tile_id: resourceId,
                     to_tile_id: neighbor.id,
                     type: neighbor.type,
-                    name: `${tile.name} - ${neighbor.type}`,
+                    name: `${resourceId} - ${neighbor.type}`,
                 },
                 {
                     user_id: user.id,
@@ -101,7 +68,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
                     from_tile_id: neighbor.id,
                     to_tile_id: resourceId,
                     type: GATE_TYPE_OPPOSITES[neighbor.type],
-                    name: `${neighborNameMap[neighbor.id]} - ${
+                    name: `${neighbor.id} - ${
                         GATE_TYPE_OPPOSITES[neighbor.type]
                     }`,
                 },

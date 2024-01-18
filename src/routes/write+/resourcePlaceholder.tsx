@@ -1,7 +1,7 @@
-export function ResourcePlaceholder() {
+export function ResourcePlaceholder({ children }: { children: string }) {
     return (
         <p className="flex h-full w-full flex-1 items-center justify-center text-center text-muted">
-            select a resource
+            {children}
         </p>
     )
 }

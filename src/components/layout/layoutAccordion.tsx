@@ -16,7 +16,12 @@ export function LayoutAccordion({
     children: { [key: string]: ReactNode }
 }) {
     return (
-        <Accordion type="multiple" value={expanded} onValueChange={setExpanded}>
+        <Accordion
+            type="multiple"
+            value={expanded}
+            onValueChange={setExpanded}
+            className="pb-2"
+        >
             {Object.entries(children).map(([name, child]) => (
                 <AccordionItem key={name} value={name}>
                     <AccordionTrigger>{name}</AccordionTrigger>
