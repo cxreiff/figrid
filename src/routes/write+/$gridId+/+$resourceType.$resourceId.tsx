@@ -176,7 +176,7 @@ export default function Route() {
     if (resourceType === "gates") {
         return (
             <Card className="h-full p-4">
-                <ResourcePlaceholder>gate fields are fixed</ResourcePlaceholder>
+                <ResourcePlaceholder>no modifiable fields</ResourcePlaceholder>
             </Card>
         )
     }

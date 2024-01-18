@@ -136,6 +136,28 @@ export function handleCommand(
 
                     clearCommandLog()
                     setSaveData("currentTileId", gate.to_tile_id)
+
+                    const gateEvents = gate.event_instances
+                        .map(({ event }) => event)
+                        .filter(
+                            getQualifiedEventsFilter(
+                                saveData,
+                                itemInstanceIdMap,
+                                eventIdMap,
+                            ),
+                        )
+                    if (gateEvents.length > 0) {
+                        return handleTriggeredEvent(
+                            gate.event_instances[
+                                Math.floor(Math.random() * gateEvents.length)
+                            ].event_id,
+                            saveData,
+                            eventIdMap,
+                            itemInstanceIdMap,
+                            clearCommandLog,
+                            setSaveData,
+                        )
+                    }
                     return ""
                 default:
                     return handleUnrecognized(

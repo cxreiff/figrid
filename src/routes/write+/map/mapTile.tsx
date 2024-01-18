@@ -104,7 +104,7 @@ export function MapTile({
                             />
                         )
                     case "up":
-                        return (
+                        return gate.active ? (
                             <div
                                 key={`${gate.id}`}
                                 className={`absolute right-2 top-2 -m-0.5 h-5 w-5 rounded-none p-0.5 ${
@@ -123,9 +123,24 @@ export function MapTile({
                             >
                                 <ThickArrowUpIcon className="h-full w-full" />
                             </div>
+                        ) : (
+                            <ButtonIcon
+                                key={`${gate.id}`}
+                                icon={PlusIcon}
+                                className={
+                                    "absolute right-2 top-2 -m-0.5 h-5 w-5 rounded-none p-0.5"
+                                }
+                                onClick={(event) => {
+                                    event.stopPropagation()
+                                    fetcher.submit(null, {
+                                        action: `gates/${gate.id}/enable`,
+                                        method: "POST",
+                                    })
+                                }}
+                            />
                         )
                     case "down":
-                        return (
+                        return gate.active ? (
                             <div
                                 key={`${gate.id}`}
                                 className={`absolute bottom-2 right-2 -m-0.5 h-5 w-5 rounded-none p-0.5 ${
@@ -144,6 +159,21 @@ export function MapTile({
                             >
                                 <ThickArrowDownIcon className="h-full w-full" />
                             </div>
+                        ) : (
+                            <ButtonIcon
+                                key={`${gate.id}`}
+                                icon={PlusIcon}
+                                className={
+                                    "absolute bottom-2 right-2 -m-0.5 h-5 w-5 rounded-none p-0.5"
+                                }
+                                onClick={(event) => {
+                                    event.stopPropagation()
+                                    fetcher.submit(null, {
+                                        action: `gates/${gate.id}/enable`,
+                                        method: "POST",
+                                    })
+                                }}
+                            />
                         )
                     default:
                         return null

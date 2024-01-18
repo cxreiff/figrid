@@ -54,6 +54,18 @@ export function StatusInventory() {
                                                 look
                                             </Button>
                                         </TableCell>
+                                        <TableCell>
+                                            <Button
+                                                variant="ghost"
+                                                onClick={() =>
+                                                    handleCommand(
+                                                        `use ${item.name.toLowerCase()}`,
+                                                    )
+                                                }
+                                            >
+                                                use
+                                            </Button>
+                                        </TableCell>
                                     </TableRow>
                                 )
                             })}

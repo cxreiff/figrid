@@ -24,6 +24,15 @@ export function gridQuery(gridId: number) {
                     },
                     gates_out: {
                         with: {
+                            event_instances: {
+                                with: {
+                                    event: {
+                                        with: {
+                                            lock_instances: true,
+                                        },
+                                    },
+                                },
+                            },
                             lock_instances: {
                                 with: {
                                     gate: true,

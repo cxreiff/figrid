@@ -27,8 +27,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
         Object.fromEntries(await request.formData()),
     )
 
-    console.debug(consumes)
-
     await db.transaction(async (tx) => {
         await tx
             .update(locks)

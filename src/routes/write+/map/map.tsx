@@ -163,7 +163,9 @@ export function Map() {
     )
 }
 
-function getNeighboringCoordinates(coords: readonly [number, number, number]) {
+export function getNeighboringCoordinates(
+    coords: readonly [number, number, number],
+) {
     return [
         ["east", [coords[0] + 1, coords[1], coords[2]]],
         ["west", [coords[0] - 1, coords[1], coords[2]]],
