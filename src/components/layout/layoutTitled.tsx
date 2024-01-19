@@ -22,7 +22,7 @@ export function LayoutTitled({
                     {actionSlot}
                 </div>
             )}
-            {subheaderSlot && <div className="mb-4">{subheaderSlot}</div>}
+            {subheaderSlot && <div className="mb-2">{subheaderSlot}</div>}
             <div className="min-h-0 flex-1">{children}</div>
             {footerSlot && <div className="mt-4">{footerSlot}</div>}
         </div>

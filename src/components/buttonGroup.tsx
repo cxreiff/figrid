@@ -4,39 +4,44 @@ import { ButtonIcon } from "~/components/buttonIcon.tsx"
 import { cn } from "~/lib/misc.ts"
 
 type Option<T> = {
-    key: T
+    id: T
     icon: (props: IconProps) => ReactNode
+    label?: string
 }
 
 export function ButtonGroup<T extends string>({
+    className,
     options,
     selected,
     onSelect,
 }: {
+    className?: string
     options: Option<T>[]
-    selected: Option<T>["key"]
-    onSelect: (option: Option<T>["key"]) => void
+    selected: Option<T>["id"]
+    onSelect: (option: Option<T>["id"]) => void
 }) {
     return (
-        <span className="rounded-lg border border-accent">
+        <div className={cn("w-fit rounded-lg border border-accent", className)}>
             {options.map((option) => (
                 <ButtonIcon
-                    key={option.key}
+                    key={option.id}
                     icon={option.icon}
                     variant="ghost"
                     size="icon"
-                    data-selected={selected === option.key}
-                    onClick={() => onSelect(option.key)}
+                    data-selected={selected === option.id}
+                    onClick={() => onSelect(option.id)}
                     className={cn(
                         "rounded-none first:rounded-l-md last:rounded-r-md data-[selected=true]:bg-[hsla(var(--accent)/0.4)] data-[selected=true]:text-accent-foreground",
                         {
-                            "rounded-l-md": option.key === options[0].key,
+                            "rounded-l-md": option.id === options[0].id,
                             "rounded-r-md":
-                                option.key === options[options.length - 1].key,
+                                option.id === options[options.length - 1].id,
                         },
                     )}
-                />
+                >
+                    {option.label}
+                </ButtonIcon>
             ))}
-        </span>
+        </div>
     )
 }

@@ -48,7 +48,7 @@ export function ActionBox<T extends { id: string | number; label: string }>({
                     {...props}
                 >
                     {children}
-                    <div className="flex h-9 w-9 items-center justify-center">
+                    <div className="flex h-6 w-9 items-center justify-center">
                         <Icon />
                     </div>
                 </Button>

@@ -16,6 +16,7 @@ import { DetailsGatesEvents } from "~/routes/write+/details/gates/detailsGatesEv
 import { DetailsGatesMain } from "~/routes/write+/details/gates/detailsGatesMain.tsx"
 import { DetailsGatesRequirements } from "~/routes/write+/details/gates/detailsGatesRequirements.tsx"
 import { DetailsItemsEvents } from "~/routes/write+/details/items/detailsItemsEvents.tsx"
+import { DetailsItemsMain } from "~/routes/write+/details/items/detailsItemsMain.tsx"
 import { DetailsItemsTiles } from "~/routes/write+/details/items/detailsItemsTiles.tsx"
 import { DetailsLocksEvents } from "~/routes/write+/details/locks/detailsLocksEvents.tsx"
 import { DetailsLocksGates } from "~/routes/write+/details/locks/detailsLocksGates.tsx"
@@ -44,7 +45,7 @@ export function Details() {
         () => ({
             tiles: undefined,
             characters: undefined,
-            items: undefined,
+            items: DetailsItemsMain,
             events: undefined,
             gates: DetailsGatesMain,
             locks: undefined,

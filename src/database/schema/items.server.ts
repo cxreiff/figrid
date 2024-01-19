@@ -13,9 +13,7 @@ export const items = mysqlTable("items", {
     ...grid_resource_fields,
     ...name_summary_description,
 
-    type: mysqlEnum("type", ["key", "pass", "other"])
-        .default("other")
-        .notNull(),
+    type: mysqlEnum("type", ["basic", "key"]).default("basic").notNull(),
 })
 
 export const items_relations = relations(items, ({ one, many }) => ({

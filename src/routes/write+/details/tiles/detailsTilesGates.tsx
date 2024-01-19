@@ -11,7 +11,7 @@ import { type loader } from "~/routes/write+/+$gridId.tsx"
 import type { gates } from "~/database/schema/gates.server.ts"
 import { getNeighboringCoordinates } from "~/routes/write+/map/map.tsx"
 import type { WriteTileWithCoords } from "~/routes/read+/processing.server.ts"
-import { defined } from "~/lib/misc.ts"
+import { cn, defined } from "~/lib/misc.ts"
 
 const GATE_OPTIONS: (typeof gates.$inferSelect.type)[] = [
     "north",
@@ -71,7 +71,7 @@ export function DetailsTilesGates() {
                         !resource.gates_out.find(
                             (gate) => gate.type === option,
                         ),
-                ).map((direction) => {
+                ).map((direction, index) => {
                     const currentTile: WriteTileWithCoords =
                         tileIdMap[resource.id]
 
@@ -104,8 +104,8 @@ export function DetailsTilesGates() {
 
                     return (
                         <DetailsResourceLinker
-                            key="link"
-                            className="mb-2"
+                            key={index}
+                            className={cn("mb-2", { "mt-4": index === 0 })}
                             label={direction}
                             getLinkUrl={(id) =>
                                 `tiles/${id}/gates/link?${searchParams}`

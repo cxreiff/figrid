@@ -13,7 +13,11 @@ export function ButtonIcon({
     icon: (props: IconProps) => React.ReactNode
     alignIcon?: "left" | "right"
 }) {
-    const iconAtEdge = !!children && variant !== "ghost" && variant !== "inline"
+    const iconAtEdge =
+        !!children &&
+        variant !== "ghost" &&
+        variant !== "inline" &&
+        variant !== "outline"
 
     return (
         <Button
@@ -27,8 +31,10 @@ export function ButtonIcon({
                     "absolute": iconAtEdge,
                     "left-3": iconAtEdge && alignIcon === "left",
                     "right-3": iconAtEdge && alignIcon === "right",
-                    "mr-2": !!children && !iconAtEdge && alignIcon === "left",
-                    "ml-2": !!children && !iconAtEdge && alignIcon === "right",
+                    "order-1 mr-2":
+                        !!children && !iconAtEdge && alignIcon === "left",
+                    "order-2 ml-2":
+                        !!children && !iconAtEdge && alignIcon === "right",
                 })}
             />
             {children && (
@@ -37,6 +43,8 @@ export function ButtonIcon({
                         "w-full": iconAtEdge,
                         "pl-6 pr-2": iconAtEdge && alignIcon === "left",
                         "pl-2 pr-6": iconAtEdge && alignIcon === "right",
+                        "order-1 pl-2": alignIcon === "right",
+                        "order-2 pr-2": alignIcon === "left",
                     })}
                 >
                     {children}

@@ -2,12 +2,12 @@ import {
     LayoutTitled,
     type LayoutTitledProps,
 } from "~/components/layout/layoutTitled.tsx"
-import { ScrollArea } from "~/components/ui/scroll-area.tsx"
+import { Scroller } from "~/components/scroller.tsx"
 
 export function LayoutTitledScrolls({ children, ...props }: LayoutTitledProps) {
     return (
         <LayoutTitled {...props}>
-            <ScrollArea className="-mr-3 h-full pr-3">{children}</ScrollArea>
+            <Scroller className="h-full">{children}</Scroller>
         </LayoutTitled>
     )
 }

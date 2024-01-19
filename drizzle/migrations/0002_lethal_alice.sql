@@ -1,0 +1,1 @@
+ALTER TABLE `items` MODIFY COLUMN `type` enum('standard','key') NOT NULL DEFAULT 'standard';

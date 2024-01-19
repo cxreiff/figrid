@@ -109,11 +109,11 @@ export function CardStack<TData extends { id: number; name: string }, TValue>({
                     <ButtonGroup
                         options={[
                             {
-                                key: "full",
+                                id: "full",
                                 icon: TextAlignJustifyIcon,
                             },
                             {
-                                key: "mini",
+                                id: "mini",
                                 icon: TokensIcon,
                             },
                         ]}
@@ -128,7 +128,7 @@ export function CardStack<TData extends { id: number; name: string }, TValue>({
                     <Button
                         key={row.id}
                         variant="ghost"
-                        className={cn("mb-3 h-auto items-center p-3", {
+                        className={cn("my-2 h-auto items-center p-3", {
                             "flex gap-3": mode === "full",
                             "mr-3 inline-block whitespace-nowrap [&>div]:inline-block [&>svg:first-child]:mr-2 [&>svg:first-child]:inline-block":
                                 mode === "mini",

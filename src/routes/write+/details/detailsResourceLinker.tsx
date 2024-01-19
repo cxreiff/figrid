@@ -22,7 +22,7 @@ export function DetailsResourceLinker<
         <ActionBox
             icon={PlusIcon}
             variant="outline"
-            className={cn("shadow", className)}
+            className={cn("shadow-sm", className)}
             options={options.map((character) => ({
                 id: character.id,
                 label: character.name,
@@ -34,14 +34,16 @@ export function DetailsResourceLinker<
                 })
             }
         >
-            <div className="flex px-3">
-                {label && (
-                    <span className={"w-14 text-left text-muted-foreground"}>
-                        {label}
-                    </span>
-                )}
-                link resource
-            </div>
+            {label && (
+                <span
+                    className={
+                        "min-w-14 px-3 text-left font-light text-muted-foreground"
+                    }
+                >
+                    {label}
+                </span>
+            )}
+            <span className="flex-1 px-3 text-left">link resource</span>
         </ActionBox>
     )
 }
