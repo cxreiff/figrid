@@ -20,7 +20,7 @@ export function AreaAdditional() {
             {(saveData) => {
                 const currentTile = tileIdMap[saveData.currentTileId]
                 return (
-                    <div className="pb-8">
+                    <div>
                         <h3 className="text-muted-foreground">additional</h3>
                         <Table>
                             <TableBody className="align-middle">

@@ -103,20 +103,20 @@ export default function Route() {
                         user={user}
                         title={grid.name}
                         iconButtons={
-                            grid.id === user?.id
-                                ? [
-                                      <Button
-                                          key={1}
-                                          variant="ghost"
-                                          size="icon"
-                                          asChild
-                                      >
-                                          <Link to={`/write/${grid.id}`}>
-                                              <Pencil2Icon className="h-5 w-5" />
-                                          </Link>
-                                      </Button>,
-                                  ]
-                                : undefined
+                            <>
+                                {grid.id === user?.id && (
+                                    <Button
+                                        key={1}
+                                        variant="ghost"
+                                        size="icon"
+                                        asChild
+                                    >
+                                        <Link to={`/write/${grid.id}`}>
+                                            <Pencil2Icon className="h-5 w-5" />
+                                        </Link>
+                                    </Button>
+                                )}
+                            </>
                         }
                         layoutRef={layoutContext.readLayoutRef}
                         initialLayout={layoutContext.initialLayout.read}

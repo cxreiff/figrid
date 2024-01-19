@@ -19,7 +19,7 @@ export function StatusInventory() {
         <WaitSaveData>
             {(saveData) => (
                 <>
-                    <h3 className="pb-3 text-muted-foreground">inventory</h3>
+                    <h3 className="text-muted-foreground">inventory</h3>
                     <Table>
                         <TableBody>
                             {saveData.heldItems.length === 0 && (

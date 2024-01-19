@@ -3,6 +3,7 @@ import { useRef, type Dispatch, type SetStateAction, useEffect } from "react"
 import { TextContent } from "~/routes/read+/text/textContent.tsx"
 import { TextPrompt } from "~/routes/read+/text/textPrompt.tsx"
 import type { SaveData } from "~/lib/useSaveData.ts"
+import { Scroller } from "~/components/scroller.tsx"
 
 export function Text({
     saveData,
@@ -25,6 +26,8 @@ export function Text({
     )
 
     useEffect(() => {
+        console.debug(scrollRef.current)
+        console.debug(scrollRef.current?.scrollHeight)
         setTimeout(() => {
             if (scrollRef.current) {
                 scrollRef.current.scrollTo({
@@ -42,13 +45,10 @@ export function Text({
                 textRef.current?.click()
             }}
         >
-            <Card className="absolute bottom-14 top-0 w-full p-2">
-                <div
-                    ref={scrollRef}
-                    className="h-full flex-1 overflow-auto p-5"
-                >
+            <Card className="absolute bottom-14 top-0 w-full px-4">
+                <Scroller ref={scrollRef} className="p-4 pt-8">
                     <TextContent commandLog={commandLog} textRef={textRef} />
-                </div>
+                </Scroller>
             </Card>
             <div className="absolute bottom-0 h-10 w-full">
                 <TextPrompt

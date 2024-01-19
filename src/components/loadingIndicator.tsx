@@ -28,7 +28,7 @@ export function LoadingIndicator() {
             <div
                 ref={ref}
                 className={cn(
-                    "h-full bg-accent-foreground transition-[width,opacity] duration-500 ease-in-out",
+                    "h-full bg-accent transition-[width,opacity] duration-500 ease-in-out",
                     navigation.state === "idle" &&
                         animationComplete &&
                         "opacity-0 transition-opacity duration-300",

@@ -37,7 +37,7 @@ export function DetailsResourceLinker<
             {label && (
                 <span
                     className={
-                        "min-w-14 px-3 text-left font-light text-muted-foreground"
+                        "min-w-16 px-3 text-left font-light text-muted-foreground"
                     }
                 >
                     {label}

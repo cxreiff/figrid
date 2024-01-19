@@ -7,7 +7,7 @@ import { Scroller } from "~/components/scroller.tsx"
 export function LayoutTitledScrolls({ children, ...props }: LayoutTitledProps) {
     return (
         <LayoutTitled {...props}>
-            <Scroller className="h-full">{children}</Scroller>
+            <Scroller>{children}</Scroller>
         </LayoutTitled>
     )
 }

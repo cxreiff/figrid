@@ -35,7 +35,7 @@ export function DetailsResourceCard<
             {label && (
                 <span
                     className={cn(
-                        "min-w-14 px-3 font-light text-muted-foreground",
+                        "min-w-16 px-3 font-light text-muted-foreground",
                         {
                             "opacity-50": inactive,
                         },

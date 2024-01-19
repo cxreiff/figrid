@@ -4,6 +4,7 @@ import { StatusImage } from "~/routes/read+/status/statusImage.tsx"
 import { StatusInventory } from "~/routes/read+/status/statusInventory.tsx"
 import { ContextLayout } from "~/lib/contextLayout.ts"
 import { LayoutSplit } from "~/components/layout/layoutSplit.tsx"
+import { Scroller } from "~/components/scroller.tsx"
 
 export function Status() {
     const { statusLayoutRef, initialLayout, minSizes, saveLayout } =
@@ -20,10 +21,10 @@ export function Status() {
             <Card className="mb-4 h-full p-4">
                 <StatusImage />
             </Card>
-            <Card className="h-full p-2 pt-4">
-                <div className="h-full overflow-auto p-4">
+            <Card className="h-full px-4">
+                <Scroller className="px-2 py-6">
                     <StatusInventory />
-                </div>
+                </Scroller>
             </Card>
         </LayoutSplit>
     )
