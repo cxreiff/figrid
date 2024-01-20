@@ -36,21 +36,19 @@ export function TextPrompt({
                     handleCommand(command)
                 }}
             >
-                <WaitSaveData className="absolute right-3 flex h-full items-center text-muted-foreground">
-                    {(saveData) => {
-                        const suggestions = availableCommands(
-                            command,
-                            tileIdMap[saveData.currentTileId],
-                            saveData,
-                            eventIdMap,
-                            itemInstanceIdMap,
-                        )
-                        return suggestions
-                            .slice(0, 5)
-                            .join(", ")
-                            .concat(suggestions.length > 5 ? " ..." : "")
-                    }}
-                </WaitSaveData>
+                <div className="absolute left-[50%] right-3 flex h-full items-center text-muted-foreground">
+                    <WaitSaveData className="w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-right">
+                        {(saveData) =>
+                            availableCommands(
+                                command,
+                                tileIdMap[saveData.currentTileId],
+                                saveData,
+                                eventIdMap,
+                                itemInstanceIdMap,
+                            ).join(", ")
+                        }
+                    </WaitSaveData>
+                </div>
                 <InputWithIcon
                     icon={ChevronRightIcon}
                     className="h-full border-none shadow-none [&>input]:border-none [&>input]:pl-7 [&>svg]:left-2"

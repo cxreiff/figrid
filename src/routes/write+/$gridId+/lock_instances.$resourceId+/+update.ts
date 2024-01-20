@@ -11,8 +11,18 @@ const paramsSchema = z.object({
 })
 
 const formSchema = z.object({
-    inverse: z.enum(["true", "false"]).transform((value) => value === "true"),
-    visible: z.enum(["true", "false"]).transform((value) => value === "true"),
+    inverse: z
+        .enum(["true", "false"])
+        .optional()
+        .transform((value) =>
+            value !== undefined ? value === "true" : undefined,
+        ),
+    visible: z
+        .enum(["true", "false"])
+        .optional()
+        .transform((value) =>
+            value !== undefined ? value === "true" : undefined,
+        ),
 })
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -28,18 +38,16 @@ export async function action({ request, params }: ActionFunctionArgs) {
         Object.fromEntries(await request.formData()),
     )
 
-    await db.transaction(async (tx) => {
-        await tx
-            .update(lock_instances)
-            .set({ inverse, visible })
-            .where(
-                and(
-                    eq(lock_instances.user_id, user.id),
-                    eq(lock_instances.grid_id, gridId),
-                    eq(lock_instances.id, resourceId),
-                ),
-            )
-    })
+    await db
+        .update(lock_instances)
+        .set({ inverse, visible })
+        .where(
+            and(
+                eq(lock_instances.user_id, user.id),
+                eq(lock_instances.grid_id, gridId),
+                eq(lock_instances.id, resourceId),
+            ),
+        )
 
     return new Response(null, { status: 200 })
 }

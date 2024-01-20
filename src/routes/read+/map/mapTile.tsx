@@ -45,15 +45,15 @@ export function MapTile({
             onClick={handleClick}
         >
             {mapTile.gates_out.map((gate) => {
+                const { unfulfilled } = splitLockInstances(
+                    gate.lock_instances,
+                    saveData,
+                )
                 switch (gate.type) {
                     case "north":
                     case "east":
                     case "south":
                     case "west":
-                        const { unfulfilled } = splitLockInstances(
-                            gate.lock_instances,
-                            saveData,
-                        )
                         return (
                             <div
                                 key={`${gate.id}`}
@@ -78,9 +78,10 @@ export function MapTile({
                             <Button
                                 key={`${gate.id}`}
                                 className={`absolute right-3 top-3 h-6 w-6 disabled:text-secondary-foreground ${
+                                    unfulfilled.length > 0 ||
                                     mapTile.id === saveData.currentTileId
-                                        ? "text-accent-foreground"
-                                        : "text-secondary-foreground"
+                                        ? "text-secondary-foreground"
+                                        : "text-accent-foreground"
                                 }`}
                                 onClick={
                                     mapTile.id === saveData.currentTileId
@@ -89,7 +90,8 @@ export function MapTile({
                                 }
                                 disabled={
                                     mapTile.id !== saveData.currentTileId ||
-                                    !!saveData.currentEventId
+                                    !!saveData.currentEventId ||
+                                    unfulfilled.length > 0
                                 }
                                 variant="ghost"
                                 size="icon"
@@ -102,6 +104,7 @@ export function MapTile({
                             <Button
                                 key={`${gate.id}`}
                                 className={`absolute bottom-3 right-3 h-6 w-6 disabled:text-secondary-foreground ${
+                                    unfulfilled.length > 0 ||
                                     mapTile.id === saveData.currentTileId
                                         ? "text-accent-foreground"
                                         : "text-secondary-foreground"
@@ -113,7 +116,8 @@ export function MapTile({
                                 }
                                 disabled={
                                     mapTile.id !== saveData.currentTileId ||
-                                    !!saveData.currentEventId
+                                    !!saveData.currentEventId ||
+                                    unfulfilled.length > 0
                                 }
                                 variant="ghost"
                                 size="icon"

@@ -14,13 +14,13 @@ const CollapsibleTrigger = React.forwardRef<
     <CollapsiblePrimitive.CollapsibleTrigger
         ref={ref}
         className={cn(
-            "flex w-full items-center p-2 [&[data-state=open]>svg]:rotate-180",
+            "flex w-full items-center [&[data-state=open]>svg]:rotate-180",
             className,
         )}
         {...props}
     >
         <div className="flex-1 text-left">{children}</div>
-        <ChevronDownIcon className="text-muted-foreground transition-transform" />
+        <ChevronDownIcon className="mr-1 h-7 w-7 p-1.5 text-muted-foreground transition-transform" />
     </CollapsiblePrimitive.CollapsibleTrigger>
 ))
 CollapsibleTrigger.displayName =

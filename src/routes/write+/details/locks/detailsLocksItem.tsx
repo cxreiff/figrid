@@ -23,7 +23,7 @@ export function DetailsLocksItem() {
         <Wait on={resource}>
             {(resource) =>
                 resource.required_item ? (
-                    <div>
+                    <>
                         <DetailsResourceCard
                             label={resource.required_item.type}
                             linkedResource={resource.required_item}
@@ -49,7 +49,7 @@ export function DetailsLocksItem() {
                                 }}
                             />
                         )}
-                    </div>
+                    </>
                 ) : (
                     <DetailsResourceLinker
                         key="link"
