@@ -5,6 +5,9 @@ import { type loader as childLoader } from "~/routes/write+/$gridId+/+$resourceT
 import type { WriteGateQuery } from "~/routes/write+/queries.server.ts"
 import { DetailsResourceCard } from "~/routes/write+/details/detailsResourceCard.tsx"
 import { DetailsResourceLinker } from "~/routes/write+/details/detailsResourceLinker.tsx"
+import { DetailsResourceCheckbox } from "~/routes/write+/details/detailsResourceCheckbox.tsx"
+import { EyeNoneIcon, LockClosedIcon } from "@radix-ui/react-icons"
+import { defined } from "~/lib/misc.ts"
 
 export function DetailsGatesRequirements() {
     const { grid } = useSuperLoaderData<typeof loader>()
@@ -15,13 +18,32 @@ export function DetailsGatesRequirements() {
     return (
         <Wait on={resource}>
             {(resource) => [
-                resource.lock_instances.map(({ id, lock }) => (
+                resource.lock_instances.map(({ id, lock, inverse, hidden }) => (
                     <DetailsResourceCard
                         key={id}
                         linkedResource={lock}
                         navigateUrl={`locks/${lock.id}`}
                         unlinkUrl={`/write/${grid.id}/gates/${resource.id}/requirements/${id}/unlink`}
-                    />
+                        indicatorIcons={[
+                            inverse ? LockClosedIcon : undefined,
+                            hidden ? EyeNoneIcon : undefined,
+                        ].filter(defined)}
+                    >
+                        <DetailsResourceCheckbox
+                            field="inverse"
+                            checked={inverse}
+                            updateRoute={`/write/${grid.id}/lock_instances/${id}/update`}
+                            label={"inverse"}
+                            description="satisfied when the associated lock is locked"
+                        />
+                        <DetailsResourceCheckbox
+                            field="hidden"
+                            checked={hidden}
+                            updateRoute={`/write/${grid.id}/lock_instances/${id}/update`}
+                            label={"hidden"}
+                            description="hidden when the requirement is not met"
+                        />
+                    </DetailsResourceCard>
                 )),
                 <DetailsResourceLinker
                     key="link"

@@ -17,7 +17,7 @@ const formSchema = z.object({
         .transform((value) =>
             value !== undefined ? value === "true" : undefined,
         ),
-    visible: z
+    hidden: z
         .enum(["true", "false"])
         .optional()
         .transform((value) =>
@@ -34,13 +34,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
         .merge(parentParamsSchema)
         .parse(params)
 
-    const { inverse, visible } = formSchema.parse(
+    const { inverse, hidden } = formSchema.parse(
         Object.fromEntries(await request.formData()),
     )
 
     await db
         .update(lock_instances)
-        .set({ inverse, visible })
+        .set({ inverse, hidden })
         .where(
             and(
                 eq(lock_instances.user_id, user.id),

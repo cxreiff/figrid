@@ -1,4 +1,5 @@
 import { Cross2Icon, EnterIcon } from "@radix-ui/react-icons"
+import type { IconProps } from "@radix-ui/react-icons/dist/types.js"
 import { useFetcher, useNavigate } from "@remix-run/react"
 import type { PropsWithChildren, ReactNode } from "react"
 import { ButtonIcon } from "~/components/buttonIcon.tsx"
@@ -18,6 +19,7 @@ export function DetailsResourceCard<
     linkedResource,
     navigateUrl,
     unlinkUrl,
+    indicatorIcons,
     actionSlot,
     inactive = false,
 }: PropsWithChildren<{
@@ -25,6 +27,7 @@ export function DetailsResourceCard<
     linkedResource: T
     navigateUrl: string
     unlinkUrl?: string
+    indicatorIcons?: ((props: IconProps) => ReactNode)[]
     actionSlot?: ReactNode
     inactive?: boolean
 }>) {
@@ -46,11 +49,18 @@ export function DetailsResourceCard<
                 </span>
             )}
             <span
-                className={cn("flex-1 px-3", {
+                className={cn("inline flex-1 px-3", {
                     "opacity-50": inactive,
                 })}
             >
                 {linkedResource.name}
+                {indicatorIcons &&
+                    indicatorIcons.map((Icon, index) => (
+                        <Icon
+                            key={index}
+                            className="ml-2 inline h-3 text-muted-foreground"
+                        />
+                    ))}
             </span>
             <ButtonIcon
                 icon={EnterIcon}

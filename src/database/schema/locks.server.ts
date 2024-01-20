@@ -44,7 +44,7 @@ export const lock_instances = mysqlTable("lock_instances", {
     gate_id: int("gate_id"),
 
     inverse: boolean("inverse").default(false).notNull(),
-    visible: boolean("visible").default(true).notNull(),
+    hidden: boolean("hidden").default(false).notNull(),
 })
 
 export const lock_instances_relations = relations(

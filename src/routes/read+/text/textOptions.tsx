@@ -40,7 +40,7 @@ export function TextOptions({
                 itemInstanceIdMap,
             )
 
-            if (unfulfilled.find(({ visible }) => !visible)) {
+            if (unfulfilled.find(({ hidden }) => hidden)) {
                 return null
             }
 
