@@ -27,7 +27,9 @@ export function DetailsEventsUnlock() {
                         getLinkUrl={(id) =>
                             `/write/${grid.id}/events/${resource.id}/unlock/${id}/link`
                         }
-                        options={grid.locks}
+                        options={grid.locks.filter(
+                            (lock) => lock.id !== resource.triggers_lock_id,
+                        )}
                     />
                 )
             }

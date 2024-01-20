@@ -8,6 +8,7 @@ import type { TileWithCoords } from "~/routes/read+/processing.server.ts"
 import type { loader } from "~/routes/read+/+$gridId.tsx"
 import { ContextCommand } from "~/lib/contextCommand.ts"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
+import { BlankTile } from "~/routes/read+/map/mapBlankTile.tsx"
 
 const MAP_DIMENSIONS = { x: 13, y: 19 }
 export const TILE_DIMENSIONS = { x: 6, y: 6 }
@@ -15,16 +16,6 @@ export const TILE_DIMENSIONS = { x: 6, y: 6 }
 export function Map() {
     const { tileIdMap, tileCoordsMap } = useSuperLoaderData<typeof loader>()
     const handleCommand = useContext(ContextCommand)
-
-    const BlankTile = () => (
-        <div
-            style={{
-                width: `${TILE_DIMENSIONS.x}rem`,
-                height: `${TILE_DIMENSIONS.y}rem`,
-            }}
-            className="border border-dashed border-muted-foreground opacity-50"
-        />
-    )
 
     const offsetMatrix = indicesArray(MAP_DIMENSIONS.y).map((y) =>
         indicesArray(MAP_DIMENSIONS.x).map(
@@ -73,10 +64,6 @@ export function Map() {
                                         const mapTile =
                                             tileId && tileIdMap[tileId]
 
-                                        if (!mapTile) {
-                                            return <BlankTile />
-                                        }
-
                                         let handleClick
                                         if (!saveData.currentEventId) {
                                             for (const gate of currentTile.gates_out) {
@@ -89,6 +76,17 @@ export function Map() {
                                                         )
                                                 }
                                             }
+                                        }
+
+                                        if (
+                                            !mapTile ||
+                                            !saveData.visited.includes(tileId)
+                                        ) {
+                                            return (
+                                                <BlankTile
+                                                    handleClick={handleClick}
+                                                />
+                                            )
                                         }
 
                                         return (

@@ -136,6 +136,12 @@ export function handleCommand(
 
                     clearCommandLog()
                     setSaveData("currentTileId", gate.to_tile_id)
+                    if (!saveData.visited.includes(gate.to_tile_id)) {
+                        setSaveData("visited", [
+                            ...saveData.visited,
+                            gate.to_tile_id,
+                        ])
+                    }
 
                     const gateEvents = gate.event_instances
                         .map(({ event }) => event)
