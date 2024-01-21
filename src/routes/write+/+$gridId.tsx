@@ -6,7 +6,6 @@ import { auth } from "~/auth/auth.server.ts"
 import { Layout } from "~/components/layout/layout.tsx"
 import { LayoutTabs } from "~/components/layout/layoutTabs.tsx"
 import { Button } from "~/components/ui/button.tsx"
-import { Card } from "~/components/ui/card.tsx"
 import { Details } from "~/routes/write+/details/details.tsx"
 import { writeGridQuery } from "~/routes/write+/queries.server.ts"
 import { ResourceStack } from "~/routes/write+/resourceStack.tsx"
@@ -24,6 +23,7 @@ import {
     generateIdMap,
     generateTileCoordsMap,
 } from "~/routes/read+/processing.server.ts"
+import { Assets } from "~/routes/write+/assets/assets.tsx"
 
 export const RESOURCE_TYPES = {
     TILES: "tiles",
@@ -143,9 +143,9 @@ export default function Route() {
                     <Map />
                     <Outlet />
                 </LayoutTabs>
-                <LayoutTabs names={["details", "grid"]}>
+                <LayoutTabs names={["details", "image"]}>
                     <Details />
-                    <Card className="h-full"></Card>
+                    <Assets />
                 </LayoutTabs>
             </Layout>
         </ContextLayout.Provider>

@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm"
 import { int, mysqlEnum, mysqlTable } from "drizzle-orm/mysql-core"
+import { assets } from "~/database/schema/assets.server.ts"
 import { events } from "~/database/schema/events.server.ts"
 import { grids } from "~/database/schema/grids.server.ts"
 import { locks } from "~/database/schema/locks.server.ts"
@@ -7,11 +8,13 @@ import { tiles } from "~/database/schema/tiles.server.ts"
 import {
     grid_resource_fields,
     name_summary_description,
+    can_have_image,
 } from "~/database/shared.server.ts"
 
 export const items = mysqlTable("items", {
     ...grid_resource_fields,
     ...name_summary_description,
+    ...can_have_image,
 
     type: mysqlEnum("type", ["basic", "key"]).default("basic").notNull(),
 })
@@ -20,6 +23,10 @@ export const items_relations = relations(items, ({ one, many }) => ({
     grid: one(grids, {
         fields: [items.grid_id],
         references: [grids.id],
+    }),
+    image_asset: one(assets, {
+        fields: [items.image_asset_id],
+        references: [assets.id],
     }),
     instances: many(item_instances),
     required_by: many(locks),

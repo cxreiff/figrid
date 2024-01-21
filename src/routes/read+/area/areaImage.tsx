@@ -1,8 +1,8 @@
 import { Image } from "~/components/image.tsx"
 import type { loader } from "~/routes/read+/+$gridId.tsx"
 import { WaitSaveData } from "~/components/waitSaveData.tsx"
-import { TILE_FALLBACK_IMAGE } from "~/lib/misc.ts"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
+import { TILE_FALLBACK_IMAGE, assetUrl } from "~/lib/assets.ts"
 
 export function AreaImage() {
     const { tileIdMap, eventIdMap } = useSuperLoaderData<typeof loader>()
@@ -12,9 +12,11 @@ export function AreaImage() {
                 const tile = tileIdMap[saveData.currentTileId]
                 const eventImage =
                     saveData.currentEventId &&
-                    eventIdMap[saveData.currentEventId].image_url
+                    assetUrl(eventIdMap[saveData.currentEventId].image_asset)
                 const image =
-                    eventImage || tile.image_url || TILE_FALLBACK_IMAGE
+                    eventImage ||
+                    assetUrl(tile.image_asset) ||
+                    TILE_FALLBACK_IMAGE
                 return (
                     <div className="flex h-full items-center justify-center">
                         <Image key={image} src={image} alt="placeholder" />

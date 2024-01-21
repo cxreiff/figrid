@@ -6,7 +6,6 @@ import {
     TextAlignJustifyIcon,
     TokensIcon,
 } from "@radix-ui/react-icons"
-import { useLocation, useSearchParams } from "@remix-run/react"
 import {
     type ColumnDef,
     flexRender,
@@ -18,43 +17,33 @@ import {
     type SortingState,
 } from "@tanstack/react-table"
 import { useState } from "react"
-import { z } from "zod"
 import { ButtonGroup } from "~/components/buttonGroup.tsx"
 import { LayoutTitledScrolls } from "~/components/layout/layoutTitledScrolls.tsx"
 import { Button } from "~/components/ui/button.tsx"
 import { Card } from "~/components/ui/card.tsx"
 import { InputWithIcon } from "~/components/ui/input.tsx"
-import type { ResourceType } from "~/routes/write+/+$gridId.tsx"
 import { cn } from "~/lib/misc.ts"
 
-export function CardStack<TData extends { id: number; name: string }, TValue>({
+export function CardStack<TValue>({
+    title,
     columns,
-    type,
     data,
     selected,
+    creating,
     onSelection,
     onCreate,
 }: {
-    columns: ColumnDef<TData, TValue>[]
-    type: ResourceType
-    data: TData[]
+    title: string
+    columns: ColumnDef<{ id: number; name: string }, TValue>[]
+    data: { id: number; name: string }[]
     selected?: number
+    creating: boolean
     onSelection: (id: number) => void
     onCreate?: () => void
 }) {
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [mode, setMode] = useState<"mini" | "full">("full")
     const [sorting] = useState<SortingState>([{ desc: false, id: "name" }])
-
-    const duplicating = !!z.coerce
-        .number()
-        .optional()
-        .parse(useSearchParams()[0].get("duplicate"))
-
-    const { pathname } = useLocation()
-    const [, , , resourceType, createOrId] = pathname.split("/")
-    const creating =
-        resourceType === type && createOrId === "create" && !duplicating
 
     const table = useReactTable({
         data,
@@ -71,7 +60,7 @@ export function CardStack<TData extends { id: number; name: string }, TValue>({
 
     return (
         <LayoutTitledScrolls
-            title={type}
+            title={title}
             actionSlot={
                 onCreate && (
                     <Button

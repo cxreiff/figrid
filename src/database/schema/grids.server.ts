@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm"
 import { int, mysqlTable } from "drizzle-orm/mysql-core"
+import { assets } from "~/database/schema/assets.server.ts"
 import { users } from "~/database/schema/auth.server.ts"
 import {
     character_instances,
@@ -14,12 +15,14 @@ import {
     create_update_timestamps,
     incrementing_id,
     name_summary_description,
+    can_have_image,
 } from "~/database/shared.server.ts"
 
 export const grids = mysqlTable("grids", {
     ...incrementing_id,
     ...create_update_timestamps,
     ...name_summary_description,
+    ...can_have_image,
 
     user_id: int("user_id").notNull(),
 
@@ -39,6 +42,10 @@ export const grids_relations = relations(grids, ({ one, many }) => ({
     player: one(characters, {
         fields: [grids.player_id],
         references: [characters.id],
+    }),
+    image_asset: one(assets, {
+        fields: [grids.image_asset_id],
+        references: [assets.id],
     }),
     tiles: many(tiles),
     gates: many(gates),

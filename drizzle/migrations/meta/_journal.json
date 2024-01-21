@@ -36,6 +36,13 @@
       "when": 1705710645967,
       "tag": "0004_foamy_doomsday",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1705788807731,
+      "tag": "0005_curly_shadowcat",
+      "breakpoints": true
     }
   ]
 }

@@ -11,6 +11,7 @@ export function gridQuery(gridId: number) {
         with: {
             tiles: {
                 with: {
+                    image_asset: true,
                     event_instances: {
                         with: {
                             event: {
@@ -68,6 +69,7 @@ export function gridQuery(gridId: number) {
             },
             events: {
                 with: {
+                    image_asset: true,
                     children: true,
                     triggers_lock: true,
                     triggers_unlock: true,
@@ -89,7 +91,11 @@ export function gridQuery(gridId: number) {
                     item: true,
                 },
             },
-            player: true,
+            player: {
+                with: {
+                    image_asset: true,
+                },
+            },
         },
     })
 }

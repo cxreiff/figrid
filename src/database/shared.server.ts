@@ -24,5 +24,8 @@ export const name_summary_description = {
     name: varchar("name", { length: 256 }).notNull().unique(),
     summary: text("summary"),
     description: text("description"),
-    image_url: varchar("image_url", { length: 2083 }),
+}
+
+export const can_have_image = {
+    image_asset_id: int("image_asset_id"),
 }

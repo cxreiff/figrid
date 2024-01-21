@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "@remix-run/react"
+import { useLocation, useNavigate, useParams } from "@remix-run/react"
 import { CardStack } from "~/components/cardStack.tsx"
 import { Card } from "~/components/ui/card.tsx"
 import { paramsSchema } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
@@ -14,9 +14,14 @@ export function ResourceStack({ type }: { type: ResourceType }) {
 
     const navigate = useNavigate()
 
+    const { pathname } = useLocation()
+    const [, , , , createOrId] = pathname.split("/")
+    const creating = resourceType === type && createOrId === "create"
+
     return (
         <Card className="h-full p-4 pb-0">
             <CardStack
+                title={type}
                 columns={[
                     {
                         accessorKey: "name",
@@ -32,9 +37,9 @@ export function ResourceStack({ type }: { type: ResourceType }) {
                         },
                     },
                 ]}
-                type={type}
                 data={grid[type]}
                 selected={type === resourceType ? resourceId : undefined}
+                creating={creating}
                 onSelection={(id) => navigate(`${type}/${id}`)}
                 onCreate={
                     type !== "gates"

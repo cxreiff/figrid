@@ -87,10 +87,10 @@ export function MapTile({
                                     absolute z-10 flex items-center justify-center
                                     p-1 before:absolute before:inset-0.5 before:rounded-sm ${
                                         {
-                                            north: "-top-[1.35rem] left-0 right-0 mx-auto h-[1.125rem] w-5",
-                                            east: "-right-[1.35rem] bottom-0 top-0 my-auto h-5 w-5",
-                                            south: "-bottom-[1.35rem] left-0 right-0 mx-auto h-[1.125rem] w-5",
-                                            west: "-left-[1.35rem] bottom-0 top-0 my-auto h-5 w-5",
+                                            north: "-top-[1.2rem] left-0 right-0 mx-auto h-4 w-4 p-0",
+                                            east: "-right-[1.2rem] bottom-0 top-0 my-auto h-4 w-4 p-0",
+                                            south: "-bottom-[1.2rem] left-0 right-0 mx-auto h-4 w-4 p-0",
+                                            west: "-left-[1.2rem] bottom-0 top-0 my-auto h-4 w-4 p-0",
                                         }[gate.type]
                                     }
                                 `}

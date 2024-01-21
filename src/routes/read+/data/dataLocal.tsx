@@ -4,11 +4,11 @@ import { Button } from "~/components/ui/button.tsx"
 import { Card } from "~/components/ui/card.tsx"
 import { WaitSaveData } from "~/components/waitSaveData.tsx"
 import type { loader } from "~/routes/read+/+$gridId.tsx"
-import { TILE_FALLBACK_IMAGE } from "~/lib/misc.ts"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
 import { useManualSaveData } from "~/lib/useManualSaveData.ts"
 import { type useSaveData } from "~/lib/useSaveData.ts"
 import { LayoutTitledScrolls } from "~/components/layout/layoutTitledScrolls.tsx"
+import { TILE_FALLBACK_IMAGE, assetUrl } from "~/lib/assets.ts"
 
 export function DataLocal({
     replaceSave,
@@ -49,10 +49,10 @@ export function DataLocal({
                                 <Card key={index} className="mb-4">
                                     <div className="flex h-full items-center p-2">
                                         <Image
-                                            key={tile.image_url}
+                                            key={tile.image_asset_id}
                                             className="mr-4 h-12 w-12"
                                             src={
-                                                tile.image_url ||
+                                                assetUrl(tile.image_asset) ||
                                                 TILE_FALLBACK_IMAGE
                                             }
                                             alt={"tile"}

@@ -18,9 +18,6 @@ export function strictKeys<T extends object>(obj: T) {
     return Object.keys(obj) as Array<keyof T>
 }
 
-export const TILE_FALLBACK_IMAGE = "https://img.figrid.io/tiles/kitty.png"
-export const PLAYER_FALLBACK_IMAGE = "https://img.figrid.io/tiles/kitty.png"
-
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
 }

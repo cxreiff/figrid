@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm"
 import { int, mysqlTable, varchar } from "drizzle-orm/mysql-core"
+import { assets } from "~/database/schema/assets.server.ts"
 import { characters } from "~/database/schema/characters.server.ts"
 import { gates } from "~/database/schema/gates.server.ts"
 import { grids } from "~/database/schema/grids.server.ts"
@@ -9,11 +10,13 @@ import { tiles } from "~/database/schema/tiles.server.ts"
 import {
     grid_resource_fields,
     name_summary_description,
+    can_have_image,
 } from "~/database/shared.server.ts"
 
 export const events = mysqlTable("events", {
     ...grid_resource_fields,
     ...name_summary_description,
+    ...can_have_image,
 
     parent_id: int("parent_id"),
     trigger: varchar("trigger", { length: 256 }),
@@ -26,6 +29,10 @@ export const events_relations = relations(events, ({ one, many }) => ({
     grid: one(grids, {
         fields: [events.grid_id],
         references: [grids.id],
+    }),
+    image_asset: one(assets, {
+        fields: [events.image_asset_id],
+        references: [assets.id],
     }),
     parent: one(events, {
         fields: [events.parent_id],
