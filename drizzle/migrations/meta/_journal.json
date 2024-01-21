@@ -43,6 +43,20 @@
       "when": 1705788807731,
       "tag": "0005_curly_shadowcat",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1705827227751,
+      "tag": "0006_huge_purple_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1705827475445,
+      "tag": "0007_ambitious_sprite",
+      "breakpoints": true
     }
   ]
 }

@@ -1,6 +1,6 @@
 import type { assets } from "~/database/schema/assets.server.ts"
 
-const GRID_ASSET_DOMAIN = "https://assets.figrid.io/grid"
+const GRID_ASSET_DOMAIN = "https://assets.figrid.io/grids"
 
 export const TILE_FALLBACK_IMAGE = "https://assets.figrid.io/tiles/kitty.png"
 export const PLAYER_FALLBACK_IMAGE = "https://assets.figrid.io/tiles/kitty.png"

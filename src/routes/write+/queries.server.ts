@@ -57,6 +57,7 @@ export function writeTileQuery(userId: number, gridId: number, tileId: number) {
             eq(tiles.id, tileId),
         ),
         with: {
+            image_asset: true,
             gates_out: {
                 with: {
                     lock_instances: true,
@@ -102,6 +103,7 @@ export function writeCharacterQuery(
             eq(characters.id, characterId),
         ),
         with: {
+            image_asset: true,
             instances: {
                 with: {
                     tile: true,
@@ -128,6 +130,7 @@ export function writeItemQuery(userId: number, gridId: number, itemId: number) {
             eq(items.id, itemId),
         ),
         with: {
+            image_asset: true,
             instances: {
                 with: {
                     tile: true,
@@ -154,6 +157,7 @@ export function writeEventQuery(
             eq(events.id, eventId),
         ),
         with: {
+            image_asset: true,
             parent: true,
             children: true,
             instances: {

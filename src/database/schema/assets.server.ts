@@ -11,13 +11,13 @@ export const assets = mysqlTable("assets", {
     ...grid_resource_fields,
 
     resource_type: mysqlEnum("resource_type", [
-        "grid",
-        "tile",
-        "event",
-        "character",
-        "item",
+        "grids",
+        "tiles",
+        "events",
+        "characters",
+        "items",
     ]).notNull(),
-    asset_type: mysqlEnum("asset_type", ["image"]).default("image").notNull(),
+    asset_type: mysqlEnum("asset_type", ["images"]).default("images").notNull(),
     filename: varchar("filename", { length: 256 }).notNull(),
 })
 
