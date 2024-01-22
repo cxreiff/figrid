@@ -14,7 +14,12 @@ import { paramsSchema } from "~/routes/write+/$gridId+/+$resourceType.$resourceI
 import { useParams } from "@remix-run/react"
 import type { ResourceType } from "~/routes/write+/+$gridId.tsx"
 import { Image } from "~/components/image.tsx"
-import { TILE_FALLBACK_IMAGE, assetUrl } from "~/lib/assets.ts"
+import {
+    RESOURCE_TYPES_WITH_ASSETS,
+    TILE_FALLBACK_IMAGE,
+    assetUrl,
+} from "~/lib/assets.ts"
+import { AssetsImagesDropzone } from "~/routes/write+/assets/assetsImagesDropzone.tsx"
 
 export function AssetsImages() {
     const resource = useSuperMatch<typeof childLoader>(
@@ -34,13 +39,15 @@ export function AssetsImages() {
                 }
 
                 if (canHaveImageAsset(resource, resourceType)) {
-                    return (
+                    return resource.image_asset ? (
                         <Image
                             src={
                                 assetUrl(resource.image_asset) ||
                                 TILE_FALLBACK_IMAGE
                             }
                         />
+                    ) : (
+                        <AssetsImagesDropzone />
                     )
                 }
 
@@ -68,5 +75,5 @@ function canHaveImageAsset(
     | WriteEventQuery
     | WriteItemQuery
     | WriteTileQuery {
-    return ["characters", "events", "items", "tiles"].includes(resourceType)
+    return RESOURCE_TYPES_WITH_ASSETS.includes(resourceType)
 }

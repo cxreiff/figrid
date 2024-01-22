@@ -18,6 +18,8 @@
         "shad": "pnpm dlx shadcn-ui@latest"
     },
     "dependencies": {
+        "@aws-sdk/client-s3": "^3.496.0",
+        "@aws-sdk/lib-storage": "^3.496.0",
         "@epic-web/remember": "^1.0.2",
         "@planetscale/database": "^1.13.0",
         "@radix-ui/react-accordion": "^1.1.2",
@@ -54,6 +56,7 @@
         "nanoid": "^5.0.4",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "react-dropzone": "^14.2.3",
         "react-resizable-panels": "^1.0.7",
         "remix-auth": "^3.6.0",
         "remix-auth-form": "^1.4.0",

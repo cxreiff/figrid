@@ -6,6 +6,10 @@ const schema = z.object({
     SESSION_SECRET: z.string(),
     GITHUB_CLIENT_ID: z.string(),
     GITHUB_CLIENT_SECRET: z.string(),
+    R2_ASSETS_BUCKET_NAME: z.string(),
+    R2_ASSETS_ENDPOINT: z.string(),
+    R2_ASSETS_ACCESS_KEY: z.string(),
+    R2_ASSETS_SECRET_KEY: z.string(),
 })
 
 declare global {
