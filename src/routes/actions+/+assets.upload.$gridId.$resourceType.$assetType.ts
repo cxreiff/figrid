@@ -18,6 +18,8 @@ export const paramsSchema = z.object({
     assetType: z.enum(ASSET_TYPES),
 })
 
+export const config = { runtime: "node" }
+
 export async function action({ request, params }: ActionFunctionArgs) {
     const { gridId, resourceType, assetType } = paramsSchema.parse(params)
 
