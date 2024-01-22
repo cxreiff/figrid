@@ -2,10 +2,7 @@ import { S3Client, type PutObjectCommandInput } from "@aws-sdk/client-s3"
 import { Upload } from "@aws-sdk/lib-storage"
 import { writeAsyncIterableToWritable } from "@remix-run/node"
 import type { UploadHandler } from "@vercel/remix"
-import { customAlphabet } from "nanoid"
 import { PassThrough } from "stream"
-import type { z } from "zod"
-import type { paramsSchema } from "~/routes/actions+/+assets.upload.$gridId.$resourceType.$assetType.ts"
 
 const uploadStream = ({
     Key,
@@ -49,20 +46,17 @@ async function uploadStreamToR2(
     return file.Location
 }
 
-export const createR2UploadHandler: ({
-    gridId,
-    resourceType,
-    assetType,
-}: z.infer<typeof paramsSchema>) => UploadHandler =
-    ({ gridId, resourceType, assetType }) =>
-    async ({ name, data, contentType }) => {
+export const createR2UploadHandler: (key: string) => UploadHandler = (key) => {
+    return async ({ name, data, contentType }) => {
         if (name !== "asset") {
             return undefined
         }
-        const filename = customAlphabet(
-            "0123456789abcdefghijklmnopqrstuvwxyz",
-            16,
-        )()
-        const key = `grids/${gridId}/${resourceType}/${assetType}/${filename}`
-        return await uploadStreamToR2(data, key, contentType)
+        const extension = contentType.split("/")[1]
+        const extensionWithDot = extension ? `.${extension}` : ""
+        return await uploadStreamToR2(
+            data,
+            `${key}${extensionWithDot}`,
+            contentType,
+        )
     }
+}
