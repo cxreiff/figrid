@@ -1,27 +1,18 @@
 import { Card } from "~/components/ui/card.tsx"
 import { useSuperMatch } from "~/lib/superjson.ts"
-import { type loader as childLoader } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
-import {
-    type WriteCharacterQuery,
-    type WriteEventQuery,
-    type WriteGateQuery,
-    type WriteItemQuery,
-    type WriteLockQuery,
-    type WriteTileQuery,
-} from "~/routes/write+/queries.server.ts"
+import { type loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import { ResourcePlaceholder } from "~/routes/write+/resourcePlaceholder.tsx"
-import { paramsSchema } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
+import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import { useParams } from "@remix-run/react"
-import type { ResourceType } from "~/routes/write+/+$gridId.tsx"
 import { Image } from "~/components/image.tsx"
 import {
-    RESOURCE_TYPES_WITH_ASSETS,
     TILE_FALLBACK_IMAGE,
     assetUrl,
+    canHaveImageAsset,
 } from "~/lib/assets.ts"
-import { AssetsImagesDropzone } from "~/routes/write+/assets/assetsImagesDropzone.tsx"
+import { ImagesDropzone } from "~/routes/write+/image/imagesDropzone.tsx"
 
-export function AssetsImages() {
+export function ImagesDisplay() {
     const resource = useSuperMatch<typeof childLoader>(
         "write.$gridId.$resourceType.$resourceId",
     )?.resource
@@ -47,7 +38,7 @@ export function AssetsImages() {
                             }
                         />
                     ) : (
-                        <AssetsImagesDropzone />
+                        <ImagesDropzone />
                     )
                 }
 
@@ -59,21 +50,4 @@ export function AssetsImages() {
             })()}
         </Card>
     )
-}
-
-function canHaveImageAsset(
-    _:
-        | WriteCharacterQuery
-        | WriteEventQuery
-        | WriteGateQuery
-        | WriteItemQuery
-        | WriteTileQuery
-        | WriteLockQuery,
-    resourceType: ResourceType,
-): _ is
-    | WriteCharacterQuery
-    | WriteEventQuery
-    | WriteItemQuery
-    | WriteTileQuery {
-    return RESOURCE_TYPES_WITH_ASSETS.includes(resourceType)
 }

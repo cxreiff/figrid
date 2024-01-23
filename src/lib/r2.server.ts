@@ -46,17 +46,23 @@ async function uploadStreamToR2(
     return file.Location
 }
 
-export const createR2UploadHandler: (key: string) => UploadHandler = (key) => {
+export const createR2UploadHandler: (
+    prefix: string,
+    key: string,
+) => UploadHandler = (prefix, key) => {
     return async ({ name, data, contentType }) => {
         if (name !== "asset") {
             return undefined
         }
         const extension = contentType.split("/")[1]
         const extensionWithDot = extension ? `.${extension}` : ""
-        return await uploadStreamToR2(
+        const keyWithExtension = `${key}${extensionWithDot}`
+        return (await uploadStreamToR2(
             data,
-            `${key}${extensionWithDot}`,
+            `${prefix}/${keyWithExtension}`,
             contentType,
-        )
+        ))
+            ? keyWithExtension
+            : undefined
     }
 }

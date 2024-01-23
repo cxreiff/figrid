@@ -1,33 +1,32 @@
 import { useFetcher, useParams } from "@remix-run/react"
 import { useCallback } from "react"
 import * as ReactDropzone from "react-dropzone"
-import { useSuperMatch } from "~/lib/superjson.ts"
-import type { action } from "~/routes/actions+/+assets.upload.$gridId.$resourceType.$assetType.ts"
-import { paramsSchema } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
-import { type loader as childLoader } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
+import { removeExtension } from "~/lib/assets.ts"
+import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
+import type { action } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.upload.$assetType.$label.ts"
 
 const { useDropzone } = ReactDropzone
 
-export function AssetsImagesDropzone() {
-    const resource = useSuperMatch<typeof childLoader>(
-        "write.$gridId.$resourceType.$resourceId",
-    )?.resource
-    const { resourceType } = paramsSchema.partial().parse(useParams())
+export function ImagesDropzone() {
+    const { resourceType, resourceId } = paramsSchema
+        .partial()
+        .parse(useParams())
     const fetcher = useFetcher<typeof action>()
 
     const onDrop = useCallback(
         <T extends File>(acceptedFiles: T[]) => {
-            if (acceptedFiles[0] && resource) {
+            if (acceptedFiles[0] && resourceType && resourceId) {
                 const formData = new FormData()
                 formData.append("asset", acceptedFiles[0])
+                const label = removeExtension(acceptedFiles[0].name)
                 fetcher.submit(formData, {
-                    action: `/actions/assets/upload/${resource.grid_id}/${resourceType}/images`,
+                    action: `${resourceType}/${resourceId}/upload/images/${label}`,
                     method: "POST",
                     encType: "multipart/form-data",
                 })
             }
         },
-        [fetcher, resource, resourceType],
+        [fetcher, resourceType, resourceId],
     )
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -36,7 +35,12 @@ export function AssetsImagesDropzone() {
     })
 
     return (
-        <div {...getRootProps()}>
+        <div
+            {...getRootProps({
+                className:
+                    "h-full w-full rounded-md flex justify-center items-center border hover:bg-[hsla(var(--accent)/0.4)] border-dashed border-accent",
+            })}
+        >
             <input {...getInputProps()} />
             {isDragActive ? (
                 <p>drop files here...</p>

@@ -26,8 +26,6 @@ export function Text({
     )
 
     useEffect(() => {
-        console.debug(scrollRef.current)
-        console.debug(scrollRef.current?.scrollHeight)
         setTimeout(() => {
             if (scrollRef.current) {
                 scrollRef.current.scrollTo({

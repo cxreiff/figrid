@@ -6,7 +6,7 @@ import {
 import { TILE_DIMENSIONS } from "~/routes/write+/map/map.tsx"
 import type { WriteTileWithCoords } from "~/routes/read+/processing.server.ts"
 import { useFetcher, useNavigate, useParams } from "@remix-run/react"
-import { paramsSchema } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
+import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import { ButtonIcon } from "~/components/buttonIcon.tsx"
 
 export function MapTile({

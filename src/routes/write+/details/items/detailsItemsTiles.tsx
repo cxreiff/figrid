@@ -1,7 +1,7 @@
 import { Wait } from "~/components/wait.tsx"
 import { useSuperLoaderData, useSuperMatch } from "~/lib/superjson.ts"
 import { type loader } from "~/routes/write+/+$gridId.tsx"
-import { type loader as childLoader } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
+import { type loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import type { WriteItemQuery } from "~/routes/write+/queries.server.ts"
 import { DetailsResourceCard } from "~/routes/write+/details/detailsResourceCard.tsx"
 import { DetailsResourceLinker } from "~/routes/write+/details/detailsResourceLinker.tsx"

@@ -11,7 +11,7 @@ export const assets = mysqlTable("assets", {
     ...grid_resource_fields,
 
     resource_type: mysqlEnum("resource_type", [
-        "grids",
+        "grid",
         "tiles",
         "events",
         "characters",
@@ -19,10 +19,16 @@ export const assets = mysqlTable("assets", {
     ]).notNull(),
     asset_type: mysqlEnum("asset_type", ["images"]).default("images").notNull(),
     filename: varchar("filename", { length: 256 }).notNull(),
+    label: varchar("label", { length: 256 }),
 })
 
-export const assets_relations = relations(assets, ({ many }) => ({
-    grids: many(grids),
+export const assets_relations = relations(assets, ({ one, many }) => ({
+    grid: one(grids, {
+        fields: [assets.grid_id],
+        references: [grids.id],
+        relationName: "grid_assets",
+    }),
+    image_for_grids: many(grids, { relationName: "image_for_grids" }),
     tiles: many(tiles),
     events: many(events),
     characters: many(characters),

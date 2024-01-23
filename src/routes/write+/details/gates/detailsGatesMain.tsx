@@ -1,6 +1,6 @@
 import { useSuperMatch } from "~/lib/superjson.ts"
 import type { WriteGateQuery } from "~/routes/write+/queries.server.ts"
-import { type loader as childLoader } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
+import { type loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import { DetailsResourceCard } from "~/routes/write+/details/detailsResourceCard.tsx"
 
 export function DetailsGatesMain() {

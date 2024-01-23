@@ -1,0 +1,1 @@
+ALTER TABLE `assets` RENAME COLUMN `name` TO `label`;

@@ -1,7 +1,15 @@
 import type { assets } from "~/database/schema/assets.server.ts"
+import type { ResourceType } from "~/routes/write+/+$gridId.tsx"
+import type {
+    WriteCharacterQuery,
+    WriteEventQuery,
+    WriteGateQuery,
+    WriteItemQuery,
+    WriteLockQuery,
+    WriteTileQuery,
+} from "~/routes/write+/queries.server.ts"
 
 export const RESOURCE_TYPES_WITH_ASSETS = [
-    "grid",
     "characters",
     "events",
     "items",
@@ -15,10 +23,37 @@ export const GRID_ASSET_DOMAIN = "https://assets.figrid.io/grids"
 export const TILE_FALLBACK_IMAGE = "https://assets.figrid.io/tiles/kitty.png"
 export const PLAYER_FALLBACK_IMAGE = "https://assets.figrid.io/tiles/kitty.png"
 
-export function assetUrl(asset: typeof assets.$inferSelect | null) {
+type AssetUrlReturn<T extends typeof assets.$inferSelect | null> =
+    T extends typeof assets.$inferSelect ? string : null
+
+export function assetUrl<T extends typeof assets.$inferSelect | null>(
+    asset: T,
+): AssetUrlReturn<T> {
     if (!asset) {
-        return null
+        return null as AssetUrlReturn<T>
     }
     const { grid_id, resource_type, asset_type, filename } = asset
-    return `${GRID_ASSET_DOMAIN}/${grid_id}/${resource_type}/${asset_type}/${filename}`
+    return `${GRID_ASSET_DOMAIN}/${grid_id}/${resource_type}/${asset_type}/${filename}` as AssetUrlReturn<T>
+}
+
+export function removeExtension(filename: string) {
+    const extensionIndex = filename.lastIndexOf(".")
+    return extensionIndex !== -1 ? filename.slice(0, extensionIndex) : filename
+}
+
+export function canHaveImageAsset(
+    _:
+        | WriteCharacterQuery
+        | WriteEventQuery
+        | WriteGateQuery
+        | WriteItemQuery
+        | WriteTileQuery
+        | WriteLockQuery,
+    resourceType: ResourceType,
+): _ is
+    | WriteCharacterQuery
+    | WriteEventQuery
+    | WriteItemQuery
+    | WriteTileQuery {
+    return RESOURCE_TYPES_WITH_ASSETS.includes(resourceType)
 }

@@ -1,7 +1,7 @@
 import { useLocation, useNavigate, useParams } from "@remix-run/react"
 import { CardStack } from "~/components/cardStack.tsx"
 import { Card } from "~/components/ui/card.tsx"
-import { paramsSchema } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
+import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import type { ResourceType, loader } from "~/routes/write+/+$gridId.tsx"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
 import type { WriteGridQuery } from "~/routes/write+/queries.server.ts"

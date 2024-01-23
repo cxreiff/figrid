@@ -16,14 +16,14 @@ import {
 } from "~/lib/contextLayout.ts"
 import { getSessionLayout } from "~/lib/sessionLayout.server.ts"
 import { superjson, useSuperLoaderData } from "~/lib/superjson.ts"
-import { paramsSchema as childParamsSchema } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
+import { paramsSchema as childParamsSchema } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import { useEffect, useState } from "react"
 import { Map } from "~/routes/write+/map/map.tsx"
 import {
     generateIdMap,
     generateTileCoordsMap,
 } from "~/routes/read+/processing.server.ts"
-import { Assets } from "~/routes/write+/assets/assets.tsx"
+import { Images } from "~/routes/write+/image/images.tsx"
 
 export const RESOURCE_TYPES = {
     TILES: "tiles",
@@ -143,9 +143,9 @@ export default function Route() {
                     <Map />
                     <Outlet />
                 </LayoutTabs>
-                <LayoutTabs names={["details", "assets"]}>
+                <LayoutTabs names={["details", "images"]}>
                     <Details />
-                    <Assets />
+                    <Images />
                 </LayoutTabs>
             </Layout>
         </ContextLayout.Provider>

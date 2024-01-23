@@ -1,6 +1,6 @@
 import { useSuperMatch } from "~/lib/superjson.ts"
 import type { WriteItemQuery } from "~/routes/write+/queries.server.ts"
-import { type loader as childLoader } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
+import { type loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import { TypeSelect } from "~/components/typeSelect.tsx"
 import { useFetcher } from "@remix-run/react"
 

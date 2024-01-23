@@ -46,7 +46,9 @@ export const grids_relations = relations(grids, ({ one, many }) => ({
     image_asset: one(assets, {
         fields: [grids.image_asset_id],
         references: [assets.id],
+        relationName: "image_for_grids",
     }),
+    assets: many(assets, { relationName: "grid_assets" }),
     tiles: many(tiles),
     gates: many(gates),
     events: many(events),

@@ -1,10 +1,10 @@
 import { useContext } from "react"
 import { LayoutSplit } from "~/components/layout/layoutSplit.tsx"
 import { ContextLayout } from "~/lib/contextLayout.ts"
-import { AssetsAudio } from "~/routes/write+/assets/assetsAudio.tsx"
-import { AssetsImages } from "~/routes/write+/assets/assetsImages.tsx"
+import { ImagesPicker } from "~/routes/write+/image/imagesPicker.tsx"
+import { ImagesDisplay } from "~/routes/write+/image/imagesDisplay.tsx"
 
-export function Assets() {
+export function Images() {
     const { assetsLayoutRef, initialLayout, minSizes, saveLayout } =
         useContext(ContextLayout)
 
@@ -16,8 +16,8 @@ export function Assets() {
             minSizes={minSizes.assets}
             onSaveLayout={saveLayout}
         >
-            <AssetsImages />
-            <AssetsAudio />
+            <ImagesDisplay />
+            <ImagesPicker />
         </LayoutSplit>
     )
 }
