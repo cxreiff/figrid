@@ -1,23 +1,102 @@
+import {
+    HeartIcon,
+    Pencil2Icon,
+    PersonIcon,
+    PlayIcon,
+    PlusIcon,
+} from "@radix-ui/react-icons"
 import { Link } from "@remix-run/react"
-import { TextTyper } from "~/components/textTyper.tsx"
+import type { LoaderFunctionArgs } from "@vercel/remix"
+import { auth } from "~/auth/auth.server.ts"
+import { ButtonIcon } from "~/components/buttonIcon.tsx"
+import { Image } from "~/components/image.tsx"
+import { Layout } from "~/components/layout/layout.tsx"
+import { Button } from "~/components/ui/button.tsx"
+import { Card } from "~/components/ui/card.tsx"
+import { db } from "~/database/database.server.ts"
+import { GRID_FALLBACK_IMAGE, assetUrl } from "~/lib/assets.ts"
+import { superjson, useSuperLoaderData } from "~/lib/superjson.ts"
 
-const loremIpsum = `
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum pharetra libero lectus, ut finibus velit molestie sit amet. Quisque in scelerisque ipsum. Maecenas lacinia pretium lectus sit amet consectetur. Integer viverra, leo ut luctus elementum, metus nunc dictum diam, a volutpat nulla tortor non orci. Maecenas a ultricies urna. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam sollicitudin, nunc nec accumsan aliquet, lectus orci condimentum velit, non tempus eros neque at massa. Proin efficitur porta lectus, hendrerit varius eros convallis sed. Nulla lacinia vitae ex ullamcorper porta. In nec egestas orci. Sed tincidunt massa vitae fringilla tempor. Phasellus eu lorem non risus fermentum rutrum nec quis purus. Proin orci ligula, posuere quis nisi a, congue ultricies lectus. Nunc sit amet risus fringilla, pulvinar leo in, tristique sem. Fusce eget faucibus ipsum, ut mattis justo. Aliquam metus neque, faucibus nec mauris eu, tristique dictum elit.
+export async function loader({ request }: LoaderFunctionArgs) {
+    const user = await auth.isAuthenticated(request)
 
-Quisque interdum pulvinar sem nec vehicula. Integer at pellentesque justo, vitae elementum ex. Proin rutrum sem neque, ac vestibulum arcu tempor eu. Sed nec efficitur tellus. Nullam pharetra ultrices accumsan. Proin efficitur nisi ut faucibus lacinia. Morbi tempor non turpis non scelerisque. Morbi dictum libero massa, ac lacinia urna aliquet vitae. Suspendisse et congue purus. Integer ut nisl varius, venenatis urna id, bibendum libero.
+    const grids = await db.query.grids.findMany({ with: { image_asset: true } })
 
-Sed lorem justo, tristique sed ligula vitae, venenatis commodo arcu. Proin sodales interdum diam nec molestie. Sed vulputate, metus et tincidunt mollis, dolor ipsum maximus nibh, et rutrum turpis massa sit amet justo. Vivamus scelerisque venenatis ipsum vitae blandit. Sed eget bibendum tortor, sed hendrerit purus. Sed nec feugiat nibh. Nullam sit amet commodo mi, ultricies luctus orci. Maecenas eget nunc vel mauris porttitor ultrices. Vestibulum velit ex, aliquet vel posuere vitae, vestibulum non est. Nam commodo pellentesque quam, ac commodo eros tempus non. Nullam pulvinar ultricies imperdiet. Vivamus ligula risus, ullamcorper ac elit a, elementum vehicula augue. Nunc pharetra neque non facilisis dictum. Etiam metus neque, volutpat sed euismod sed, viverra et ante. Nam aliquam purus eu lacus porta imperdiet. Duis aliquet aliquet pharetra.
+    return superjson({ user, grids })
+}
 
-Duis vulputate purus sit amet risus gravida accumsan. Etiam feugiat condimentum turpis ac condimentum. In hendrerit vel dui eu iaculis. Mauris non sollicitudin massa, sed molestie eros. Cras pretium efficitur arcu ut euismod. Proin quis pretium ipsum. Morbi lobortis nulla risus, et convallis sem consequat id. Nulla facilisi. Proin vitae tempus orci, nec tempor ex. Proin posuere condimentum tellus, nec egestas magna pharetra at. Maecenas porta risus eleifend nibh ornare, et luctus felis ultricies.
+export default function Route() {
+    const { user, grids } = useSuperLoaderData<typeof loader>()
 
-Proin elementum sem sed odio condimentum, non volutpat metus pulvinar. Donec libero nunc, euismod quis ligula at, sagittis vehicula purus. Praesent maximus odio vel mi vulputate, a porta eros volutpat. Nam non dapibus dolor. Fusce non nulla faucibus, accumsan mi non, tincidunt leo. Nulla eu eleifend orci. Etiam congue in mauris vel fringilla. In ultricies felis nec hendrerit condimentum.
-`.trim()
-
-export default function Index() {
     return (
-        <>
-            <Link to="/read/1">first</Link>
-            <TextTyper className="p-6">{loremIpsum}</TextTyper>
-        </>
+        <Layout user={user} title={"dashboard"}>
+            <ButtonIcon
+                variant="outline"
+                className="my-4 h-12 w-full border-dashed"
+                icon={PlusIcon}
+            >
+                create grid
+            </ButtonIcon>
+            {grids.map((grid) => (
+                <Card
+                    key={grid.id}
+                    className="mb-4 flex w-full items-center bg-card p-2"
+                >
+                    <Image
+                        className="h-12 bg-background shadow-inner"
+                        src={assetUrl(grid.image_asset) || GRID_FALLBACK_IMAGE}
+                    />
+                    <h3 className="flex flex-1 items-center px-4">
+                        {grid.name}
+                        <span className="ml-4 text-muted">—</span>
+                        <span className="ml-4 text-muted-foreground">
+                            {grid.summary}
+                        </span>
+                        <span className="ml-4 text-muted">—</span>
+                        <span className="ml-4 text-muted-foreground">
+                            {grid.description}
+                        </span>
+                    </h3>
+                    <ButtonIcon variant="ghost" icon={HeartIcon} />
+                    <ButtonIcon variant="ghost" icon={PersonIcon} />
+                    <div className="ml-4 flex w-[5.8rem] gap-2">
+                        {user?.id === grid.user_id && (
+                            <>
+                                <Button
+                                    className="h-12 flex-1"
+                                    variant="outline"
+                                    asChild
+                                >
+                                    <Link to={`/write/${grid.id}`}>
+                                        <Pencil2Icon />
+                                    </Link>
+                                </Button>
+                                <Button
+                                    className="h-12 flex-1"
+                                    variant="outline"
+                                    asChild
+                                >
+                                    <Link to={`/read/${grid.id}`}>
+                                        <PlayIcon />
+                                    </Link>
+                                </Button>
+                            </>
+                        )}
+                        {user?.id !== grid.user_id && (
+                            <Button
+                                variant="outline"
+                                className="flex h-12 w-full px-4"
+                                asChild
+                            >
+                                <Link to={`/read/${grid.id}`}>
+                                    <h3 className="flex-1">PLAY</h3>
+                                    <PlayIcon />
+                                </Link>
+                            </Button>
+                        )}
+                    </div>
+                </Card>
+            ))}
+        </Layout>
     )
 }

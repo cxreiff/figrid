@@ -3,19 +3,19 @@ import { type LoaderFunctionArgs } from "@vercel/remix"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
 import { Layout } from "~/components/layout/layout.tsx"
-import { Text } from "~/routes/read+/text/text.tsx"
-import { Map } from "~/routes/read+/map/map.tsx"
+import { Text } from "~/routes/read+/ui/text/text.tsx"
+import { Map } from "~/routes/read+/ui/map/map.tsx"
 import {
     generateIdMap,
     generateTileCoordsMap,
-} from "~/routes/read+/processing.server.ts"
-import { handleCommand } from "~/routes/read+/commands.ts"
+} from "~/routes/read+/lib/processing.server.ts"
+import { handleCommand } from "~/routes/read+/lib/commands.ts"
 import { useSaveData } from "~/lib/useSaveData.ts"
 import { LayoutTabs } from "~/components/layout/layoutTabs.tsx"
-import { Area } from "~/routes/read+/area/area.tsx"
-import { Status } from "~/routes/read+/status/status.tsx"
-import { Data } from "~/routes/read+/data/data.tsx"
-import { gridQuery } from "~/routes/read+/queries.server.ts"
+import { Area } from "~/routes/read+/ui/area/area.tsx"
+import { Status } from "~/routes/read+/ui/status/status.tsx"
+import { Data } from "~/routes/read+/ui/data/data.tsx"
+import { gridQuery } from "~/routes/read+/lib/queries.server.ts"
 import { superjson, useSuperLoaderData } from "~/lib/superjson.ts"
 import { ContextSaveData } from "~/lib/contextSaveData.ts"
 import { ContextCommand } from "~/lib/contextCommand.ts"
@@ -27,7 +27,8 @@ import {
 import { getSessionLayout } from "~/lib/sessionLayout.server.ts"
 import { Button } from "~/components/ui/button.tsx"
 import { Link } from "@remix-run/react"
-import { Pencil2Icon } from "@radix-ui/react-icons"
+import { LayoutIcon, Pencil2Icon } from "@radix-ui/react-icons"
+import { LayoutSplit } from "~/components/layout/layoutSplit.tsx"
 
 const paramsSchema = z.object({ gridId: z.coerce.number() })
 
@@ -116,26 +117,36 @@ export default function Route() {
                                         </Link>
                                     </Button>
                                 )}
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={layoutContext.resetLayout}
+                                >
+                                    <LayoutIcon className="h-5 w-5" />
+                                </Button>
                             </>
                         }
-                        layoutRef={layoutContext.readLayoutRef}
-                        initialLayout={layoutContext.initialLayout.read}
-                        minSizes={layoutContext.minSizes.read}
-                        onSaveLayout={layoutContext.saveLayout}
-                        onResetLayout={layoutContext.resetLayout}
                     >
-                        <LayoutTabs names={["area", "status", "data"]}>
-                            <Area />
-                            <Status />
-                            <Data replaceSave={replaceSave} />
-                        </LayoutTabs>
-                        <Text
-                            saveData={saveData}
-                            command={command}
-                            commandLog={commandLog}
-                            setCommand={setCommand}
-                        />
-                        <Map />
+                        <LayoutSplit
+                            direction="horizontal"
+                            layoutRef={layoutContext.readLayoutRef}
+                            initialLayout={layoutContext.initialLayout.read}
+                            minSizes={layoutContext.minSizes.read}
+                            onSaveLayout={layoutContext.saveLayout}
+                        >
+                            <LayoutTabs names={["area", "status", "data"]}>
+                                <Area />
+                                <Status />
+                                <Data replaceSave={replaceSave} />
+                            </LayoutTabs>
+                            <Text
+                                saveData={saveData}
+                                command={command}
+                                commandLog={commandLog}
+                                setCommand={setCommand}
+                            />
+                            <Map />
+                        </LayoutSplit>
                     </Layout>
                 </ContextLayout.Provider>
             </ContextCommand.Provider>

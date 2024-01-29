@@ -1,14 +1,15 @@
-import { PlayIcon } from "@radix-ui/react-icons"
+import { LayoutIcon, PlayIcon } from "@radix-ui/react-icons"
 import { Link, Outlet, useLocation, useParams } from "@remix-run/react"
 import type { LoaderFunctionArgs } from "@vercel/remix"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
 import { Layout } from "~/components/layout/layout.tsx"
+import { LayoutSplit } from "~/components/layout/layoutSplit.tsx"
 import { LayoutTabs } from "~/components/layout/layoutTabs.tsx"
 import { Button } from "~/components/ui/button.tsx"
-import { Details } from "~/routes/write+/details/details.tsx"
-import { writeGridQuery } from "~/routes/write+/queries.server.ts"
-import { ResourceStack } from "~/routes/write+/resourceStack.tsx"
+import { Details } from "~/routes/write+/ui/details/details.tsx"
+import { writeGridQuery } from "~/routes/write+/lib/queries.server.ts"
+import { ResourceStack } from "~/routes/write+/ui/resourceStack.tsx"
 import {
     ContextLayout,
     layoutCookieSchema,
@@ -18,12 +19,12 @@ import { getSessionLayout } from "~/lib/sessionLayout.server.ts"
 import { superjson, useSuperLoaderData } from "~/lib/superjson.ts"
 import { paramsSchema as childParamsSchema } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import { useEffect, useState } from "react"
-import { Map } from "~/routes/write+/map/map.tsx"
+import { Map } from "~/routes/write+/ui/map/map.tsx"
 import {
     generateIdMap,
     generateTileCoordsMap,
-} from "~/routes/read+/processing.server.ts"
-import { Images } from "~/routes/write+/image/images.tsx"
+} from "~/routes/read+/lib/processing.server.ts"
+import { Images } from "~/routes/write+/ui/image/images.tsx"
 
 export const RESOURCE_TYPES = {
     TILES: "tiles",
@@ -115,38 +116,48 @@ export default function Route() {
                                 <PlayIcon className="h-5 w-5" />
                             </Link>
                         </Button>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={layoutContext.resetLayout}
+                        >
+                            <LayoutIcon className="h-5 w-5" />
+                        </Button>
                     </>
                 }
-                layoutRef={layoutContext.writeLayoutRef}
-                initialLayout={layoutContext.initialLayout.write}
-                minSizes={layoutContext.minSizes.write}
-                onSaveLayout={layoutContext.saveLayout}
-                onResetLayout={layoutContext.resetLayout}
             >
-                <LayoutTabs
-                    names={Object.values(RESOURCE_TYPES)}
-                    value={resourceTab}
-                    onValueChange={setResourceTab}
+                <LayoutSplit
+                    direction="horizontal"
+                    layoutRef={layoutContext.writeLayoutRef}
+                    initialLayout={layoutContext.initialLayout.write}
+                    minSizes={layoutContext.minSizes.write}
+                    onSaveLayout={layoutContext.saveLayout}
                 >
-                    <ResourceStack type={RESOURCE_TYPES.TILES} />
-                    <ResourceStack type={RESOURCE_TYPES.CHARACTERS} />
-                    <ResourceStack type={RESOURCE_TYPES.ITEMS} />
-                    <ResourceStack type={RESOURCE_TYPES.EVENTS} />
-                    <ResourceStack type={RESOURCE_TYPES.GATES} />
-                    <ResourceStack type={RESOURCE_TYPES.LOCKS} />
-                </LayoutTabs>
-                <LayoutTabs
-                    names={["map", "editor"]}
-                    value={mainTab}
-                    onValueChange={setMainTab}
-                >
-                    <Map />
-                    <Outlet />
-                </LayoutTabs>
-                <LayoutTabs names={["details", "images"]}>
-                    <Details />
-                    <Images />
-                </LayoutTabs>
+                    <LayoutTabs
+                        names={Object.values(RESOURCE_TYPES)}
+                        value={resourceTab}
+                        onValueChange={setResourceTab}
+                    >
+                        <ResourceStack type={RESOURCE_TYPES.TILES} />
+                        <ResourceStack type={RESOURCE_TYPES.CHARACTERS} />
+                        <ResourceStack type={RESOURCE_TYPES.ITEMS} />
+                        <ResourceStack type={RESOURCE_TYPES.EVENTS} />
+                        <ResourceStack type={RESOURCE_TYPES.GATES} />
+                        <ResourceStack type={RESOURCE_TYPES.LOCKS} />
+                    </LayoutTabs>
+                    <LayoutTabs
+                        names={["map", "editor"]}
+                        value={mainTab}
+                        onValueChange={setMainTab}
+                    >
+                        <Map />
+                        <Outlet />
+                    </LayoutTabs>
+                    <LayoutTabs names={["details", "images"]}>
+                        <Details />
+                        <Images />
+                    </LayoutTabs>
+                </LayoutSplit>
             </Layout>
         </ContextLayout.Provider>
     )

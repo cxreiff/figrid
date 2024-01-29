@@ -23,13 +23,13 @@ import {
     writeItemQuery,
     writeLockQuery,
     writeTileQuery,
-} from "~/routes/write+/queries.server.ts"
+} from "~/routes/write+/lib/queries.server.ts"
 import { items } from "~/database/schema/items.server.ts"
 import { tiles } from "~/database/schema/tiles.server.ts"
 import { locks } from "~/database/schema/locks.server.ts"
 import { Card } from "~/components/ui/card.tsx"
 import { auth } from "~/auth/auth.server.ts"
-import { ResourcePlaceholder } from "~/routes/write+/resourcePlaceholder.tsx"
+import { ResourcePlaceholder } from "~/routes/write+/ui/resourcePlaceholder.tsx"
 
 export const paramsSchema = z.object({
     resourceType: z.enum([

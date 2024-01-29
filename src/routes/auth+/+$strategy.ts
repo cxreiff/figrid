@@ -9,7 +9,7 @@ export async function loader() {
 export async function action({ request, params }: ActionFunctionArgs) {
     const { strategy } = z.object({ strategy: z.string() }).parse(params)
     return auth.authenticate(ROUTE_STRATEGY_MAP[strategy], request, {
-        successRedirect: "/protected",
+        successRedirect: "/",
         failureRedirect: "/auth/login",
     })
 }

@@ -13,11 +13,11 @@ import { Separator } from "~/components/ui/separator.tsx"
 
 export async function loader({ request }: LoaderFunctionArgs) {
     return auth.isAuthenticated(request, {
-        successRedirect: "/protected",
+        successRedirect: "/",
     })
 }
 
-export default function Login() {
+export default function Route() {
     return (
         <div className="flex min-h-screen flex-col items-center justify-center">
             <Form action="/auth/github" method="post" className="w-72">

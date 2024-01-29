@@ -1,5 +1,5 @@
 import type { AuthUser } from "~/auth/auth.server.ts"
-import type { GridQuery } from "~/routes/read+/queries.server.ts"
+import type { GridQuery } from "~/routes/read+/lib/queries.server.ts"
 import { useLocalStorage } from "~/lib/useLocalStorage.ts"
 
 export type SaveData = {

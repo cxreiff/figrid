@@ -28,7 +28,7 @@ import {
 
 export async function loader({ request }: LoaderFunctionArgs) {
     return auth.isAuthenticated(request, {
-        successRedirect: "/protected",
+        successRedirect: "/",
     })
 }
 
@@ -89,12 +89,12 @@ export async function action({ request }: ActionFunctionArgs) {
     })
 
     return await auth.authenticate(FORM_STRATEGY, request, {
-        successRedirect: "/protected",
+        successRedirect: "/",
         failureRedirect: "/auth/login",
     })
 }
 
-export default function Register() {
+export default function Route() {
     return (
         <div className="flex min-h-screen flex-col items-center justify-center">
             <Form action="/auth/github" method="post" className="w-72">

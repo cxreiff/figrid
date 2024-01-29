@@ -7,7 +7,7 @@ import type {
     WriteItemQuery,
     WriteLockQuery,
     WriteTileQuery,
-} from "~/routes/write+/queries.server.ts"
+} from "~/routes/write+/lib/queries.server.ts"
 
 export const RESOURCE_TYPES_WITH_ASSETS = [
     "characters",
@@ -20,8 +20,10 @@ export const ASSET_TYPES = ["images"] as const
 
 export const GRID_ASSET_DOMAIN = "https://assets.figrid.io/grids"
 
-export const TILE_FALLBACK_IMAGE = "https://assets.figrid.io/tiles/kitty.png"
-export const PLAYER_FALLBACK_IMAGE = "https://assets.figrid.io/tiles/kitty.png"
+export const GRID_FALLBACK_IMAGE = "https://assets.figrid.io/fallbacks/grid.png"
+export const TILE_FALLBACK_IMAGE = "https://assets.figrid.io/fallbacks/tile.png"
+export const PLAYER_FALLBACK_IMAGE =
+    "https://assets.figrid.io/fallbacks/character.png"
 
 type AssetUrlReturn<T extends typeof assets.$inferSelect | null> =
     T extends typeof assets.$inferSelect ? string : null
