@@ -38,7 +38,6 @@ export function AreaAdditional() {
                                         </TableCell>
                                         <TableCell>
                                             <Button
-                                                variant="ghost"
                                                 onClick={() =>
                                                     handleCommand("explore")
                                                 }

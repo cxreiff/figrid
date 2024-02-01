@@ -7,7 +7,7 @@ import {
     type SetStateAction,
 } from "react"
 import { Card } from "~/components/ui/card.tsx"
-import { InputWithIcon } from "~/components/ui/input.tsx"
+import { InputWithIcon } from "~/components/inputWithIcon.tsx"
 import { WaitSaveData } from "~/components/waitSaveData.tsx"
 import { availableCommands } from "~/routes/read+/lib/commands.ts"
 import type { loader } from "~/routes/read+/+$gridId.tsx"

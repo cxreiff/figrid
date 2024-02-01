@@ -6,9 +6,9 @@ import {
 import { Form } from "@remix-run/react"
 import { type LoaderFunctionArgs } from "@vercel/remix"
 import { auth } from "~/auth/auth.server.ts"
-import { ButtonIcon } from "~/components/buttonIcon.tsx"
+import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
+import { InputWithIcon } from "~/components/inputWithIcon.tsx"
 import { Button } from "~/components/ui/button.tsx"
-import { InputWithIcon } from "~/components/ui/input.tsx"
 import { Separator } from "~/components/ui/separator.tsx"
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -21,7 +21,7 @@ export default function Route() {
     return (
         <div className="flex min-h-screen flex-col items-center justify-center">
             <Form action="/auth/github" method="post" className="w-72">
-                <ButtonIcon
+                <ButtonWithIcon
                     icon={GitHubLogoIcon}
                     type="submit"
                     variant="outline"
@@ -29,7 +29,7 @@ export default function Route() {
                     className="w-full bg-card pr-6"
                 >
                     Login with GitHub
-                </ButtonIcon>
+                </ButtonWithIcon>
             </Form>
             <Separator className="my-4 w-64" />
             <Form

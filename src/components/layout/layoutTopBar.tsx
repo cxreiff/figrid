@@ -1,6 +1,8 @@
+import { QuestionMarkCircledIcon } from "@radix-ui/react-icons"
 import { Link } from "@remix-run/react"
 import type { ReactNode } from "react"
 import type { AuthUser } from "~/auth/auth.server.ts"
+import { ButtonWithIconLink } from "~/components/buttonWithIconLink.tsx"
 import { ProfileButton } from "~/components/profileButton.tsx"
 import { ThemeToggle } from "~/components/themeToggle.tsx"
 
@@ -22,6 +24,7 @@ export function LayoutTopBar({
             <h1 className="p-2 text-muted-foreground">{title}</h1>
             <hr className="mx-3 flex-1" />
             {iconButtons}
+            <ButtonWithIconLink to="/docs" icon={QuestionMarkCircledIcon} />
             <ThemeToggle />
             <ProfileButton user={user} />
         </div>

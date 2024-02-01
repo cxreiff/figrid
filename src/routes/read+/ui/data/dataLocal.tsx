@@ -28,7 +28,6 @@ export function DataLocal({
                 <WaitSaveData>
                     {(saveData) => (
                         <Button
-                            variant="ghost"
                             size="icon"
                             onClick={() =>
                                 setManualSave(saves.length, saveData)
@@ -62,14 +61,12 @@ export function DataLocal({
                                         </span>
                                         <Button
                                             className="ml-4"
-                                            variant="ghost"
                                             onClick={() => replaceSave(save)}
                                         >
                                             load
                                         </Button>
                                         <Button
                                             className="ml-4"
-                                            variant="ghost"
                                             onClick={() =>
                                                 setManualSave(index, saveData)
                                             }
@@ -77,7 +74,6 @@ export function DataLocal({
                                             save
                                         </Button>
                                         <Button
-                                            variant="ghost"
                                             size="icon"
                                             className="ml-4 mr-2"
                                             onClick={() => deleteSave(index)}

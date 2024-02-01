@@ -1,15 +1,14 @@
 import { Cross2Icon, EnterIcon } from "@radix-ui/react-icons"
-import type { IconProps } from "@radix-ui/react-icons/dist/types.js"
 import { useFetcher, useNavigate } from "@remix-run/react"
 import type { PropsWithChildren, ReactNode } from "react"
-import { ButtonIcon } from "~/components/buttonIcon.tsx"
+import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
 import { Card } from "~/components/ui/card.tsx"
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
 } from "~/components/ui/collapsible.tsx"
-import { cn } from "~/lib/misc.ts"
+import { cn, type IconType } from "~/lib/misc.ts"
 
 export function DetailsResourceCard<
     T extends { id: number; name: string; type?: string },
@@ -27,7 +26,7 @@ export function DetailsResourceCard<
     linkedResource: T
     navigateUrl: string
     unlinkUrl?: string
-    indicatorIcons?: ((props: IconProps) => ReactNode)[]
+    indicatorIcons?: IconType[]
     actionSlot?: ReactNode
     inactive?: boolean
 }>) {
@@ -62,7 +61,7 @@ export function DetailsResourceCard<
                         />
                     ))}
             </span>
-            <ButtonIcon
+            <ButtonWithIcon
                 icon={EnterIcon}
                 onClick={(event) => {
                     event.stopPropagation()
@@ -71,7 +70,7 @@ export function DetailsResourceCard<
             />
             {actionSlot}
             {unlinkUrl && (
-                <ButtonIcon
+                <ButtonWithIcon
                     icon={Cross2Icon}
                     onClick={(event) => {
                         event.stopPropagation()

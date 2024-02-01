@@ -18,10 +18,10 @@ import {
 } from "@tanstack/react-table"
 import { useState } from "react"
 import { ButtonGroup } from "~/components/buttonGroup.tsx"
+import { InputWithIcon } from "~/components/inputWithIcon.tsx"
 import { LayoutTitledScrolls } from "~/components/layout/layoutTitledScrolls.tsx"
 import { Button } from "~/components/ui/button.tsx"
 import { Card } from "~/components/ui/card.tsx"
-import { InputWithIcon } from "~/components/ui/input.tsx"
 import { cn } from "~/lib/misc.ts"
 
 export function CardStack<TValue>({
@@ -64,7 +64,6 @@ export function CardStack<TValue>({
             actionSlot={
                 onCreate && (
                     <Button
-                        variant="ghost"
                         size="icon"
                         className={cn({
                             "border-accent bg-[hsla(var(--accent)/0.4)]":
@@ -112,11 +111,10 @@ export function CardStack<TValue>({
                 </div>
             }
         >
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows.length ? (
                 table.getRowModel().rows.map((row) => (
                     <Button
                         key={row.id}
-                        variant="ghost"
                         className={cn("my-2 h-auto items-center p-3", {
                             "flex gap-3": mode === "full",
                             "mr-3 inline-block whitespace-nowrap [&>div]:inline-block [&>svg:first-child]:mr-2 [&>svg:first-child]:inline-block":

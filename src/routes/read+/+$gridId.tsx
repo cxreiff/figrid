@@ -25,10 +25,10 @@ import {
     useInitialLayoutContext,
 } from "~/lib/contextLayout.ts"
 import { getSessionLayout } from "~/lib/sessionLayout.server.ts"
-import { Button } from "~/components/ui/button.tsx"
-import { Link } from "@remix-run/react"
 import { LayoutIcon, Pencil2Icon } from "@radix-ui/react-icons"
 import { LayoutSplit } from "~/components/layout/layoutSplit.tsx"
+import { ButtonWithIconLink } from "~/components/buttonWithIconLink.tsx"
+import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
 
 const paramsSchema = z.object({ gridId: z.coerce.number() })
 
@@ -106,24 +106,15 @@ export default function Route() {
                         iconButtons={
                             <>
                                 {grid.id === user?.id && (
-                                    <Button
-                                        key={1}
-                                        variant="ghost"
-                                        size="icon"
-                                        asChild
-                                    >
-                                        <Link to={`/write/${grid.id}`}>
-                                            <Pencil2Icon className="h-5 w-5" />
-                                        </Link>
-                                    </Button>
+                                    <ButtonWithIconLink
+                                        to={`/write/${grid.id}`}
+                                        icon={Pencil2Icon}
+                                    />
                                 )}
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
+                                <ButtonWithIcon
+                                    icon={LayoutIcon}
                                     onClick={layoutContext.resetLayout}
-                                >
-                                    <LayoutIcon className="h-5 w-5" />
-                                </Button>
+                                />
                             </>
                         }
                     >

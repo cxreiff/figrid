@@ -10,7 +10,6 @@ export function ThemeToggle() {
 
     return (
         <Button
-            variant="ghost"
             size="icon"
             onClick={() =>
                 triggerThemeTransition(

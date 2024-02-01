@@ -1,6 +1,6 @@
 import { DoubleArrowDownIcon, DoubleArrowUpIcon } from "@radix-ui/react-icons"
 import type { Dispatch, ReactElement, ReactNode } from "react"
-import { ButtonIcon } from "~/components/buttonIcon.tsx"
+import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
 import { LayoutAccordion } from "~/components/layout/layoutAccordion.tsx"
 import { LayoutTitledScrolls } from "~/components/layout/layoutTitledScrolls.tsx"
 import type { ResourceType } from "~/routes/write+/+$gridId.tsx"
@@ -23,12 +23,12 @@ export function DetailsInfo({
             title="details"
             actionSlot={
                 expanded.length === Object.keys(accordionSection).length ? (
-                    <ButtonIcon
+                    <ButtonWithIcon
                         icon={DoubleArrowUpIcon}
                         onClick={() => setExpanded([])}
                     />
                 ) : (
-                    <ButtonIcon
+                    <ButtonWithIcon
                         icon={DoubleArrowDownIcon}
                         onClick={() =>
                             setExpanded(Object.keys(accordionSection))

@@ -1,11 +1,9 @@
-import type { IconProps } from "@radix-ui/react-icons/dist/types.js"
-import type { ReactNode } from "react"
-import { ButtonIcon } from "~/components/buttonIcon.tsx"
-import { cn } from "~/lib/misc.ts"
+import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
+import { cn, type IconType } from "~/lib/misc.ts"
 
 type Option<T> = {
     id: T
-    icon: (props: IconProps) => ReactNode
+    icon: IconType
     label?: string
 }
 
@@ -23,10 +21,9 @@ export function ButtonGroup<T extends string>({
     return (
         <div className={cn("w-fit rounded-lg border border-accent", className)}>
             {options.map((option) => (
-                <ButtonIcon
+                <ButtonWithIcon
                     key={option.id}
                     icon={option.icon}
-                    variant="ghost"
                     size="icon"
                     data-selected={selected === option.id}
                     onClick={() => onSelect(option.id)}
@@ -40,7 +37,7 @@ export function ButtonGroup<T extends string>({
                     )}
                 >
                     {option.label}
-                </ButtonIcon>
+                </ButtonWithIcon>
             ))}
         </div>
     )

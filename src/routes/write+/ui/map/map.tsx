@@ -12,7 +12,7 @@ import type {
     WriteTileWithCoords,
 } from "~/routes/read+/lib/processing.server.ts"
 import { MapTileCreate } from "~/routes/write+/ui/map/mapTileCreate.tsx"
-import { ButtonIcon } from "~/components/buttonIcon.tsx"
+import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
 import { ThickArrowDownIcon, ThickArrowUpIcon } from "@radix-ui/react-icons"
 import type { WriteGridQuery } from "~/routes/write+/lib/queries.server.ts"
 import { usePrevious } from "~/lib/usePrevious.ts"
@@ -155,9 +155,9 @@ export function Map() {
                 </div>
             </div>
             <div className="absolute right-3 top-3 flex flex-col items-center justify-center">
-                <ButtonIcon icon={ThickArrowUpIcon} onClick={increaseZ} />
+                <ButtonWithIcon icon={ThickArrowUpIcon} onClick={increaseZ} />
                 <span>{focusedCoords[2]}</span>
-                <ButtonIcon icon={ThickArrowDownIcon} onClick={decreaseZ} />
+                <ButtonWithIcon icon={ThickArrowDownIcon} onClick={decreaseZ} />
             </div>
         </Card>
     )

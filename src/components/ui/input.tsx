@@ -1,4 +1,3 @@
-import type { IconProps } from "@radix-ui/react-icons/dist/types.js"
 import * as React from "react"
 
 import { cn } from "~/lib/misc.ts"
@@ -23,21 +22,4 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 )
 Input.displayName = "Input"
 
-export interface IconInputProps
-    extends React.InputHTMLAttributes<HTMLInputElement> {
-    icon: (props: IconProps) => React.ReactNode
-}
-
-const InputWithIcon = React.forwardRef<HTMLInputElement, IconInputProps>(
-    ({ icon: Icon, className, ...props }, ref) => {
-        return (
-            <span className={cn("relative block h-9 rounded-md", className)}>
-                <Icon className="absolute inset-y-0 left-3 h-full" />
-                <Input ref={ref} className={"h-full pl-10"} {...props} />
-            </span>
-        )
-    },
-)
-InputWithIcon.displayName = "IconInput"
-
-export { Input, InputWithIcon }
+export { Input }

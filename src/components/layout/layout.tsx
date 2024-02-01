@@ -15,7 +15,7 @@ export function Layout({
 }) {
     return (
         <div className="relative h-screen w-full gap-3 p-4">
-            <header className="absolute inset-x-4 top-0 h-14">
+            <header className="absolute inset-0 h-14 px-4">
                 <LayoutTopBar
                     user={user}
                     title={title}

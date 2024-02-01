@@ -43,7 +43,6 @@ export function AreaCharacters() {
                                             </TableCell>
                                             <TableCell>
                                                 <Button
-                                                    variant="ghost"
                                                     onClick={() =>
                                                         handleCommand(
                                                             `look ${character.name.toLowerCase()}`,
@@ -55,7 +54,6 @@ export function AreaCharacters() {
                                             </TableCell>
                                             <TableCell>
                                                 <Button
-                                                    variant="ghost"
                                                     onClick={() =>
                                                         handleCommand(
                                                             `talk ${character.name.toLowerCase()}`,

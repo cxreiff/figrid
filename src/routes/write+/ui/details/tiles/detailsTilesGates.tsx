@@ -4,7 +4,7 @@ import type { loader as childLoader } from "~/routes/write+/$gridId+/$resourceTy
 import type { WriteTileQuery } from "~/routes/write+/lib/queries.server.ts"
 import { DetailsResourceCard } from "~/routes/write+/ui/details/detailsResourceCard.tsx"
 import { DetailsResourceLinker } from "~/routes/write+/ui/details/detailsResourceLinker.tsx"
-import { ButtonIcon } from "~/components/buttonIcon.tsx"
+import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
 import { Cross2Icon, PlusIcon } from "@radix-ui/react-icons"
 import { useFetcher } from "@remix-run/react"
 import { type loader } from "~/routes/write+/+$gridId.tsx"
@@ -43,7 +43,7 @@ export function DetailsTilesGates() {
                         inactive={!active}
                         actionSlot={
                             active ? (
-                                <ButtonIcon
+                                <ButtonWithIcon
                                     icon={Cross2Icon}
                                     onClick={() => {
                                         fetcher.submit(null, {
@@ -53,7 +53,7 @@ export function DetailsTilesGates() {
                                     }}
                                 />
                             ) : (
-                                <ButtonIcon
+                                <ButtonWithIcon
                                     icon={PlusIcon}
                                     onClick={() => {
                                         fetcher.submit(null, {

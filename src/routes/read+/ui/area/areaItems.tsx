@@ -47,7 +47,6 @@ export function AreaItems() {
                                         </TableCell>
                                         <TableCell>
                                             <Button
-                                                variant="ghost"
                                                 onClick={() =>
                                                     handleCommand(
                                                         `look ${item.name.toLowerCase()}`,
@@ -59,7 +58,6 @@ export function AreaItems() {
                                         </TableCell>
                                         <TableCell>
                                             <Button
-                                                variant="ghost"
                                                 onClick={() =>
                                                     handleCommand(
                                                         `take ${item.name.toLowerCase()}`,

@@ -10,14 +10,13 @@ const buttonVariants = cva(
         variants: {
             variant: {
                 default:
-                    "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90",
+                    "hover:bg-[hsla(var(--accent)/0.4)] text-accent-foreground disabled:bg-inherit",
                 destructive:
                     "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
                 outline:
                     "border border-accent bg-transparent shadow-sm hover:bg-[hsla(var(--accent)/0.4)] text-accent-foreground",
                 secondary:
                     "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
-                ghost: "hover:bg-[hsla(var(--accent)/0.4)] text-accent-foreground disabled:bg-inherit",
                 inline: "hover:bg-[hsla(var(--accent)/0.4)] text-accent-foreground -m-2 disabled:bg-inherit",
                 link: "text-primary underline-offset-4 hover:underline",
             },

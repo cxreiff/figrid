@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { cn } from "~/lib/misc.ts"
+import { cn, type IconType } from "~/lib/misc.ts"
 import { Button, type ButtonProps } from "~/components/ui/button.tsx"
 import {
     Command,
@@ -13,7 +13,6 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "~/components/ui/popover.tsx"
-import type { IconProps } from "@radix-ui/react-icons/dist/types.js"
 
 export function ActionBox<T extends { id: string | number; label: string }>({
     children,
@@ -25,7 +24,7 @@ export function ActionBox<T extends { id: string | number; label: string }>({
 }: ButtonProps & {
     className?: string
     options: T[]
-    icon: (props: IconProps) => React.ReactNode
+    icon: IconType
     onOptionSelect: (selectedId: T) => void
 }) {
     const [open, setOpen] = useState(false)
@@ -35,7 +34,6 @@ export function ActionBox<T extends { id: string | number; label: string }>({
             <PopoverTrigger aria-expanded={open} {...props} asChild>
                 <Button
                     role="combobox"
-                    variant="ghost"
                     aria-expanded={open}
                     className={cn(
                         "h-full w-full items-center justify-between p-1",

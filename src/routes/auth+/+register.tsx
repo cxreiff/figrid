@@ -14,9 +14,9 @@ import {
     hashPassword,
 } from "~/auth/auth.server.ts"
 import { FORM_STRATEGY } from "~/auth/strategies/form.server.ts"
-import { ButtonIcon } from "~/components/buttonIcon.tsx"
+import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
 import { Button } from "~/components/ui/button.tsx"
-import { InputWithIcon } from "~/components/ui/input.tsx"
+import { InputWithIcon } from "~/components/inputWithIcon.tsx"
 import { Separator } from "~/components/ui/separator.tsx"
 import { db } from "~/database/database.server.ts"
 import {
@@ -98,7 +98,7 @@ export default function Route() {
     return (
         <div className="flex min-h-screen flex-col items-center justify-center">
             <Form action="/auth/github" method="post" className="w-72">
-                <ButtonIcon
+                <ButtonWithIcon
                     icon={GitHubLogoIcon}
                     type="submit"
                     variant="outline"
@@ -106,7 +106,7 @@ export default function Route() {
                     className="w-full bg-card pr-6"
                 >
                     Login with GitHub
-                </ButtonIcon>
+                </ButtonWithIcon>
             </Form>
             <Separator className="my-4 w-64" />
             <Form className="flex w-72 flex-col gap-2" method="post">

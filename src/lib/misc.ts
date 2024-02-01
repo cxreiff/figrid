@@ -1,6 +1,9 @@
+import type { IconProps } from "@radix-ui/react-icons/dist/types.js"
 import { type ClassValue, clsx } from "clsx"
-import { useEffect, useMemo, useRef } from "react"
+import { useEffect, useMemo, useRef, type ReactNode } from "react"
 import { twMerge } from "tailwind-merge"
+
+export type IconType = (props: IconProps) => ReactNode
 
 export type Replace<T, Key extends keyof T, New> = Omit<T, Key> & {
     [P in Key]: New

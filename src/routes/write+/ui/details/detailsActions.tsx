@@ -1,7 +1,7 @@
 import { CopyIcon, TrashIcon } from "@radix-ui/react-icons"
 import { useFetcher, useNavigate } from "@remix-run/react"
 import { useState } from "react"
-import { ButtonIcon } from "~/components/buttonIcon.tsx"
+import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
 import { DeleteResourceDialog } from "~/components/deleteResourceDialog.tsx"
 import { type ResourceType } from "~/routes/write+/+$gridId.tsx"
 
@@ -20,7 +20,7 @@ export function DetailsActions({
     return (
         <div className="flex gap-3">
             {resourceType !== "gates" && (
-                <ButtonIcon
+                <ButtonWithIcon
                     icon={CopyIcon}
                     variant="outline"
                     className="flex-1"
@@ -31,16 +31,16 @@ export function DetailsActions({
                     }
                 >
                     duplicate
-                </ButtonIcon>
+                </ButtonWithIcon>
             )}
-            <ButtonIcon
+            <ButtonWithIcon
                 icon={TrashIcon}
                 variant="outline"
                 className="flex-1"
                 onClick={() => setDeleteModalOpen(true)}
             >
                 remove
-            </ButtonIcon>
+            </ButtonWithIcon>
             <DeleteResourceDialog
                 open={deleteModalOpen}
                 onOpenChange={setDeleteModalOpen}

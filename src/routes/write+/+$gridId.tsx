@@ -1,12 +1,11 @@
 import { LayoutIcon, PlayIcon } from "@radix-ui/react-icons"
-import { Link, Outlet, useLocation, useParams } from "@remix-run/react"
+import { Outlet, useLocation, useParams } from "@remix-run/react"
 import type { LoaderFunctionArgs } from "@vercel/remix"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
 import { Layout } from "~/components/layout/layout.tsx"
 import { LayoutSplit } from "~/components/layout/layoutSplit.tsx"
 import { LayoutTabs } from "~/components/layout/layoutTabs.tsx"
-import { Button } from "~/components/ui/button.tsx"
 import { Details } from "~/routes/write+/ui/details/details.tsx"
 import { writeGridQuery } from "~/routes/write+/lib/queries.server.ts"
 import { ResourceStack } from "~/routes/write+/ui/resourceStack.tsx"
@@ -25,6 +24,8 @@ import {
     generateTileCoordsMap,
 } from "~/routes/read+/lib/processing.server.ts"
 import { Images } from "~/routes/write+/ui/image/images.tsx"
+import { ButtonWithIconLink } from "~/components/buttonWithIconLink.tsx"
+import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
 
 export const RESOURCE_TYPES = {
     TILES: "tiles",
@@ -111,18 +112,14 @@ export default function Route() {
                 title={`${grid.name} - editing`}
                 iconButtons={
                     <>
-                        <Button variant="ghost" size="icon" asChild>
-                            <Link to={`/read/${grid.id}`}>
-                                <PlayIcon className="h-5 w-5" />
-                            </Link>
-                        </Button>
-                        <Button
-                            variant="ghost"
-                            size="icon"
+                        <ButtonWithIconLink
+                            to={`/read/${grid.id}`}
+                            icon={PlayIcon}
+                        />
+                        <ButtonWithIcon
                             onClick={layoutContext.resetLayout}
-                        >
-                            <LayoutIcon className="h-5 w-5" />
-                        </Button>
+                            icon={LayoutIcon}
+                        />
                     </>
                 }
             >

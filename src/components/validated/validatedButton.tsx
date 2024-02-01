@@ -1,21 +1,20 @@
-import type { IconProps } from "@radix-ui/react-icons/dist/types.js"
 import { useIsSubmitting } from "remix-validated-form"
-import { ButtonIcon } from "~/components/buttonIcon.tsx"
+import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
 import type { ButtonProps } from "~/components/ui/button.tsx"
+import type { IconType } from "~/lib/misc.ts"
 
 export function ValidatedButton({
     icon: Icon,
     type = "button",
     disabled,
     ...props
-}: ButtonProps & { icon: (props: IconProps) => React.ReactNode }) {
+}: ButtonProps & { icon: IconType }) {
     const isSubmitting = useIsSubmitting()
 
     return (
-        <ButtonIcon
+        <ButtonWithIcon
             icon={Icon}
             type={type}
-            alignIcon="left"
             disabled={isSubmitting || disabled}
             {...props}
         />

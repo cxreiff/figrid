@@ -7,7 +7,7 @@ import { TILE_DIMENSIONS } from "~/routes/write+/ui/map/map.tsx"
 import type { WriteTileWithCoords } from "~/routes/read+/lib/processing.server.ts"
 import { useFetcher, useNavigate, useParams } from "@remix-run/react"
 import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
-import { ButtonIcon } from "~/components/buttonIcon.tsx"
+import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
 
 export function MapTile({
     current,
@@ -80,7 +80,7 @@ export function MapTile({
                                 }}
                             />
                         ) : (
-                            <ButtonIcon
+                            <ButtonWithIcon
                                 icon={PlusIcon}
                                 key={gate.id}
                                 className={`
@@ -124,7 +124,7 @@ export function MapTile({
                                 <ThickArrowUpIcon className="h-full w-full" />
                             </div>
                         ) : (
-                            <ButtonIcon
+                            <ButtonWithIcon
                                 key={`${gate.id}`}
                                 icon={PlusIcon}
                                 className={
@@ -160,7 +160,7 @@ export function MapTile({
                                 <ThickArrowDownIcon className="h-full w-full" />
                             </div>
                         ) : (
-                            <ButtonIcon
+                            <ButtonWithIcon
                                 key={`${gate.id}`}
                                 icon={PlusIcon}
                                 className={

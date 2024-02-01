@@ -93,7 +93,6 @@ export function MapTile({
                                     !!saveData.currentEventId ||
                                     unfulfilled.length > 0
                                 }
-                                variant="ghost"
                                 size="icon"
                             >
                                 <ThickArrowUpIcon className="h-full w-full" />
@@ -119,7 +118,6 @@ export function MapTile({
                                     !!saveData.currentEventId ||
                                     unfulfilled.length > 0
                                 }
-                                variant="ghost"
                                 size="icon"
                             >
                                 <ThickArrowDownIcon className="h-full w-full" />
