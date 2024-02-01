@@ -1,8 +1,8 @@
 import { DoubleArrowDownIcon, DoubleArrowUpIcon } from "@radix-ui/react-icons"
 import type { Dispatch, ReactElement, ReactNode } from "react"
-import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
-import { LayoutAccordion } from "~/components/layout/layoutAccordion.tsx"
-import { LayoutTitledScrolls } from "~/components/layout/layoutTitledScrolls.tsx"
+import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
+import { LayoutAccordion } from "~/ui/layout/layoutAccordion.tsx"
+import { LayoutTitledScrolls } from "~/ui/layout/layoutTitledScrolls.tsx"
 import type { ResourceType } from "~/routes/write+/+$gridId.tsx"
 
 export function DetailsInfo({

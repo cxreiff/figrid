@@ -1,12 +1,12 @@
 import { useContext } from "react"
-import { Card } from "~/components/ui/card.tsx"
+import { Card } from "~/ui/primitives/card.tsx"
 import { AreaAdditional } from "~/routes/read+/ui/area/areaAdditional.tsx"
 import { AreaCharacters } from "~/routes/read+/ui/area/areaCharacters.tsx"
 import { AreaImage } from "~/routes/read+/ui/area/areaImage.tsx"
 import { AreaItems } from "~/routes/read+/ui/area/areaItems.tsx"
 import { ContextLayout } from "~/lib/contextLayout.ts"
-import { LayoutSplit } from "~/components/layout/layoutSplit.tsx"
-import { Scroller } from "~/components/scroller.tsx"
+import { LayoutSplit } from "~/ui/layout/layoutSplit.tsx"
+import { Scroller } from "~/ui/scroller.tsx"
 
 export function Area() {
     const { areaLayoutRef, initialLayout, minSizes, saveLayout } =

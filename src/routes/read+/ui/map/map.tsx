@@ -1,9 +1,9 @@
-import { Card } from "~/components/ui/card.tsx"
+import { Card } from "~/ui/primitives/card.tsx"
 import { MapTile } from "~/routes/read+/ui/map/mapTile.tsx"
 import { indicesArray } from "~/lib/misc.ts"
 
 import { useContext } from "react"
-import { WaitSaveData } from "~/components/waitSaveData.tsx"
+import { WaitSaveData } from "~/ui/waitSaveData.tsx"
 import type { TileWithCoords } from "~/routes/read+/lib/processing.server.ts"
 import type { loader } from "~/routes/read+/+$gridId.tsx"
 import { ContextCommand } from "~/lib/contextCommand.ts"

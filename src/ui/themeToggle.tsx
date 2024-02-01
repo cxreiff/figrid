@@ -2,7 +2,7 @@ import { MoonIcon, SunIcon } from "@radix-ui/react-icons"
 import { useContext } from "react"
 import { Theme } from "remix-themes"
 
-import { Button } from "~/components/ui/button.tsx"
+import { Button } from "~/ui/primitives/button.tsx"
 import { ContextThemeTransition } from "~/lib/contextThemeTransition.ts"
 
 export function ThemeToggle() {

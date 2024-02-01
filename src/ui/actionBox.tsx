@@ -1,18 +1,18 @@
 import { useState } from "react"
 import { cn, type IconType } from "~/lib/misc.ts"
-import { Button, type ButtonProps } from "~/components/ui/button.tsx"
+import { Button, type ButtonProps } from "~/ui/primitives/button.tsx"
 import {
     Command,
     CommandEmpty,
     CommandGroup,
     CommandInput,
     CommandItem,
-} from "~/components/ui/command.tsx"
+} from "~/ui/primitives/command.tsx"
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "~/components/ui/popover.tsx"
+} from "~/ui/primitives/popover.tsx"
 
 export function ActionBox<T extends { id: string | number; label: string }>({
     children,

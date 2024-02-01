@@ -1,8 +1,8 @@
 import { CopyIcon, TrashIcon } from "@radix-ui/react-icons"
 import { useFetcher, useNavigate } from "@remix-run/react"
 import { useState } from "react"
-import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
-import { DeleteResourceDialog } from "~/components/deleteResourceDialog.tsx"
+import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
+import { DeleteResourceDialog } from "~/ui/deleteResourceDialog.tsx"
 import { type ResourceType } from "~/routes/write+/+$gridId.tsx"
 
 export function DetailsActions({

@@ -1,13 +1,13 @@
 import { PlusIcon, TrashIcon } from "@radix-ui/react-icons"
-import { Image } from "~/components/image.tsx"
-import { Button } from "~/components/ui/button.tsx"
-import { Card } from "~/components/ui/card.tsx"
-import { WaitSaveData } from "~/components/waitSaveData.tsx"
+import { Image } from "~/ui/image.tsx"
+import { Button } from "~/ui/primitives/button.tsx"
+import { Card } from "~/ui/primitives/card.tsx"
+import { WaitSaveData } from "~/ui/waitSaveData.tsx"
 import type { loader } from "~/routes/read+/+$gridId.tsx"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
 import { useManualSaveData } from "~/lib/useManualSaveData.ts"
 import { type useSaveData } from "~/lib/useSaveData.ts"
-import { LayoutTitledScrolls } from "~/components/layout/layoutTitledScrolls.tsx"
+import { LayoutTitledScrolls } from "~/ui/layout/layoutTitledScrolls.tsx"
 import { TILE_FALLBACK_IMAGE, assetUrl } from "~/lib/assets.ts"
 
 export function DataLocal({

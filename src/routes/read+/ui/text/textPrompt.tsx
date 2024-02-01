@@ -6,9 +6,9 @@ import {
     type RefObject,
     type SetStateAction,
 } from "react"
-import { Card } from "~/components/ui/card.tsx"
-import { InputWithIcon } from "~/components/inputWithIcon.tsx"
-import { WaitSaveData } from "~/components/waitSaveData.tsx"
+import { Card } from "~/ui/primitives/card.tsx"
+import { InputWithIcon } from "~/ui/inputWithIcon.tsx"
+import { WaitSaveData } from "~/ui/waitSaveData.tsx"
 import { availableCommands } from "~/routes/read+/lib/commands.ts"
 import type { loader } from "~/routes/read+/+$gridId.tsx"
 import { ContextCommand } from "~/lib/contextCommand.ts"

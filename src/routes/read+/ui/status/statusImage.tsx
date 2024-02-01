@@ -1,5 +1,5 @@
-import { Image } from "~/components/image.tsx"
-import { WaitSaveData } from "~/components/waitSaveData.tsx"
+import { Image } from "~/ui/image.tsx"
+import { WaitSaveData } from "~/ui/waitSaveData.tsx"
 import type { loader } from "~/routes/read+/+$gridId.tsx"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
 import { PLAYER_FALLBACK_IMAGE, assetUrl } from "~/lib/assets.ts"

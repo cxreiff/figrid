@@ -1,4 +1,4 @@
-import { Wait } from "~/components/wait.tsx"
+import { Wait } from "~/ui/wait.tsx"
 import { useSuperLoaderData, useSuperMatch } from "~/lib/superjson.ts"
 import type { loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import type { WriteLockQuery } from "~/routes/write+/lib/queries.server.ts"

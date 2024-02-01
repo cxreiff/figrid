@@ -5,7 +5,7 @@ import {
     ResizableHandle,
     ResizablePanel,
     ResizablePanelGroup,
-} from "~/components/ui/resizable.tsx"
+} from "~/ui/primitives/resizable.tsx"
 
 export function LayoutSplit<T extends number[]>({
     children,

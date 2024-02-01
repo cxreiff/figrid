@@ -1,11 +1,11 @@
-import { Card } from "~/components/ui/card.tsx"
+import { Card } from "~/ui/primitives/card.tsx"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
 import type { loader } from "~/routes/write+/+$gridId.tsx"
 import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import { useParams } from "@remix-run/react"
-import { Image } from "~/components/image.tsx"
+import { Image } from "~/ui/image.tsx"
 import { assetUrl } from "~/lib/assets.ts"
-import { Scroller } from "~/components/scroller.tsx"
+import { Scroller } from "~/ui/scroller.tsx"
 
 export function ImagesPicker() {
     const { resourceType } = paramsSchema.partial().parse(useParams())

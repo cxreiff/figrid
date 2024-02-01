@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { LayoutSplit } from "~/components/layout/layoutSplit.tsx"
+import { LayoutSplit } from "~/ui/layout/layoutSplit.tsx"
 import { ContextLayout } from "~/lib/contextLayout.ts"
 import { ImagesPicker } from "~/routes/write+/ui/image/imagesPicker.tsx"
 import { ImagesDisplay } from "~/routes/write+/ui/image/imagesDisplay.tsx"

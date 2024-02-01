@@ -1,6 +1,6 @@
-import { Button } from "~/components/ui/button.tsx"
+import { Button } from "~/ui/primitives/button.tsx"
 import { useContext } from "react"
-import { WaitSaveData } from "~/components/waitSaveData.tsx"
+import { WaitSaveData } from "~/ui/waitSaveData.tsx"
 import type { loader } from "~/routes/read+/+$gridId.tsx"
 import { ContextCommand } from "~/lib/contextCommand.ts"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
@@ -9,7 +9,7 @@ import {
     TableBody,
     TableCell,
     TableRow,
-} from "~/components/ui/table.tsx"
+} from "~/ui/primitives/table.tsx"
 
 export function StatusInventory() {
     const { itemIdMap, itemInstanceIdMap } = useSuperLoaderData<typeof loader>()

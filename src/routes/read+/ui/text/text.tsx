@@ -1,9 +1,9 @@
-import { Card } from "~/components/ui/card.tsx"
+import { Card } from "~/ui/primitives/card.tsx"
 import { useRef, type Dispatch, type SetStateAction, useEffect } from "react"
 import { TextContent } from "~/routes/read+/ui/text/textContent.tsx"
 import { TextPrompt } from "~/routes/read+/ui/text/textPrompt.tsx"
 import type { SaveData } from "~/lib/useSaveData.ts"
-import { Scroller } from "~/components/scroller.tsx"
+import { Scroller } from "~/ui/scroller.tsx"
 
 export function Text({
     saveData,

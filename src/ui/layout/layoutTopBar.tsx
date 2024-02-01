@@ -2,9 +2,9 @@ import { QuestionMarkCircledIcon } from "@radix-ui/react-icons"
 import { Link } from "@remix-run/react"
 import type { ReactNode } from "react"
 import type { AuthUser } from "~/auth/auth.server.ts"
-import { ButtonWithIconLink } from "~/components/buttonWithIconLink.tsx"
-import { ProfileButton } from "~/components/profileButton.tsx"
-import { ThemeToggle } from "~/components/themeToggle.tsx"
+import { ButtonWithIconLink } from "~/ui/buttonWithIconLink.tsx"
+import { ProfileButton } from "~/ui/profileButton.tsx"
+import { ThemeToggle } from "~/ui/themeToggle.tsx"
 
 export function LayoutTopBar({
     user,

@@ -14,10 +14,10 @@ import {
     hashPassword,
 } from "~/auth/auth.server.ts"
 import { FORM_STRATEGY } from "~/auth/strategies/form.server.ts"
-import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
-import { Button } from "~/components/ui/button.tsx"
-import { InputWithIcon } from "~/components/inputWithIcon.tsx"
-import { Separator } from "~/components/ui/separator.tsx"
+import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
+import { Button } from "~/ui/primitives/button.tsx"
+import { InputWithIcon } from "~/ui/inputWithIcon.tsx"
+import { Separator } from "~/ui/primitives/separator.tsx"
 import { db } from "~/database/database.server.ts"
 import {
     passwords,

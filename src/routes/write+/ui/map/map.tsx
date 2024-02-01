@@ -1,4 +1,4 @@
-import { Card } from "~/components/ui/card.tsx"
+import { Card } from "~/ui/primitives/card.tsx"
 import { MapTile } from "~/routes/write+/ui/map/mapTile.tsx"
 import { defined, indicesArray } from "~/lib/misc.ts"
 
@@ -12,7 +12,7 @@ import type {
     WriteTileWithCoords,
 } from "~/routes/read+/lib/processing.server.ts"
 import { MapTileCreate } from "~/routes/write+/ui/map/mapTileCreate.tsx"
-import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
+import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
 import { ThickArrowDownIcon, ThickArrowUpIcon } from "@radix-ui/react-icons"
 import type { WriteGridQuery } from "~/routes/write+/lib/queries.server.ts"
 import { usePrevious } from "~/lib/usePrevious.ts"

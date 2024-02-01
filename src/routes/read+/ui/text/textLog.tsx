@@ -1,4 +1,4 @@
-import { TextTyper } from "~/components/textTyper.tsx"
+import { TextTyper } from "~/ui/textTyper.tsx"
 
 export function TextLog({ commandLog }: { commandLog: string[] }) {
     return commandLog.map((message, index) => (

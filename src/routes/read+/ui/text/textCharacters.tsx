@@ -1,5 +1,5 @@
-import { TextTyper } from "~/components/textTyper.tsx"
-import { Button } from "~/components/ui/button.tsx"
+import { TextTyper } from "~/ui/textTyper.tsx"
+import { Button } from "~/ui/primitives/button.tsx"
 import type { TileWithCoords } from "~/routes/read+/lib/processing.server.ts"
 
 export function TextCharacters({

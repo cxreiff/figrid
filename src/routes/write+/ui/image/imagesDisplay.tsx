@@ -1,10 +1,10 @@
-import { Card } from "~/components/ui/card.tsx"
+import { Card } from "~/ui/primitives/card.tsx"
 import { useSuperMatch } from "~/lib/superjson.ts"
 import { type loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import { ResourcePlaceholder } from "~/routes/write+/ui/resourcePlaceholder.tsx"
 import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import { useParams } from "@remix-run/react"
-import { Image } from "~/components/image.tsx"
+import { Image } from "~/ui/image.tsx"
 import {
     TILE_FALLBACK_IMAGE,
     assetUrl,

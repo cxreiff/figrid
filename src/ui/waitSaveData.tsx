@@ -1,5 +1,5 @@
 import { useContext, type ComponentProps } from "react"
-import { Wait } from "~/components/wait.tsx"
+import { Wait } from "~/ui/wait.tsx"
 import { ContextSaveData } from "~/lib/contextSaveData.ts"
 import type { SaveData } from "~/lib/useSaveData.ts"
 

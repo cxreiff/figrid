@@ -1,4 +1,4 @@
-import { Button, type ButtonProps } from "~/components/ui/button.tsx"
+import { Button, type ButtonProps } from "~/ui/primitives/button.tsx"
 import { cn, type IconType } from "~/lib/misc.ts"
 
 export function ButtonWithIcon({

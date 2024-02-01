@@ -5,10 +5,10 @@ import {
     getCoreRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
-import { InputWithIcon } from "~/components/inputWithIcon.tsx"
-import { LayoutTitledScrolls } from "~/components/layout/layoutTitledScrolls.tsx"
-import { Card } from "~/components/ui/card.tsx"
+import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
+import { InputWithIcon } from "~/ui/inputWithIcon.tsx"
+import { LayoutTitledScrolls } from "~/ui/layout/layoutTitledScrolls.tsx"
+import { Card } from "~/ui/primitives/card.tsx"
 import {
     Table,
     TableBody,
@@ -16,7 +16,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "~/components/ui/table.tsx"
+} from "~/ui/primitives/table.tsx"
 
 export function GridTable<TData extends { id: number }, TValue>({
     columns,

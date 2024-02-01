@@ -17,11 +17,11 @@ import {
     type SortingState,
 } from "@tanstack/react-table"
 import { useState } from "react"
-import { ButtonGroup } from "~/components/buttonGroup.tsx"
-import { InputWithIcon } from "~/components/inputWithIcon.tsx"
-import { LayoutTitledScrolls } from "~/components/layout/layoutTitledScrolls.tsx"
-import { Button } from "~/components/ui/button.tsx"
-import { Card } from "~/components/ui/card.tsx"
+import { ButtonGroup } from "~/ui/buttonGroup.tsx"
+import { InputWithIcon } from "~/ui/inputWithIcon.tsx"
+import { LayoutTitledScrolls } from "~/ui/layout/layoutTitledScrolls.tsx"
+import { Button } from "~/ui/primitives/button.tsx"
+import { Card } from "~/ui/primitives/card.tsx"
 import { cn } from "~/lib/misc.ts"
 
 export function CardStack<TValue>({

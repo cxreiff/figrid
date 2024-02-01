@@ -7,7 +7,7 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-} from "~/components/ui/alert-dialog.tsx"
+} from "~/ui/primitives/alert-dialog.tsx"
 
 export function DeleteResourceDialog({
     open,

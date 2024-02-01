@@ -1,4 +1,4 @@
-import { Card } from "~/components/ui/card.tsx"
+import { Card } from "~/ui/primitives/card.tsx"
 import { ResourcePlaceholder } from "~/routes/write+/ui/resourcePlaceholder.tsx"
 
 export default function Route() {

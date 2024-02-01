@@ -1,5 +1,5 @@
 import type { CheckboxProps } from "@radix-ui/react-checkbox"
-import { Checkbox } from "~/components/ui/checkbox.tsx"
+import { Checkbox } from "~/ui/primitives/checkbox.tsx"
 import { cn } from "~/lib/misc.ts"
 
 export function LabeledCheckbox({

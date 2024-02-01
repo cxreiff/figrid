@@ -4,7 +4,7 @@ import {
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
-} from "~/components/ui/accordion.tsx"
+} from "~/ui/primitives/accordion.tsx"
 
 export function LayoutAccordion({
     expanded,

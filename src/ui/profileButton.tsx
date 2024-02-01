@@ -5,11 +5,11 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu.tsx"
+} from "~/ui/primitives/dropdown-menu.tsx"
 import { Link } from "@remix-run/react"
 import { type AuthUser } from "~/auth/auth.server.ts"
-import { Button } from "~/components/ui/button.tsx"
-import { ProfileAvatar } from "~/components/profileAvatar.tsx"
+import { Button } from "~/ui/primitives/button.tsx"
+import { ProfileAvatar } from "~/ui/profileAvatar.tsx"
 
 export function ProfileButton({ user }: { user: AuthUser | null }) {
     return (

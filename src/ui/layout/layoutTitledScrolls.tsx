@@ -1,8 +1,8 @@
 import {
     LayoutTitled,
     type LayoutTitledProps,
-} from "~/components/layout/layoutTitled.tsx"
-import { Scroller } from "~/components/scroller.tsx"
+} from "~/ui/layout/layoutTitled.tsx"
+import { Scroller } from "~/ui/scroller.tsx"
 
 export function LayoutTitledScrolls({ children, ...props }: LayoutTitledProps) {
     return (

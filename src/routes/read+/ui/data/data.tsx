@@ -1,4 +1,4 @@
-import { Card } from "~/components/ui/card.tsx"
+import { Card } from "~/ui/primitives/card.tsx"
 import { DataLocal } from "~/routes/read+/ui/data/dataLocal.tsx"
 import { type useSaveData } from "~/lib/useSaveData.ts"
 

@@ -5,7 +5,7 @@ import {
     PersonIcon,
 } from "@radix-ui/react-icons"
 import { useContext } from "react"
-import { Button } from "~/components/ui/button.tsx"
+import { Button } from "~/ui/primitives/button.tsx"
 import {
     availableItemsMap,
     splitLockInstances,

@@ -1,11 +1,11 @@
 import { type ReactNode } from "react"
-import { Card } from "~/components/ui/card.tsx"
+import { Card } from "~/ui/primitives/card.tsx"
 import {
     Tabs,
     TabsContent,
     TabsList,
     TabsTrigger,
-} from "~/components/ui/tabs.tsx"
+} from "~/ui/primitives/tabs.tsx"
 
 export function LayoutTabs<T extends string[]>({
     names,

@@ -1,6 +1,6 @@
 import { useParams } from "@remix-run/react"
 import { useMemo, useState } from "react"
-import { Card } from "~/components/ui/card.tsx"
+import { Card } from "~/ui/primitives/card.tsx"
 import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import { DetailsCharactersEvents } from "~/routes/write+/ui/details/characters/detailsCharactersEvents.tsx"
 import { DetailsCharactersTiles } from "~/routes/write+/ui/details/characters/detailsCharactersTiles.tsx"

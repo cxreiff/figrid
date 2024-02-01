@@ -25,7 +25,7 @@ import {
 } from "~/lib/contextThemeTransition.ts"
 import { useContext } from "react"
 import { cn } from "~/lib/misc.ts"
-import { LoadingIndicator } from "~/components/loadingIndicator.tsx"
+import { LoadingIndicator } from "~/ui/loadingIndicator.tsx"
 
 export const config = { runtime: "edge" }
 

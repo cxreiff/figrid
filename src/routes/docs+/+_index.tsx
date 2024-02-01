@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs } from "@vercel/remix"
 import { auth } from "~/auth/auth.server.ts"
-import { Layout } from "~/components/layout/layout.tsx"
+import { Layout } from "~/ui/layout/layout.tsx"
 import { superjson, useSuperLoaderData } from "~/lib/superjson.ts"
 
 export async function loader({ request }: LoaderFunctionArgs) {

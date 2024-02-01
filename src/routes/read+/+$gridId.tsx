@@ -2,7 +2,7 @@ import { useState } from "react"
 import { type LoaderFunctionArgs } from "@vercel/remix"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
-import { Layout } from "~/components/layout/layout.tsx"
+import { Layout } from "~/ui/layout/layout.tsx"
 import { Text } from "~/routes/read+/ui/text/text.tsx"
 import { Map } from "~/routes/read+/ui/map/map.tsx"
 import {
@@ -11,7 +11,7 @@ import {
 } from "~/routes/read+/lib/processing.server.ts"
 import { handleCommand } from "~/routes/read+/lib/commands.ts"
 import { useSaveData } from "~/lib/useSaveData.ts"
-import { LayoutTabs } from "~/components/layout/layoutTabs.tsx"
+import { LayoutTabs } from "~/ui/layout/layoutTabs.tsx"
 import { Area } from "~/routes/read+/ui/area/area.tsx"
 import { Status } from "~/routes/read+/ui/status/status.tsx"
 import { Data } from "~/routes/read+/ui/data/data.tsx"
@@ -26,9 +26,9 @@ import {
 } from "~/lib/contextLayout.ts"
 import { getSessionLayout } from "~/lib/sessionLayout.server.ts"
 import { LayoutIcon, Pencil2Icon } from "@radix-ui/react-icons"
-import { LayoutSplit } from "~/components/layout/layoutSplit.tsx"
-import { ButtonWithIconLink } from "~/components/buttonWithIconLink.tsx"
-import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
+import { LayoutSplit } from "~/ui/layout/layoutSplit.tsx"
+import { ButtonWithIconLink } from "~/ui/buttonWithIconLink.tsx"
+import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
 
 const paramsSchema = z.object({ gridId: z.coerce.number() })
 

@@ -1,10 +1,10 @@
 import { useContext } from "react"
-import { Card } from "~/components/ui/card.tsx"
+import { Card } from "~/ui/primitives/card.tsx"
 import { StatusImage } from "~/routes/read+/ui/status/statusImage.tsx"
 import { StatusInventory } from "~/routes/read+/ui/status/statusInventory.tsx"
 import { ContextLayout } from "~/lib/contextLayout.ts"
-import { LayoutSplit } from "~/components/layout/layoutSplit.tsx"
-import { Scroller } from "~/components/scroller.tsx"
+import { LayoutSplit } from "~/ui/layout/layoutSplit.tsx"
+import { Scroller } from "~/ui/scroller.tsx"
 
 export function Status() {
     const { statusLayoutRef, initialLayout, minSizes, saveLayout } =

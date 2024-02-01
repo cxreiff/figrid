@@ -1,13 +1,13 @@
 import { Cross2Icon, EnterIcon } from "@radix-ui/react-icons"
 import { useFetcher, useNavigate } from "@remix-run/react"
 import type { PropsWithChildren, ReactNode } from "react"
-import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
-import { Card } from "~/components/ui/card.tsx"
+import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
+import { Card } from "~/ui/primitives/card.tsx"
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
-} from "~/components/ui/collapsible.tsx"
+} from "~/ui/primitives/collapsible.tsx"
 import { cn, type IconType } from "~/lib/misc.ts"
 
 export function DetailsResourceCard<

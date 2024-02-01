@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import type { loader } from "~/routes/read+/+$gridId.tsx"
-import { WaitSaveData } from "~/components/waitSaveData.tsx"
+import { WaitSaveData } from "~/ui/waitSaveData.tsx"
 import { ContextCommand } from "~/lib/contextCommand.ts"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
 import {
@@ -8,8 +8,8 @@ import {
     TableBody,
     TableCell,
     TableRow,
-} from "~/components/ui/table.tsx"
-import { Button } from "~/components/ui/button.tsx"
+} from "~/ui/primitives/table.tsx"
+import { Button } from "~/ui/primitives/button.tsx"
 
 export function AreaAdditional() {
     const { tileIdMap } = useSuperLoaderData<typeof loader>()

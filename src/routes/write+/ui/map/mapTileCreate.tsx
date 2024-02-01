@@ -1,6 +1,6 @@
 import { PlusIcon } from "@radix-ui/react-icons"
 import { useFetcher } from "@remix-run/react"
-import { ActionBox } from "~/components/actionBox.tsx"
+import { ActionBox } from "~/ui/actionBox.tsx"
 import type { gates } from "~/database/schema/gates.server.ts"
 import { TILE_DIMENSIONS } from "~/routes/write+/ui/map/map.tsx"
 import type { WriteGridQuery } from "~/routes/write+/lib/queries.server.ts"

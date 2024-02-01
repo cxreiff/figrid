@@ -1,5 +1,5 @@
 import { Link, type LinkProps } from "@remix-run/react"
-import { Button, type ButtonProps } from "~/components/ui/button.tsx"
+import { Button, type ButtonProps } from "~/ui/primitives/button.tsx"
 import { cn, type IconType } from "~/lib/misc.ts"
 
 export function ButtonWithIconLink({

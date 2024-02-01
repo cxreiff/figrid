@@ -1,5 +1,5 @@
 import { useFetcher } from "@remix-run/react"
-import { LabeledCheckbox } from "~/components/labeledCheckbox.tsx"
+import { LabeledCheckbox } from "~/ui/labeledCheckbox.tsx"
 
 export function DetailsResourceCheckbox<T extends string>({
     field,

@@ -1,6 +1,6 @@
 import { type ReactNode } from "react"
 import type { AuthUser } from "~/auth/auth.server.ts"
-import { LayoutTopBar } from "~/components/layout/layoutTopBar.tsx"
+import { LayoutTopBar } from "~/ui/layout/layoutTopBar.tsx"
 
 export function Layout({
     children,

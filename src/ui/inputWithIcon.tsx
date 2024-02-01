@@ -1,5 +1,5 @@
 import type { ComponentPropsWithRef } from "react"
-import { Input } from "~/components/ui/input.tsx"
+import { Input } from "~/ui/primitives/input.tsx"
 import { cn, type IconType } from "~/lib/misc.ts"
 
 export function InputWithIcon({

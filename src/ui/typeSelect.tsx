@@ -4,7 +4,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "~/components/ui/select.tsx"
+} from "~/ui/primitives/select.tsx"
 
 export function TypeSelect<T extends string>({
     options,

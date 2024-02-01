@@ -1,6 +1,6 @@
 import { AvatarIcon } from "@radix-ui/react-icons"
 import { type AuthUser } from "~/auth/auth.server.ts"
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar.tsx"
+import { Avatar, AvatarFallback, AvatarImage } from "~/ui/primitives/avatar.tsx"
 
 export function ProfileAvatar({ user }: { user: AuthUser | null }) {
     return user ? (

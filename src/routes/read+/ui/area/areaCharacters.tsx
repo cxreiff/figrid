@@ -3,13 +3,13 @@ import {
     TableBody,
     TableCell,
     TableRow,
-} from "~/components/ui/table.tsx"
+} from "~/ui/primitives/table.tsx"
 import { useContext } from "react"
 import type { loader } from "~/routes/read+/+$gridId.tsx"
-import { WaitSaveData } from "~/components/waitSaveData.tsx"
+import { WaitSaveData } from "~/ui/waitSaveData.tsx"
 import { ContextCommand } from "~/lib/contextCommand.ts"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
-import { Button } from "~/components/ui/button.tsx"
+import { Button } from "~/ui/primitives/button.tsx"
 
 export function AreaCharacters() {
     const { tileIdMap } = useSuperLoaderData<typeof loader>()

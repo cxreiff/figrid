@@ -1,4 +1,4 @@
-import { Button } from "~/components/ui/button.tsx"
+import { Button } from "~/ui/primitives/button.tsx"
 import type { IdMap } from "~/routes/read+/lib/processing.server.ts"
 import type { GridQuery } from "~/routes/read+/lib/queries.server.ts"
 import type { SaveData } from "~/lib/useSaveData.ts"

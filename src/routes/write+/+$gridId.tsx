@@ -3,9 +3,9 @@ import { Outlet, useLocation, useParams } from "@remix-run/react"
 import type { LoaderFunctionArgs } from "@vercel/remix"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
-import { Layout } from "~/components/layout/layout.tsx"
-import { LayoutSplit } from "~/components/layout/layoutSplit.tsx"
-import { LayoutTabs } from "~/components/layout/layoutTabs.tsx"
+import { Layout } from "~/ui/layout/layout.tsx"
+import { LayoutSplit } from "~/ui/layout/layoutSplit.tsx"
+import { LayoutTabs } from "~/ui/layout/layoutTabs.tsx"
 import { Details } from "~/routes/write+/ui/details/details.tsx"
 import { writeGridQuery } from "~/routes/write+/lib/queries.server.ts"
 import { ResourceStack } from "~/routes/write+/ui/resourceStack.tsx"
@@ -24,8 +24,8 @@ import {
     generateTileCoordsMap,
 } from "~/routes/read+/lib/processing.server.ts"
 import { Images } from "~/routes/write+/ui/image/images.tsx"
-import { ButtonWithIconLink } from "~/components/buttonWithIconLink.tsx"
-import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
+import { ButtonWithIconLink } from "~/ui/buttonWithIconLink.tsx"
+import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
 
 export const RESOURCE_TYPES = {
     TILES: "tiles",

@@ -1,6 +1,6 @@
 import { useIsSubmitting } from "remix-validated-form"
-import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
-import type { ButtonProps } from "~/components/ui/button.tsx"
+import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
+import type { ButtonProps } from "~/ui/primitives/button.tsx"
 import type { IconType } from "~/lib/misc.ts"
 
 export function ValidatedButton({

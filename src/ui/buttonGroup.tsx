@@ -1,4 +1,4 @@
-import { ButtonWithIcon } from "~/components/buttonWithIcon.tsx"
+import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
 import { cn, type IconType } from "~/lib/misc.ts"
 
 type Option<T> = {
