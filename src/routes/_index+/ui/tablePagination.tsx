@@ -20,12 +20,12 @@ export function DataTablePagination<TData>({
                 icon={DoubleArrowLeftIcon}
                 className="hidden lg:flex"
                 onClick={() => table.setPageIndex(0)}
-                disabled={!table.getCanPreviousPage()}
+                disabled={table.getState().pagination.pageIndex < 1}
             />
             <ButtonWithIcon
                 icon={ChevronLeftIcon}
                 onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
+                disabled={table.getState().pagination.pageIndex < 1}
             />
             <div className="flex h-full min-w-20 items-center justify-center px-3 text-sm font-medium">
                 {table.getState().pagination.pageIndex + 1} of{" "}
@@ -34,13 +34,19 @@ export function DataTablePagination<TData>({
             <ButtonWithIcon
                 icon={ChevronRightIcon}
                 onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
+                disabled={
+                    table.getState().pagination.pageIndex >
+                    table.getPageCount() - 2
+                }
             />
             <ButtonWithIcon
                 icon={DoubleArrowRightIcon}
                 className="hidden lg:flex"
                 onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                disabled={!table.getCanNextPage()}
+                disabled={
+                    table.getState().pagination.pageIndex >
+                    table.getPageCount() - 2
+                }
             />
         </div>
     )

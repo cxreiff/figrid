@@ -50,7 +50,7 @@ export function GridTable({
     const [sorting, setSorting] = useState<SortingState>([])
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
-        pageSize: 2,
+        pageSize: 10,
     })
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
@@ -82,7 +82,7 @@ export function GridTable({
                         }}
                         value={filterColumn}
                     >
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-card">
                             <SelectValue>{filterColumn}</SelectValue>
                         </SelectTrigger>
                         <SelectContent>
@@ -94,7 +94,7 @@ export function GridTable({
                         </SelectContent>
                     </Select>
                     <InputWithIcon
-                        className="h-9 flex-1 border [&>input]:border-none [&>input]:shadow-none"
+                        className="h-9 flex-1 border bg-card [&>input]:border-none [&>input]:shadow-none"
                         icon={MagnifyingGlassIcon}
                         placeholder={`filter by ${filterColumn}...`}
                         value={
@@ -109,7 +109,11 @@ export function GridTable({
                         }
                     />
                     <DataTablePagination table={table} />
-                    <ButtonWithIcon variant="outline" icon={PlusIcon}>
+                    <ButtonWithIcon
+                        variant="outline"
+                        className="bg-card"
+                        icon={PlusIcon}
+                    >
                         create grid
                     </ButtonWithIcon>
                 </div>
@@ -122,7 +126,7 @@ export function GridTable({
                         className="mb-3 flex w-full items-center bg-card p-2 shadow-sm last:mb-0"
                     >
                         <Image
-                            className="h-12 w-12 bg-background shadow-inner"
+                            className="h-9 w-9 bg-background shadow-inner"
                             src={
                                 assetUrl(grid.image_asset) ||
                                 GRID_FALLBACK_IMAGE
@@ -145,13 +149,13 @@ export function GridTable({
                             {user?.id === grid.user_id && (
                                 <>
                                     <ButtonWithIconLink
-                                        className="h-12 flex-1"
+                                        className="h-9 flex-1"
                                         variant="outline"
                                         to={`/write/${grid.id}`}
                                         icon={Pencil2Icon}
                                     />
                                     <ButtonWithIconLink
-                                        className="h-12 flex-1"
+                                        className="h-9 flex-1"
                                         variant="outline"
                                         to={`/read/${grid.id}`}
                                         icon={PlayIcon}
@@ -160,7 +164,7 @@ export function GridTable({
                             )}
                             {user?.id !== grid.user_id && (
                                 <ButtonWithIconLink
-                                    className="h-12 w-full flex-1"
+                                    className="h-9 w-full flex-1"
                                     variant="outline"
                                     to={`/read/${grid.id}`}
                                     icon={PlayIcon}
