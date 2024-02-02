@@ -18,7 +18,7 @@ import {
 } from "@tanstack/react-table"
 import { useState } from "react"
 import { ButtonGroup } from "~/ui/buttonGroup.tsx"
-import { InputWithIcon } from "~/ui/inputWithIcon.tsx"
+import { InputWithIcon } from "~/ui/primitives/input.tsx"
 import { LayoutTitledScrolls } from "~/ui/layout/layoutTitledScrolls.tsx"
 import { Button } from "~/ui/primitives/button.tsx"
 import { Card } from "~/ui/primitives/card.tsx"
@@ -115,13 +115,16 @@ export function CardStack<TValue>({
                 table.getRowModel().rows.map((row) => (
                     <Button
                         key={row.id}
-                        className={cn("my-2 h-auto items-center p-3", {
-                            "flex gap-3": mode === "full",
-                            "mr-3 inline-block whitespace-nowrap [&>div]:inline-block [&>svg:first-child]:mr-2 [&>svg:first-child]:inline-block":
-                                mode === "mini",
-                            "border-accent bg-[hsla(var(--accent)/0.4)]":
-                                selected === row.original.id,
-                        })}
+                        className={cn(
+                            "mb-3 h-auto items-center p-3 last:mb-0",
+                            {
+                                "flex gap-3": mode === "full",
+                                "mr-3 inline-block whitespace-nowrap [&>div]:inline-block [&>svg:first-child]:mr-2 [&>svg:first-child]:inline-block":
+                                    mode === "mini",
+                                "border-accent bg-[hsla(var(--accent)/0.4)]":
+                                    selected === row.original.id,
+                            },
+                        )}
                         onClick={() => onSelection(row.original.id)}
                         asChild
                     >

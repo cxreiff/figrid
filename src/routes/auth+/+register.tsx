@@ -16,7 +16,7 @@ import {
 import { FORM_STRATEGY } from "~/auth/strategies/form.server.ts"
 import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
 import { Button } from "~/ui/primitives/button.tsx"
-import { InputWithIcon } from "~/ui/inputWithIcon.tsx"
+import { InputWithIcon } from "~/ui/primitives/input.tsx"
 import { Separator } from "~/ui/primitives/separator.tsx"
 import { db } from "~/database/database.server.ts"
 import {

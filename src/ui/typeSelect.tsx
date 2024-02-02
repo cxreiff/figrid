@@ -17,7 +17,7 @@ export function TypeSelect<T extends string>({
 }) {
     return (
         <Select value={selected} onValueChange={onSelect}>
-            <SelectTrigger>
+            <SelectTrigger className="w-full">
                 <SelectValue />
             </SelectTrigger>
             <SelectContent>

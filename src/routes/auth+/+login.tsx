@@ -7,7 +7,7 @@ import { Form } from "@remix-run/react"
 import { type LoaderFunctionArgs } from "@vercel/remix"
 import { auth } from "~/auth/auth.server.ts"
 import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
-import { InputWithIcon } from "~/ui/inputWithIcon.tsx"
+import { InputWithIcon } from "~/ui/primitives/input.tsx"
 import { Button } from "~/ui/primitives/button.tsx"
 import { Separator } from "~/ui/primitives/separator.tsx"
 

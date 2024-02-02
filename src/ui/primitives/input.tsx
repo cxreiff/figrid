@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { cn } from "~/lib/misc.ts"
+import { cn, type IconType } from "~/lib/misc.ts"
 
 export interface InputProps
     extends React.InputHTMLAttributes<HTMLInputElement> {}
@@ -22,4 +22,21 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 )
 Input.displayName = "Input"
 
-export { Input }
+export interface IconInputProps
+    extends React.InputHTMLAttributes<HTMLInputElement> {
+    icon: IconType
+}
+
+const InputWithIcon = React.forwardRef<HTMLInputElement, IconInputProps>(
+    ({ icon: Icon, className, ...props }, ref) => {
+        return (
+            <span className={cn("relative block h-9 rounded-md", className)}>
+                <Icon className="absolute inset-y-0 left-3 h-full w-5 px-0.5" />
+                <Input ref={ref} className={"h-full pl-10"} {...props} />
+            </span>
+        )
+    },
+)
+InputWithIcon.displayName = "IconInput"
+
+export { Input, InputWithIcon }

@@ -30,7 +30,7 @@ export function ButtonWithIcon({
                 <span
                     className={cn({
                         "w-full": !!alignIcon,
-                        "px-3": !alignIcon,
+                        "pl-2 pr-1": !alignIcon,
                         "pl-8 pr-3": alignIcon === "left",
                         "pl-3 pr-8": alignIcon === "right",
                     })}
