@@ -2,17 +2,15 @@ import type { LoaderFunctionArgs } from "@vercel/remix"
 import { auth } from "~/auth/auth.server.ts"
 import { Layout } from "~/ui/layout/layout.tsx"
 import { Card } from "~/ui/primitives/card.tsx"
-import { db } from "~/database/database.server.ts"
 import { superjson, useSuperLoaderData } from "~/lib/superjson.ts"
 import { GridTable } from "~/routes/_index+/ui/gridTable.tsx"
 import { COLUMN_DEFINITION } from "~/routes/_index+/lib/columns.ts"
+import { listGridsQuery } from "~/routes/_index+/lib/queries.server.ts"
 
 export async function loader({ request }: LoaderFunctionArgs) {
     const user = await auth.isAuthenticated(request)
 
-    const grids = await db.query.grids.findMany({
-        with: { image_asset: true, user: true },
-    })
+    const grids = await listGridsQuery()
 
     return superjson({ user, grids })
 }

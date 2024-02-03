@@ -1,7 +1,7 @@
 import { int, serial, text, timestamp, varchar } from "drizzle-orm/mysql-core"
 
 export const incrementing_id = {
-    id: serial("id").primaryKey().unique().autoincrement(),
+    id: serial("id").primaryKey().autoincrement(),
 }
 
 export const create_update_timestamps = {

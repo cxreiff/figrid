@@ -44,8 +44,10 @@ export function ProfileButton({ user }: { user: AuthUser | null }) {
                     </>
                 ) : (
                     <>
-                        <DropdownMenuItem>
-                            <Link to="/auth/login">log in</Link>
+                        <DropdownMenuItem asChild>
+                            <Link to="/auth/login" className="cursor-pointer">
+                                log in
+                            </Link>
                         </DropdownMenuItem>
                     </>
                 )}

@@ -1,5 +1,5 @@
 import { Wait } from "~/ui/wait.tsx"
-import { useSuperLoaderData, useSuperMatch } from "~/lib/superjson.ts"
+import { useSuperLoaderData, useSuperRouteLoaderData } from "~/lib/superjson.ts"
 import type { loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import type { WriteTileQuery } from "~/routes/write+/lib/queries.server.ts"
 import { DetailsResourceCard } from "~/routes/write+/ui/details/detailsResourceCard.tsx"
@@ -25,7 +25,7 @@ const GATE_OPTIONS: (typeof gates.$inferSelect.type)[] = [
 export function DetailsTilesGates() {
     const { grid, tileIdMap, tileCoordsMap } =
         useSuperLoaderData<typeof loader>()
-    const resource = useSuperMatch<typeof childLoader>(
+    const resource = useSuperRouteLoaderData<typeof childLoader>(
         "write.$gridId.$resourceType.$resourceId",
     )?.resource as WriteTileQuery
 

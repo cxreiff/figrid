@@ -1,11 +1,11 @@
-import { useSuperMatch } from "~/lib/superjson.ts"
+import { useSuperRouteLoaderData } from "~/lib/superjson.ts"
 import type { WriteItemQuery } from "~/routes/write+/lib/queries.server.ts"
 import { type loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import { TypeSelect } from "~/ui/typeSelect.tsx"
 import { useFetcher } from "@remix-run/react"
 
 export function DetailsItemsMain() {
-    const resource = useSuperMatch<typeof childLoader>(
+    const resource = useSuperRouteLoaderData<typeof childLoader>(
         "write.$gridId.$resourceType.$resourceId",
     )?.resource as WriteItemQuery
 

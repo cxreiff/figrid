@@ -1,1 +1,0 @@
-ALTER TABLE `assets` MODIFY COLUMN `resource_type` enum('grids','tiles','events','characters','items') NOT NULL;

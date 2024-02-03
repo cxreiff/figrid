@@ -1,1 +1,0 @@
-ALTER TABLE `assets` MODIFY COLUMN `asset_type` enum('images') NOT NULL DEFAULT 'images';

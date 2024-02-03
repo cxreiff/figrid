@@ -1,5 +1,5 @@
 import { Wait } from "~/ui/wait.tsx"
-import { useSuperLoaderData, useSuperMatch } from "~/lib/superjson.ts"
+import { useSuperLoaderData, useSuperRouteLoaderData } from "~/lib/superjson.ts"
 import { type loader } from "~/routes/write+/+$gridId.tsx"
 import { type loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import type { WriteLockQuery } from "~/routes/write+/lib/queries.server.ts"
@@ -10,7 +10,7 @@ import { useFetcher } from "@remix-run/react"
 
 export function DetailsLocksItem() {
     const { grid } = useSuperLoaderData<typeof loader>()
-    const resource = useSuperMatch<typeof childLoader>(
+    const resource = useSuperRouteLoaderData<typeof childLoader>(
         "write.$gridId.$resourceType.$resourceId",
     )?.resource as WriteLockQuery
 

@@ -1,1 +1,0 @@
-ALTER TABLE `assets` ADD `name` varchar(256);

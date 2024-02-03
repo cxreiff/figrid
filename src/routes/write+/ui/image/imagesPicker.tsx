@@ -4,12 +4,13 @@ import type { loader } from "~/routes/write+/+$gridId.tsx"
 import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import { useParams } from "@remix-run/react"
 import { Image } from "~/ui/image.tsx"
-import { assetUrl } from "~/lib/assets.ts"
 import { Scroller } from "~/ui/scroller.tsx"
+import { useAssetUrl } from "~/lib/useAssetUrl.ts"
 
 export function ImagesPicker() {
     const { resourceType } = paramsSchema.partial().parse(useParams())
     const { grid } = useSuperLoaderData<typeof loader>()
+    const { assetUrl } = useAssetUrl()
 
     return (
         <Card className="h-full p-4">

@@ -1,21 +1,19 @@
 import { Card } from "~/ui/primitives/card.tsx"
-import { useSuperMatch } from "~/lib/superjson.ts"
+import { useSuperRouteLoaderData } from "~/lib/superjson.ts"
 import { type loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import { ResourcePlaceholder } from "~/routes/write+/ui/resourcePlaceholder.tsx"
 import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import { useParams } from "@remix-run/react"
 import { Image } from "~/ui/image.tsx"
-import {
-    TILE_FALLBACK_IMAGE,
-    assetUrl,
-    canHaveImageAsset,
-} from "~/lib/assets.ts"
+import { canHaveImageAsset } from "~/lib/assets.ts"
 import { ImagesDropzone } from "~/routes/write+/ui/image/imagesDropzone.tsx"
+import { useAssetUrl } from "~/lib/useAssetUrl.ts"
 
 export function ImagesDisplay() {
-    const resource = useSuperMatch<typeof childLoader>(
+    const resource = useSuperRouteLoaderData<typeof childLoader>(
         "write.$gridId.$resourceType.$resourceId",
     )?.resource
+    const { assetUrl, ASSET_FALLBACKS } = useAssetUrl()
     const { resourceType } = paramsSchema.partial().parse(useParams())
 
     return (
@@ -32,10 +30,10 @@ export function ImagesDisplay() {
                 if (canHaveImageAsset(resource, resourceType)) {
                     return resource.image_asset ? (
                         <Image
-                            src={
-                                assetUrl(resource.image_asset) ||
-                                TILE_FALLBACK_IMAGE
-                            }
+                            src={assetUrl(
+                                resource.image_asset,
+                                ASSET_FALLBACKS.TILE_IMAGE,
+                            )}
                         />
                     ) : (
                         <ImagesDropzone />

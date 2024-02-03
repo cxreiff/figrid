@@ -1,4 +1,3 @@
-import type { assets } from "~/database/schema/assets.server.ts"
 import type { ResourceType } from "~/routes/write+/+$gridId.tsx"
 import type {
     WriteCharacterQuery,
@@ -17,26 +16,6 @@ export const RESOURCE_TYPES_WITH_ASSETS = [
 ] as const
 
 export const ASSET_TYPES = ["images"] as const
-
-export const GRID_ASSET_DOMAIN = "https://assets.figrid.io/grids"
-
-export const GRID_FALLBACK_IMAGE = "https://assets.figrid.io/fallbacks/grid.png"
-export const TILE_FALLBACK_IMAGE = "https://assets.figrid.io/fallbacks/tile.png"
-export const PLAYER_FALLBACK_IMAGE =
-    "https://assets.figrid.io/fallbacks/character.png"
-
-type AssetUrlReturn<T extends typeof assets.$inferSelect | null> =
-    T extends typeof assets.$inferSelect ? string : null
-
-export function assetUrl<T extends typeof assets.$inferSelect | null>(
-    asset: T,
-): AssetUrlReturn<T> {
-    if (!asset) {
-        return null as AssetUrlReturn<T>
-    }
-    const { grid_id, resource_type, asset_type, filename } = asset
-    return `${GRID_ASSET_DOMAIN}/${grid_id}/${resource_type}/${asset_type}/${filename}` as AssetUrlReturn<T>
-}
 
 export function removeExtension(filename: string) {
     const extensionIndex = filename.lastIndexOf(".")

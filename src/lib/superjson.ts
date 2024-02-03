@@ -1,4 +1,8 @@
-import { useActionData, useLoaderData, useMatches } from "@remix-run/react"
+import {
+    useActionData,
+    useLoaderData,
+    useRouteLoaderData,
+} from "@remix-run/react"
 import * as _superjson from "superjson"
 
 export type SuperJsonFunction = <Data>(
@@ -47,12 +51,11 @@ export function useSuperActionData<
         : null
 }
 
-export function useSuperMatch<T = AppData>(
+export function useSuperRouteLoaderData<T = AppData>(
     route: string,
 ): UseDataFunctionReturn<T> | null {
-    const matches = useMatches()
-    const match = matches.find(({ id }) => id === route)
+    const match = useRouteLoaderData(route)
     return match
-        ? _superjson.deserialize(match.data as _superjson.SuperJSONResult)
+        ? _superjson.deserialize(match as _superjson.SuperJSONResult)
         : null
 }

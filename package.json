@@ -12,10 +12,10 @@
         "tsc": "tsc",
         "lint": "eslint .",
         "checks": "pnpm format && pnpm tsc && pnpm lint",
-        "generate": "drizzle-kit generate:mysql",
-        "migrate": "drizzle-kit push:mysql",
-        "studio": "drizzle-kit studio",
-        "shad": "pnpm dlx shadcn-ui@latest"
+        "db:push": "drizzle-kit push:mysql",
+        "db:studio": "drizzle-kit studio",
+        "shad": "pnpm dlx shadcn-ui@latest",
+        "venv": "vercel env pull .env"
     },
     "dependencies": {
         "@aws-sdk/client-s3": "^3.496.0",

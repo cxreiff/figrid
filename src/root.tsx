@@ -45,6 +45,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const { getTheme } = await themeSessionResolver(request)
     return {
         theme: getTheme(),
+        env: {
+            R2_ASSETS_HOSTNAME: process.env.R2_ASSETS_HOSTNAME,
+        },
     }
 }
 

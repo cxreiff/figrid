@@ -6,6 +6,7 @@ const schema = z.object({
     SESSION_SECRET: z.string(),
     GITHUB_CLIENT_ID: z.string(),
     GITHUB_CLIENT_SECRET: z.string(),
+    R2_ASSETS_HOSTNAME: z.string(),
     R2_ASSETS_BUCKET_NAME: z.string(),
     R2_ASSETS_ENDPOINT: z.string(),
     R2_ASSETS_ACCESS_KEY: z.string(),
@@ -44,6 +45,7 @@ export function getEnv() {
     return {
         MODE: process.env.NODE_ENV,
         SENTRY_DSN: process.env.SENTRY_DSN,
+        R2_ASSETS_HOSTNAME: process.env.R2_ASSETS_HOSTNAME,
     }
 }
 

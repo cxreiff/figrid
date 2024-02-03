@@ -17,7 +17,6 @@ import {
     getFilteredRowModel,
 } from "@tanstack/react-table"
 import { useState } from "react"
-import { GRID_FALLBACK_IMAGE, assetUrl } from "~/lib/assets.ts"
 import { type useSuperLoaderData } from "~/lib/superjson.ts"
 import type { loader } from "~/routes/_index+/+_index.tsx"
 import type { ListGridsQuery } from "~/routes/_index+/lib/queries.server.ts"
@@ -36,6 +35,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "~/ui/primitives/select.tsx"
+import { useAssetUrl } from "~/lib/useAssetUrl.ts"
 
 type Grid = ListGridsQuery[0]
 
@@ -46,6 +46,8 @@ export function GridTable({
 }: ReturnType<typeof useSuperLoaderData<typeof loader>> & {
     columns: ColumnDef<Grid>[]
 }) {
+    const { assetUrl, ASSET_FALLBACKS } = useAssetUrl()
+
     const [filterColumn, setFilterColumn] = useState<string>("name")
     const [sorting, setSorting] = useState<SortingState>([])
     const [pagination, setPagination] = useState<PaginationState>({
@@ -127,10 +129,10 @@ export function GridTable({
                     >
                         <Image
                             className="h-9 w-9 bg-background shadow-inner"
-                            src={
-                                assetUrl(grid.image_asset) ||
-                                GRID_FALLBACK_IMAGE
-                            }
+                            src={assetUrl(
+                                grid.image_asset,
+                                ASSET_FALLBACKS.GRID_IMAGE,
+                            )}
                         />
                         <h3 className="flex flex-1 items-center px-4">
                             {grid.name}
@@ -143,6 +145,7 @@ export function GridTable({
                                 {grid.description}
                             </span>
                         </h3>
+                        <span className="px-3">{grid.likes.length} likes</span>
                         <Button>@{grid.user.alias}</Button>
                         <ButtonWithIcon icon={HeartIcon} />
                         <div className="ml-4 flex w-[5.8rem] gap-2">

@@ -9,6 +9,7 @@ import {
 import { event_instances, events } from "~/database/schema/events.server.ts"
 import { gates } from "~/database/schema/gates.server.ts"
 import { item_instances, items } from "~/database/schema/items.server.ts"
+import { likes } from "~/database/schema/likes.server.ts"
 import { lock_instances, locks } from "~/database/schema/locks.server.ts"
 import { tiles } from "~/database/schema/tiles.server.ts"
 import {
@@ -59,4 +60,5 @@ export const grids_relations = relations(grids, ({ one, many }) => ({
     item_instances: many(item_instances),
     characters: many(characters),
     character_instances: many(character_instances),
+    likes: many(likes),
 }))

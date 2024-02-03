@@ -1,5 +1,5 @@
 import { Wait } from "~/ui/wait.tsx"
-import { useSuperLoaderData, useSuperMatch } from "~/lib/superjson.ts"
+import { useSuperLoaderData, useSuperRouteLoaderData } from "~/lib/superjson.ts"
 import type { loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
 import type { WriteLockQuery } from "~/routes/write+/lib/queries.server.ts"
 import { DetailsResourceCard } from "~/routes/write+/ui/details/detailsResourceCard.tsx"
@@ -8,7 +8,7 @@ import type { loader } from "~/routes/write+/+$gridId.tsx"
 
 export function DetailsLocksGates() {
     const { grid } = useSuperLoaderData<typeof loader>()
-    const resource = useSuperMatch<typeof childLoader>(
+    const resource = useSuperRouteLoaderData<typeof childLoader>(
         "write.$gridId.$resourceType.$resourceId",
     )?.resource as WriteLockQuery
 

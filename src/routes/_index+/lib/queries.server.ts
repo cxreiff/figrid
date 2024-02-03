@@ -6,6 +6,6 @@ export type ListGridsQuery = NonNullable<
 
 export async function listGridsQuery() {
     return await db.query.grids.findMany({
-        with: { image_asset: true, user: true },
+        with: { image_asset: true, user: true, likes: true },
     })
 }

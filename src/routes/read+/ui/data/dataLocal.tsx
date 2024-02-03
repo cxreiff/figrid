@@ -8,7 +8,7 @@ import { useSuperLoaderData } from "~/lib/superjson.ts"
 import { useManualSaveData } from "~/lib/useManualSaveData.ts"
 import { type useSaveData } from "~/lib/useSaveData.ts"
 import { LayoutTitledScrolls } from "~/ui/layout/layoutTitledScrolls.tsx"
-import { TILE_FALLBACK_IMAGE, assetUrl } from "~/lib/assets.ts"
+import { useAssetUrl } from "~/lib/useAssetUrl.ts"
 
 export function DataLocal({
     replaceSave,
@@ -16,6 +16,7 @@ export function DataLocal({
     replaceSave: ReturnType<typeof useSaveData>[2]
 }) {
     const { user, grid, tileIdMap } = useSuperLoaderData<typeof loader>()
+    const { assetUrl, ASSET_FALLBACKS } = useAssetUrl()
     const [saves, setManualSave, deleteSave] = useManualSaveData(
         user?.id || 0,
         grid.id,
@@ -50,10 +51,10 @@ export function DataLocal({
                                         <Image
                                             key={tile.image_asset_id}
                                             className="mr-4 h-12 w-12"
-                                            src={
-                                                assetUrl(tile.image_asset) ||
-                                                TILE_FALLBACK_IMAGE
-                                            }
+                                            src={assetUrl(
+                                                tile.image_asset,
+                                                ASSET_FALLBACKS.TILE_IMAGE,
+                                            )}
                                             alt={"tile"}
                                         />
                                         <span className="grow-1 flex-1 shrink overflow-hidden text-ellipsis whitespace-nowrap">

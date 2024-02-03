@@ -9,6 +9,7 @@ import {
     uniqueIndex,
     varchar,
 } from "drizzle-orm/mysql-core"
+import { likes } from "~/database/schema/likes.server.ts"
 import {
     create_update_timestamps,
     incrementing_id,
@@ -45,6 +46,7 @@ export const users_relations = relations(users, ({ many, one }) => ({
         fields: [users.id],
         references: [profiles.user_id],
     }),
+    likes: many(likes),
 }))
 
 export const passwords = mysqlTable("passwords", {

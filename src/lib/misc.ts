@@ -3,6 +3,8 @@ import { type ClassValue, clsx } from "clsx"
 import { useEffect, useMemo, useRef, type ReactNode } from "react"
 import { twMerge } from "tailwind-merge"
 
+export type ValueOf<T> = T[keyof T]
+
 export type IconType = (props: IconProps) => ReactNode
 
 export type Replace<T, Key extends keyof T, New> = Omit<T, Key> & {
