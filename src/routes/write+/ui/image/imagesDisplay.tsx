@@ -34,6 +34,7 @@ export function ImagesDisplay() {
                                 resource.image_asset,
                                 ASSET_FALLBACKS.TILE_IMAGE,
                             )}
+                            fade
                         />
                     ) : (
                         <ImagesDropzone />

@@ -1,22 +1,30 @@
-import { useState, type HTMLProps } from "react"
-import * as tailwindMerge from "tailwind-merge"
+import { useState, type HTMLProps, useEffect, useRef } from "react"
+import { cn } from "~/lib/misc.ts"
 
 export function Image({
     className,
     alt,
+    fade = false,
     ...props
-}: HTMLProps<HTMLImageElement>) {
+}: HTMLProps<HTMLImageElement> & { fade?: boolean }) {
     const [loaded, setLoaded] = useState(false)
+    const imgRef = useRef<HTMLImageElement>(null)
+
+    useEffect(() => {
+        if (imgRef.current?.complete) {
+            setLoaded(true)
+        }
+    }, [setLoaded, imgRef])
+
     return (
         <img
-            className={tailwindMerge.twMerge(
+            ref={imgRef}
+            className={cn(
                 "pixel-image m-auto max-h-full w-auto max-w-full rounded-md object-contain",
+                { "transition-opacity duration-500": fade },
                 className,
             )}
-            style={{
-                opacity: loaded ? 1 : 0,
-                transition: "opacity 200ms ease-in-out",
-            }}
+            style={fade ? { opacity: loaded ? 1 : 0 } : undefined}
             alt={alt}
             onLoad={() => setLoaded(true)}
             {...props}

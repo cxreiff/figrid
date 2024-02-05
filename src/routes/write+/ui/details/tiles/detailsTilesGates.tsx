@@ -111,7 +111,9 @@ export function DetailsTilesGates() {
                                 `tiles/${id}/gates/link?${searchParams}`
                             }
                             options={grid.tiles.filter(
-                                (tile) => tile.gates_out.length === 0,
+                                (tile) =>
+                                    tile.gates_out.length === 0 &&
+                                    tile.id !== grid.first_tile_id,
                             )}
                         />
                     )

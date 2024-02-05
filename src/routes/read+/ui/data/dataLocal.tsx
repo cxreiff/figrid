@@ -56,6 +56,7 @@ export function DataLocal({
                                                 ASSET_FALLBACKS.TILE_IMAGE,
                                             )}
                                             alt={"tile"}
+                                            fade
                                         />
                                         <span className="grow-1 flex-1 shrink overflow-hidden text-ellipsis whitespace-nowrap">
                                             {save.characterName} - {tile.name}
