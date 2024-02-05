@@ -12,7 +12,7 @@ export function LayoutTopBar({
     iconButtons,
 }: {
     user: AuthUser | null
-    title: string
+    title?: string
     iconButtons?: ReactNode
 }) {
     return (
@@ -21,8 +21,12 @@ export function LayoutTopBar({
                 <strong className="text-accent-foreground">figrid</strong>
             </Link>
             <hr className="mx-3 flex-1" />
-            <h1 className="p-2 text-muted-foreground">{title}</h1>
-            <hr className="mx-3 flex-1" />
+            {title && (
+                <>
+                    <h1 className="p-2 text-muted-foreground">{title}</h1>
+                    <hr className="mx-3 flex-1" />
+                </>
+            )}
             {iconButtons}
             <ButtonWithIconLink to="/docs" icon={QuestionMarkCircledIcon} />
             <ThemeToggle />

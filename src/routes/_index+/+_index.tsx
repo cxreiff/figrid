@@ -19,7 +19,7 @@ export default function Route() {
     const { user, grids } = useSuperLoaderData<typeof loader>()
 
     return (
-        <Layout user={user} title={"dashboard"}>
+        <Layout user={user}>
             <div className="flex h-full flex-col gap-3">
                 <div className="flex min-h-0 gap-3">
                     <Card className=" flex items-center justify-center p-4">

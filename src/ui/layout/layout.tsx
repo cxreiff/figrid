@@ -10,7 +10,7 @@ export function Layout({
 }: {
     children: ReactNode
     user: AuthUser | null
-    title: string
+    title?: string
     iconButtons?: ReactNode
 }) {
     return (

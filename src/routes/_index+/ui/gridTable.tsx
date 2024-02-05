@@ -134,19 +134,21 @@ export function GridTable({
                                 ASSET_FALLBACKS.GRID_IMAGE,
                             )}
                         />
-                        <h3 className="flex flex-1 items-center px-4">
-                            {grid.name}
-                            <span className="ml-4 text-muted">—</span>
-                            <span className="ml-4 text-muted-foreground">
+                        <h3 className="flex flex-1 items-center">
+                            <span className="mx-2 text-muted">|</span>
+                            <span className="mx-2">{grid.name}</span>
+                            <span className="mx-2 text-muted">|</span>
+                            <Button className="mx-2">@{grid.user.alias}</Button>
+                            <span className="mx-2 text-muted">|</span>
+                            <span className="mx-2 text-muted-foreground">
                                 {grid.summary}
                             </span>
-                            <span className="ml-4 text-muted">—</span>
-                            <span className="ml-4 text-muted-foreground">
+                            <span className="mx-2 text-muted">|</span>
+                            <span className="mx-2 text-muted-foreground">
                                 {grid.description}
                             </span>
                         </h3>
                         <span className="px-3">{grid.likes.length} likes</span>
-                        <Button>@{grid.user.alias}</Button>
                         <ButtonWithIcon icon={HeartIcon} />
                         <div className="ml-4 flex w-[5.8rem] gap-2">
                             {user?.id === grid.user_id && (
