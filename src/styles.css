@@ -35,3 +35,7 @@ html {
 .pixel-image {
     image-rendering: pixelated;
 }
+
+.img-border-radius-fix {
+    filter: url("#filter-radius");
+}

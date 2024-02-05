@@ -26,6 +26,7 @@ import {
 import { useContext } from "react"
 import { cn } from "~/lib/misc.ts"
 import { LoadingIndicator } from "~/ui/loadingIndicator.tsx"
+import { SVGs } from "~/ui/svgs.tsx"
 
 export const config = { runtime: "edge" }
 
@@ -78,6 +79,7 @@ function App() {
             <body>
                 <LoadingIndicator />
                 <Outlet />
+                <SVGs />
                 <ScrollRestoration />
                 <Scripts />
                 <LiveReload />

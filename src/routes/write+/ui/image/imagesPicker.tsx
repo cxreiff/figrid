@@ -27,6 +27,7 @@ export function ImagesPicker() {
                                 id={`asset-${asset.id}`}
                                 src={assetUrl(asset)}
                                 fade
+                                radiusFix
                             />
                             <label htmlFor={`asset-${asset.id}`}>
                                 {asset.label}
