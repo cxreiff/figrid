@@ -1,4 +1,5 @@
 import {
+    HeartFilledIcon,
     HeartIcon,
     MagnifyingGlassIcon,
     Pencil2Icon,
@@ -36,6 +37,7 @@ import {
     SelectValue,
 } from "~/ui/primitives/select.tsx"
 import { useAssetUrl } from "~/lib/useAssetUrl.ts"
+import { useFetcher } from "@remix-run/react"
 
 type Grid = ListGridsQuery[0]
 
@@ -48,6 +50,7 @@ export function GridTable({
 }) {
     const { assetUrl, ASSET_FALLBACKS } = useAssetUrl()
 
+    const fetcher = useFetcher()
     const [filterColumn, setFilterColumn] = useState<string>("name")
     const [sorting, setSorting] = useState<SortingState>([])
     const [pagination, setPagination] = useState<PaginationState>({
@@ -122,6 +125,11 @@ export function GridTable({
             }
         >
             {table.getRowModel().rows.map(({ original: grid }) => {
+                const liked =
+                    fetcher.formAction?.startsWith("/actions/like") ||
+                    (!fetcher.formAction?.startsWith("/actions/unlike") &&
+                        grid.likes.find(({ user_id }) => user_id === user?.id))
+
                 return (
                     <Card
                         key={grid.id}
@@ -149,7 +157,19 @@ export function GridTable({
                             </span>
                         </h3>
                         <span className="px-3">{grid.likes.length} likes</span>
-                        <ButtonWithIcon icon={HeartIcon} />
+                        {user && (
+                            <fetcher.Form
+                                method="POST"
+                                action={`/actions/${
+                                    liked ? "unlike" : "like"
+                                }/${grid.id}`}
+                            >
+                                <ButtonWithIcon
+                                    icon={liked ? HeartFilledIcon : HeartIcon}
+                                    type="submit"
+                                />
+                            </fetcher.Form>
+                        )}
                         <div className="ml-4 flex w-[5.8rem] gap-2">
                             {user?.id === grid.user_id && (
                                 <>
