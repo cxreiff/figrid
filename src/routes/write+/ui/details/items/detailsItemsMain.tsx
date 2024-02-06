@@ -1,12 +1,12 @@
 import { useSuperRouteLoaderData } from "~/lib/superjson.ts"
 import type { WriteItemQuery } from "~/routes/write+/lib/queries.server.ts"
-import { type loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_route.tsx"
+import { type loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_index.tsx"
 import { TypeSelect } from "~/ui/typeSelect.tsx"
 import { useFetcher } from "@remix-run/react"
 
 export function DetailsItemsMain() {
     const resource = useSuperRouteLoaderData<typeof childLoader>(
-        "routes/write+/$gridId+/$resourceType+/$resourceId+/_route",
+        "routes/write+/$gridId+/$resourceType+/$resourceId+/_index",
     )?.resource as WriteItemQuery
 
     const fetcher = useFetcher()

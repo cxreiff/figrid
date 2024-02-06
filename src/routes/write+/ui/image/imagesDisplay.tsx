@@ -1,8 +1,8 @@
 import { Card } from "~/ui/primitives/card.tsx"
 import { useSuperRouteLoaderData } from "~/lib/superjson.ts"
-import { type loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_route.tsx"
+import { type loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_index.tsx"
 import { ResourcePlaceholder } from "~/routes/write+/ui/resourcePlaceholder.tsx"
-import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_route.tsx"
+import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_index.tsx"
 import { useParams } from "@remix-run/react"
 import { Image } from "~/ui/image.tsx"
 import { canHaveImageAsset } from "~/lib/assets.ts"
@@ -11,7 +11,7 @@ import { useAssetUrl } from "~/lib/useAssetUrl.ts"
 
 export function ImagesDisplay() {
     const resource = useSuperRouteLoaderData<typeof childLoader>(
-        "routes/write+/$gridId+/$resourceType+/$resourceId+/_route",
+        "routes/write+/$gridId+/$resourceType+/$resourceId+/_index",
     )?.resource
     const { assetUrl, ASSET_FALLBACKS } = useAssetUrl()
     const { resourceType } = paramsSchema.partial().parse(useParams())
