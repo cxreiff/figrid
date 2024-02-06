@@ -1,11 +1,11 @@
 import { useSuperRouteLoaderData } from "~/lib/superjson.ts"
 import type { WriteGateQuery } from "~/routes/write+/lib/queries.server.ts"
-import { type loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_index.tsx"
+import { type loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_route.tsx"
 import { DetailsResourceCard } from "~/routes/write+/ui/details/detailsResourceCard.tsx"
 
 export function DetailsGatesMain() {
     const resource = useSuperRouteLoaderData<typeof childLoader>(
-        "write.$gridId.$resourceType.$resourceId",
+        "routes/write+/$gridId+/$resourceType+/$resourceId+/_route",
     )?.resource as WriteGateQuery
 
     return (

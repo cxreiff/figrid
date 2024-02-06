@@ -1,7 +1,7 @@
 import { Card } from "~/ui/primitives/card.tsx"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
 import type { loader } from "~/routes/write+/$gridId+/_route.tsx"
-import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_index.tsx"
+import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_route.tsx"
 import { useParams } from "@remix-run/react"
 import { Image } from "~/ui/image.tsx"
 import { Scroller } from "~/ui/scroller.tsx"

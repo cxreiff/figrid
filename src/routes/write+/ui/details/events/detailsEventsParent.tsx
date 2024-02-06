@@ -1,7 +1,7 @@
 import { Wait } from "~/ui/wait.tsx"
 import { useSuperLoaderData, useSuperRouteLoaderData } from "~/lib/superjson.ts"
 import { type loader } from "~/routes/write+/$gridId+/_route.tsx"
-import { type loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_index.tsx"
+import { type loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_route.tsx"
 import type { WriteEventQuery } from "~/routes/write+/lib/queries.server.ts"
 import { DetailsResourceCard } from "~/routes/write+/ui/details/detailsResourceCard.tsx"
 import { DetailsResourceLinker } from "~/routes/write+/ui/details/detailsResourceLinker.tsx"
@@ -9,7 +9,7 @@ import { DetailsResourceLinker } from "~/routes/write+/ui/details/detailsResourc
 export function DetailsEventsParent() {
     const { grid } = useSuperLoaderData<typeof loader>()
     const resource = useSuperRouteLoaderData<typeof childLoader>(
-        "write.$gridId.$resourceType.$resourceId",
+        "routes/write+/$gridId+/$resourceType+/$resourceId+/_route",
     )?.resource as WriteEventQuery
 
     return (
