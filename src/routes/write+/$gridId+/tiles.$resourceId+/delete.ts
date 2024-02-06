@@ -9,7 +9,7 @@ import { gates } from "~/database/schema/gates.server.ts"
 import { item_instances } from "~/database/schema/items.server.ts"
 import { lock_instances } from "~/database/schema/locks.server.ts"
 import { tiles } from "~/database/schema/tiles.server.ts"
-import { paramsSchema as parentParamsSchema } from "~/routes/write+/+$gridId.tsx"
+import { paramsSchema as parentParamsSchema } from "~/routes/write+/$gridId+/_route.tsx"
 
 const paramsSchema = z.object({
     resourceId: z.coerce.number(),

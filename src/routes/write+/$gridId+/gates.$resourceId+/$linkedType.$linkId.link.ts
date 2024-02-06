@@ -2,12 +2,13 @@ import { type ActionFunctionArgs } from "@vercel/remix"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
 import { db } from "~/database/database.server.ts"
-import { item_instances } from "~/database/schema/items.server.ts"
-import { paramsSchema as gridIdParamsSchema } from "~/routes/write+/+$gridId.tsx"
+import { event_instances } from "~/database/schema/events.server.ts"
+import { lock_instances } from "~/database/schema/locks.server.ts"
+import { paramsSchema as gridIdParamsSchema } from "~/routes/write+/$gridId+/_route.tsx"
 
 const paramsSchema = z.object({
     resourceId: z.coerce.number(),
-    linkedType: z.enum(["tiles", "events"]),
+    linkedType: z.enum(["events", "requirements"]),
     linkId: z.coerce.number(),
 })
 
@@ -21,20 +22,20 @@ export async function action({ request, params }: ActionFunctionArgs) {
         .parse(params)
 
     switch (linkedType) {
-        case "tiles":
-            await db.insert(item_instances).values({
+        case "events":
+            await db.insert(event_instances).values({
                 user_id: user.id,
                 grid_id: gridId,
-                item_id: resourceId,
-                tile_id: linkId,
+                gate_id: resourceId,
+                event_id: linkId,
             })
             break
-        case "events":
-            await db.insert(item_instances).values({
+        case "requirements":
+            await db.insert(lock_instances).values({
                 user_id: user.id,
                 grid_id: gridId,
-                item_id: resourceId,
-                event_id: linkId,
+                gate_id: resourceId,
+                lock_id: linkId,
             })
             break
     }

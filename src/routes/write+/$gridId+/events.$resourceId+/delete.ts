@@ -3,10 +3,10 @@ import { and, eq } from "drizzle-orm"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
 import { db } from "~/database/database.server.ts"
-import { event_instances } from "~/database/schema/events.server.ts"
-import { gates } from "~/database/schema/gates.server.ts"
+import { event_instances, events } from "~/database/schema/events.server.ts"
+import { item_instances } from "~/database/schema/items.server.ts"
 import { lock_instances } from "~/database/schema/locks.server.ts"
-import { paramsSchema as parentParamsSchema } from "~/routes/write+/+$gridId.tsx"
+import { paramsSchema as parentParamsSchema } from "~/routes/write+/$gridId+/_route.tsx"
 
 const paramsSchema = z.object({
     resourceId: z.coerce.number(),
@@ -23,12 +23,31 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
     await db.transaction(async (tx) => {
         await tx
+            .update(events)
+            .set({ parent_id: null })
+            .where(
+                and(
+                    eq(events.user_id, user.id),
+                    eq(events.grid_id, gridId),
+                    eq(events.parent_id, resourceId),
+                ),
+            )
+        await tx
+            .delete(item_instances)
+            .where(
+                and(
+                    eq(item_instances.user_id, user.id),
+                    eq(item_instances.grid_id, gridId),
+                    eq(item_instances.event_id, resourceId),
+                ),
+            )
+        await tx
             .delete(lock_instances)
             .where(
                 and(
                     eq(lock_instances.user_id, user.id),
                     eq(lock_instances.grid_id, gridId),
-                    eq(lock_instances.gate_id, resourceId),
+                    eq(lock_instances.event_id, resourceId),
                 ),
             )
         await tx
@@ -37,21 +56,16 @@ export async function action({ request, params }: ActionFunctionArgs) {
                 and(
                     eq(event_instances.user_id, user.id),
                     eq(event_instances.grid_id, gridId),
-                    eq(event_instances.gate_id, resourceId),
+                    eq(event_instances.event_id, resourceId),
                 ),
             )
         await tx
-            .update(gates)
-            .set({
-                active: false,
-                summary: null,
-                description: null,
-            })
+            .delete(events)
             .where(
                 and(
-                    eq(gates.user_id, user.id),
-                    eq(gates.grid_id, gridId),
-                    eq(gates.id, resourceId),
+                    eq(events.user_id, user.id),
+                    eq(events.grid_id, gridId),
+                    eq(events.id, resourceId),
                 ),
             )
     })

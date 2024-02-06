@@ -5,7 +5,7 @@ import {
     type LoaderFunctionArgs,
 } from "@vercel/remix"
 import { db } from "~/database/database.server.ts"
-import { paramsSchema as parentParamsSchema } from "~/routes/write+/+$gridId.tsx"
+import { paramsSchema as parentParamsSchema } from "~/routes/write+/$gridId+/_route.tsx"
 import { characters } from "~/database/schema/characters.server.ts"
 import { events } from "~/database/schema/events.server.ts"
 import { useNavigate, useParams } from "@remix-run/react"

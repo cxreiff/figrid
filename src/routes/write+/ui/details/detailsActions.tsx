@@ -3,7 +3,7 @@ import { useFetcher, useNavigate } from "@remix-run/react"
 import { useState } from "react"
 import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
 import { DeleteResourceDialog } from "~/ui/deleteResourceDialog.tsx"
-import { type ResourceType } from "~/routes/write+/+$gridId.tsx"
+import { type ResourceType } from "~/routes/write+/$gridId+/_route.tsx"
 
 export function DetailsActions({
     resourceType,

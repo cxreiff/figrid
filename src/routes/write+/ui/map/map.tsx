@@ -2,9 +2,9 @@ import { Card } from "~/ui/primitives/card.tsx"
 import { MapTile } from "~/routes/write+/ui/map/mapTile.tsx"
 import { defined, indicesArray } from "~/lib/misc.ts"
 
-import type { ResourceType, loader } from "~/routes/write+/+$gridId.tsx"
+import type { ResourceType, loader } from "~/routes/write+/$gridId+/_route.tsx"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
-import { paramsSchema } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
+import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_index.tsx"
 import { useLocation, useParams } from "@remix-run/react"
 import { useEffect, useMemo, useState } from "react"
 import type {

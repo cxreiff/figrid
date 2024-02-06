@@ -19,7 +19,7 @@ import {
 } from "@tanstack/react-table"
 import { useState } from "react"
 import { type useSuperLoaderData } from "~/lib/superjson.ts"
-import type { loader } from "~/routes/_index+/+_index.tsx"
+import type { loader } from "~/routes/_index+/_index.tsx"
 import type { ListGridsQuery } from "~/routes/_index+/lib/queries.server.ts"
 import { DataTablePagination } from "~/routes/_index+/ui/tablePagination.tsx"
 import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"

@@ -5,7 +5,7 @@ import { db } from "~/database/database.server.ts"
 import { gates } from "~/database/schema/gates.server.ts"
 import { strictEntries } from "~/lib/misc.ts"
 import { zodSearchParams } from "~/lib/parsers.ts"
-import { paramsSchema as parentParamsSchema } from "~/routes/write+/+$gridId.tsx"
+import { paramsSchema as parentParamsSchema } from "~/routes/write+/$gridId+/_route.tsx"
 
 const GATE_TYPE_OPPOSITES: Record<
     typeof gates.$inferSelect.type,

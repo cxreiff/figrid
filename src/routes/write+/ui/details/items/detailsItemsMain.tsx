@@ -1,6 +1,6 @@
 import { useSuperRouteLoaderData } from "~/lib/superjson.ts"
 import type { WriteItemQuery } from "~/routes/write+/lib/queries.server.ts"
-import { type loader as childLoader } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
+import { type loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_index.tsx"
 import { TypeSelect } from "~/ui/typeSelect.tsx"
 import { useFetcher } from "@remix-run/react"
 

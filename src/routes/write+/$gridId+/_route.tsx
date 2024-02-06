@@ -16,7 +16,7 @@ import {
 } from "~/lib/contextLayout.ts"
 import { getSessionLayout } from "~/lib/sessionLayout.server.ts"
 import { superjson, useSuperLoaderData } from "~/lib/superjson.ts"
-import { paramsSchema as childParamsSchema } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
+import { paramsSchema as childParamsSchema } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_index.tsx"
 import { useEffect, useState } from "react"
 import { Map } from "~/routes/write+/ui/map/map.tsx"
 import {

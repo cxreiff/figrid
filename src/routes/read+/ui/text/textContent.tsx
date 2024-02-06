@@ -7,7 +7,7 @@ import { TextOptions } from "~/routes/read+/ui/text/textOptions.tsx"
 import { TextItems } from "~/routes/read+/ui/text/textItems.tsx"
 import { WaitSaveData } from "~/ui/waitSaveData.tsx"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
-import type { loader } from "~/routes/read+/+$gridId.tsx"
+import type { loader } from "~/routes/read+/$gridId.tsx"
 import { ContextCommand } from "~/lib/contextCommand.ts"
 
 export function TextContent({

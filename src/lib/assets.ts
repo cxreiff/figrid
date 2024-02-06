@@ -1,4 +1,4 @@
-import type { ResourceType } from "~/routes/write+/+$gridId.tsx"
+import type { ResourceType } from "~/routes/write+/$gridId+/_route.tsx"
 import type {
     WriteCharacterQuery,
     WriteEventQuery,

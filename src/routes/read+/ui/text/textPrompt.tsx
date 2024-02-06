@@ -10,7 +10,7 @@ import { Card } from "~/ui/primitives/card.tsx"
 import { InputWithIcon } from "~/ui/primitives/input.tsx"
 import { WaitSaveData } from "~/ui/waitSaveData.tsx"
 import { availableCommands } from "~/routes/read+/lib/commands.ts"
-import type { loader } from "~/routes/read+/+$gridId.tsx"
+import type { loader } from "~/routes/read+/$gridId.tsx"
 import { ContextCommand } from "~/lib/contextCommand.ts"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
 

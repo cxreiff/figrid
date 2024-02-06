@@ -4,12 +4,11 @@ import { auth } from "~/auth/auth.server.ts"
 import { db } from "~/database/database.server.ts"
 import { character_instances } from "~/database/schema/characters.server.ts"
 import { event_instances } from "~/database/schema/events.server.ts"
-import { item_instances } from "~/database/schema/items.server.ts"
-import { paramsSchema as parentParamsSchema } from "~/routes/write+/+$gridId.tsx"
+import { paramsSchema as gridIdParamsSchema } from "~/routes/write+/$gridId+/_route.tsx"
 
 const paramsSchema = z.object({
     resourceId: z.coerce.number(),
-    linkedType: z.enum(["characters", "items", "events"]),
+    linkedType: z.enum(["tiles", "events"]),
     linkId: z.coerce.number(),
 })
 
@@ -19,31 +18,23 @@ export async function action({ request, params }: ActionFunctionArgs) {
     })
 
     const { gridId, resourceId, linkedType, linkId } = paramsSchema
-        .merge(parentParamsSchema)
+        .merge(gridIdParamsSchema)
         .parse(params)
 
     switch (linkedType) {
-        case "characters":
+        case "tiles":
             await db.insert(character_instances).values({
                 user_id: user.id,
                 grid_id: gridId,
-                tile_id: resourceId,
-                character_id: linkId,
-            })
-            break
-        case "items":
-            await db.insert(item_instances).values({
-                user_id: user.id,
-                grid_id: gridId,
-                tile_id: resourceId,
-                item_id: linkId,
+                character_id: resourceId,
+                tile_id: linkId,
             })
             break
         case "events":
             await db.insert(event_instances).values({
                 user_id: user.id,
                 grid_id: gridId,
-                tile_id: resourceId,
+                character_id: resourceId,
                 event_id: linkId,
             })
             break

@@ -5,7 +5,7 @@ import type { gates } from "~/database/schema/gates.server.ts"
 import { TILE_DIMENSIONS } from "~/routes/write+/ui/map/map.tsx"
 import type { WriteGridQuery } from "~/routes/write+/lib/queries.server.ts"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
-import type { loader } from "~/routes/write+/+$gridId.tsx"
+import type { loader } from "~/routes/write+/$gridId+/_route.tsx"
 
 export function MapTileCreate({
     neighbors,

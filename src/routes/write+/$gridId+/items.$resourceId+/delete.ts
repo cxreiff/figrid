@@ -3,12 +3,9 @@ import { and, eq } from "drizzle-orm"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
 import { db } from "~/database/database.server.ts"
-import {
-    character_instances,
-    characters,
-} from "~/database/schema/characters.server.ts"
-import { event_instances } from "~/database/schema/events.server.ts"
-import { paramsSchema as parentParamsSchema } from "~/routes/write+/+$gridId.tsx"
+import { item_instances, items } from "~/database/schema/items.server.ts"
+import { locks } from "~/database/schema/locks.server.ts"
+import { paramsSchema as parentParamsSchema } from "~/routes/write+/$gridId+/_route.tsx"
 
 const paramsSchema = z.object({
     resourceId: z.coerce.number(),
@@ -25,30 +22,31 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
     await db.transaction(async (tx) => {
         await tx
-            .delete(event_instances)
+            .update(locks)
+            .set({ required_item_id: null })
             .where(
                 and(
-                    eq(event_instances.user_id, user.id),
-                    eq(event_instances.grid_id, gridId),
-                    eq(event_instances.character_id, resourceId),
+                    eq(locks.user_id, user.id),
+                    eq(locks.grid_id, gridId),
+                    eq(locks.required_item_id, resourceId),
                 ),
             )
         await tx
-            .delete(character_instances)
+            .delete(item_instances)
             .where(
                 and(
-                    eq(character_instances.user_id, user.id),
-                    eq(character_instances.grid_id, gridId),
-                    eq(character_instances.character_id, resourceId),
+                    eq(item_instances.user_id, user.id),
+                    eq(item_instances.grid_id, gridId),
+                    eq(item_instances.item_id, resourceId),
                 ),
             )
         await tx
-            .delete(characters)
+            .delete(items)
             .where(
                 and(
-                    eq(characters.user_id, user.id),
-                    eq(characters.grid_id, gridId),
-                    eq(characters.id, resourceId),
+                    eq(items.user_id, user.id),
+                    eq(items.grid_id, gridId),
+                    eq(items.id, resourceId),
                 ),
             )
     })

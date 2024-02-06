@@ -1,6 +1,6 @@
 import { Image } from "~/ui/image.tsx"
 import { WaitSaveData } from "~/ui/waitSaveData.tsx"
-import type { loader } from "~/routes/read+/+$gridId.tsx"
+import type { loader } from "~/routes/read+/$gridId.tsx"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
 import { useAssetUrl } from "~/lib/useAssetUrl.ts"
 

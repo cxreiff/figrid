@@ -137,9 +137,6 @@ dependencies:
   remix-auth-github:
     specifier: ^1.6.0
     version: 1.6.0(@remix-run/server-runtime@1.19.3)(remix-auth@3.6.0)
-  remix-custom-routes:
-    specifier: ^1.0.1
-    version: 1.0.1
   remix-themes:
     specifier: ^1.2.2
     version: 1.2.2(@remix-run/react@2.4.0)(@remix-run/server-runtime@1.19.3)
@@ -193,9 +190,6 @@ devDependencies:
   eslint-plugin-drizzle:
     specifier: ^0.2.2
     version: 0.2.2(eslint@8.56.0)
-  glob:
-    specifier: ^10.3.10
-    version: 10.3.10
   mysql2:
     specifier: ^3.6.5
     version: 3.6.5
@@ -208,6 +202,9 @@ devDependencies:
   prettier-plugin-tailwindcss:
     specifier: ^0.5.9
     version: 0.5.9(prettier@3.1.0)
+  remix-flat-routes:
+    specifier: ^0.6.4
+    version: 0.6.4(@remix-run/dev@2.4.0)
   tailwindcss:
     specifier: ^3.4.0
     version: 3.4.0
@@ -3738,6 +3735,15 @@ packages:
       source-map: 0.7.4
       typescript: 5.3.3
 
+  /@remix-run/v1-route-convention@0.1.4(@remix-run/dev@2.4.0):
+    resolution: {integrity: sha512-fVTr9YlNLWfaiM/6Y56sOtcY8x1bBJQHY0sDWO5+Z/vjJ2Ni7fe2fwrzs1jUFciMPXqBQdFGePnkuiYLz3cuUA==}
+    peerDependencies:
+      '@remix-run/dev': ^1.15.0 || ^2.0.0
+    dependencies:
+      '@remix-run/dev': 2.4.0(@remix-run/serve@2.4.0)(typescript@5.3.3)
+      minimatch: 7.4.6
+    dev: true
+
   /@remix-run/web-blob@3.1.0:
     resolution: {integrity: sha512-owGzFLbqPH9PlKb8KvpNJ0NO74HWE2euAn61eEiyCXX/oteoVzTVSN8mpLgDjaxBf2btj5/nUllSUgpyd6IH6g==}
     dependencies:
@@ -6644,6 +6650,15 @@ packages:
       universalify: 2.0.1
     dev: true
 
+  /fs-extra@11.2.0:
+    resolution: {integrity: sha512-PmDi3uwK5nFuXh7XDTlVnS17xJS7vW36is2+w3xcv8SVxiB4NyATf4ctkVY5bkSjX0Y4nbvZCq1/EjtEyr9ktw==}
+    engines: {node: '>=14.14'}
+    dependencies:
+      graceful-fs: 4.2.11
+      jsonfile: 6.1.0
+      universalify: 2.0.1
+    dev: true
+
   /fs-minipass@2.1.0:
     resolution: {integrity: sha512-V/JgOLFCS+R6Vcq0slCuaeWEdNC3ouDlJMNIsacH2VtALiu9mV4LPrHc5cDl8k5aw6J8jwgWWpiTo5RYhmIzvg==}
     engines: {node: '>= 8'}
@@ -9300,9 +9315,17 @@ packages:
       uuid: 8.3.2
     dev: false
 
-  /remix-custom-routes@1.0.1:
-    resolution: {integrity: sha512-nC9IFAHskzx0djXOA4KnRck8x2uDWtDw2cT0bN8XaOSlBumm5t+TOUKET6hiXMjMyjkr4FqqpH7lotD68dOA7A==}
-    dev: false
+  /remix-flat-routes@0.6.4(@remix-run/dev@2.4.0):
+    resolution: {integrity: sha512-/0bTfaNSd2O3ak+cCLAlmHIsgm7YWiaBiu5ENUyuSWSNwF/KaHuKFhcHHhozPevQ8ROgCZG9tNbWzH6ktJoprA==}
+    hasBin: true
+    peerDependencies:
+      '@remix-run/dev': ^1.15.0 || ^2
+    dependencies:
+      '@remix-run/dev': 2.4.0(@remix-run/serve@2.4.0)(typescript@5.3.3)
+      '@remix-run/v1-route-convention': 0.1.4(@remix-run/dev@2.4.0)
+      fs-extra: 11.2.0
+      minimatch: 5.1.6
+    dev: true
 
   /remix-themes@1.2.2(@remix-run/react@2.4.0)(@remix-run/server-runtime@1.19.3):
     resolution: {integrity: sha512-G+1e2I62PI8JUR9xkkhByHljw73CIO42dEQMXo2UI+d+ZZwO+v/xwLAW++FkHA3rVXWuo4vu+DiAy2nCZMk70g==}

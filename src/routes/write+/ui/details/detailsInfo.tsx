@@ -3,7 +3,7 @@ import type { Dispatch, ReactElement, ReactNode } from "react"
 import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
 import { LayoutAccordion } from "~/ui/layout/layoutAccordion.tsx"
 import { LayoutTitledScrolls } from "~/ui/layout/layoutTitledScrolls.tsx"
-import type { ResourceType } from "~/routes/write+/+$gridId.tsx"
+import type { ResourceType } from "~/routes/write+/$gridId+/_route.tsx"
 
 export function DetailsInfo({
     resourceType,

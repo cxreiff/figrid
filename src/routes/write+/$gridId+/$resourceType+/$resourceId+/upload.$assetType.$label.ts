@@ -18,7 +18,7 @@ import { items } from "~/database/schema/items.server.ts"
 import { tiles } from "~/database/schema/tiles.server.ts"
 import { ASSET_TYPES, RESOURCE_TYPES_WITH_ASSETS } from "~/lib/assets.ts"
 import { createR2UploadHandler } from "~/lib/r2.server.ts"
-import { paramsSchema as parentParamsSchema } from "~/routes/write+/+$gridId.tsx"
+import { paramsSchema as parentParamsSchema } from "~/routes/write+/$gridId+/_route.tsx"
 
 const randomKey = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyz", 16)
 

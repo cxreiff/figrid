@@ -6,7 +6,7 @@ import { db } from "~/database/database.server.ts"
 import { events } from "~/database/schema/events.server.ts"
 import { item_instances } from "~/database/schema/items.server.ts"
 import { lock_instances } from "~/database/schema/locks.server.ts"
-import { paramsSchema as gridIdParamsSchema } from "~/routes/write+/+$gridId.tsx"
+import { paramsSchema as gridIdParamsSchema } from "~/routes/write+/$gridId+/_route.tsx"
 
 const paramsSchema = z.object({
     resourceId: z.coerce.number(),

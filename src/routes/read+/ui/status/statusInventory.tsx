@@ -1,7 +1,7 @@
 import { Button } from "~/ui/primitives/button.tsx"
 import { useContext } from "react"
 import { WaitSaveData } from "~/ui/waitSaveData.tsx"
-import type { loader } from "~/routes/read+/+$gridId.tsx"
+import type { loader } from "~/routes/read+/$gridId.tsx"
 import { ContextCommand } from "~/lib/contextCommand.ts"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
 import {

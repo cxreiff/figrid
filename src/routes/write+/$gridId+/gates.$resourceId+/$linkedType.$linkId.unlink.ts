@@ -1,10 +1,11 @@
 import { type ActionFunctionArgs } from "@vercel/remix"
+import { and, eq } from "drizzle-orm"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
 import { db } from "~/database/database.server.ts"
 import { event_instances } from "~/database/schema/events.server.ts"
 import { lock_instances } from "~/database/schema/locks.server.ts"
-import { paramsSchema as gridIdParamsSchema } from "~/routes/write+/+$gridId.tsx"
+import { paramsSchema as gridIdParamsSchema } from "~/routes/write+/$gridId+/_route.tsx"
 
 const paramsSchema = z.object({
     resourceId: z.coerce.number(),
@@ -23,20 +24,28 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
     switch (linkedType) {
         case "events":
-            await db.insert(event_instances).values({
-                user_id: user.id,
-                grid_id: gridId,
-                gate_id: resourceId,
-                event_id: linkId,
-            })
+            await db
+                .delete(event_instances)
+                .where(
+                    and(
+                        eq(event_instances.user_id, user.id),
+                        eq(event_instances.grid_id, gridId),
+                        eq(event_instances.gate_id, resourceId),
+                        eq(event_instances.id, linkId),
+                    ),
+                )
             break
         case "requirements":
-            await db.insert(lock_instances).values({
-                user_id: user.id,
-                grid_id: gridId,
-                gate_id: resourceId,
-                lock_id: linkId,
-            })
+            await db
+                .delete(lock_instances)
+                .where(
+                    and(
+                        eq(lock_instances.user_id, user.id),
+                        eq(lock_instances.grid_id, gridId),
+                        eq(lock_instances.gate_id, resourceId),
+                        eq(lock_instances.lock_id, linkId),
+                    ),
+                )
             break
     }
 
