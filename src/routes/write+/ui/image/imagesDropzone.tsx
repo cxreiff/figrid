@@ -2,7 +2,7 @@ import { useFetcher, useParams } from "@remix-run/react"
 import { useCallback } from "react"
 import * as ReactDropzone from "react-dropzone"
 import { removeExtension } from "~/lib/assets.ts"
-import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
+import { paramsSchema } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
 import type { action } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.upload.$assetType.$label.ts"
 
 const { useDropzone } = ReactDropzone

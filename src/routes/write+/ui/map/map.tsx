@@ -4,7 +4,7 @@ import { defined, indicesArray } from "~/lib/misc.ts"
 
 import type { ResourceType, loader } from "~/routes/write+/+$gridId.tsx"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
-import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/+$resourceId.tsx"
+import { paramsSchema } from "~/routes/write+/$gridId+/+$resourceType.$resourceId.tsx"
 import { useLocation, useParams } from "@remix-run/react"
 import { useEffect, useMemo, useState } from "react"
 import type {
