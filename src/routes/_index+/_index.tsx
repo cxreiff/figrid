@@ -1,11 +1,12 @@
 import type { LoaderFunctionArgs } from "@vercel/remix"
 import { auth } from "~/auth/auth.server.ts"
 import { Layout } from "~/ui/layout/layout.tsx"
-import { Card } from "~/ui/primitives/card.tsx"
 import { superjson, useSuperLoaderData } from "~/lib/superjson.ts"
 import { GridTable } from "~/routes/_index+/ui/gridTable.tsx"
 import { COLUMN_DEFINITION } from "~/routes/_index+/lib/columns.ts"
 import { listGridsQuery } from "~/routes/_index+/lib/queries.server.ts"
+import { Separator } from "~/ui/primitives/separator.tsx"
+import { SiteDescription } from "~/routes/_index+/ui/siteDescription.tsx"
 
 export async function loader({ request }: LoaderFunctionArgs) {
     const user = await auth.isAuthenticated(request)
@@ -21,17 +22,8 @@ export default function Route() {
     return (
         <Layout user={user}>
             <div className="flex h-full flex-col gap-3">
-                <div className="flex min-h-0 gap-3">
-                    <Card className=" flex items-center justify-center p-4">
-                        <h3 className="text-lg">welcome to figrid</h3>
-                    </Card>
-                    <Card className=" flex flex-1 items-center justify-center p-4">
-                        Sit laborum laborum aliqua excepteur ipsum. Duis nisi
-                        amet est velit do labore nisi amet. Aliqua mollit ad
-                        elit occaecat ex adipisicing exercitation. Ad eu id
-                        fugiat dolore duis adipisicing et ex.
-                    </Card>
-                </div>
+                <SiteDescription />
+                <Separator />
                 <div className="-mb-4 mt-3 min-h-0 flex-1">
                     <GridTable
                         user={user}
