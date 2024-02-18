@@ -26,16 +26,11 @@ export default function Route() {
                         <h3 className="text-lg">welcome to figrid</h3>
                     </Card>
                     <Card className=" flex flex-1 items-center justify-center p-4">
-                        carousel
+                        Sit laborum laborum aliqua excepteur ipsum. Duis nisi
+                        amet est velit do labore nisi amet. Aliqua mollit ad
+                        elit occaecat ex adipisicing exercitation. Ad eu id
+                        fugiat dolore duis adipisicing et ex.
                     </Card>
-                    <div className="flex flex-col gap-3">
-                        <Card className=" flex flex-1 items-center justify-center p-4">
-                            your profile
-                        </Card>
-                        <Card className=" flex flex-1 items-center justify-center p-4">
-                            help & documentation
-                        </Card>
-                    </div>
                 </div>
                 <div className="-mb-4 mt-3 min-h-0 flex-1">
                     <GridTable

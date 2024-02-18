@@ -18,7 +18,6 @@ export function DataTablePagination<TData>({
         <div className="flex items-center justify-between">
             <ButtonWithIcon
                 icon={DoubleArrowLeftIcon}
-                className="hidden lg:flex"
                 onClick={() => table.setPageIndex(0)}
                 disabled={table.getState().pagination.pageIndex < 1}
             />
@@ -41,7 +40,6 @@ export function DataTablePagination<TData>({
             />
             <ButtonWithIcon
                 icon={DoubleArrowRightIcon}
-                className="hidden lg:flex"
                 onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                 disabled={
                     table.getState().pagination.pageIndex >

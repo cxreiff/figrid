@@ -16,7 +16,7 @@ export function ButtonWithIcon({
         <Button
             className={cn("relative", className)}
             variant={variant}
-            size={children ? "default" : "icon"}
+            size={children !== undefined ? "default" : "icon"}
             {...props}
         >
             <Icon
@@ -26,7 +26,7 @@ export function ButtonWithIcon({
                     "right-3": alignIcon === "right",
                 })}
             />
-            {children && (
+            {children !== undefined && (
                 <span
                     className={cn({
                         "w-full": !!alignIcon,
