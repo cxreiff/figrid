@@ -6,6 +6,7 @@ import { TILE_DIMENSIONS } from "~/routes/write+/ui/map/map.tsx"
 import type { WriteGridQuery } from "~/routes/write+/lib/queries.server.ts"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
 import type { loader } from "~/routes/write+/$gridId+/_route.tsx"
+import { useMemo } from "react"
 
 export function MapTileCreate({
     neighbors,
@@ -18,6 +19,14 @@ export function MapTileCreate({
 
     const fetcher = useFetcher()
 
+    const searchParams = useMemo(() => {
+        const result = new URLSearchParams()
+        for (const neighbor of neighbors) {
+            result.append(neighbor.type, neighbor.id.toString())
+        }
+        return result
+    }, [neighbors])
+
     return (
         <ActionBox
             icon={PlusIcon}
@@ -26,6 +35,7 @@ export function MapTileCreate({
                 height: `${TILE_DIMENSIONS.y}rem`,
             }}
             className="h-full w-full"
+            actionCreate={`tiles/create?${searchParams}`}
             options={tiles
                 .filter(
                     (tile) =>
@@ -34,10 +44,6 @@ export function MapTileCreate({
                 )
                 .map((tile) => ({ id: tile.id, label: tile.name, tile }))}
             onOptionSelect={async (option) => {
-                const searchParams = new URLSearchParams()
-                for (const neighbor of neighbors) {
-                    searchParams.append(neighbor.type, neighbor.id.toString())
-                }
                 await fetcher.submit(null, {
                     method: "POST",
                     action: `tiles/${option.id}/gates/link?${searchParams}`,

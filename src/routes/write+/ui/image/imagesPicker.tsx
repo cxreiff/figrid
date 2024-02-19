@@ -22,7 +22,7 @@ export function ImagesPicker() {
                             asset_type === "images",
                     )
                     .map((asset) => (
-                        <div key={asset.id} className="text-center">
+                        <div key={asset.id} className="h-20 text-center">
                             <Image
                                 id={`asset-${asset.id}`}
                                 src={assetUrl(asset)}

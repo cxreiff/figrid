@@ -1,5 +1,7 @@
+import { PlusIcon } from "@radix-ui/react-icons"
 import { useState } from "react"
 import { cn, type IconType } from "~/lib/misc.ts"
+import { ButtonWithIconLink } from "~/ui/buttonWithIconLink.tsx"
 import { Button, type ButtonProps } from "~/ui/primitives/button.tsx"
 import {
     Command,
@@ -20,12 +22,14 @@ export function ActionBox<T extends { id: string | number; label: string }>({
     options,
     icon: Icon,
     onOptionSelect,
+    actionCreate,
     ...props
 }: ButtonProps & {
     className?: string
     options: T[]
     icon: IconType
     onOptionSelect: (selectedId: T) => void
+    actionCreate?: string
 }) {
     const [open, setOpen] = useState(false)
 
@@ -54,7 +58,7 @@ export function ActionBox<T extends { id: string | number; label: string }>({
             <PopoverContent className="w-[18.75rem] p-0">
                 <Command>
                     <CommandInput placeholder="search..." className="h-9" />
-                    <CommandEmpty>none found.</CommandEmpty>
+                    {!actionCreate && <CommandEmpty>none found.</CommandEmpty>}
                     <CommandGroup>
                         {options.map((option) => (
                             <CommandItem
@@ -70,6 +74,15 @@ export function ActionBox<T extends { id: string | number; label: string }>({
                         ))}
                     </CommandGroup>
                 </Command>
+                {!!actionCreate && (
+                    <ButtonWithIconLink
+                        className="m-1 box-border w-[calc(100%-0.5rem)]"
+                        icon={PlusIcon}
+                        to={actionCreate}
+                    >
+                        create new
+                    </ButtonWithIconLink>
+                )}
             </PopoverContent>
         </Popover>
     )

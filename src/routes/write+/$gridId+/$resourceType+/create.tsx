@@ -23,6 +23,10 @@ import { tiles } from "~/database/schema/tiles.server.ts"
 import { items } from "~/database/schema/items.server.ts"
 import { locks } from "~/database/schema/locks.server.ts"
 import { Card } from "~/ui/primitives/card.tsx"
+import {
+    linkTile,
+    parseNeighbors,
+} from "~/routes/write+/lib/linkTile.server.ts"
 
 export const paramsSchema = z.object({
     resourceType: z.enum(["tiles", "characters", "items", "events", "locks"]),
@@ -99,6 +103,17 @@ export async function action({ request, params }: ActionFunctionArgs) {
             response = await db
                 .insert(tiles)
                 .values({ ...data.data, grid_id: gridId, user_id: user.id })
+
+            const neighbors = parseNeighbors(request.url)
+            if (neighbors.length > 0) {
+                await linkTile(
+                    user,
+                    neighbors,
+                    gridId,
+                    Number(response.insertId),
+                )
+            }
+
             break
         case "characters":
             response = await db
