@@ -1,4 +1,5 @@
 import type { assets } from "~/database/schema/assets.server.ts"
+import { assetPrefix } from "~/lib/assets.ts"
 import type { ValueOf } from "~/lib/misc.ts"
 import { useRootLoaderData } from "~/lib/useRootLoaderData.ts"
 
@@ -24,7 +25,8 @@ export function useAssetUrl() {
             return `${R2_ASSETS_HOSTNAME}/fallbacks/${fallback}`
         }
         const { grid_id, resource_type, asset_type, filename } = asset
-        return `${R2_ASSETS_HOSTNAME}/grids/${grid_id}/${resource_type}/${asset_type}/${filename}`
+        const prefix = assetPrefix(grid_id, resource_type, asset_type)
+        return `${R2_ASSETS_HOSTNAME}/${prefix}/${filename}`
     }
 
     return { assetUrl, ASSET_FALLBACKS }

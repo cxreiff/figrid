@@ -3,7 +3,7 @@ import { useCallback } from "react"
 import * as ReactDropzone from "react-dropzone"
 import { removeExtension } from "~/lib/assets.ts"
 import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_index.tsx"
-import type { action } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/upload.$assetType.$label.ts"
+import type { action } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/assets.$assetType.$label.ts"
 
 const { useDropzone } = ReactDropzone
 
@@ -20,7 +20,7 @@ export function ImagesDropzone() {
                 formData.append("asset", acceptedFiles[0])
                 const label = removeExtension(acceptedFiles[0].name)
                 fetcher.submit(formData, {
-                    action: `${resourceType}/${resourceId}/upload/images/${label}`,
+                    action: `${resourceType}/${resourceId}/assets/images/${label}`,
                     method: "POST",
                     encType: "multipart/form-data",
                 })
@@ -38,7 +38,7 @@ export function ImagesDropzone() {
         <div
             {...getRootProps({
                 className:
-                    "h-full w-full rounded-md flex justify-center items-center border hover:bg-[hsla(var(--accent)/0.4)] border-dashed border-accent",
+                    "h-full w-full rounded-md flex justify-center items-center border hover:bg-[hsla(var(--accent)/0.4)] border-dashed border-accent p-3 text-center",
             })}
         >
             <input {...getInputProps()} />

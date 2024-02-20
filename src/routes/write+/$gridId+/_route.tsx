@@ -150,7 +150,7 @@ export default function Route() {
                         <Map />
                         <Outlet />
                     </LayoutTabs>
-                    <LayoutTabs names={["details", "images"]}>
+                    <LayoutTabs names={["details", "image"]}>
                         <Details />
                         <Images />
                     </LayoutTabs>

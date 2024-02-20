@@ -8,14 +8,14 @@ const DEFAULT_LAYOUT_READ = [26, 48, 26] as const
 const DEFAULT_LAYOUT_AREA = [45, 55] as const
 const DEFAULT_LAYOUT_STATUS = [45, 55] as const
 const DEFAULT_LAYOUT_WRITE = [26, 48, 26] as const
-const DEFAULT_LAYOUT_ASSETS = [50, 50] as const
+const DEFAULT_LAYOUT_ASSETS = [80, 20] as const
 
 const LAYOUT_MIN_SIZES = {
     read: [20, 25, 20] as const,
     area: [20, 20] as const,
     status: [20, 20] as const,
     write: [20, 25, 20] as const,
-    assets: [30, 30] as const,
+    assets: [30, 20] as const,
 }
 
 const percent = z.number().min(0).max(100)

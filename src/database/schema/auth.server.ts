@@ -9,6 +9,7 @@ import {
     uniqueIndex,
     varchar,
 } from "drizzle-orm/mysql-core"
+import { USER_TYPES } from "~/database/enums.ts"
 import { likes } from "~/database/schema/likes.server.ts"
 import {
     create_update_timestamps,
@@ -25,9 +26,7 @@ export const users = mysqlTable(
         alias: varchar("alias", { length: 256 }).unique().notNull(),
         name: varchar("name", { length: 256 }),
 
-        type: mysqlEnum("type", ["standard", "creator", "admin"])
-            .default("standard")
-            .notNull(),
+        type: mysqlEnum("type", USER_TYPES).default("standard").notNull(),
     },
     (t) => ({
         email: uniqueIndex("email").on(t.email),

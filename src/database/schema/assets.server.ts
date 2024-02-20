@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm"
 import { mysqlEnum, mysqlTable, varchar } from "drizzle-orm/mysql-core"
+import { ASSET_RESOURCE_TYPES, ASSET_TYPES } from "~/database/enums.ts"
 import { characters } from "~/database/schema/characters.server.ts"
 import { events } from "~/database/schema/events.server.ts"
 import { grids } from "~/database/schema/grids.server.ts"
@@ -10,14 +11,10 @@ import { grid_resource_fields } from "~/database/shared.server.ts"
 export const assets = mysqlTable("assets", {
     ...grid_resource_fields,
 
-    resource_type: mysqlEnum("resource_type", [
-        "grid",
-        "tiles",
-        "events",
-        "characters",
-        "items",
-    ]).notNull(),
-    asset_type: mysqlEnum("asset_type", ["images"]).default("images").notNull(),
+    resource_type: mysqlEnum("resource_type", ASSET_RESOURCE_TYPES).notNull(),
+    asset_type: mysqlEnum("asset_type", ASSET_TYPES)
+        .default("images")
+        .notNull(),
     filename: varchar("filename", { length: 256 }).notNull(),
     label: varchar("label", { length: 256 }),
 })

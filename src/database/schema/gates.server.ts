@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm"
 import { boolean, int, mysqlEnum, mysqlTable } from "drizzle-orm/mysql-core"
+import { GATE_TYPES } from "~/database/enums.ts"
 import { event_instances } from "~/database/schema/events.server.ts"
 import { grids } from "~/database/schema/grids.server.ts"
 import { lock_instances } from "~/database/schema/locks.server.ts"
@@ -13,15 +14,7 @@ export const gates = mysqlTable("gates", {
     ...grid_resource_fields,
     ...name_summary_description,
 
-    type: mysqlEnum("type", [
-        "north",
-        "east",
-        "south",
-        "west",
-        "up",
-        "down",
-        "other",
-    ]).notNull(),
+    type: mysqlEnum("type", GATE_TYPES).notNull(),
 
     from_tile_id: int("from_tile_id").notNull(),
     to_tile_id: int("to_tile_id").notNull(),

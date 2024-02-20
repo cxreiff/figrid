@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm"
 import { int, mysqlEnum, mysqlTable } from "drizzle-orm/mysql-core"
+import { ITEM_TYPES } from "~/database/enums.ts"
 import { assets } from "~/database/schema/assets.server.ts"
 import { events } from "~/database/schema/events.server.ts"
 import { grids } from "~/database/schema/grids.server.ts"
@@ -16,7 +17,7 @@ export const items = mysqlTable("items", {
     ...name_summary_description,
     ...can_have_image,
 
-    type: mysqlEnum("type", ["basic", "key"]).default("basic").notNull(),
+    type: mysqlEnum("type", ITEM_TYPES).default("basic").notNull(),
 })
 
 export const items_relations = relations(items, ({ one, many }) => ({

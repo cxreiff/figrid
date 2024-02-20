@@ -1,14 +1,15 @@
-import { S3Client, type PutObjectCommandInput } from "@aws-sdk/client-s3"
+import {
+    S3Client,
+    type PutObjectCommandInput,
+    DeleteObjectCommand,
+} from "@aws-sdk/client-s3"
 import { Upload } from "@aws-sdk/lib-storage"
 import { writeAsyncIterableToWritable } from "@remix-run/node"
 import type { UploadHandler } from "@vercel/remix"
 import { PassThrough } from "stream"
 
-const uploadStream = ({
-    Key,
-    ContentType,
-}: Pick<PutObjectCommandInput, "Key" | "ContentType">) => {
-    const r2 = new S3Client({
+function r2Client() {
+    return new S3Client({
         region: "auto",
         endpoint: process.env.R2_ASSETS_ENDPOINT,
         credentials: {
@@ -16,6 +17,13 @@ const uploadStream = ({
             secretAccessKey: process.env.R2_ASSETS_SECRET_KEY,
         },
     })
+}
+
+function uploadStream({
+    Key,
+    ContentType,
+}: Pick<PutObjectCommandInput, "Key" | "ContentType">) {
+    const r2 = r2Client()
     const passThrough = new PassThrough()
     return {
         stream: passThrough,
@@ -65,4 +73,14 @@ export const createR2UploadHandler: (
             ? keyWithExtension
             : undefined
     }
+}
+
+export async function deleteResource(key: string) {
+    const r2 = r2Client()
+    return await r2.send(
+        new DeleteObjectCommand({
+            Bucket: process.env.R2_ASSETS_BUCKET_NAME,
+            Key: key,
+        }),
+    )
 }

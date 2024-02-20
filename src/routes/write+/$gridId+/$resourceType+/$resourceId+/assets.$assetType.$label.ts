@@ -10,24 +10,33 @@ import { customAlphabet } from "nanoid"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
 import { db } from "~/database/database.server.ts"
+import { ASSET_RESOURCE_TYPES, ASSET_TYPES } from "~/database/enums.ts"
 import { assets } from "~/database/schema/assets.server.ts"
 import { characters } from "~/database/schema/characters.server.ts"
 import { events } from "~/database/schema/events.server.ts"
 import { grids } from "~/database/schema/grids.server.ts"
 import { items } from "~/database/schema/items.server.ts"
 import { tiles } from "~/database/schema/tiles.server.ts"
-import { ASSET_TYPES, RESOURCE_TYPES_WITH_ASSETS } from "~/lib/assets.ts"
+import { assetPrefix } from "~/lib/assets.ts"
 import { createR2UploadHandler } from "~/lib/r2.server.ts"
 import { paramsSchema as parentParamsSchema } from "~/routes/write+/$gridId+/_route.tsx"
 
 const randomKey = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyz", 16)
 
 export const paramsSchema = z.object({
-    resourceType: z.enum(RESOURCE_TYPES_WITH_ASSETS),
+    resourceType: z.enum(ASSET_RESOURCE_TYPES),
     resourceId: z.coerce.number(),
     assetType: z.enum(ASSET_TYPES),
     label: z.string(),
 })
+
+export const RESOURCE_TABLES = {
+    grid: grids,
+    characters: characters,
+    events: events,
+    items: items,
+    tiles: tiles,
+}
 
 export const config = { runtime: "node" }
 
@@ -40,7 +49,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
         .merge(parentParamsSchema)
         .parse(params)
 
-    const prefix = `grids/${gridId}/${resourceType}/${assetType}`
+    const prefix = assetPrefix(gridId, resourceType, assetType)
     const key = randomKey()
 
     const formData = await parseMultipartFormData(
@@ -60,14 +69,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
         })
     }
 
-    const resource_table = {
-        grid: grids,
-        characters: characters,
-        events: events,
-        items: items,
-        tiles: tiles,
-    }[resourceType]
-
     await db.transaction(async (tx) => {
         const { insertId } = await tx.insert(assets).values({
             user_id: user.id,
@@ -77,18 +78,36 @@ export async function action({ request, params }: ActionFunctionArgs) {
             filename,
             label,
         })
-        await tx
-            .update(resource_table)
-            .set({
-                image_asset_id: Number(insertId),
-            })
-            .where(
-                and(
-                    eq(resource_table.user_id, user.id),
-                    eq(resource_table.grid_id, gridId),
-                    eq(resource_table.id, resourceId),
-                ),
-            )
+
+        if (resourceType === "grid") {
+            const resource_table = RESOURCE_TABLES[resourceType]
+            await tx
+                .update(resource_table)
+                .set({
+                    image_asset_id: Number(insertId),
+                })
+                .where(
+                    and(
+                        eq(resource_table.user_id, user.id),
+                        eq(resource_table.id, gridId),
+                        eq(resource_table.id, resourceId),
+                    ),
+                )
+        } else {
+            const resource_table = RESOURCE_TABLES[resourceType]
+            await tx
+                .update(resource_table)
+                .set({
+                    image_asset_id: Number(insertId),
+                })
+                .where(
+                    and(
+                        eq(resource_table.user_id, user.id),
+                        eq(resource_table.grid_id, gridId),
+                        eq(resource_table.id, resourceId),
+                    ),
+                )
+        }
     })
 
     return json({ filename })
