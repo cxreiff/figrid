@@ -27,12 +27,12 @@ export function GridEnterButton({
                 </>
             ) : (
                 <ButtonWithIconLink
-                    className="h-9 w-full flex-1"
+                    className="h-full w-full flex-1"
                     variant="outline"
                     to={`/read/${gridId}`}
                     icon={PlayIcon}
                 >
-                    PLAY
+                    play
                 </ButtonWithIconLink>
             )}
         </div>

@@ -25,9 +25,9 @@ export function GridCard({
             key={grid.id}
             className="mb-3 flex w-full gap-2 bg-card p-2 shadow-sm last:mb-0"
         >
-            <span className="flex-0 flex flex-col sm:flex-row">
+            <span className="flex-0 flex flex-col gap-2 sm:flex-row">
                 <Image
-                    className="flex-0 mr-2 aspect-square h-12 bg-background shadow-inner"
+                    className="flex-0 aspect-square h-12 bg-background shadow-inner"
                     src={assetUrl(grid.image_asset, ASSET_FALLBACKS.GRID_IMAGE)}
                 />
                 <LikeButton

@@ -1,12 +1,33 @@
 import type { ColumnDef } from "@tanstack/react-table"
 import type { ListGridsQuery } from "~/routes/_index+/lib/queries.server.ts"
 
-export const COLUMN_DEFINITION: ColumnDef<ListGridsQuery[0]>[] = [
-    { accessorKey: "id" },
-    { accessorKey: "image_asset" },
-    { accessorKey: "name" },
-    { accessorKey: "summary" },
-    { accessorKey: "description" },
-    { accessorKey: "user_id" },
-    { accessorKey: "user" },
-]
+export const GRID_TABLE_COLUMN_IDS = [
+    "name",
+    "summary",
+    "description",
+    "user_alias",
+] as const
+
+export const GRID_TABLE_COLUMNS: {
+    [id in (typeof GRID_TABLE_COLUMN_IDS)[number]]: {
+        key: string
+        label: string
+        accessor?: (grid: ListGridsQuery[0]) => string
+    }
+} = {
+    name: { key: "name", label: "name" },
+    summary: { key: "summary", label: "summary" },
+    description: { key: "description", label: "description" },
+    user_alias: {
+        key: "user.alias",
+        label: "alias",
+        accessor: (grid) => grid.user.alias,
+    },
+} as const
+
+export const GRID_COLUMN_DEFINITIONS: ColumnDef<ListGridsQuery[0]>[] =
+    Object.entries(GRID_TABLE_COLUMNS).map(([id, column]) => ({
+        id,
+        accessorKey: column.key,
+        accessorFn: column.accessor,
+    }))

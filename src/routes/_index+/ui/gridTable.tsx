@@ -1,4 +1,4 @@
-import { MagnifyingGlassIcon, PlusIcon } from "@radix-ui/react-icons"
+import { PlusIcon } from "@radix-ui/react-icons"
 import {
     getCoreRowModel,
     getPaginationRowModel,
@@ -14,18 +14,16 @@ import { useState } from "react"
 import { type useSuperLoaderData } from "~/lib/superjson.ts"
 import type { loader } from "~/routes/_index+/_index.tsx"
 import type { ListGridsQuery } from "~/routes/_index+/lib/queries.server.ts"
-import { DataTablePagination } from "~/routes/_index+/ui/tablePagination.tsx"
+import { DataTablePagination } from "~/routes/_index+/ui/dataTablePagination.tsx"
 import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
-import { InputWithIcon } from "~/ui/primitives/input.tsx"
 import { LayoutTitledScrolls } from "~/ui/layout/layoutTitledScrolls.tsx"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "~/ui/primitives/select.tsx"
 import { GridCard } from "~/routes/_index+/ui/gridCard.tsx"
+import {
+    DataTableFiltering,
+    FILTER_COLUMN_SEARCH_PARAM,
+    FILTER_VALUE_SEARCH_PARAM,
+} from "~/routes/_index+/ui/dataTableFiltering.tsx"
+import { useSearchParams } from "@remix-run/react"
 
 type Grid = ListGridsQuery[0]
 
@@ -36,13 +34,24 @@ export function GridTable({
 }: ReturnType<typeof useSuperLoaderData<typeof loader>> & {
     columns: ColumnDef<Grid>[]
 }) {
-    const [filterColumn, setFilterColumn] = useState<string>("name")
+    const [searchParams] = useSearchParams()
     const [sorting, setSorting] = useState<SortingState>([])
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10,
     })
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+
+    const filterColumn = searchParams.get(FILTER_COLUMN_SEARCH_PARAM)
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
+        filterColumn
+            ? [
+                  {
+                      id: filterColumn,
+                      value: searchParams.get(FILTER_VALUE_SEARCH_PARAM),
+                  },
+              ]
+            : [],
+    )
 
     const table = useReactTable({
         data: grids,
@@ -65,41 +74,7 @@ export function GridTable({
         <LayoutTitledScrolls
             subheaderSlot={
                 <div className="flex flex-col items-stretch gap-3 sm:flex-row">
-                    <span className="flex flex-1 gap-3">
-                        <Select
-                            onValueChange={(value) => {
-                                table.resetColumnFilters()
-                                setFilterColumn(value)
-                            }}
-                            value={filterColumn}
-                        >
-                            <SelectTrigger className="bg-card">
-                                <SelectValue>{filterColumn}</SelectValue>
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="name">name</SelectItem>
-                                <SelectItem value="summary">summary</SelectItem>
-                                <SelectItem value="description">
-                                    description
-                                </SelectItem>
-                            </SelectContent>
-                        </Select>
-                        <InputWithIcon
-                            className="h-9 flex-1 border bg-card [&>input]:border-none [&>input]:shadow-none"
-                            icon={MagnifyingGlassIcon}
-                            placeholder={`filter by ${filterColumn}...`}
-                            value={
-                                (table
-                                    .getColumn(filterColumn)
-                                    ?.getFilterValue() as string) ?? ""
-                            }
-                            onChange={(event) =>
-                                table
-                                    .getColumn(filterColumn)
-                                    ?.setFilterValue(event.target.value)
-                            }
-                        />
-                    </span>
+                    <DataTableFiltering table={table} />
                     <DataTablePagination table={table} />
                     <ButtonWithIcon
                         variant="outline"

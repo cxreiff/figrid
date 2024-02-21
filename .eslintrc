@@ -11,6 +11,12 @@
         "warnOnUnsupportedTypeScriptVersion": false
     },
     "rules": {
-        "@typescript-eslint/no-unused-vars": "warn"
+        "@typescript-eslint/no-unused-vars": "warn",
+        "drizzle/enforce-delete-with-where": [
+            "error",
+            {
+                "drizzleObjectName": "db"
+            }
+        ]
     }
 }
