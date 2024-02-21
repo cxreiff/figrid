@@ -5,7 +5,6 @@ export function Image({
     className,
     alt,
     fade = false,
-    radiusFix = false,
     ...props
 }: HTMLProps<HTMLImageElement> & { fade?: boolean; radiusFix?: boolean }) {
     const [loaded, setLoaded] = useState(false)
@@ -23,7 +22,6 @@ export function Image({
             className={cn(
                 "pixel-image m-auto h-full max-h-full w-auto max-w-full rounded-md object-contain",
                 { "transition-opacity duration-300": fade },
-                { "img-border-radius-fix": radiusFix },
                 className,
             )}
             style={fade ? { opacity: loaded ? 1 : 0 } : undefined}

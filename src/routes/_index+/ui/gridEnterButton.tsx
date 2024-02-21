@@ -9,7 +9,7 @@ export function GridEnterButton({
     canEdit: boolean
 }) {
     return (
-        <div className="flex min-h-9 w-[5.8rem] gap-2">
+        <div className="flex min-h-9 w-[6.5rem] gap-2">
             {canEdit ? (
                 <>
                     <ButtonWithIconLink

@@ -1,4 +1,3 @@
-import { PlusIcon } from "@radix-ui/react-icons"
 import {
     getCoreRowModel,
     getPaginationRowModel,
@@ -15,7 +14,6 @@ import { type useSuperLoaderData } from "~/lib/superjson.ts"
 import type { loader } from "~/routes/_index+/_index.tsx"
 import type { ListGridsQuery } from "~/routes/_index+/lib/queries.server.ts"
 import { DataTablePagination } from "~/routes/_index+/ui/dataTablePagination.tsx"
-import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
 import { LayoutTitledScrolls } from "~/ui/layout/layoutTitledScrolls.tsx"
 import { GridCard } from "~/routes/_index+/ui/gridCard.tsx"
 import {
@@ -24,6 +22,7 @@ import {
     FILTER_VALUE_SEARCH_PARAM,
 } from "~/routes/_index+/ui/dataTableFiltering.tsx"
 import { useSearchParams } from "@remix-run/react"
+import { CreateGridButton } from "~/routes/_index+/ui/createGridButton.tsx"
 
 type Grid = ListGridsQuery[0]
 
@@ -76,13 +75,7 @@ export function GridTable({
                 <div className="flex flex-col items-stretch gap-3 sm:flex-row">
                     <DataTableFiltering table={table} />
                     <DataTablePagination table={table} />
-                    <ButtonWithIcon
-                        variant="outline"
-                        className="bg-card [&>span]:hidden md:[&>span]:block"
-                        icon={PlusIcon}
-                    >
-                        create grid
-                    </ButtonWithIcon>
+                    {user && <CreateGridButton />}
                 </div>
             }
         >

@@ -1,19 +1,17 @@
 import { Button, type ButtonProps } from "~/ui/primitives/button.tsx"
 import { cn, type IconType } from "~/lib/misc.ts"
+import { forwardRef, type ElementRef } from "react"
 
-export function ButtonWithIcon({
-    children,
-    className,
-    variant,
-    icon: Icon,
-    alignIcon,
-    ...props
-}: Omit<ButtonProps, "asChild"> & {
-    icon: IconType
-    alignIcon?: "left" | "right"
-}) {
+export const ButtonWithIcon = forwardRef<
+    ElementRef<typeof Button>,
+    Omit<ButtonProps, "asChild" | "ref"> & {
+        icon: IconType
+        alignIcon?: "left" | "right"
+    }
+>(({ children, className, variant, icon: Icon, alignIcon, ...props }, ref) => {
     return (
         <Button
+            ref={ref}
             className={cn("relative", className)}
             variant={variant}
             size={children !== undefined ? "default" : "icon"}
@@ -40,4 +38,6 @@ export function ButtonWithIcon({
             )}
         </Button>
     )
-}
+})
+
+ButtonWithIcon.displayName = "ButtonWithIcon"

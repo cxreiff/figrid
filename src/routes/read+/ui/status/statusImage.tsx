@@ -17,13 +17,7 @@ export function StatusImage() {
                 )
                 return (
                     <div className="flex h-full items-center justify-center">
-                        <Image
-                            key={image}
-                            src={image}
-                            alt="placeholder"
-                            fade
-                            radiusFix
-                        />
+                        <Image key={image} src={image} alt="placeholder" fade />
                     </div>
                 )
             }}

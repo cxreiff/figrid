@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm"
-import { int, mysqlTable } from "drizzle-orm/mysql-core"
+import { int, mysqlTable, unique } from "drizzle-orm/mysql-core"
 import { assets } from "~/database/schema/assets.server.ts"
 import { event_instances } from "~/database/schema/events.server.ts"
 import { grids } from "~/database/schema/grids.server.ts"
@@ -10,11 +10,17 @@ import {
     can_have_image,
 } from "~/database/shared.server.ts"
 
-export const characters = mysqlTable("characters", {
-    ...grid_resource_fields,
-    ...name_summary_description,
-    ...can_have_image,
-})
+export const characters = mysqlTable(
+    "characters",
+    {
+        ...grid_resource_fields,
+        ...name_summary_description,
+        ...can_have_image,
+    },
+    (t) => ({
+        name: unique().on(t.grid_id, t.name),
+    }),
+)
 
 export const characters_relations = relations(characters, ({ one, many }) => ({
     grid: one(grids, {

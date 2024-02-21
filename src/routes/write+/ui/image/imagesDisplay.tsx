@@ -35,7 +35,6 @@ export function ImagesDisplay() {
                                 ASSET_FALLBACKS.TILE_IMAGE,
                             )}
                             fade
-                            radiusFix
                         />
                     ) : (
                         <ImagesDropzone />

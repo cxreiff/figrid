@@ -21,7 +21,7 @@ export const grid_resource_fields = {
 }
 
 export const name_summary_description = {
-    name: varchar("name", { length: 256 }).notNull().unique(),
+    name: varchar("name", { length: 256 }).notNull(),
     summary: text("summary"),
     description: text("description"),
 }

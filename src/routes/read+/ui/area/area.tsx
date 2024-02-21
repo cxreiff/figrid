@@ -20,7 +20,7 @@ export function Area() {
             minSizes={minSizes.area}
             onSaveLayout={saveLayout}
         >
-            <Card className="mb-4 h-full p-4">
+            <Card className="mb-4 h-full py-4">
                 <AreaImage />
             </Card>
             <Card className="h-full px-4">

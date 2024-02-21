@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm"
-import { boolean, int, mysqlTable } from "drizzle-orm/mysql-core"
+import { boolean, int, mysqlTable, unique } from "drizzle-orm/mysql-core"
 import { events } from "~/database/schema/events.server.ts"
 import { gates } from "~/database/schema/gates.server.ts"
 import { grids } from "~/database/schema/grids.server.ts"
@@ -9,13 +9,19 @@ import {
     name_summary_description,
 } from "~/database/shared.server.ts"
 
-export const locks = mysqlTable("locks", {
-    ...grid_resource_fields,
-    ...name_summary_description,
+export const locks = mysqlTable(
+    "locks",
+    {
+        ...grid_resource_fields,
+        ...name_summary_description,
 
-    required_item_id: int("required_item_id"),
-    consumes: boolean("consumes").default(false).notNull(),
-})
+        required_item_id: int("required_item_id"),
+        consumes: boolean("consumes").default(false).notNull(),
+    },
+    (t) => ({
+        name: unique().on(t.grid_id, t.name),
+    }),
+)
 
 export const locks_relations = relations(locks, ({ one, many }) => ({
     grid: one(grids, {

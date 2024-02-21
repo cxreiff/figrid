@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm"
-import { int, mysqlTable, varchar } from "drizzle-orm/mysql-core"
+import { int, mysqlTable, unique, varchar } from "drizzle-orm/mysql-core"
 import { assets } from "~/database/schema/assets.server.ts"
 import { characters } from "~/database/schema/characters.server.ts"
 import { gates } from "~/database/schema/gates.server.ts"
@@ -13,17 +13,23 @@ import {
     can_have_image,
 } from "~/database/shared.server.ts"
 
-export const events = mysqlTable("events", {
-    ...grid_resource_fields,
-    ...name_summary_description,
-    ...can_have_image,
+export const events = mysqlTable(
+    "events",
+    {
+        ...grid_resource_fields,
+        ...name_summary_description,
+        ...can_have_image,
 
-    parent_id: int("parent_id"),
-    trigger: varchar("trigger", { length: 256 }),
+        parent_id: int("parent_id"),
+        trigger: varchar("trigger", { length: 256 }),
 
-    triggers_unlock_id: int("triggers_unlock_id"),
-    triggers_lock_id: int("triggers_lock_id"),
-})
+        triggers_unlock_id: int("triggers_unlock_id"),
+        triggers_lock_id: int("triggers_lock_id"),
+    },
+    (t) => ({
+        name: unique().on(t.grid_id, t.name),
+    }),
+)
 
 export const events_relations = relations(events, ({ one, many }) => ({
     grid: one(grids, {

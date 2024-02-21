@@ -18,7 +18,7 @@ export function Status() {
             minSizes={minSizes.status}
             onSaveLayout={saveLayout}
         >
-            <Card className="mb-4 h-full p-4">
+            <Card className="mb-4 h-full py-4">
                 <StatusImage />
             </Card>
             <Card className="h-full px-4">

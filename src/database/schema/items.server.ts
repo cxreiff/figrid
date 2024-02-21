@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm"
-import { int, mysqlEnum, mysqlTable } from "drizzle-orm/mysql-core"
+import { int, mysqlEnum, mysqlTable, unique } from "drizzle-orm/mysql-core"
 import { ITEM_TYPES } from "~/database/enums.ts"
 import { assets } from "~/database/schema/assets.server.ts"
 import { events } from "~/database/schema/events.server.ts"
@@ -12,13 +12,19 @@ import {
     can_have_image,
 } from "~/database/shared.server.ts"
 
-export const items = mysqlTable("items", {
-    ...grid_resource_fields,
-    ...name_summary_description,
-    ...can_have_image,
+export const items = mysqlTable(
+    "items",
+    {
+        ...grid_resource_fields,
+        ...name_summary_description,
+        ...can_have_image,
 
-    type: mysqlEnum("type", ITEM_TYPES).default("basic").notNull(),
-})
+        type: mysqlEnum("type", ITEM_TYPES).default("basic").notNull(),
+    },
+    (t) => ({
+        name: unique().on(t.grid_id, t.name),
+    }),
+)
 
 export const items_relations = relations(items, ({ one, many }) => ({
     grid: one(grids, {
