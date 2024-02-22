@@ -11,7 +11,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     const formData = Object.fromEntries(await request.formData())
     const { data } = z.object({ data: z.string() }).parse(formData)
-    const { read, area, status, write, assets } = layoutCookieSchema.parse(
+    const { read, area, status, write, details } = layoutCookieSchema.parse(
         JSON.parse(data),
     )
 
@@ -19,7 +19,7 @@ export async function action({ request }: ActionFunctionArgs) {
     area && sessionLayout.set("area", area)
     status && sessionLayout.set("status", status)
     write && sessionLayout.set("write", write)
-    assets && sessionLayout.set("assets", assets)
+    details && sessionLayout.set("details", details)
 
     return new Response(undefined, {
         headers: {

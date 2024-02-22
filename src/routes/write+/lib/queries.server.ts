@@ -16,6 +16,7 @@ export function writeGridQuery(userId: number, gridId: number) {
     return db.query.grids.findFirst({
         where: and(eq(grids.user_id, userId), eq(grids.id, gridId)),
         with: {
+            image_asset: true,
             assets: true,
             tiles: {
                 with: {

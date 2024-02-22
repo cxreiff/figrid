@@ -23,7 +23,6 @@ import {
     generateIdMap,
     generateTileCoordsMap,
 } from "~/routes/read+/lib/processing.server.ts"
-import { Images } from "~/routes/write+/ui/image/images.tsx"
 import { ButtonWithIconLink } from "~/ui/buttonWithIconLink.tsx"
 import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
 
@@ -150,9 +149,9 @@ export default function Route() {
                         <Map />
                         <Outlet />
                     </LayoutTabs>
-                    <LayoutTabs names={["details", "image"]}>
+                    <LayoutTabs names={["details", "grid"]}>
                         <Details />
-                        <Images />
+                        <div />
                     </LayoutTabs>
                 </LayoutSplit>
             </Layout>

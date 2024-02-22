@@ -7,7 +7,7 @@ import type { action } from "~/routes/write+/$gridId+/$resourceType+/$resourceId
 
 const { useDropzone } = ReactDropzone
 
-export function ImagesDropzone() {
+export function ImageDropzone() {
     const { resourceType, resourceId } = paramsSchema
         .partial()
         .parse(useParams())
@@ -38,14 +38,14 @@ export function ImagesDropzone() {
         <div
             {...getRootProps({
                 className:
-                    "h-full w-full rounded-md flex justify-center items-center border hover:bg-[hsla(var(--accent)/0.4)] border-dashed border-accent p-3 text-center",
+                    "h-full w-full rounded-md flex justify-center items-center border hover:bg-[hsla(var(--accent)/0.4)] border-dashed border-accent p-3 text-center text-accent-foreground cursor-pointer",
             })}
         >
             <input {...getInputProps()} />
             {isDragActive ? (
-                <p>drop files here...</p>
+                <p>drop files here</p>
             ) : (
-                <p>drag and drop files here, or click to select files</p>
+                <p>drag and drop or click to select</p>
             )}
         </div>
     )

@@ -1,12 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table"
 import type { ListGridsQuery } from "~/routes/_index+/lib/queries.server.ts"
 
-export const GRID_TABLE_COLUMN_IDS = [
-    "name",
-    "summary",
-    "description",
-    "user_alias",
-] as const
+export const GRID_TABLE_COLUMN_IDS = ["name", "summary", "user_alias"] as const
 
 export const GRID_TABLE_COLUMNS: {
     [id in (typeof GRID_TABLE_COLUMN_IDS)[number]]: {
@@ -17,7 +12,6 @@ export const GRID_TABLE_COLUMNS: {
 } = {
     name: { key: "name", label: "name" },
     summary: { key: "summary", label: "summary" },
-    description: { key: "description", label: "description" },
     user_alias: {
         key: "user.alias",
         label: "alias",
