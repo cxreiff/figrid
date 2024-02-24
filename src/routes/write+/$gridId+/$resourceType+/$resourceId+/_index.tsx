@@ -29,7 +29,7 @@ import { tiles } from "~/database/schema/tiles.server.ts"
 import { locks } from "~/database/schema/locks.server.ts"
 import { Card } from "~/ui/primitives/card.tsx"
 import { auth } from "~/auth/auth.server.ts"
-import { ResourcePlaceholder } from "~/routes/write+/ui/resourcePlaceholder.tsx"
+import { Placeholder } from "~/ui/placeholder.tsx"
 
 export const paramsSchema = z.object({
     resourceType: z.enum([
@@ -176,7 +176,7 @@ export default function Route() {
     if (resourceType === "gates") {
         return (
             <Card className="h-full p-4">
-                <ResourcePlaceholder>no modifiable fields</ResourcePlaceholder>
+                <Placeholder>no modifiable fields</Placeholder>
             </Card>
         )
     }

@@ -25,6 +25,7 @@ import {
 } from "~/routes/read+/lib/processing.server.ts"
 import { ButtonWithIconLink } from "~/ui/buttonWithIconLink.tsx"
 import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
+import { Grid } from "~/routes/write+/ui/grid/grid.tsx"
 
 export const RESOURCE_TYPES = {
     TILES: "tiles",
@@ -151,7 +152,7 @@ export default function Route() {
                     </LayoutTabs>
                     <LayoutTabs names={["details", "grid"]}>
                         <Details />
-                        <div />
+                        <Grid />
                     </LayoutTabs>
                 </LayoutSplit>
             </Layout>

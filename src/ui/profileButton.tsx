@@ -38,8 +38,10 @@ export function ProfileButton({ user }: { user: AuthUser | null }) {
                             {user.type} account
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                            <Link to="/auth/logout">log out</Link>
+                        <DropdownMenuItem asChild>
+                            <Link to="/auth/logout" className="cursor-pointer">
+                                log out
+                            </Link>
                         </DropdownMenuItem>
                     </>
                 ) : (

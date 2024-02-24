@@ -24,7 +24,7 @@ import { DetailsTilesCharacters } from "~/routes/write+/ui/details/tiles/details
 import { DetailsTilesEvents } from "~/routes/write+/ui/details/tiles/detailsTilesEvents.tsx"
 import { DetailsTilesGates } from "~/routes/write+/ui/details/tiles/detailsTilesGates.tsx"
 import { DetailsTilesItems } from "~/routes/write+/ui/details/tiles/detailsTilesItems.tsx"
-import { ResourcePlaceholder } from "~/routes/write+/ui/resourcePlaceholder.tsx"
+import { Placeholder } from "~/ui/placeholder.tsx"
 import { LayoutFooter } from "~/ui/layout/layoutFooter.tsx"
 import { Card } from "~/ui/primitives/card.tsx"
 
@@ -110,7 +110,7 @@ export function DetailsMain() {
                         accordionSection={accordionSectionMap[resourceType]}
                     />
                 ) : (
-                    <ResourcePlaceholder>select a resource</ResourcePlaceholder>
+                    <Placeholder>select a resource</Placeholder>
                 )}
             </Card>
             <Card className="h-full p-4">
@@ -120,7 +120,7 @@ export function DetailsMain() {
                         resourceId={resourceId}
                     />
                 ) : (
-                    <ResourcePlaceholder>select a resource</ResourcePlaceholder>
+                    <Placeholder>select a resource</Placeholder>
                 )}
             </Card>
         </LayoutFooter>

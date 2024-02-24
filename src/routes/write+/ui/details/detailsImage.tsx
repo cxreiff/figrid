@@ -1,6 +1,6 @@
 import { useSuperRouteLoaderData } from "~/lib/superjson.ts"
 import { type loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_index.tsx"
-import { ResourcePlaceholder } from "~/routes/write+/ui/resourcePlaceholder.tsx"
+import { Placeholder } from "~/ui/placeholder.tsx"
 import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_index.tsx"
 import { useParams } from "@remix-run/react"
 import { Image } from "~/ui/image.tsx"
@@ -18,47 +18,51 @@ export function DetailsImage() {
     const { assetUrl, ASSET_FALLBACKS } = useAssetUrl()
     const { resourceType } = paramsSchema.partial().parse(useParams())
 
-    if (!resource || !resourceType) {
-        return <ResourcePlaceholder>select a resource</ResourcePlaceholder>
-    }
-
-    if (!canHaveImageAsset(resource, resourceType)) {
-        return (
-            <ResourcePlaceholder>
-                images cannot be added to this resource type
-            </ResourcePlaceholder>
-        )
-    }
-
     return (
         <Card className="group relative h-full p-4">
-            <LayoutTitled
-                title="image"
-                actionSlot={
-                    resource.image_asset && (
-                        <DetailsImageRemove
-                            resourceId={resource.id}
-                            imageAssetId={resource.image_asset.id}
-                        />
+            {(() => {
+                if (!resource || !resourceType) {
+                    return <Placeholder>select a resource</Placeholder>
+                }
+
+                if (!canHaveImageAsset(resource, resourceType)) {
+                    return (
+                        <Placeholder>
+                            images cannot be added to this resource type
+                        </Placeholder>
                     )
                 }
-            >
-                <div className="h-full rounded-sm border bg-background">
-                    {resource.image_asset ? (
-                        <Image
-                            src={assetUrl(
-                                resource.image_asset,
-                                ASSET_FALLBACKS.TILE_IMAGE,
+
+                return (
+                    <LayoutTitled
+                        title="image"
+                        actionSlot={
+                            resource.image_asset && (
+                                <DetailsImageRemove
+                                    resourceId={resource.id}
+                                    imageAssetId={resource.image_asset.id}
+                                />
+                            )
+                        }
+                    >
+                        <div className="h-full rounded-sm border bg-background p-2">
+                            {resource.image_asset ? (
+                                <Image
+                                    src={assetUrl(
+                                        resource.image_asset,
+                                        ASSET_FALLBACKS.TILE_IMAGE,
+                                    )}
+                                    fade
+                                />
+                            ) : (
+                                <div className="h-full p-4">
+                                    <ImageDropzone />
+                                </div>
                             )}
-                            fade
-                        />
-                    ) : (
-                        <div className="h-full p-4">
-                            <ImageDropzone />
                         </div>
-                    )}
-                </div>
-            </LayoutTitled>
+                    </LayoutTitled>
+                )
+            })()}
         </Card>
     )
 }

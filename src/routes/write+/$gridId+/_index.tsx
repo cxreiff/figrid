@@ -1,10 +1,10 @@
 import { Card } from "~/ui/primitives/card.tsx"
-import { ResourcePlaceholder } from "~/routes/write+/ui/resourcePlaceholder.tsx"
+import { Placeholder } from "~/ui/placeholder.tsx"
 
 export default function Route() {
     return (
         <Card className="h-full">
-            <ResourcePlaceholder>select a resource</ResourcePlaceholder>
+            <Placeholder>select a resource</Placeholder>
         </Card>
     )
 }
