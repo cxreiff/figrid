@@ -4,7 +4,7 @@ import {
     GitHubLogoIcon,
     LockClosedIcon,
 } from "@radix-ui/react-icons"
-import { Form } from "@remix-run/react"
+import { Form, Link } from "@remix-run/react"
 import { type ActionFunctionArgs, type LoaderFunctionArgs } from "@vercel/remix"
 import { eq, or } from "drizzle-orm"
 import { z } from "zod"
@@ -25,6 +25,7 @@ import {
     sessions,
     users,
 } from "~/database/schema/auth.server.ts"
+import { Layout } from "~/ui/layout/layout.tsx"
 
 export async function loader({ request }: LoaderFunctionArgs) {
     return auth.isAuthenticated(request, {
@@ -96,52 +97,61 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function Route() {
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center">
-            <Form action="/auth/github" method="post" className="w-72">
-                <ButtonWithIcon
-                    icon={GitHubLogoIcon}
-                    type="submit"
-                    variant="outline"
-                    alignIcon="left"
-                    className="w-full bg-card pr-6"
-                >
-                    Login with GitHub
-                </ButtonWithIcon>
-            </Form>
-            <Separator className="my-4 w-64" />
-            <Form className="flex w-72 flex-col gap-2" method="post">
-                <InputWithIcon
-                    className="bg-card"
-                    icon={EnvelopeClosedIcon}
-                    name="email"
-                    type="email"
-                    placeholder="email address"
-                />
-                <InputWithIcon
-                    className="bg-card"
-                    icon={AvatarIcon}
-                    name="alias"
-                    type="text"
-                    placeholder="user alias"
-                />
-                <InputWithIcon
-                    className="bg-card"
-                    icon={LockClosedIcon}
-                    name="password"
-                    type="password"
-                    placeholder="password"
-                />
-                <InputWithIcon
-                    className="bg-card"
-                    icon={LockClosedIcon}
-                    name="confirm"
-                    type="password"
-                    placeholder="confirm password"
-                />
-                <Button type="submit" variant="outline" className="bg-card">
-                    register
-                </Button>
-            </Form>
-        </div>
+        <Layout user={null}>
+            <div className="flex min-h-screen flex-col items-center justify-center">
+                <Form action="/auth/github" method="post" className="w-72">
+                    <ButtonWithIcon
+                        icon={GitHubLogoIcon}
+                        type="submit"
+                        variant="outline"
+                        alignIcon="left"
+                        className="w-full bg-card pr-6"
+                    >
+                        Login with GitHub
+                    </ButtonWithIcon>
+                </Form>
+                <Separator className="my-4 w-64" />
+                <Form className="flex w-72 flex-col gap-2" method="post">
+                    <InputWithIcon
+                        className="bg-card"
+                        icon={EnvelopeClosedIcon}
+                        name="email"
+                        type="email"
+                        placeholder="email address"
+                    />
+                    <InputWithIcon
+                        className="bg-card"
+                        icon={AvatarIcon}
+                        name="alias"
+                        type="text"
+                        placeholder="user alias"
+                    />
+                    <InputWithIcon
+                        className="bg-card"
+                        icon={LockClosedIcon}
+                        name="password"
+                        type="password"
+                        placeholder="password"
+                    />
+                    <InputWithIcon
+                        className="bg-card"
+                        icon={LockClosedIcon}
+                        name="confirm"
+                        type="password"
+                        placeholder="confirm password"
+                    />
+                    <Button type="submit" variant="outline" className="bg-card">
+                        register
+                    </Button>
+                </Form>
+                <Separator className="mb-4 mt-12 w-64" />
+                <p>
+                    already have an account?{" "}
+                    <Button variant="default" asChild>
+                        <Link to="/auth/login">log in</Link>
+                    </Button>
+                </p>
+            </div>
+        </Layout>
     )
 }

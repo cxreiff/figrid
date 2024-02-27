@@ -22,11 +22,7 @@ export function ProfileButton({ user }: { user: AuthUser | null }) {
                     <ProfileAvatar user={user} />
                 </DropdownMenuTrigger>
             </Button>
-            <DropdownMenuContent
-                color="ruby"
-                className="mr-2 mt-2"
-                align="center"
-            >
+            <DropdownMenuContent color="ruby" className="mr-2" align="center">
                 {user ? (
                     <>
                         <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
@@ -49,6 +45,14 @@ export function ProfileButton({ user }: { user: AuthUser | null }) {
                         <DropdownMenuItem asChild>
                             <Link to="/auth/login" className="cursor-pointer">
                                 log in
+                            </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                            <Link
+                                to="/auth/register"
+                                className="cursor-pointer"
+                            >
+                                register
                             </Link>
                         </DropdownMenuItem>
                     </>
