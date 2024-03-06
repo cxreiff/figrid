@@ -147,7 +147,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
                 .set(data.data)
                 .where(
                     and(
-                        eq(items.user_id, user.id),
+                        eq(events.user_id, user.id),
                         eq(events.grid_id, gridId),
                         eq(events.id, resourceId),
                     ),
@@ -158,7 +158,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
                 .set(data.data)
                 .where(
                     and(
-                        eq(items.user_id, user.id),
+                        eq(locks.user_id, user.id),
                         eq(locks.grid_id, gridId),
                         eq(locks.id, resourceId),
                     ),
