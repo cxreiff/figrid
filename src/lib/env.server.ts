@@ -3,6 +3,7 @@ import { z } from "zod"
 const schema = z.object({
     NODE_ENV: z.enum(["production", "development", "test"] as const),
     DATABASE_URL: z.string(),
+    DATABASE_TOKEN: z.string(),
     SESSION_SECRET: z.string(),
     GITHUB_CLIENT_ID: z.string(),
     GITHUB_CLIENT_SECRET: z.string(),

@@ -1,10 +1,10 @@
 import { relations } from "drizzle-orm"
-import { mysqlTable } from "drizzle-orm/mysql-core"
+import { sqliteTable } from "drizzle-orm/sqlite-core"
 import { users } from "~/database/schema/auth.server.ts"
 import { grids } from "~/database/schema/grids.server.ts"
 import { grid_resource_fields } from "~/database/shared.server.ts"
 
-export const likes = mysqlTable("likes", {
+export const likes = sqliteTable("likes", {
     ...grid_resource_fields,
 })
 

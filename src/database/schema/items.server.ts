@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm"
-import { int, mysqlEnum, mysqlTable, unique } from "drizzle-orm/mysql-core"
+import { integer, sqliteTable, text, unique } from "drizzle-orm/sqlite-core"
 import { ITEM_TYPES } from "~/database/enums.ts"
 import { assets } from "~/database/schema/assets.server.ts"
 import { events } from "~/database/schema/events.server.ts"
@@ -12,14 +12,14 @@ import {
     can_have_image,
 } from "~/database/shared.server.ts"
 
-export const items = mysqlTable(
+export const items = sqliteTable(
     "items",
     {
         ...grid_resource_fields,
         ...name_summary_description,
         ...can_have_image,
 
-        type: mysqlEnum("type", ITEM_TYPES).default("basic").notNull(),
+        type: text("type", { enum: ITEM_TYPES }).default("basic").notNull(),
     },
     (t) => ({
         name: unique().on(t.grid_id, t.name),
@@ -39,12 +39,12 @@ export const items_relations = relations(items, ({ one, many }) => ({
     required_by: many(locks),
 }))
 
-export const item_instances = mysqlTable("item_instances", {
+export const item_instances = sqliteTable("item_instances", {
     ...grid_resource_fields,
 
-    item_id: int("item_id").notNull(),
-    tile_id: int("tile_id"),
-    event_id: int("event_id"),
+    item_id: integer("item_id").notNull(),
+    tile_id: integer("tile_id"),
+    event_id: integer("event_id"),
 })
 
 export const item_instances_relations = relations(

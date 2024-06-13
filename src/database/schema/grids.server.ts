@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm"
-import { int, mysqlTable, unique } from "drizzle-orm/mysql-core"
+import { integer, sqliteTable, unique } from "drizzle-orm/sqlite-core"
 import { assets } from "~/database/schema/assets.server.ts"
 import { users } from "~/database/schema/auth.server.ts"
 import {
@@ -19,7 +19,7 @@ import {
     can_have_image,
 } from "~/database/shared.server.ts"
 
-export const grids = mysqlTable(
+export const grids = sqliteTable(
     "grids",
     {
         ...incrementing_id,
@@ -27,10 +27,10 @@ export const grids = mysqlTable(
         ...name_summary_description,
         ...can_have_image,
 
-        user_id: int("user_id").notNull(),
+        user_id: integer("user_id").notNull(),
 
-        player_id: int("player_id").notNull(),
-        first_tile_id: int("first_tile_id").notNull(),
+        player_id: integer("player_id").notNull(),
+        first_tile_id: integer("first_tile_id").notNull(),
     },
     (t) => ({
         name: unique().on(t.name),

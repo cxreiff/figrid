@@ -30,10 +30,13 @@ export const formStrategy = new FormStrategy(async ({ form }) => {
         throw new Error("invalid password.")
     }
 
-    const { insertId: sessionId } = await db.insert(sessions).values({
-        user_id: user.id,
-        expiration_date: getSessionExpirationDate(),
-    })
+    const [{ sessionId }] = await db
+        .insert(sessions)
+        .values({
+            user_id: user.id,
+            expiration_date: getSessionExpirationDate(),
+        })
+        .returning({ sessionId: sessions.id })
 
     if (!sessionId) {
         throw new Error("failed to create session.")

@@ -1,14 +1,11 @@
 import { relations } from "drizzle-orm"
 import {
-    datetime,
     index,
-    int,
-    mysqlEnum,
-    mysqlTable,
+    integer,
     text,
     uniqueIndex,
-    varchar,
-} from "drizzle-orm/mysql-core"
+    sqliteTable,
+} from "drizzle-orm/sqlite-core"
 import { USER_TYPES } from "~/database/enums.ts"
 import { likes } from "~/database/schema/likes.server.ts"
 import {
@@ -16,17 +13,17 @@ import {
     incrementing_id,
 } from "~/database/shared.server.ts"
 
-export const users = mysqlTable(
+export const users = sqliteTable(
     "users",
     {
         ...incrementing_id,
         ...create_update_timestamps,
 
-        email: varchar("email", { length: 256 }).unique().notNull(),
-        alias: varchar("alias", { length: 256 }).unique().notNull(),
-        name: varchar("name", { length: 256 }),
+        email: text("email", { length: 256 }).unique().notNull(),
+        alias: text("alias", { length: 256 }).unique().notNull(),
+        name: text("name", { length: 256 }),
 
-        type: mysqlEnum("type", USER_TYPES).default("standard").notNull(),
+        type: text("type", { enum: USER_TYPES }).default("standard").notNull(),
     },
     (t) => ({
         email: uniqueIndex("email").on(t.email),
@@ -48,12 +45,12 @@ export const users_relations = relations(users, ({ many, one }) => ({
     likes: many(likes),
 }))
 
-export const passwords = mysqlTable("passwords", {
+export const passwords = sqliteTable("passwords", {
     ...create_update_timestamps,
 
     hash: text("hash").notNull(),
 
-    user_id: int("user_id").primaryKey(),
+    user_id: integer("user_id").primaryKey(),
 })
 
 export const passwords_relations = relations(passwords, ({ one }) => ({
@@ -63,15 +60,17 @@ export const passwords_relations = relations(passwords, ({ one }) => ({
     }),
 }))
 
-export const sessions = mysqlTable(
+export const sessions = sqliteTable(
     "sessions",
     {
         ...incrementing_id,
         ...create_update_timestamps,
 
-        expiration_date: datetime("expiration_date").notNull(),
+        expiration_date: integer("expiration_date", {
+            mode: "timestamp_ms",
+        }).notNull(),
 
-        user_id: int("user_id"),
+        user_id: integer("user_id"),
     },
     (t) => ({
         user_id_index: index("user_id_index").on(t.user_id),
@@ -85,18 +84,18 @@ export const sessions_relations = relations(sessions, ({ one }) => ({
     }),
 }))
 
-export const connections = mysqlTable(
+export const connections = sqliteTable(
     "connections",
     {
         ...incrementing_id,
         ...create_update_timestamps,
 
-        provider_name: varchar("provider_name", { length: 256 })
+        provider_name: text("provider_name", { length: 256 })
             .unique()
             .notNull(),
-        provider_id: varchar("provider_id", { length: 256 }).unique().notNull(),
+        provider_id: text("provider_id", { length: 256 }).unique().notNull(),
 
-        user_id: int("user_id"),
+        user_id: integer("user_id"),
     },
     (t) => ({
         provider: uniqueIndex("provider").on(t.provider_id, t.provider_name),
@@ -110,13 +109,13 @@ export const connections_relations = relations(connections, ({ one }) => ({
     }),
 }))
 
-export const profiles = mysqlTable("profiles", {
+export const profiles = sqliteTable("profiles", {
     ...incrementing_id,
     ...create_update_timestamps,
 
-    image_url: varchar("image_url", { length: 2083 }),
+    image_url: text("image_url", { length: 2083 }),
 
-    user_id: int("user_id"),
+    user_id: integer("user_id"),
 })
 
 export const profiles_relations = relations(profiles, ({ one }) => ({

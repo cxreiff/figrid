@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm"
-import { int, mysqlTable, unique, varchar } from "drizzle-orm/mysql-core"
+import { integer, sqliteTable, text, unique } from "drizzle-orm/sqlite-core"
 import { assets } from "~/database/schema/assets.server.ts"
 import { characters } from "~/database/schema/characters.server.ts"
 import { gates } from "~/database/schema/gates.server.ts"
@@ -13,18 +13,18 @@ import {
     can_have_image,
 } from "~/database/shared.server.ts"
 
-export const events = mysqlTable(
+export const events = sqliteTable(
     "events",
     {
         ...grid_resource_fields,
         ...name_summary_description,
         ...can_have_image,
 
-        parent_id: int("parent_id"),
-        trigger: varchar("trigger", { length: 256 }),
+        parent_id: integer("parent_id"),
+        trigger: text("trigger", { length: 256 }),
 
-        triggers_unlock_id: int("triggers_unlock_id"),
-        triggers_lock_id: int("triggers_lock_id"),
+        triggers_unlock_id: integer("triggers_unlock_id"),
+        triggers_lock_id: integer("triggers_lock_id"),
     },
     (t) => ({
         name: unique().on(t.grid_id, t.name),
@@ -61,13 +61,13 @@ export const events_relations = relations(events, ({ one, many }) => ({
     lock_instances: many(lock_instances),
 }))
 
-export const event_instances = mysqlTable("event_instances", {
+export const event_instances = sqliteTable("event_instances", {
     ...grid_resource_fields,
 
-    event_id: int("event_id").notNull(),
-    tile_id: int("tile_id"),
-    character_id: int("character_id"),
-    gate_id: int("gate_id"),
+    event_id: integer("event_id").notNull(),
+    tile_id: integer("tile_id"),
+    character_id: integer("character_id"),
+    gate_id: integer("gate_id"),
 })
 
 export const event_instances_relations = relations(

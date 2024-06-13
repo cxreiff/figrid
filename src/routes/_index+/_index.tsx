@@ -42,25 +42,34 @@ export async function action({ request }: LoaderFunctionArgs) {
     }
 
     let gridId = await db.transaction(async (tx) => {
-        const { insertId: gridId } = await tx.insert(grids).values({
-            user_id: user.id,
-            first_tile_id: 0,
-            player_id: 0,
-            name: data.data.name,
-            summary: data.data.summary,
-        })
+        const [{ gridId }] = await tx
+            .insert(grids)
+            .values({
+                user_id: user.id,
+                first_tile_id: 0,
+                player_id: 0,
+                name: data.data.name,
+                summary: data.data.summary,
+            })
+            .returning({ gridId: grids.id })
 
-        const { insertId: firstTileId } = await tx.insert(tiles).values({
-            user_id: user.id,
-            grid_id: Number(gridId),
-            name: "first tile",
-        })
+        const [{ firstTileId }] = await tx
+            .insert(tiles)
+            .values({
+                user_id: user.id,
+                grid_id: Number(gridId),
+                name: "first tile",
+            })
+            .returning({ firstTileId: grids.id })
 
-        const { insertId: playerId } = await tx.insert(characters).values({
-            user_id: user.id,
-            grid_id: Number(gridId),
-            name: "player",
-        })
+        const [{ playerId }] = await tx
+            .insert(characters)
+            .values({
+                user_id: user.id,
+                grid_id: Number(gridId),
+                name: "player",
+            })
+            .returning({ playerId: grids.id })
 
         await tx
             .update(grids)

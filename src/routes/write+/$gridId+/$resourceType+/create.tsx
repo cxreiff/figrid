@@ -97,46 +97,47 @@ export async function action({ request, params }: ActionFunctionArgs) {
         return validationError(data.error)
     }
 
-    let response
+    let insertId
     switch (resourceType) {
         case "tiles":
-            response = await db
+            ;[{ insertId }] = await db
                 .insert(tiles)
                 .values({ ...data.data, grid_id: gridId, user_id: user.id })
+                .returning({ insertId: tiles.id })
 
             const neighbors = parseNeighbors(request.url)
             if (neighbors.length > 0) {
-                await linkTile(
-                    user,
-                    neighbors,
-                    gridId,
-                    Number(response.insertId),
-                )
+                await linkTile(user, neighbors, gridId, Number(insertId))
             }
 
             break
         case "characters":
-            response = await db
+            ;[{ insertId }] = await db
                 .insert(characters)
                 .values({ ...data.data, grid_id: gridId, user_id: user.id })
+                .returning({ insertId: tiles.id })
             break
         case "items":
-            response = await db
+            ;[{ insertId }] = await db
                 .insert(items)
                 .values({ ...data.data, grid_id: gridId, user_id: user.id })
+                .returning({ insertId: tiles.id })
             break
         case "events":
-            response = await db
+            ;[{ insertId }] = await db
                 .insert(events)
                 .values({ ...data.data, grid_id: gridId, user_id: user.id })
+                .returning({ insertId: tiles.id })
+
             break
         case "locks":
-            response = await db
+            ;[{ insertId }] = await db
                 .insert(locks)
                 .values({ ...data.data, grid_id: gridId, user_id: user.id })
+                .returning({ insertId: tiles.id })
     }
 
-    return redirect(`/write/${gridId}/${resourceType}/${response.insertId}`)
+    return redirect(`/write/${gridId}/${resourceType}/${insertId}`)
 }
 
 export default function Route() {

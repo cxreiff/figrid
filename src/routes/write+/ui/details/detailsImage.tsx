@@ -55,9 +55,7 @@ export function DetailsImage() {
                                     fade
                                 />
                             ) : (
-                                <div className="h-full p-4">
-                                    <ImageDropzone />
-                                </div>
+                                <ImageDropzone />
                             )}
                         </div>
                     </LayoutTitled>

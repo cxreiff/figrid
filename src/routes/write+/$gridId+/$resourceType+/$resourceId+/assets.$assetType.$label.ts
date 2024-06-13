@@ -70,14 +70,17 @@ export async function action({ request, params }: ActionFunctionArgs) {
     }
 
     await db.transaction(async (tx) => {
-        const { insertId } = await tx.insert(assets).values({
-            user_id: user.id,
-            grid_id: gridId,
-            resource_type: resourceType,
-            asset_type: assetType,
-            filename,
-            label,
-        })
+        const [{ insertId }] = await tx
+            .insert(assets)
+            .values({
+                user_id: user.id,
+                grid_id: gridId,
+                resource_type: resourceType,
+                asset_type: assetType,
+                filename,
+                label,
+            })
+            .returning({ insertId: grids.id })
 
         if (resourceType === "grid") {
             const resource_table = RESOURCE_TABLES[resourceType]

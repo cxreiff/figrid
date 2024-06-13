@@ -1,6 +1,5 @@
 import { and, eq } from "drizzle-orm"
 import { GitHubStrategy } from "remix-auth-github"
-import { z } from "zod"
 import { getSessionExpirationDate } from "~/auth/auth.server.ts"
 import { db } from "~/database/database.server.ts"
 import {
@@ -11,8 +10,6 @@ import {
 } from "~/database/schema/auth.server.ts"
 
 export const GITHUB_STRATEGY = "GITHUB_STRATEGY"
-
-const queryResponseParser = z.object({ insertId: z.coerce.number() })
 
 export const gitHubStrategy = new GitHubStrategy(
     {
@@ -37,13 +34,14 @@ export const gitHubStrategy = new GitHubStrategy(
         let user = connection?.user
 
         if (!connection) {
-            const { insertId: user_id } = queryResponseParser.parse(
-                await db.insert(users).values({
+            const [{ user_id }] = await db
+                .insert(users)
+                .values({
                     email,
                     alias: profile.displayName,
                     name: profile.name.givenName,
-                }),
-            )
+                })
+                .returning({ user_id: users.id })
             await db.insert(profiles).values({
                 user_id,
                 image_url: profile.photos?.[0].value,

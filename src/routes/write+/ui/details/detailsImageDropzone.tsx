@@ -5,7 +5,8 @@ import { removeExtension } from "~/lib/assets.ts"
 import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_index.tsx"
 import type { action } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/assets.$assetType.$label.ts"
 
-const { useDropzone } = ReactDropzone
+const useDropzone =
+    ReactDropzone.default.useDropzone || ReactDropzone.useDropzone
 
 export function ImageDropzone() {
     const { resourceType, resourceId } = paramsSchema
@@ -38,7 +39,7 @@ export function ImageDropzone() {
         <div
             {...getRootProps({
                 className:
-                    "h-full w-full rounded-md flex justify-center items-center border hover:bg-[hsla(var(--accent)/0.4)] border-dashed border-accent p-3 text-center text-accent-foreground cursor-pointer",
+                    "h-full w-full rounded-md flex justify-center items-center border hover:bg-[hsla(var(--accent)/0.4)] border-dashed border-accent text-center text-accent-foreground cursor-pointer",
             })}
         >
             <input {...getInputProps()} />

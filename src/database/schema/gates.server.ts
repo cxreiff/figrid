@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm"
-import { boolean, int, mysqlEnum, mysqlTable } from "drizzle-orm/mysql-core"
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core"
 import { GATE_TYPES } from "~/database/enums.ts"
 import { event_instances } from "~/database/schema/events.server.ts"
 import { grids } from "~/database/schema/grids.server.ts"
@@ -10,16 +10,16 @@ import {
     name_summary_description,
 } from "~/database/shared.server.ts"
 
-export const gates = mysqlTable("gates", {
+export const gates = sqliteTable("gates", {
     ...grid_resource_fields,
     ...name_summary_description,
 
-    type: mysqlEnum("type", GATE_TYPES).notNull(),
+    type: text("type", { enum: GATE_TYPES }).notNull(),
 
-    from_tile_id: int("from_tile_id").notNull(),
-    to_tile_id: int("to_tile_id").notNull(),
+    from_tile_id: integer("from_tile_id").notNull(),
+    to_tile_id: integer("to_tile_id").notNull(),
 
-    active: boolean("active").default(true).notNull(),
+    active: integer("active", { mode: "boolean" }).default(true).notNull(),
 })
 
 export const gates_relations = relations(gates, ({ one, many }) => ({

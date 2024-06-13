@@ -105,7 +105,7 @@ export default function Route() {
                         title={grid.name}
                         iconButtons={
                             <>
-                                {grid.id === user?.id && (
+                                {grid.user_id === user?.id && (
                                     <ButtonWithIconLink
                                         to={`/write/${grid.id}`}
                                         icon={Pencil2Icon}

@@ -4,10 +4,16 @@ if (!process.env.DATABASE_URL) {
     throw new Error("Missing environment variable: DATABASE_URL")
 }
 
+if (!process.env.DATABASE_TOKEN) {
+    throw new Error("Missing environment variable: DATABASE_TOKEN")
+}
+
 export default {
     schema: "./src/database/schema/*",
-    driver: "mysql2",
+    driver: "turso",
+    dialect: "sqlite",
     dbCredentials: {
-        uri: process.env.DATABASE_URL,
+        url: process.env.DATABASE_URL,
+        authToken: process.env.DATABASE_TOKEN,
     },
 } satisfies Config
