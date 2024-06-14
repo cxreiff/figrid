@@ -65,14 +65,12 @@ export async function action({ request }: ActionFunctionArgs) {
     const hash = await hashPassword(password)
 
     await db.transaction(async (tx) => {
-        const result = await tx.insert(users).values({
-            email,
-            alias,
-        })
-
-        const { insertId: user_id } = z
-            .object({ insertId: z.coerce.number() })
-            .parse(result)
+        const [{ user_id }] = await tx.insert(users)
+            .values({
+                email,
+                alias,
+            })
+            .returning({ user_id: users.id })
 
         await tx.insert(profiles).values({
             user_id,
