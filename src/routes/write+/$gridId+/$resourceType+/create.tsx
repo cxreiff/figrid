@@ -115,26 +115,26 @@ export async function action({ request, params }: ActionFunctionArgs) {
             ;[{ insertId }] = await db
                 .insert(characters)
                 .values({ ...data.data, grid_id: gridId, user_id: user.id })
-                .returning({ insertId: tiles.id })
+                .returning({ insertId: characters.id })
             break
         case "items":
             ;[{ insertId }] = await db
                 .insert(items)
                 .values({ ...data.data, grid_id: gridId, user_id: user.id })
-                .returning({ insertId: tiles.id })
+                .returning({ insertId: items.id })
             break
         case "events":
             ;[{ insertId }] = await db
                 .insert(events)
                 .values({ ...data.data, grid_id: gridId, user_id: user.id })
-                .returning({ insertId: tiles.id })
+                .returning({ insertId: events.id })
 
             break
         case "locks":
             ;[{ insertId }] = await db
                 .insert(locks)
                 .values({ ...data.data, grid_id: gridId, user_id: user.id })
-                .returning({ insertId: tiles.id })
+                .returning({ insertId: locks.id })
     }
 
     return redirect(`/write/${gridId}/${resourceType}/${insertId}`)
@@ -174,8 +174,8 @@ export default function Route() {
                                 onClick={() =>
                                     resource
                                         ? navigate(
-                                              `/write/${gridId}/${resourceType}/${resource.id}`,
-                                          )
+                                            `/write/${gridId}/${resourceType}/${resource.id}`,
+                                        )
                                         : navigate(`/write/${gridId}`)
                                 }
                             >

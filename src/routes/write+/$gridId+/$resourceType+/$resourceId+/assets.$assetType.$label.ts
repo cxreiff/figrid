@@ -80,7 +80,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
                 filename,
                 label,
             })
-            .returning({ insertId: grids.id })
+            .returning({ insertId: assets.id })
 
         if (resourceType === "grid") {
             const resource_table = RESOURCE_TABLES[resourceType]

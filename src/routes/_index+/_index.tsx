@@ -60,7 +60,7 @@ export async function action({ request }: LoaderFunctionArgs) {
                 grid_id: Number(gridId),
                 name: "first tile",
             })
-            .returning({ firstTileId: grids.id })
+            .returning({ firstTileId: tiles.id })
 
         const [{ playerId }] = await tx
             .insert(characters)
@@ -69,7 +69,7 @@ export async function action({ request }: LoaderFunctionArgs) {
                 grid_id: Number(gridId),
                 name: "player",
             })
-            .returning({ playerId: grids.id })
+            .returning({ playerId: characters.id })
 
         await tx
             .update(grids)
