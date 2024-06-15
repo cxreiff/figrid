@@ -65,7 +65,8 @@ export async function action({ request }: ActionFunctionArgs) {
     const hash = await hashPassword(password)
 
     await db.transaction(async (tx) => {
-        const [{ user_id }] = await tx.insert(users)
+        const [{ user_id }] = await tx
+            .insert(users)
             .values({
                 email,
                 alias,

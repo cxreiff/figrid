@@ -8,7 +8,7 @@ import { db } from "~/database/database.server.ts"
 import { paramsSchema as parentParamsSchema } from "~/routes/write+/$gridId+/_route.tsx"
 import { characters } from "~/database/schema/characters.server.ts"
 import { events } from "~/database/schema/events.server.ts"
-import { useNavigate, useParams } from "@remix-run/react"
+import { useNavigate, useParams, useSearchParams } from "@remix-run/react"
 import { LayoutTitled } from "~/ui/layout/layoutTitled.tsx"
 import { Cross2Icon, FileIcon, ResetIcon } from "@radix-ui/react-icons"
 import { ValidatedInput } from "~/ui/validated/validatedInput.tsx"
@@ -144,6 +144,13 @@ export default function Route() {
     const { gridId, resourceType } = parentParamsSchema
         .merge(paramsSchema)
         .parse(useParams())
+
+    const [searchParams] = useSearchParams()
+
+    const duplicate =
+        z.coerce.number().optional().parse(searchParams.get("duplicate")) ||
+        undefined
+
     const { resource } = useSuperLoaderData<typeof loader>()
 
     const navigate = useNavigate()
@@ -174,26 +181,28 @@ export default function Route() {
                                 onClick={() =>
                                     resource
                                         ? navigate(
-                                            `/write/${gridId}/${resourceType}/${resource.id}`,
-                                        )
+                                              `/write/${gridId}/${resourceType}/${resource.id}`,
+                                          )
                                         : navigate(`/write/${gridId}`)
                                 }
                             >
                                 cancel
                             </ValidatedButton>
-                            <ValidatedButton
-                                type="reset"
-                                variant="outline"
-                                icon={ResetIcon}
-                                className="flex-1"
-                            >
-                                revert
-                            </ValidatedButton>
+                            {duplicate && (
+                                <ValidatedButton
+                                    type="reset"
+                                    variant="outline"
+                                    icon={ResetIcon}
+                                    className="flex-1"
+                                >
+                                    revert
+                                </ValidatedButton>
+                            )}
                             <ValidatedButton
                                 type="submit"
                                 variant="outline"
                                 icon={FileIcon}
-                                className="w-1/3"
+                                className="flex-1"
                             >
                                 create{" "}
                                 {

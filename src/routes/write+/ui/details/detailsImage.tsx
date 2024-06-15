@@ -5,7 +5,6 @@ import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/$resourceI
 import { useParams } from "@remix-run/react"
 import { Image } from "~/ui/image.tsx"
 import { canHaveImageAsset } from "~/lib/assets.ts"
-import { ImageDropzone } from "~/routes/write+/ui/details/detailsImageDropzone.tsx"
 import { useAssetUrl } from "~/lib/useAssetUrl.ts"
 import { DetailsImageRemove } from "~/routes/write+/ui/details/detailsImageRemove.tsx"
 import { Card } from "~/ui/primitives/card.tsx"
@@ -55,7 +54,9 @@ export function DetailsImage() {
                                     fade
                                 />
                             ) : (
-                                <ImageDropzone />
+                                // disabled due to Node ERR_INVALID_URL issue
+                                // <ImageDropzone />
+                                <Placeholder>image upload disabled</Placeholder>
                             )}
                         </div>
                     </LayoutTitled>

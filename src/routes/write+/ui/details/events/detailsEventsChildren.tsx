@@ -29,7 +29,9 @@ export function DetailsEventsChildren() {
                         `/write/${grid.id}/events/${resource.id}/children/${id}/link`
                     }
                     options={grid.events.filter(
-                        (event) => event.parent_id === null,
+                        (event) =>
+                            event.parent_id === null &&
+                            event.id !== resource.id,
                     )}
                 />,
             ]}
