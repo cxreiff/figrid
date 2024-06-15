@@ -4,7 +4,7 @@ import { Card } from "~/ui/primitives/card.tsx"
 
 export function Grid() {
     return (
-        <Card className="h-full p-4">
+        <Card className="h-full p-4 pb-0">
             <LayoutTitled title="grid">
                 <Placeholder>to be implemented</Placeholder>
             </LayoutTitled>

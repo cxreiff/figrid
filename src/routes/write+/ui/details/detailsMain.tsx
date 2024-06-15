@@ -94,13 +94,13 @@ export function DetailsMain() {
 
     const [expanded, setExpanded] = resourceType
         ? expandedStateMap[resourceType]
-        : [[], () => {}]
+        : [[], () => { }]
 
     const MainSection = resourceType ? mainSectionMap[resourceType] : undefined
 
     return (
         <LayoutFooter>
-            <Card className="h-full p-4">
+            <Card className="h-full p-4 pb-0">
                 {resourceType && resourceId ? (
                     <DetailsInfo
                         resourceType={resourceType}
