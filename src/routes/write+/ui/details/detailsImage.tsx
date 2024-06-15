@@ -9,6 +9,7 @@ import { useAssetUrl } from "~/lib/useAssetUrl.ts"
 import { DetailsImageRemove } from "~/routes/write+/ui/details/detailsImageRemove.tsx"
 import { Card } from "~/ui/primitives/card.tsx"
 import { LayoutTitled } from "~/ui/layout/layoutTitled.tsx"
+import { ImageDropzone } from "./detailsImageDropzone.tsx"
 
 export function DetailsImage() {
     const resource = useSuperRouteLoaderData<typeof childLoader>(
@@ -54,9 +55,7 @@ export function DetailsImage() {
                                     fade
                                 />
                             ) : (
-                                // disabled due to Node ERR_INVALID_URL issue
-                                // <ImageDropzone />
-                                <Placeholder>image upload disabled</Placeholder>
+                                <ImageDropzone />
                             )}
                         </div>
                     </LayoutTitled>
