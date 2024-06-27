@@ -4,7 +4,6 @@ import type { LoaderFunctionArgs } from "@vercel/remix"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
 import { Layout } from "~/ui/layout/layout.tsx"
-import { LayoutSplit } from "~/ui/layout/layoutSplit.tsx"
 import { LayoutTabs } from "~/ui/layout/layoutTabs.tsx"
 import { Details } from "~/routes/write+/ui/details/details.tsx"
 import { writeGridQuery } from "~/routes/write+/lib/queries.server.ts"
@@ -26,6 +25,7 @@ import {
 import { ButtonWithIconLink } from "~/ui/buttonWithIconLink.tsx"
 import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
 import { Grid } from "~/routes/write+/ui/grid/grid.tsx"
+import { LayoutResponsive } from "~/ui/layout/layoutResponsive.tsx"
 
 export const RESOURCE_TYPES = {
     TILES: "tiles",
@@ -120,14 +120,18 @@ export default function Route() {
         </LayoutTabs>
     )
 
+    const editor_section = <Outlet />
+
+    const map_section = <Map />
+
     const main_section = (
         <LayoutTabs
             names={["map", "editor"]}
             value={mainTab}
             onValueChange={setMainTab}
         >
-            <Map />
-            <Outlet />
+            {map_section}
+            {editor_section}
         </LayoutTabs>
     )
 
@@ -156,26 +160,24 @@ export default function Route() {
                     </>
                 }
             >
-                <LayoutTabs
-                    className="lg:hidden"
-                    names={["resources", "main", "details"]}
-                >
-                    {resources_section}
-                    {main_section}
-                    {details_section}
-                </LayoutTabs>
-                <LayoutSplit
-                    className="hidden lg:block"
-                    direction="horizontal"
+                <LayoutResponsive
+                    names={["resources", "map", "editor", "details"]}
                     layoutRef={layoutContext.writeLayoutRef}
                     initialLayout={layoutContext.initialLayout.write}
                     minSizes={layoutContext.minSizes.write}
                     onSaveLayout={layoutContext.saveLayout}
-                >
-                    {resources_section}
-                    {main_section}
-                    {details_section}
-                </LayoutSplit>
+                    tabsChildren={[
+                        resources_section,
+                        map_section,
+                        editor_section,
+                        details_section,
+                    ]}
+                    splitChildren={[
+                        resources_section,
+                        main_section,
+                        details_section,
+                    ]}
+                />
             </Layout>
         </ContextLayout.Provider>
     )

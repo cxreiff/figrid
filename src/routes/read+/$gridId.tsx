@@ -26,9 +26,9 @@ import {
 } from "~/lib/contextLayout.ts"
 import { getSessionLayout } from "~/lib/sessionLayout.server.ts"
 import { LayoutIcon, Pencil2Icon } from "@radix-ui/react-icons"
-import { LayoutSplit } from "~/ui/layout/layoutSplit.tsx"
 import { ButtonWithIconLink } from "~/ui/buttonWithIconLink.tsx"
 import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
+import { LayoutResponsive } from "~/ui/layout/layoutResponsive.tsx"
 
 const paramsSchema = z.object({ gridId: z.coerce.number() })
 
@@ -137,26 +137,23 @@ export default function Route() {
                             </>
                         }
                     >
-                        <LayoutTabs
-                            className="md:hidden"
+                        <LayoutResponsive
                             names={["prompt", "info", "map"]}
-                        >
-                            {prompt_section}
-                            {info_section}
-                            {map_section}
-                        </LayoutTabs>
-                        <LayoutSplit
-                            className="hidden md:block"
-                            direction="horizontal"
                             layoutRef={layoutContext.readLayoutRef}
                             initialLayout={layoutContext.initialLayout.read}
                             minSizes={layoutContext.minSizes.read}
                             onSaveLayout={layoutContext.saveLayout}
-                        >
-                            {info_section}
-                            {prompt_section}
-                            {map_section}
-                        </LayoutSplit>
+                            tabsChildren={[
+                                prompt_section,
+                                info_section,
+                                map_section,
+                            ]}
+                            splitChildren={[
+                                info_section,
+                                prompt_section,
+                                map_section,
+                            ]}
+                        />
                     </Layout>
                 </ContextLayout.Provider>
             </ContextCommand.Provider>
