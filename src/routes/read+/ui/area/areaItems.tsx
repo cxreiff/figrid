@@ -32,8 +32,8 @@ export function AreaItems() {
                             <TableBody className="align-middle">
                                 {items.length === 0 && (
                                     <TableRow className="text-muted">
-                                        <TableCell className="shadow-none">
-                                            &nbsp; &nbsp; no items
+                                        <TableCell className="pl-4 shadow-none">
+                                            no items
                                         </TableCell>
                                     </TableRow>
                                 )}

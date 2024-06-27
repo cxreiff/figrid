@@ -1,4 +1,5 @@
 import { type ReactNode } from "react"
+import { cn } from "~/lib/misc.ts"
 import { Card } from "~/ui/primitives/card.tsx"
 import {
     Tabs,
@@ -13,19 +14,21 @@ export function LayoutTabs<T extends string[]>({
     value,
     onValueChange,
     children,
+    className,
 }: {
     names: readonly [...T]
     defaultValue?: (typeof names)[number]
     value?: (typeof names)[number]
     onValueChange?: (value: (typeof names)[number]) => void
     children: [...{ [I in keyof T]: ReactNode }]
+    className?: string
 }) {
     return (
         <Tabs
             defaultValue={defaultValue}
             value={value}
             onValueChange={onValueChange}
-            className="relative mt-0 h-full flex-col gap-4"
+            className={cn("relative mt-0 h-full flex-col gap-4", className)}
         >
             {children.map((child, index) => (
                 <TabsContent

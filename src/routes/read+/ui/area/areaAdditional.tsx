@@ -26,8 +26,8 @@ export function AreaAdditional() {
                             <TableBody className="align-middle">
                                 {currentTile.event_instances.length === 0 && (
                                     <TableRow className="text-muted">
-                                        <TableCell className="shadow-none">
-                                            &nbsp; &nbsp; no other actions
+                                        <TableCell className="pl-4 shadow-none">
+                                            no other actions
                                         </TableCell>
                                     </TableRow>
                                 )}

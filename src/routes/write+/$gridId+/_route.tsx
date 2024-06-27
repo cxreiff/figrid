@@ -105,6 +105,39 @@ export default function Route() {
         }
     }, [pathname])
 
+    const resources_section = (
+        <LayoutTabs
+            names={Object.values(RESOURCE_TYPES)}
+            value={resourceTab}
+            onValueChange={setResourceTab}
+        >
+            <ResourceStack type={RESOURCE_TYPES.TILES} />
+            <ResourceStack type={RESOURCE_TYPES.CHARACTERS} />
+            <ResourceStack type={RESOURCE_TYPES.ITEMS} />
+            <ResourceStack type={RESOURCE_TYPES.EVENTS} />
+            <ResourceStack type={RESOURCE_TYPES.GATES} />
+            <ResourceStack type={RESOURCE_TYPES.LOCKS} />
+        </LayoutTabs>
+    )
+
+    const main_section = (
+        <LayoutTabs
+            names={["map", "editor"]}
+            value={mainTab}
+            onValueChange={setMainTab}
+        >
+            <Map />
+            <Outlet />
+        </LayoutTabs>
+    )
+
+    const details_section = (
+        <LayoutTabs names={["details", "grid"]}>
+            <Details />
+            <Grid />
+        </LayoutTabs>
+    )
+
     return (
         <ContextLayout.Provider value={layoutContext}>
             <Layout
@@ -123,37 +156,25 @@ export default function Route() {
                     </>
                 }
             >
+                <LayoutTabs
+                    className="lg:hidden"
+                    names={["resources", "main", "details"]}
+                >
+                    {resources_section}
+                    {main_section}
+                    {details_section}
+                </LayoutTabs>
                 <LayoutSplit
+                    className="hidden lg:block"
                     direction="horizontal"
                     layoutRef={layoutContext.writeLayoutRef}
                     initialLayout={layoutContext.initialLayout.write}
                     minSizes={layoutContext.minSizes.write}
                     onSaveLayout={layoutContext.saveLayout}
                 >
-                    <LayoutTabs
-                        names={Object.values(RESOURCE_TYPES)}
-                        value={resourceTab}
-                        onValueChange={setResourceTab}
-                    >
-                        <ResourceStack type={RESOURCE_TYPES.TILES} />
-                        <ResourceStack type={RESOURCE_TYPES.CHARACTERS} />
-                        <ResourceStack type={RESOURCE_TYPES.ITEMS} />
-                        <ResourceStack type={RESOURCE_TYPES.EVENTS} />
-                        <ResourceStack type={RESOURCE_TYPES.GATES} />
-                        <ResourceStack type={RESOURCE_TYPES.LOCKS} />
-                    </LayoutTabs>
-                    <LayoutTabs
-                        names={["map", "editor"]}
-                        value={mainTab}
-                        onValueChange={setMainTab}
-                    >
-                        <Map />
-                        <Outlet />
-                    </LayoutTabs>
-                    <LayoutTabs names={["details", "grid"]}>
-                        <Details />
-                        <Grid />
-                    </LayoutTabs>
+                    {resources_section}
+                    {main_section}
+                    {details_section}
                 </LayoutSplit>
             </Layout>
         </ContextLayout.Provider>

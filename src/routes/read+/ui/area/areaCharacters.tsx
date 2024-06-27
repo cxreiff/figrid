@@ -27,8 +27,8 @@ export function AreaCharacters() {
                                 {currentTile.character_instances.length ===
                                     0 && (
                                     <TableRow className="text-muted">
-                                        <TableCell className="shadow-none">
-                                            &nbsp; &nbsp; no characters
+                                        <TableCell className="pl-4 shadow-none">
+                                            no characters
                                         </TableCell>
                                     </TableRow>
                                 )}

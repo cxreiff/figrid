@@ -23,10 +23,8 @@ export function StatusInventory() {
                     <Table>
                         <TableBody>
                             {saveData.heldItems.length === 0 && (
-                                <TableRow className="text-muted">
-                                    <TableCell>
-                                        &nbsp; &nbsp; no items
-                                    </TableCell>
+                                <TableRow className="pl-4 text-muted">
+                                    <TableCell>no items</TableCell>
                                 </TableRow>
                             )}
                             {saveData.heldItems.map((instanceId) => {

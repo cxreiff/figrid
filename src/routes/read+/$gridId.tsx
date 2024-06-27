@@ -96,6 +96,25 @@ export default function Route() {
         )
     }
 
+    const info_section = (
+        <LayoutTabs names={["area", "status", "data"]}>
+            <Area />
+            <Status />
+            <Data replaceSave={replaceSave} />
+        </LayoutTabs>
+    )
+
+    const prompt_section = (
+        <Text
+            saveData={saveData}
+            command={command}
+            commandLog={commandLog}
+            setCommand={setCommand}
+        />
+    )
+
+    const map_section = <Map />
+
     return (
         <ContextSaveData.Provider value={saveData}>
             <ContextCommand.Provider value={handleCommandClosure}>
@@ -118,25 +137,25 @@ export default function Route() {
                             </>
                         }
                     >
+                        <LayoutTabs
+                            className="md:hidden"
+                            names={["prompt", "info", "map"]}
+                        >
+                            {prompt_section}
+                            {info_section}
+                            {map_section}
+                        </LayoutTabs>
                         <LayoutSplit
+                            className="hidden md:block"
                             direction="horizontal"
                             layoutRef={layoutContext.readLayoutRef}
                             initialLayout={layoutContext.initialLayout.read}
                             minSizes={layoutContext.minSizes.read}
                             onSaveLayout={layoutContext.saveLayout}
                         >
-                            <LayoutTabs names={["area", "status", "data"]}>
-                                <Area />
-                                <Status />
-                                <Data replaceSave={replaceSave} />
-                            </LayoutTabs>
-                            <Text
-                                saveData={saveData}
-                                command={command}
-                                commandLog={commandLog}
-                                setCommand={setCommand}
-                            />
-                            <Map />
+                            {info_section}
+                            {prompt_section}
+                            {map_section}
                         </LayoutSplit>
                     </Layout>
                 </ContextLayout.Provider>
