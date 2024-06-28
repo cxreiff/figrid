@@ -21,6 +21,11 @@ html {
     transition-duration: 200ms;
 }
 
+body {
+    position: absolute;
+    inset: 0;
+}
+
 ::selection {
     background: hsl(var(--accent));
 }
