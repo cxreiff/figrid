@@ -29,7 +29,7 @@ export function LayoutTopBar({
                     <hr className="mx-3 flex-1" />
                 </>
             )}
-            <div>
+            <div className="flex items-center text-nowrap">
                 {iconButtons}
                 <ButtonWithIconLink to="/docs" icon={QuestionMarkCircledIcon} />
                 <ThemeToggle />
