@@ -21,6 +21,12 @@ html {
     transition-duration: 200ms;
 }
 
+@media (display-mode: standalone) {
+    body {
+        padding-bottom: 1rem;
+    }
+}
+
 ::selection {
     background: hsl(var(--accent));
 }
