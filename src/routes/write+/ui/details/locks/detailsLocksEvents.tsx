@@ -24,7 +24,7 @@ export function DetailsLocksEvents() {
                                     key={id}
                                     linkedResource={event}
                                     navigateUrl={`events/${event.id}`}
-                                    unlinkUrl={`/write/${grid.id}/locks/${resource.id}/events/${id}/unlink`}
+                                    unlinkUrl={`/write/${grid.id}/locks/${resource.id}/events/${event.id}/unlink`}
                                 />
                             ),
                     ),

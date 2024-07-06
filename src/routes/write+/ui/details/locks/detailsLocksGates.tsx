@@ -25,7 +25,7 @@ export function DetailsLocksGates() {
                                     label={gate.type}
                                     linkedResource={gate}
                                     navigateUrl={`tiles/${gate.id}`}
-                                    unlinkUrl={`/write/${grid.id}/locks/${resource.id}/gates/${id}/unlink`}
+                                    unlinkUrl={`/write/${grid.id}/locks/${resource.id}/gates/${gate.id}/unlink`}
                                 />
                             ),
                     ),
