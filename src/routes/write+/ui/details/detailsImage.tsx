@@ -45,7 +45,7 @@ export function DetailsImage() {
                             )
                         }
                     >
-                        <div className="h-full rounded-sm border bg-background p-2">
+                        <div className="h-full min-h-fit rounded-sm border bg-background p-2">
                             {resource.image_asset ? (
                                 <Image
                                     src={assetUrl(

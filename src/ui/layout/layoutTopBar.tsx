@@ -23,14 +23,18 @@ export function LayoutTopBar({
             <hr className="mx-3 flex-1" />
             {title && (
                 <>
-                    <h1 className="p-2 text-muted-foreground">{title}</h1>
+                    <h1 className="overflow-hidden text-ellipsis text-nowrap p-2 text-muted-foreground">
+                        {title}
+                    </h1>
                     <hr className="mx-3 flex-1" />
                 </>
             )}
-            {iconButtons}
-            <ButtonWithIconLink to="/docs" icon={QuestionMarkCircledIcon} />
-            <ThemeToggle />
-            <ProfileButton user={user} />
+            <div>
+                {iconButtons}
+                <ButtonWithIconLink to="/docs" icon={QuestionMarkCircledIcon} />
+                <ThemeToggle />
+                <ProfileButton user={user} />
+            </div>
         </div>
     )
 }

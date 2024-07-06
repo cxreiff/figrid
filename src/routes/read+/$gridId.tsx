@@ -28,7 +28,7 @@ import { getSessionLayout } from "~/lib/sessionLayout.server.ts"
 import { LayoutIcon, Pencil2Icon } from "@radix-ui/react-icons"
 import { ButtonWithIconLink } from "~/ui/buttonWithIconLink.tsx"
 import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
-import { LayoutResponsive } from "~/ui/layout/layoutResponsive.tsx"
+import { LayoutSplit } from "~/ui/layout/layoutSplit.tsx"
 
 const paramsSchema = z.object({ gridId: z.coerce.number() })
 
@@ -137,23 +137,26 @@ export default function Route() {
                             </>
                         }
                     >
-                        <LayoutResponsive
+                        <LayoutTabs
+                            className="lg:hidden"
                             names={["prompt", "info", "map"]}
+                        >
+                            {prompt_section}
+                            {info_section}
+                            {map_section}
+                        </LayoutTabs>
+                        <LayoutSplit
+                            className="hidden lg:block"
+                            direction="horizontal"
                             layoutRef={layoutContext.readLayoutRef}
                             initialLayout={layoutContext.initialLayout.read}
                             minSizes={layoutContext.minSizes.read}
                             onSaveLayout={layoutContext.saveLayout}
-                            tabsChildren={[
-                                prompt_section,
-                                info_section,
-                                map_section,
-                            ]}
-                            splitChildren={[
-                                info_section,
-                                prompt_section,
-                                map_section,
-                            ]}
-                        />
+                        >
+                            {info_section}
+                            {prompt_section}
+                            {map_section}
+                        </LayoutSplit>
                     </Layout>
                 </ContextLayout.Provider>
             </ContextCommand.Provider>

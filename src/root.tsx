@@ -76,6 +76,7 @@ function App() {
                 <meta name="apple-mobile-web-app-capable" content="yes" />
                 <Meta />
                 <PreventFlashOnWrongTheme ssrTheme={Boolean(theme)} />
+                <link rel="manifest" href="/manifest.json" />
                 <Links />
             </head>
             <body>

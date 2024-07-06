@@ -39,7 +39,7 @@ export function ImageDropzone() {
         <div
             {...getRootProps({
                 className:
-                    "h-full w-full rounded-md flex justify-center items-center border hover:bg-[hsla(var(--accent)/0.4)] border-dashed border-accent text-center text-accent-foreground cursor-pointer",
+                    "h-full w-full rounded-md flex justify-center items-center border hover:bg-[hsla(var(--accent)/0.4)] border-dashed border-accent text-center text-accent-foreground cursor-pointer min-h-8",
             })}
         >
             <input {...getInputProps()} />

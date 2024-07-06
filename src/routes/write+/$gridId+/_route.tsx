@@ -25,7 +25,7 @@ import {
 import { ButtonWithIconLink } from "~/ui/buttonWithIconLink.tsx"
 import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
 import { Grid } from "~/routes/write+/ui/grid/grid.tsx"
-import { LayoutResponsive } from "~/ui/layout/layoutResponsive.tsx"
+import { LayoutSplit } from "~/ui/layout/layoutSplit.tsx"
 
 export const RESOURCE_TYPES = {
     TILES: "tiles",
@@ -160,24 +160,27 @@ export default function Route() {
                     </>
                 }
             >
-                <LayoutResponsive
+                <LayoutTabs
+                    className="lg:hidden"
                     names={["resources", "map", "editor", "details"]}
+                >
+                    {resources_section}
+                    {map_section}
+                    {editor_section}
+                    {details_section}
+                </LayoutTabs>
+                <LayoutSplit
+                    className="hidden lg:block"
+                    direction="horizontal"
                     layoutRef={layoutContext.writeLayoutRef}
                     initialLayout={layoutContext.initialLayout.write}
                     minSizes={layoutContext.minSizes.write}
                     onSaveLayout={layoutContext.saveLayout}
-                    tabsChildren={[
-                        resources_section,
-                        map_section,
-                        editor_section,
-                        details_section,
-                    ]}
-                    splitChildren={[
-                        resources_section,
-                        main_section,
-                        details_section,
-                    ]}
-                />
+                >
+                    {resources_section}
+                    {main_section}
+                    {details_section}
+                </LayoutSplit>
             </Layout>
         </ContextLayout.Provider>
     )
