@@ -34,7 +34,6 @@ export function DetailsResourceCheckbox<T extends string>({
                     {
                         action: updateRoute,
                         method: "POST",
-                        navigate: true,
                     },
                 )
             }}

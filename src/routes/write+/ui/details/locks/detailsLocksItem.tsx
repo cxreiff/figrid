@@ -43,7 +43,6 @@ export function DetailsLocksItem() {
                                         {
                                             action: `/write/${grid.id}/locks/${resource.id}/update`,
                                             method: "POST",
-                                            navigate: true,
                                         },
                                     )
                                 }}

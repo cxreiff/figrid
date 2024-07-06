@@ -43,11 +43,10 @@ export function MapTileCreate({
                         tile.id !== grid.first_tile_id,
                 )
                 .map((tile) => ({ id: tile.id, label: tile.name, tile }))}
-            onOptionSelect={async (option) => {
-                await fetcher.submit(null, {
+            onOptionSelect={(option) => {
+                fetcher.submit(null, {
                     method: "POST",
                     action: `tiles/${option.id}/gates/link?${searchParams}`,
-                    navigate: true,
                 })
             }}
         />
