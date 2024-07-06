@@ -14,7 +14,7 @@ export function Layout({
     iconButtons?: ReactNode
 }) {
     return (
-        <div className="relative h-screen w-full gap-3 p-4">
+        <div className="relative h-screen max-h-[-webkit-fill-available] w-full gap-3">
             <header className="absolute inset-0 h-14 px-4">
                 <LayoutTopBar
                     user={user}
