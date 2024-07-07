@@ -7,6 +7,7 @@ import { defined } from "~/lib/misc.ts"
 import type { SaveData, useSaveData } from "~/lib/useSaveData.ts"
 import type { InferSelectModel } from "drizzle-orm"
 import { type events } from "~/database/schema/events.server.ts"
+import type { TabsContextType } from "~/lib/contextTabs.ts"
 
 export const COMMANDS = {
     GO: "go",
@@ -49,6 +50,7 @@ export function handleCommand(
     appendToCommandLog: (command: string, message: string) => void,
     clearCommandLog: () => void,
     setSaveData: ReturnType<typeof useSaveData>[1],
+    setReadTab: TabsContextType["setReadTab"],
 ) {
     const currentTile = tileIdMap[saveData.currentTileId]
     const command = rawCommand.toLowerCase().trim()
@@ -59,6 +61,7 @@ export function handleCommand(
         setSaveData("usedItems", [])
         setSaveData("unlocked", [])
         setSaveData("unlockedInstances", [])
+        setSaveData("visited", [saveData.currentTileId])
         appendToCommandLog(command, "cleared data")
         return ""
     }
@@ -142,6 +145,7 @@ export function handleCommand(
                     clearCommandLog()
                     setSaveData("currentTileId", gate.to_tile_id)
                     if (!saveData.visited.includes(gate.to_tile_id)) {
+                        setReadTab("prompt")
                         setSaveData("visited", [
                             ...saveData.visited,
                             gate.to_tile_id,
@@ -158,6 +162,7 @@ export function handleCommand(
                             ),
                         )
                     if (gateEvents.length > 0) {
+                        setReadTab("prompt")
                         return handleTriggeredEvent(
                             gate.event_instances[
                                 Math.floor(Math.random() * gateEvents.length)

@@ -14,7 +14,7 @@ import { ProfileAvatar } from "~/ui/profileAvatar.tsx"
 export function ProfileButton({ user }: { user: AuthUser | null }) {
     return (
         <DropdownMenu>
-            <Button asChild size="icon">
+            <Button asChild title="account" size="icon">
                 <DropdownMenuTrigger
                     aria-label="user options"
                     className="items-center"

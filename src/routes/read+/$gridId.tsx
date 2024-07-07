@@ -116,6 +116,7 @@ export default function Route() {
                 appendToCommandLog,
                 clearCommandLog,
                 setSaveData,
+                tabsContext.setReadTab,
             ),
         )
     }
@@ -185,11 +186,13 @@ export default function Route() {
                                 <>
                                     {grid.user_id === user?.id && (
                                         <ButtonWithIconLink
+                                            title="edit"
                                             to={`/write/${grid.id}`}
                                             icon={Pencil2Icon}
                                         />
                                     )}
                                     <ButtonWithIcon
+                                        title="reset layout"
                                         icon={LayoutIcon}
                                         onClick={layoutContext.resetLayout}
                                     />

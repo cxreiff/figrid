@@ -31,7 +31,11 @@ export function LayoutTopBar({
             )}
             <div className="flex items-center text-nowrap">
                 {iconButtons}
-                <ButtonWithIconLink to="/docs" icon={QuestionMarkCircledIcon} />
+                <ButtonWithIconLink
+                    to="/docs"
+                    title="help"
+                    icon={QuestionMarkCircledIcon}
+                />
                 <ThemeToggle />
                 <ProfileButton user={user} />
             </div>

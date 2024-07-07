@@ -34,7 +34,7 @@ export const tabsCookieSchema = z.object({
 
 type TabsCookieType = z.infer<typeof tabsCookieSchema>
 
-type TabsContextType = {
+export type TabsContextType = {
     readTab: TabsCookieType["readTab"]
     infoTab: TabsCookieType["infoTab"]
     writeTab: TabsCookieType["writeTab"]

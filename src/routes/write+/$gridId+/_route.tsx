@@ -181,10 +181,12 @@ export default function Route() {
                     iconButtons={
                         <>
                             <ButtonWithIconLink
+                                title="play"
                                 to={`/read/${grid.id}`}
                                 icon={PlayIcon}
                             />
                             <ButtonWithIcon
+                                title="reset layout"
                                 onClick={layoutContext.resetLayout}
                                 icon={LayoutIcon}
                             />
