@@ -16,7 +16,7 @@ import {
 import { getSessionLayout } from "~/lib/sessionLayout.server.ts"
 import { superjson, useSuperLoaderData } from "~/lib/superjson.ts"
 import { paramsSchema as childParamsSchema } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_index.tsx"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { Map } from "~/routes/write+/ui/map/map.tsx"
 import {
     generateIdMap,
@@ -107,14 +107,17 @@ export default function Route() {
 
     const { pathname } = useLocation()
 
+    const prevPathname = useRef(pathname)
+
     const layoutContext = useInitialLayoutContext(layout)
     const tabsContext = useInitialTabsContext(tabs)
 
     useEffect(() => {
-        if (resourceType) {
+        if (resourceType && pathname != prevPathname.current) {
+            prevPathname.current = pathname
             tabsContext.setResourceTab(resourceType)
         }
-    }, [resourceType, tabsContext])
+    }, [resourceType, tabsContext, pathname])
 
     useEffect(() => {
         if (pathname.endsWith("create")) {

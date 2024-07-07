@@ -43,11 +43,7 @@ export function ImageDropzone() {
             })}
         >
             <input {...getInputProps()} />
-            {isDragActive ? (
-                <p>drop files here</p>
-            ) : (
-                <p>drag and drop or click to select</p>
-            )}
+            {isDragActive ? <p>drop file here</p> : <p>select a file</p>}
         </div>
     )
 }
