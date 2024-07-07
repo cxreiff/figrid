@@ -30,16 +30,10 @@ import { locks } from "~/database/schema/locks.server.ts"
 import { Card } from "~/ui/primitives/card.tsx"
 import { auth } from "~/auth/auth.server.ts"
 import { Placeholder } from "~/ui/placeholder.tsx"
+import { RESOURCE_TABS } from "~/lib/contextTabs.ts"
 
 export const paramsSchema = z.object({
-    resourceType: z.enum([
-        "tiles",
-        "characters",
-        "items",
-        "events",
-        "gates",
-        "locks",
-    ]),
+    resourceType: z.enum(RESOURCE_TABS).readonly(),
     resourceId: z.coerce.number(),
 })
 

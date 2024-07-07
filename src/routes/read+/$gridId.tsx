@@ -24,11 +24,19 @@ import {
     layoutCookieSchema,
     useInitialLayoutContext,
 } from "~/lib/contextLayout.ts"
+import {
+    ContextTabs,
+    INFO_TABS,
+    READ_TABS,
+    tabsCookieSchema,
+    useInitialTabsContext,
+} from "~/lib/contextTabs.ts"
 import { getSessionLayout } from "~/lib/sessionLayout.server.ts"
 import { LayoutIcon, Pencil2Icon } from "@radix-ui/react-icons"
 import { ButtonWithIconLink } from "~/ui/buttonWithIconLink.tsx"
 import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
 import { LayoutSplit } from "~/ui/layout/layoutSplit.tsx"
+import { getSessionTabs } from "~/lib/sessionTabs.server.ts"
 
 const paramsSchema = z.object({ gridId: z.coerce.number() })
 
@@ -52,8 +60,13 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     const itemIdMap = generateIdMap(grid.items)
     const itemInstanceIdMap = generateIdMap(grid.item_instances)
 
-    const sessionLayout = await getSessionLayout(request.headers.get("Cookie"))
+    const cookie = request.headers.get("Cookie")
+    const [sessionLayout, sessionTabs] = await Promise.all([
+        getSessionLayout(cookie),
+        getSessionTabs(cookie),
+    ])
     const layout = layoutCookieSchema.parse(sessionLayout.data)
+    const tabs = tabsCookieSchema.parse(sessionTabs.data)
 
     return superjson({
         user,
@@ -64,17 +77,26 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
         itemIdMap,
         itemInstanceIdMap,
         layout,
+        tabs,
     })
 }
 
 export default function Route() {
-    const { user, grid, tileIdMap, eventIdMap, itemInstanceIdMap, layout } =
-        useSuperLoaderData<typeof loader>()
+    const {
+        user,
+        grid,
+        tileIdMap,
+        eventIdMap,
+        itemInstanceIdMap,
+        layout,
+        tabs,
+    } = useSuperLoaderData<typeof loader>()
 
     const [command, setCommand] = useState("")
     const [commandLog, setCommandLog] = useState<string[]>([])
     const [saveData, setSaveData, replaceSave] = useSaveData(user, grid)
     const layoutContext = useInitialLayoutContext(layout)
+    const tabsContext = useInitialTabsContext(tabs)
 
     const clearCommandLog = () => setCommandLog([])
     const appendToCommandLog = (command: string, message: string) =>
@@ -97,7 +119,11 @@ export default function Route() {
     }
 
     const info_section = (
-        <LayoutTabs names={["area", "status", "data"]}>
+        <LayoutTabs
+            names={INFO_TABS}
+            value={tabsContext.infoTab}
+            onValueChange={tabsContext.setInfoTab}
+        >
             <Area />
             <Status />
             <Data replaceSave={replaceSave} />
@@ -119,45 +145,49 @@ export default function Route() {
         <ContextSaveData.Provider value={saveData}>
             <ContextCommand.Provider value={handleCommandClosure}>
                 <ContextLayout.Provider value={layoutContext}>
-                    <Layout
-                        user={user}
-                        title={grid.name}
-                        iconButtons={
-                            <>
-                                {grid.user_id === user?.id && (
-                                    <ButtonWithIconLink
-                                        to={`/write/${grid.id}`}
-                                        icon={Pencil2Icon}
+                    <ContextTabs.Provider value={tabsContext}>
+                        <Layout
+                            user={user}
+                            title={grid.name}
+                            iconButtons={
+                                <>
+                                    {grid.user_id === user?.id && (
+                                        <ButtonWithIconLink
+                                            to={`/write/${grid.id}`}
+                                            icon={Pencil2Icon}
+                                        />
+                                    )}
+                                    <ButtonWithIcon
+                                        icon={LayoutIcon}
+                                        onClick={layoutContext.resetLayout}
                                     />
-                                )}
-                                <ButtonWithIcon
-                                    icon={LayoutIcon}
-                                    onClick={layoutContext.resetLayout}
-                                />
-                            </>
-                        }
-                    >
-                        <LayoutTabs
-                            className="lg:hidden"
-                            names={["prompt", "info", "map"]}
+                                </>
+                            }
                         >
-                            {prompt_section}
-                            {info_section}
-                            {map_section}
-                        </LayoutTabs>
-                        <LayoutSplit
-                            className="hidden lg:block"
-                            direction="horizontal"
-                            layoutRef={layoutContext.readLayoutRef}
-                            initialLayout={layoutContext.initialLayout.read}
-                            minSizes={layoutContext.minSizes.read}
-                            onSaveLayout={layoutContext.saveLayout}
-                        >
-                            {info_section}
-                            {prompt_section}
-                            {map_section}
-                        </LayoutSplit>
-                    </Layout>
+                            <LayoutTabs
+                                className="lg:hidden"
+                                names={READ_TABS}
+                                value={tabsContext.readTab}
+                                onValueChange={tabsContext.setReadTab}
+                            >
+                                {prompt_section}
+                                {info_section}
+                                {map_section}
+                            </LayoutTabs>
+                            <LayoutSplit
+                                className="hidden lg:block"
+                                direction="horizontal"
+                                layoutRef={layoutContext.readLayoutRef}
+                                initialLayout={layoutContext.initialLayout.read}
+                                minSizes={layoutContext.minSizes.read}
+                                onSaveLayout={layoutContext.saveLayout}
+                            >
+                                {info_section}
+                                {prompt_section}
+                                {map_section}
+                            </LayoutSplit>
+                        </Layout>
+                    </ContextTabs.Provider>
                 </ContextLayout.Provider>
             </ContextCommand.Provider>
         </ContextSaveData.Provider>

@@ -5,12 +5,16 @@ import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/$resourceI
 import type { ResourceType, loader } from "~/routes/write+/$gridId+/_route.tsx"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
 import type { WriteGridQuery } from "~/routes/write+/lib/queries.server.ts"
+import { useContext } from "react"
+import { ContextTabs } from "~/lib/contextTabs.ts"
 
 export function ResourceStack({ type }: { type: ResourceType }) {
     const { grid } = useSuperLoaderData<typeof loader>()
     const { resourceType, resourceId } = paramsSchema
         .partial()
         .parse(useParams())
+
+    const tabsContext = useContext(ContextTabs)
 
     const navigate = useNavigate()
 
@@ -40,7 +44,10 @@ export function ResourceStack({ type }: { type: ResourceType }) {
                 data={grid[type]}
                 selected={type === resourceType ? resourceId : undefined}
                 creating={creating}
-                onSelection={(id) => navigate(`${type}/${id}`)}
+                onSelection={(id) => {
+                    navigate(`${type}/${id}`)
+                    tabsContext.setWriteTab("editor")
+                }}
                 onCreate={
                     type !== "gates"
                         ? () => navigate(`${type}/create`)

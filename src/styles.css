@@ -24,6 +24,7 @@ html {
 @media (display-mode: standalone) {
     body {
         padding-bottom: 1rem;
+        overscroll-behavior: none;
     }
 }
 

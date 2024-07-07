@@ -27,6 +27,8 @@ import {
     linkTile,
     parseNeighbors,
 } from "~/routes/write+/lib/linkTile.server.ts"
+import { useContext } from "react"
+import { ContextTabs } from "~/lib/contextTabs.ts"
 
 export const paramsSchema = z.object({
     resourceType: z.enum(["tiles", "characters", "items", "events", "locks"]),
@@ -153,6 +155,8 @@ export default function Route() {
 
     const { resource } = useSuperLoaderData<typeof loader>()
 
+    const tabsContext = useContext(ContextTabs)
+
     const navigate = useNavigate()
 
     return (
@@ -178,13 +182,16 @@ export default function Route() {
                                 variant="outline"
                                 icon={Cross2Icon}
                                 className="flex-1"
-                                onClick={() =>
-                                    resource
-                                        ? navigate(
-                                              `/write/${gridId}/${resourceType}/${resource.id}`,
-                                          )
-                                        : navigate(`/write/${gridId}`)
-                                }
+                                onClick={() => {
+                                    tabsContext.setWriteTab("resources")
+                                    if (resource) {
+                                        navigate(
+                                            `/write/${gridId}/${resourceType}/${resource.id}`,
+                                        )
+                                    } else {
+                                        navigate(`/write/${gridId}`)
+                                    }
+                                }}
                             >
                                 cancel
                             </ValidatedButton>

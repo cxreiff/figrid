@@ -16,7 +16,7 @@ import {
 import { getSessionLayout } from "~/lib/sessionLayout.server.ts"
 import { superjson, useSuperLoaderData } from "~/lib/superjson.ts"
 import { paramsSchema as childParamsSchema } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_index.tsx"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { Map } from "~/routes/write+/ui/map/map.tsx"
 import {
     generateIdMap,
@@ -26,6 +26,16 @@ import { ButtonWithIconLink } from "~/ui/buttonWithIconLink.tsx"
 import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
 import { Grid } from "~/routes/write+/ui/grid/grid.tsx"
 import { LayoutSplit } from "~/ui/layout/layoutSplit.tsx"
+import { getSessionTabs } from "~/lib/sessionTabs.server.ts"
+import {
+    CENTER_TABS,
+    ContextTabs,
+    DETAILS_TABS,
+    RESOURCE_TABS,
+    WRITE_TABS,
+    tabsCookieSchema,
+    useInitialTabsContext,
+} from "~/lib/contextTabs.ts"
 
 export const RESOURCE_TYPES = {
     TILES: "tiles",
@@ -65,8 +75,13 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
         })
     }
 
-    const sessionLayout = await getSessionLayout(request.headers.get("Cookie"))
+    const cookie = request.headers.get("Cookie")
+    const [sessionLayout, sessionTabs] = await Promise.all([
+        getSessionLayout(cookie),
+        getSessionTabs(cookie),
+    ])
     const layout = layoutCookieSchema.parse(sessionLayout.data)
+    const tabs = tabsCookieSchema.parse(sessionTabs.data)
 
     const tileIdMap = generateIdMap(grid.tiles)
     const tileCoordsMap = generateTileCoordsMap(tileIdMap, grid.first_tile_id)
@@ -77,6 +92,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
         user,
         grid,
         layout,
+        tabs,
         tileIdMap,
         tileCoordsMap,
         gateIdMap,
@@ -85,31 +101,33 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 }
 
 export default function Route() {
-    const { user, grid, layout } = useSuperLoaderData<typeof loader>()
+    const { user, grid, layout, tabs } = useSuperLoaderData<typeof loader>()
 
     const { resourceType } = childParamsSchema.partial().parse(useParams())
-    const [resourceTab, setResourceTab] = useState(resourceType)
-    const [mainTab, setMainTab] = useState<"map" | "editor">("map")
 
     const { pathname } = useLocation()
 
     const layoutContext = useInitialLayoutContext(layout)
+    const tabsContext = useInitialTabsContext(tabs)
 
     useEffect(() => {
-        setResourceTab(resourceType)
-    }, [resourceType])
+        if (resourceType) {
+            tabsContext.setResourceTab(resourceType)
+        }
+    }, [resourceType, tabsContext])
 
     useEffect(() => {
         if (pathname.endsWith("create")) {
-            setMainTab("editor")
+            tabsContext.setCenterTab("editor")
+            tabsContext.setWriteTab("editor")
         }
-    }, [pathname])
+    }, [pathname, tabsContext])
 
     const resources_section = (
         <LayoutTabs
-            names={Object.values(RESOURCE_TYPES)}
-            value={resourceTab}
-            onValueChange={setResourceTab}
+            names={RESOURCE_TABS}
+            value={tabsContext.resourceTab}
+            onValueChange={tabsContext.setResourceTab}
         >
             <ResourceStack type={RESOURCE_TYPES.TILES} />
             <ResourceStack type={RESOURCE_TYPES.CHARACTERS} />
@@ -124,11 +142,11 @@ export default function Route() {
 
     const map_section = <Map />
 
-    const main_section = (
+    const center_section = (
         <LayoutTabs
-            names={["map", "editor"]}
-            value={mainTab}
-            onValueChange={setMainTab}
+            names={CENTER_TABS}
+            value={tabsContext.centerTab}
+            onValueChange={tabsContext.setCenterTab}
         >
             {map_section}
             {editor_section}
@@ -136,7 +154,11 @@ export default function Route() {
     )
 
     const details_section = (
-        <LayoutTabs names={["details", "grid"]}>
+        <LayoutTabs
+            names={DETAILS_TABS}
+            value={tabsContext.detailsTab}
+            onValueChange={tabsContext.setDetailsTab}
+        >
             <Details />
             <Grid />
         </LayoutTabs>
@@ -144,44 +166,48 @@ export default function Route() {
 
     return (
         <ContextLayout.Provider value={layoutContext}>
-            <Layout
-                user={user}
-                title={`${grid.name} - editing`}
-                iconButtons={
-                    <>
-                        <ButtonWithIconLink
-                            to={`/read/${grid.id}`}
-                            icon={PlayIcon}
-                        />
-                        <ButtonWithIcon
-                            onClick={layoutContext.resetLayout}
-                            icon={LayoutIcon}
-                        />
-                    </>
-                }
-            >
-                <LayoutTabs
-                    className="lg:hidden"
-                    names={["resources", "map", "editor", "details"]}
+            <ContextTabs.Provider value={tabsContext}>
+                <Layout
+                    user={user}
+                    title={`${grid.name} - editing`}
+                    iconButtons={
+                        <>
+                            <ButtonWithIconLink
+                                to={`/read/${grid.id}`}
+                                icon={PlayIcon}
+                            />
+                            <ButtonWithIcon
+                                onClick={layoutContext.resetLayout}
+                                icon={LayoutIcon}
+                            />
+                        </>
+                    }
                 >
-                    {resources_section}
-                    {map_section}
-                    {editor_section}
-                    {details_section}
-                </LayoutTabs>
-                <LayoutSplit
-                    className="hidden lg:block"
-                    direction="horizontal"
-                    layoutRef={layoutContext.writeLayoutRef}
-                    initialLayout={layoutContext.initialLayout.write}
-                    minSizes={layoutContext.minSizes.write}
-                    onSaveLayout={layoutContext.saveLayout}
-                >
-                    {resources_section}
-                    {main_section}
-                    {details_section}
-                </LayoutSplit>
-            </Layout>
+                    <LayoutTabs
+                        className="lg:hidden"
+                        names={WRITE_TABS}
+                        value={tabsContext.writeTab}
+                        onValueChange={tabsContext.setWriteTab}
+                    >
+                        {resources_section}
+                        {map_section}
+                        {editor_section}
+                        {details_section}
+                    </LayoutTabs>
+                    <LayoutSplit
+                        className="hidden lg:block"
+                        direction="horizontal"
+                        layoutRef={layoutContext.writeLayoutRef}
+                        initialLayout={layoutContext.initialLayout.write}
+                        minSizes={layoutContext.minSizes.write}
+                        onSaveLayout={layoutContext.saveLayout}
+                    >
+                        {resources_section}
+                        {center_section}
+                        {details_section}
+                    </LayoutSplit>
+                </Layout>
+            </ContextTabs.Provider>
         </ContextLayout.Provider>
     )
 }

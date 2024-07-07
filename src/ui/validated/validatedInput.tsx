@@ -1,3 +1,4 @@
+import type { HTMLInputTypeAttribute } from "react"
 import { useField, useFormContext } from "remix-validated-form"
 import { Input } from "~/ui/primitives/input.tsx"
 import { Label } from "~/ui/primitives/label.tsx"
@@ -5,12 +6,14 @@ import { Label } from "~/ui/primitives/label.tsx"
 export function ValidatedInput({
     id,
     label,
+    type,
     noAutocomplete = false,
     disabled,
     className,
 }: {
     id: string
     label: string
+    type?: HTMLInputTypeAttribute
     noAutocomplete?: boolean
     disabled?: boolean
     className?: string
@@ -30,6 +33,7 @@ export function ValidatedInput({
                 autoComplete={noAutocomplete ? "off" : undefined}
                 {...getInputProps({
                     id,
+                    type,
                     disabled,
                     placeholder: `${label}...`,
                     className: "mb-4 h-9",
