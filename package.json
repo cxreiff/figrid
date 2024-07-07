@@ -53,6 +53,7 @@
         "cmdk": "^0.2.1",
         "drizzle-orm": "^0.31.2",
         "drizzle-zod": "^0.5.1",
+        "is-mobile": "^4.0.0",
         "isbot": "^3.7.1",
         "nanoid": "^5.0.4",
         "react": "^18.2.0",

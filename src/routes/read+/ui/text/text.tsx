@@ -4,6 +4,7 @@ import { TextContent } from "~/routes/read+/ui/text/textContent.tsx"
 import { TextPrompt } from "~/routes/read+/ui/text/textPrompt.tsx"
 import type { SaveData } from "~/lib/useSaveData.ts"
 import { Scroller } from "~/ui/scroller.tsx"
+import { isMobile } from "is-mobile"
 
 export function Text({
     saveData,
@@ -20,10 +21,11 @@ export function Text({
     const textRef = useRef<HTMLDivElement>(null)
     const scrollRef = useRef<HTMLDivElement>(null)
 
-    useEffect(
-        () => inputRef?.current?.focus(),
-        [saveData?.currentTileId, saveData?.currentEventId],
-    )
+    useEffect(() => {
+        if (!isMobile()) {
+            inputRef?.current?.focus()
+        }
+    }, [saveData?.currentTileId, saveData?.currentEventId])
 
     useEffect(() => {
         setTimeout(() => {

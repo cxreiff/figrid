@@ -11,7 +11,7 @@ import { useSuperLoaderData } from "~/lib/superjson.ts"
 import { BlankTile } from "~/routes/read+/ui/map/mapBlankTile.tsx"
 
 const MAP_DIMENSIONS = { x: 13, y: 19 }
-export const TILE_DIMENSIONS = { x: 6, y: 6 }
+export const TILE_DIMENSIONS = { x: 5, y: 5 }
 
 export function Map() {
     const { tileIdMap, tileCoordsMap } = useSuperLoaderData<typeof loader>()

@@ -37,6 +37,8 @@ import { ButtonWithIconLink } from "~/ui/buttonWithIconLink.tsx"
 import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
 import { LayoutSplit } from "~/ui/layout/layoutSplit.tsx"
 import { getSessionTabs } from "~/lib/sessionTabs.server.ts"
+import { AreaImage } from "./ui/area/areaImage.tsx"
+import { Card } from "~/ui/primitives/card.tsx"
 
 const paramsSchema = z.object({ gridId: z.coerce.number() })
 
@@ -147,6 +149,30 @@ export default function Route() {
 
     const map_section = <Map />
 
+    const combo_section = (
+        <LayoutSplit
+            direction="vertical"
+            layoutRef={layoutContext.comboLayoutRef}
+            initialLayout={layoutContext.initialLayout.combo}
+            minSizes={layoutContext.minSizes.combo}
+            onSaveLayout={layoutContext.saveLayout}
+        >
+            <LayoutSplit
+                direction="horizontal"
+                layoutRef={layoutContext.visualsLayoutRef}
+                initialLayout={layoutContext.initialLayout.visuals}
+                minSizes={layoutContext.minSizes.visuals}
+                onSaveLayout={layoutContext.saveLayout}
+            >
+                <Card className="h-full w-full py-4">
+                    <AreaImage />
+                </Card>
+                {map_section}
+            </LayoutSplit>
+            {prompt_section}
+        </LayoutSplit>
+    )
+
     return (
         <ContextSaveData.Provider value={saveData}>
             <ContextCommand.Provider value={handleCommandClosure}>
@@ -176,7 +202,7 @@ export default function Route() {
                                 value={tabsContext.readTab}
                                 onValueChange={tabsContext.setReadTab}
                             >
-                                {prompt_section}
+                                {combo_section}
                                 {map_section}
                                 {area_section}
                                 {status_section}

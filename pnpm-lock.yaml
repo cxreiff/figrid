@@ -113,6 +113,9 @@ importers:
       drizzle-zod:
         specifier: ^0.5.1
         version: 0.5.1(drizzle-orm@0.31.2(@libsql/client@0.5.6)(@planetscale/database@1.16.0)(@types/react@18.2.63)(mysql2@3.9.2)(react@18.2.0))(zod@3.22.4)
+      is-mobile:
+        specifier: ^4.0.0
+        version: 4.0.0
       isbot:
         specifier: ^3.7.1
         version: 3.8.0
@@ -3646,6 +3649,9 @@ packages:
 
   is-map@2.0.2:
     resolution: {integrity: sha512-cOZFQQozTha1f4MxLFzlgKYPTyj26picdZTx82hbc/Xf4K/tZOOXSCkMvU4pKioRXGDLJRn0GM7Upe7kR721yg==}
+
+  is-mobile@4.0.0:
+    resolution: {integrity: sha512-mlcHZA84t1qLSuWkt2v0I2l61PYdyQDt4aG1mLIXF5FDMm4+haBCxCPYSr/uwqQNRk1MiTizn0ypEuRAOLRAew==}
 
   is-negative-zero@2.0.3:
     resolution: {integrity: sha512-5KoIu2Ngpyek75jXodFvnafB6DJgr3u8uuK0LEZJjrU19DrMD3EVERaR8sjz8CCGgpZvxPl9SuE1GMVPFHx1mw==}
@@ -9742,6 +9748,8 @@ snapshots:
   is-interactive@1.0.0: {}
 
   is-map@2.0.2: {}
+
+  is-mobile@4.0.0: {}
 
   is-negative-zero@2.0.3: {}
 
