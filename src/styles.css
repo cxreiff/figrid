@@ -21,10 +21,13 @@ html {
     transition-duration: 200ms;
 }
 
+html {
+    overscroll-behavior: none;
+}
+
 @media (display-mode: standalone) {
     body {
         padding-bottom: 1rem;
-        overscroll-behavior: none;
     }
 }
 
