@@ -155,7 +155,7 @@ export default function Route() {
 
     const { resource } = useSuperLoaderData<typeof loader>()
 
-    const tabsContext = useContext(ContextTabs)
+    const { setWriteTab } = useContext(ContextTabs)
 
     const navigate = useNavigate()
 
@@ -171,6 +171,7 @@ export default function Route() {
                         description: resource.description || "",
                     }
                 }
+                onSubmit={() => setWriteTab("resources")}
                 method="POST"
                 autoComplete="off"
                 className="h-full"
@@ -183,7 +184,7 @@ export default function Route() {
                                 icon={Cross2Icon}
                                 className="flex-1"
                                 onClick={() => {
-                                    tabsContext.setWriteTab("resources")
+                                    setWriteTab("resources")
                                     if (resource) {
                                         navigate(
                                             `/write/${gridId}/${resourceType}/${resource.id}`,

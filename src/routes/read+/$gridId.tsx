@@ -118,15 +118,21 @@ export default function Route() {
         )
     }
 
+    const area_section = <Area />
+
+    const status_section = <Status />
+
+    const data_section = <Data replaceSave={replaceSave} />
+
     const info_section = (
         <LayoutTabs
             names={INFO_TABS}
             value={tabsContext.infoTab}
             onValueChange={tabsContext.setInfoTab}
         >
-            <Area />
-            <Status />
-            <Data replaceSave={replaceSave} />
+            {area_section}
+            {status_section}
+            {data_section}
         </LayoutTabs>
     )
 
@@ -171,8 +177,10 @@ export default function Route() {
                                 onValueChange={tabsContext.setReadTab}
                             >
                                 {prompt_section}
-                                {info_section}
                                 {map_section}
+                                {area_section}
+                                {status_section}
+                                {data_section}
                             </LayoutTabs>
                             <LayoutSplit
                                 className="hidden lg:block"

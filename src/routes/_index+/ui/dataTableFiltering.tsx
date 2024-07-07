@@ -90,18 +90,19 @@ export function DataTableFiltering<TData>({
                     })
                 }
             />
-            <ButtonWithIcon
-                icon={Cross2Icon}
-                variant="outline"
-                className="bg-card"
-                onClick={() =>
-                    setSearchParams((prev) => {
-                        prev.delete(FILTER_COLUMN_SEARCH_PARAM)
-                        prev.delete(FILTER_VALUE_SEARCH_PARAM)
-                        return prev
-                    })
-                }
-            />
+            {searchParams.get(FILTER_VALUE_SEARCH_PARAM) && (
+                <ButtonWithIcon
+                    icon={Cross2Icon}
+                    variant="outline"
+                    className="bg-card"
+                    onClick={() =>
+                        setSearchParams((prev) => {
+                            prev.delete(FILTER_VALUE_SEARCH_PARAM)
+                            return prev
+                        })
+                    }
+                />
+            )}
         </div>
     )
 }

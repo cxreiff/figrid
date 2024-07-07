@@ -40,7 +40,7 @@ export function TextExits({
                     key={gate.id}
                     variant="inline"
                     className="text-base"
-                    onClick={() => handleCommand(`look ${gate.type}`)}
+                    onClick={() => handleCommand(`go ${gate.type}`)}
                     disabled={unfulfilled.length > 0}
                 >
                     {gate.type}

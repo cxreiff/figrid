@@ -23,12 +23,9 @@ export function TextOptions({
     itemInstanceIdMap: IdMap<GridQuery["item_instances"][0]>
     handleCommand: (command: string) => void
 }) {
-    return currentEvent.children.length > 0 ? (
-        currentEvent.children.map((event) => {
-            if (event.trigger === null) {
-                return null
-            }
-
+    const options = currentEvent.children
+        .filter(({ trigger }) => trigger != null)
+        .map((event) => {
             const { fulfilled, unfulfilled } = splitLockInstances(
                 eventIdMap[event.id].lock_instances,
                 saveData,
@@ -77,6 +74,9 @@ export function TextOptions({
                 </Button>
             )
         })
+
+    return options.length > 0 ? (
+        options
     ) : (
         <Button
             variant="inline"

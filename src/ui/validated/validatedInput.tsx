@@ -7,12 +7,14 @@ export function ValidatedInput({
     id,
     label,
     type,
+    placeholder,
     noAutocomplete = false,
     disabled,
     className,
 }: {
     id: string
     label: string
+    placeholder?: string
     type?: HTMLInputTypeAttribute
     noAutocomplete?: boolean
     disabled?: boolean
@@ -35,7 +37,7 @@ export function ValidatedInput({
                     id,
                     type,
                     disabled,
-                    placeholder: `${label}...`,
+                    placeholder,
                     className: "mb-4 h-9",
                     onChange: () => setFieldTouched(id, true),
                 })}

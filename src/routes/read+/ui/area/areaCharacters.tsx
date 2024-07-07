@@ -10,10 +10,12 @@ import { WaitSaveData } from "~/ui/waitSaveData.tsx"
 import { ContextCommand } from "~/lib/contextCommand.ts"
 import { useSuperLoaderData } from "~/lib/superjson.ts"
 import { Button } from "~/ui/primitives/button.tsx"
+import { ContextTabs } from "~/lib/contextTabs.ts"
 
 export function AreaCharacters() {
     const { tileIdMap } = useSuperLoaderData<typeof loader>()
     const handleCommand = useContext(ContextCommand)
+    const { setReadTab } = useContext(ContextTabs)
 
     return (
         <WaitSaveData>
@@ -43,22 +45,24 @@ export function AreaCharacters() {
                                             </TableCell>
                                             <TableCell>
                                                 <Button
-                                                    onClick={() =>
+                                                    onClick={() => {
+                                                        setReadTab("prompt")
                                                         handleCommand(
                                                             `look ${character.name.toLowerCase()}`,
                                                         )
-                                                    }
+                                                    }}
                                                 >
                                                     look
                                                 </Button>
                                             </TableCell>
                                             <TableCell>
                                                 <Button
-                                                    onClick={() =>
+                                                    onClick={() => {
+                                                        setReadTab("prompt")
                                                         handleCommand(
                                                             `talk ${character.name.toLowerCase()}`,
                                                         )
-                                                    }
+                                                    }}
                                                 >
                                                     talk
                                                 </Button>

@@ -10,10 +10,12 @@ import {
     TableCell,
     TableRow,
 } from "~/ui/primitives/table.tsx"
+import { ContextTabs } from "~/lib/contextTabs.ts"
 
 export function StatusInventory() {
     const { itemIdMap, itemInstanceIdMap } = useSuperLoaderData<typeof loader>()
     const handleCommand = useContext(ContextCommand)
+    const { setReadTab } = useContext(ContextTabs)
 
     return (
         <WaitSaveData>
@@ -42,22 +44,24 @@ export function StatusInventory() {
                                         </TableCell>
                                         <TableCell>
                                             <Button
-                                                onClick={() =>
+                                                onClick={() => {
+                                                    setReadTab("prompt")
                                                     handleCommand(
                                                         `look ${item.name.toLowerCase()}`,
                                                     )
-                                                }
+                                                }}
                                             >
                                                 look
                                             </Button>
                                         </TableCell>
                                         <TableCell>
                                             <Button
-                                                onClick={() =>
+                                                onClick={() => {
+                                                    setReadTab("prompt")
                                                     handleCommand(
                                                         `use ${item.name.toLowerCase()}`,
                                                     )
-                                                }
+                                                }}
                                             >
                                                 use
                                             </Button>

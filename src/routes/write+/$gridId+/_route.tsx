@@ -113,18 +113,19 @@ export default function Route() {
     const tabsContext = useInitialTabsContext(tabs)
 
     useEffect(() => {
-        if (resourceType && pathname != prevPathname.current) {
+        if (pathname != prevPathname.current) {
+            if (resourceType) {
+                tabsContext.setResourceTab(resourceType)
+            }
+
+            if (pathname.endsWith("create")) {
+                tabsContext.setCenterTab("editor")
+                tabsContext.setWriteTab("editor")
+            }
+
             prevPathname.current = pathname
-            tabsContext.setResourceTab(resourceType)
         }
     }, [resourceType, tabsContext, pathname])
-
-    useEffect(() => {
-        if (pathname.endsWith("create")) {
-            tabsContext.setCenterTab("editor")
-            tabsContext.setWriteTab("editor")
-        }
-    }, [pathname, tabsContext])
 
     const resources_section = (
         <LayoutTabs
@@ -156,14 +157,18 @@ export default function Route() {
         </LayoutTabs>
     )
 
-    const details_section = (
+    const details_section = <Details />
+
+    const grid_section = <Grid />
+
+    const right_section = (
         <LayoutTabs
             names={DETAILS_TABS}
             value={tabsContext.detailsTab}
             onValueChange={tabsContext.setDetailsTab}
         >
-            <Details />
-            <Grid />
+            {details_section}
+            {grid_section}
         </LayoutTabs>
     )
 
@@ -196,6 +201,7 @@ export default function Route() {
                         {map_section}
                         {editor_section}
                         {details_section}
+                        {grid_section}
                     </LayoutTabs>
                     <LayoutSplit
                         className="hidden lg:block"
@@ -207,7 +213,7 @@ export default function Route() {
                     >
                         {resources_section}
                         {center_section}
-                        {details_section}
+                        {right_section}
                     </LayoutSplit>
                 </Layout>
             </ContextTabs.Provider>

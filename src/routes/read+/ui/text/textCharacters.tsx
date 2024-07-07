@@ -29,7 +29,7 @@ export function TextCharacters({
                                         variant="inline"
                                         className="text-base"
                                         onClick={() =>
-                                            handleCommand(`look ${name}`)
+                                            handleCommand(`talk ${name}`)
                                         }
                                     >
                                         <TextTyper className="inline-block">

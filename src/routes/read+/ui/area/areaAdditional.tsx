@@ -10,10 +10,12 @@ import {
     TableRow,
 } from "~/ui/primitives/table.tsx"
 import { Button } from "~/ui/primitives/button.tsx"
+import { ContextTabs } from "~/lib/contextTabs.ts"
 
 export function AreaAdditional() {
     const { tileIdMap } = useSuperLoaderData<typeof loader>()
     const handleCommand = useContext(ContextCommand)
+    const { setReadTab } = useContext(ContextTabs)
 
     return (
         <WaitSaveData>
@@ -38,9 +40,10 @@ export function AreaAdditional() {
                                         </TableCell>
                                         <TableCell>
                                             <Button
-                                                onClick={() =>
+                                                onClick={() => {
+                                                    setReadTab("prompt")
                                                     handleCommand("explore")
-                                                }
+                                                }}
                                             >
                                                 explore
                                             </Button>{" "}

@@ -5,11 +5,13 @@ import { Textarea } from "~/ui/primitives/textarea.tsx"
 export function ValidatedTextArea({
     id,
     label,
+    placeholder,
     noAutocomplete = false,
     className,
 }: {
     id: string
     label: string
+    placeholder?: string
     noAutocomplete?: boolean
     className?: string
 }) {
@@ -29,7 +31,7 @@ export function ValidatedTextArea({
                 autoComplete={noAutocomplete ? "off" : undefined}
                 {...getInputProps({
                     id,
-                    placeholder: `${label}...`,
+                    placeholder,
                     onChange: () => setFieldTouched(id, true),
                 })}
             />

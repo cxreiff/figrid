@@ -52,7 +52,7 @@ export function CreateGridButton() {
                             type="submit"
                             variant="outline"
                             icon={FileIcon}
-                            className="mt-4 w-1/3"
+                            className="mt-4 w-1/3 self-end"
                         >
                             create grid
                         </ValidatedButton>

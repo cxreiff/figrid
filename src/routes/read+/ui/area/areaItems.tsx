@@ -11,10 +11,12 @@ import {
     TableRow,
 } from "~/ui/primitives/table.tsx"
 import { Button } from "~/ui/primitives/button.tsx"
+import { ContextTabs } from "~/lib/contextTabs.ts"
 
 export function AreaItems() {
     const { tileIdMap } = useSuperLoaderData<typeof loader>()
     const handleCommand = useContext(ContextCommand)
+    const { setReadTab } = useContext(ContextTabs)
 
     return (
         <WaitSaveData>
@@ -47,22 +49,24 @@ export function AreaItems() {
                                         </TableCell>
                                         <TableCell>
                                             <Button
-                                                onClick={() =>
+                                                onClick={() => {
+                                                    setReadTab("prompt")
                                                     handleCommand(
                                                         `look ${item.name.toLowerCase()}`,
                                                     )
-                                                }
+                                                }}
                                             >
                                                 look
                                             </Button>
                                         </TableCell>
                                         <TableCell>
                                             <Button
-                                                onClick={() =>
+                                                onClick={() => {
+                                                    setReadTab("prompt")
                                                     handleCommand(
                                                         `take ${item.name.toLowerCase()}`,
                                                     )
-                                                }
+                                                }}
                                             >
                                                 take
                                             </Button>

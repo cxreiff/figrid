@@ -3,9 +3,15 @@ import { createContext, useEffect, useState } from "react"
 import { z } from "zod"
 import { useDebounce } from "~/lib/misc.ts"
 
-export const READ_TABS = ["prompt", "info", "map"] as const
+export const READ_TABS = ["prompt", "map", "area", "status", "data"] as const
 export const INFO_TABS = ["area", "status", "data"] as const
-export const WRITE_TABS = ["resources", "map", "editor", "details"] as const
+export const WRITE_TABS = [
+    "resources",
+    "map",
+    "editor",
+    "details",
+    "grid",
+] as const
 export const RESOURCE_TABS = [
     "tiles",
     "characters",

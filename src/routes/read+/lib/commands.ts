@@ -65,7 +65,9 @@ export function handleCommand(
 
     if (saveData.currentEventId) {
         const event = eventIdMap[saveData.currentEventId]
-        if (event.children.length === 0) {
+        if (
+            event.children.filter(({ trigger }) => trigger != null).length === 0
+        ) {
             clearCommandLog()
             setSaveData("currentEventId", undefined)
             return ""

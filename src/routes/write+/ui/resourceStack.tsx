@@ -14,7 +14,7 @@ export function ResourceStack({ type }: { type: ResourceType }) {
         .partial()
         .parse(useParams())
 
-    const tabsContext = useContext(ContextTabs)
+    const { setWriteTab } = useContext(ContextTabs)
 
     const navigate = useNavigate()
 
@@ -46,7 +46,7 @@ export function ResourceStack({ type }: { type: ResourceType }) {
                 creating={creating}
                 onSelection={(id) => {
                     navigate(`${type}/${id}`)
-                    tabsContext.setWriteTab("editor")
+                    setWriteTab("editor")
                 }}
                 onCreate={
                     type !== "gates"
