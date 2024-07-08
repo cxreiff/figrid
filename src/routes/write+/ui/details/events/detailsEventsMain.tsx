@@ -27,6 +27,7 @@ export function DetailsEventsMain() {
 
     return (
         <ValidatedForm
+            key={resource.id}
             validator={formSchema}
             action={`events/${resource.id}/update`}
             method="POST"
@@ -35,7 +36,12 @@ export function DetailsEventsMain() {
             className="h-full flex gap-2 mb-4"
             defaultValues={{ trigger }}
         >
-            <ValidatedInput className="flex-1 [&>input]:m-0" id="trigger" label="trigger" noAutocomplete />
+            <ValidatedInput
+                className="flex-1 [&>input]:m-0"
+                id="trigger"
+                label="trigger"
+                noAutocomplete
+            />
             <ValidatedButton
                 type="reset"
                 variant="outline"
