@@ -95,7 +95,7 @@ export function DetailsMain() {
 
     const [expanded, setExpanded] = resourceType
         ? expandedStateMap[resourceType]
-        : [[], () => { }]
+        : [[], () => {}]
 
     const MainSection = resourceType ? mainSectionMap[resourceType] : undefined
 

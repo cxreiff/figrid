@@ -11,7 +11,10 @@ import { FileIcon, ResetIcon } from "@radix-ui/react-icons"
 
 const formSchema = withZod(
     z.object({
-        trigger: z.string().min(1, { message: "trigger is required" }).nullish(),
+        trigger: z
+            .string()
+            .min(1, { message: "trigger is required" })
+            .nullish(),
     }),
 )
 
@@ -25,7 +28,9 @@ export function DetailsEventsMain() {
         ? fetcher.formData.get("trigger")?.toString() || resource.trigger
         : resource.trigger
 
-    return (
+    return resource.parent_id == null ? (
+        <p className="ml-2 text-muted">root event</p>
+    ) : (
         <ValidatedForm
             key={resource.id}
             validator={formSchema}
@@ -33,7 +38,7 @@ export function DetailsEventsMain() {
             method="POST"
             navigate={false}
             autoComplete="off"
-            className="h-full flex gap-2 mb-4"
+            className="mb-4 flex h-full gap-2"
             defaultValues={{ trigger }}
         >
             <ValidatedInput
@@ -57,4 +62,3 @@ export function DetailsEventsMain() {
         </ValidatedForm>
     )
 }
-
