@@ -12,7 +12,7 @@ import * as itemsSchema from "~/database/schema/items.server.ts"
 import * as locksSchema from "~/database/schema/locks.server.ts"
 import * as tilesSchema from "~/database/schema/tiles.server.ts"
 
-const turso = createClient({
+const connection = createClient({
     url: process.env.DATABASE_URL,
     authToken: process.env.DATABASE_TOKEN,
 })
@@ -30,4 +30,4 @@ const schema = {
     ...tilesSchema,
 }
 
-export const db = remember("db", () => drizzle(turso, { schema }))
+export const db = remember("db", () => drizzle(connection, { schema }))

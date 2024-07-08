@@ -27,6 +27,7 @@ import { DetailsTilesItems } from "~/routes/write+/ui/details/tiles/detailsTiles
 import { Placeholder } from "~/ui/placeholder.tsx"
 import { LayoutFooter } from "~/ui/layout/layoutFooter.tsx"
 import { Card } from "~/ui/primitives/card.tsx"
+import { DetailsEventsMain } from "./events/detailsEventsMain.tsx"
 
 export function DetailsMain() {
     const { resourceType, resourceId } = paramsSchema
@@ -47,7 +48,7 @@ export function DetailsMain() {
             tiles: undefined,
             characters: undefined,
             items: DetailsItemsMain,
-            events: undefined,
+            events: DetailsEventsMain,
             gates: DetailsGatesMain,
             locks: undefined,
         }),
@@ -94,7 +95,7 @@ export function DetailsMain() {
 
     const [expanded, setExpanded] = resourceType
         ? expandedStateMap[resourceType]
-        : [[], () => {}]
+        : [[], () => { }]
 
     const MainSection = resourceType ? mainSectionMap[resourceType] : undefined
 

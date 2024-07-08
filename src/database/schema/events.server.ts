@@ -21,7 +21,7 @@ export const events = sqliteTable(
         ...can_have_image,
 
         parent_id: integer("parent_id"),
-        trigger: text("trigger", { length: 256 }),
+        trigger: text("trigger", { length: 256 }).notNull().default("trigger"),
 
         triggers_unlock_id: integer("triggers_unlock_id"),
         triggers_lock_id: integer("triggers_lock_id"),
