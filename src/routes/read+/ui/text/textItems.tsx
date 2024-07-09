@@ -32,9 +32,9 @@ export function TextItems({
                                     key={`button.${index}`}
                                     variant="inline"
                                     className="text-base"
-                                    onClick={() =>
-                                        handleCommand(`look ${name}`)
-                                    }
+                                    onClick={() => {
+                                        handleCommand(`take ${name}`)
+                                    }}
                                 >
                                     <TextTyper className="inline-block">
                                         {name}

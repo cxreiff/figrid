@@ -31,7 +31,7 @@ export const paramsSchema = z.object({
 })
 
 export const RESOURCE_TABLES = {
-    grid: grids,
+    grids: grids,
     characters: characters,
     events: events,
     items: items,
@@ -82,7 +82,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
             })
             .returning({ insertId: assets.id })
 
-        if (resourceType === "grid") {
+        if (resourceType === "grids") {
             const resource_table = RESOURCE_TABLES[resourceType]
             await tx
                 .update(resource_table)

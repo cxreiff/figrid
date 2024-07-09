@@ -1,33 +1,32 @@
-import { useFetcher, useParams } from "@remix-run/react"
+import { useFetcher } from "@remix-run/react"
 import { useCallback } from "react"
 import * as ReactDropzone from "react-dropzone"
 import { removeExtension } from "~/lib/assets.ts"
-import { paramsSchema } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_index.tsx"
-import type { action } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/assets.$assetType.$label.ts"
 
 const useDropzone =
     ReactDropzone.default.useDropzone || ReactDropzone.useDropzone
 
-export function ImageDropzone() {
-    const { resourceType, resourceId } = paramsSchema
-        .partial()
-        .parse(useParams())
-    const fetcher = useFetcher<typeof action>()
+export function ImageDropzone({
+    getActionUrl,
+}: {
+    getActionUrl: (label: string) => string
+}) {
+    const fetcher = useFetcher()
 
     const onDrop = useCallback(
         <T extends File>(acceptedFiles: T[]) => {
-            if (acceptedFiles[0] && resourceType && resourceId) {
+            if (acceptedFiles[0]) {
                 const formData = new FormData()
                 formData.append("asset", acceptedFiles[0])
                 const label = removeExtension(acceptedFiles[0].name)
                 fetcher.submit(formData, {
-                    action: `${resourceType}/${resourceId}/assets/images/${label}`,
+                    action: getActionUrl(label),
                     method: "POST",
                     encType: "multipart/form-data",
                 })
             }
         },
-        [fetcher, resourceType, resourceId],
+        [fetcher, getActionUrl],
     )
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -39,11 +38,13 @@ export function ImageDropzone() {
         <div
             {...getRootProps({
                 className:
-                    "h-full w-full rounded-md flex justify-center items-center border hover:bg-[hsla(var(--accent)/0.4)] border-dashed border-accent text-center text-accent-foreground cursor-pointer min-h-8",
+                    "h-full w-full rounded-md flex justify-center items-center border " +
+                    "hover:bg-[hsla(var(--accent)/0.4)] border-dashed border-accent " +
+                    "text-center text-accent-foreground cursor-pointer min-h-8",
             })}
         >
             <input {...getInputProps()} />
-            {isDragActive ? <p>drop file here</p> : <p>select a file</p>}
+            {isDragActive ? <p>drop image here</p> : <p>select an image</p>}
         </div>
     )
 }

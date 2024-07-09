@@ -1,6 +1,6 @@
 import { LayoutIcon, PlayIcon } from "@radix-ui/react-icons"
 import { Outlet, useLocation, useParams } from "@remix-run/react"
-import type { LoaderFunctionArgs } from "@vercel/remix"
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "@vercel/remix"
 import { z } from "zod"
 import { auth } from "~/auth/auth.server.ts"
 import { Layout } from "~/ui/layout/layout.tsx"
@@ -36,6 +36,11 @@ import {
     tabsCookieSchema,
     useInitialTabsContext,
 } from "~/lib/contextTabs.ts"
+import { createInsertSchema } from "drizzle-zod"
+import { db } from "~/database/database.server.ts"
+import { grids } from "~/database/schema/grids.server.ts"
+import { and, eq } from "drizzle-orm"
+import { redirectBack } from "~/lib/misc.ts"
 
 export const RESOURCE_TYPES = {
     TILES: "tiles",
@@ -98,6 +103,33 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
         gateIdMap,
         itemInstanceIdMap,
     })
+}
+
+export async function action({ request, params }: ActionFunctionArgs) {
+    const user = await auth.isAuthenticated(request, {
+        failureRedirect: "/auth/login",
+    })
+
+    const formSchema = createInsertSchema(grids).pick({
+        name: true,
+        summary: true,
+        description: true,
+    })
+
+    const { gridId } = paramsSchema.parse(params)
+
+    const { name, summary, description } = formSchema.parse(
+        Object.fromEntries(await request.formData()),
+    )
+
+    await db.transaction(async (tx) => {
+        await tx
+            .update(grids)
+            .set({ name, summary, description })
+            .where(and(eq(grids.user_id, user.id), eq(grids.id, gridId)))
+    })
+
+    return redirectBack(request, `write/${gridId}`)
 }
 
 export default function Route() {

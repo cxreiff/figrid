@@ -13,7 +13,7 @@ export const GATE_TYPES = [
 export const ITEM_TYPES = ["basic", "key"] as const
 
 export const ASSET_RESOURCE_TYPES = [
-    "grid",
+    "grids",
     "tiles",
     "events",
     "characters",

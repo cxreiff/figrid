@@ -1,7 +1,6 @@
 import { useSuperRouteLoaderData } from "~/lib/superjson.ts"
 import type { WriteEventQuery } from "~/routes/write+/lib/queries.server.ts"
 import { type loader as childLoader } from "~/routes/write+/$gridId+/$resourceType+/$resourceId+/_index.tsx"
-import { useFetcher } from "@remix-run/react"
 import { withZod } from "@remix-validated-form/with-zod"
 import { z } from "zod"
 import { ValidatedForm } from "remix-validated-form"
@@ -23,11 +22,6 @@ export function DetailsEventsMain() {
         "routes/write+/$gridId+/$resourceType+/$resourceId+/_index",
     )?.resource as WriteEventQuery
 
-    const fetcher = useFetcher()
-    const trigger = fetcher.formData
-        ? fetcher.formData.get("trigger")?.toString() || resource.trigger
-        : resource.trigger
-
     return resource.parent_id == null ? (
         <p className="ml-2 text-muted">root event</p>
     ) : (
@@ -36,10 +30,9 @@ export function DetailsEventsMain() {
             validator={formSchema}
             action={`events/${resource.id}/update`}
             method="POST"
-            navigate={false}
             autoComplete="off"
             className="mb-4 flex h-full gap-2"
-            defaultValues={{ trigger }}
+            defaultValues={{ trigger: resource.trigger }}
         >
             <ValidatedInput
                 className="flex-1 [&>input]:m-0"

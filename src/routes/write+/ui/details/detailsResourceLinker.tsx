@@ -6,11 +6,13 @@ import { cn } from "~/lib/misc.ts"
 export function DetailsResourceLinker<
     T extends { id: number | string; name: string },
 >({
+    id,
     className,
     label,
     options,
     getLinkUrl,
 }: {
+    id?: string
     className?: string
     label?: string
     options: T[]
@@ -20,6 +22,7 @@ export function DetailsResourceLinker<
 
     return (
         <ActionBox
+            id={id}
             icon={PlusIcon}
             variant="outline"
             className={cn("shadow-sm", className)}

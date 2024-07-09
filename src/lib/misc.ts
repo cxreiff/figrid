@@ -1,4 +1,5 @@
 import type { IconProps } from "@radix-ui/react-icons/dist/types.js"
+import { redirect, type TypedResponse } from "@vercel/remix"
 import { type ClassValue, clsx } from "clsx"
 import { useEffect, useMemo, useRef, type ReactNode } from "react"
 import { twMerge } from "tailwind-merge"
@@ -78,4 +79,11 @@ export function useDebounce<
             ),
         [delay],
     )
+}
+
+export function redirectBack(
+    request: Request,
+    fallback: string,
+): TypedResponse<never> {
+    return redirect(request.headers.get("Referer") ?? fallback)
 }

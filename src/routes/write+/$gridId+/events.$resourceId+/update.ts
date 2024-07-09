@@ -26,18 +26,16 @@ export async function action({ request, params }: ActionFunctionArgs) {
         Object.fromEntries(await request.formData()),
     )
 
-    await db.transaction(async (tx) => {
-        await tx
-            .update(events)
-            .set({ trigger })
-            .where(
-                and(
-                    eq(events.user_id, user.id),
-                    eq(events.grid_id, gridId),
-                    eq(events.id, resourceId),
-                ),
-            )
-    })
+    await db
+        .update(events)
+        .set({ trigger })
+        .where(
+            and(
+                eq(events.user_id, user.id),
+                eq(events.grid_id, gridId),
+                eq(events.id, resourceId),
+            ),
+        )
 
     return redirect(`/write/${gridId}/events/${resourceId}`)
 }

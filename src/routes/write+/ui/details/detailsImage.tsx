@@ -9,7 +9,7 @@ import { useAssetUrl } from "~/lib/useAssetUrl.ts"
 import { DetailsImageRemove } from "~/routes/write+/ui/details/detailsImageRemove.tsx"
 import { Card } from "~/ui/primitives/card.tsx"
 import { LayoutTitled } from "~/ui/layout/layoutTitled.tsx"
-import { ImageDropzone } from "./detailsImageDropzone.tsx"
+import { ImageDropzone } from "~/ui/imageDropzone.tsx"
 
 export function DetailsImage() {
     const resource = useSuperRouteLoaderData<typeof childLoader>(
@@ -55,7 +55,11 @@ export function DetailsImage() {
                                     fade
                                 />
                             ) : (
-                                <ImageDropzone />
+                                <ImageDropzone
+                                    getActionUrl={(label) =>
+                                        `${resourceType}/${resource.id}/assets/images/${label}`
+                                    }
+                                />
                             )}
                         </div>
                     </LayoutTitled>
