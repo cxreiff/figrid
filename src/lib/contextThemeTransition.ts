@@ -1,5 +1,5 @@
 import { createContext, useState } from "react"
-import { type Theme, useTheme } from "remix-themes"
+import { Theme, useTheme } from "remix-themes"
 
 type ContextThemeTransitionType = {
     theme: Theme | null
@@ -11,20 +11,28 @@ export const ContextThemeTransition = createContext<ContextThemeTransitionType>(
     {
         theme: null,
         themeTransitioning: false,
-        triggerThemeTransition: (_: Theme) => {},
+        triggerThemeTransition: (_: Theme) => { },
     },
 )
 
-export const useThemeTransitionInitialContext =
-    (): ContextThemeTransitionType => {
-        const [themeTransitioning, setThemeTransitioning] = useState(false)
-        const [theme, setTheme] = useTheme()
+export function useThemeTransitionInitialContext(): ContextThemeTransitionType {
+    const [themeTransitioning, setThemeTransitioning] = useState(false)
+    const [theme, setTheme] = useTheme()
 
-        const triggerThemeTransition = (theme: Theme) => {
-            setTheme(theme)
-            setThemeTransitioning(true)
-            setTimeout(() => setThemeTransitioning(false), 150)
-        }
-
-        return { theme, themeTransitioning, triggerThemeTransition }
+    const triggerThemeTransition = (theme: Theme) => {
+        setTheme(theme)
+        setThemeTransitioning(true)
+        setTimeout(() => setThemeTransitioning(false), 150)
+        setPWATheme(theme)
     }
+
+    return { theme, themeTransitioning, triggerThemeTransition }
+}
+
+function setPWATheme(theme: Theme) {
+    document.querySelector("meta[name='theme-color']")?.setAttribute("content", getThemeHSL(theme))
+}
+
+export function getThemeHSL(theme: Theme | null) {
+    return theme == Theme.LIGHT ? "hsl(0 0% 92%)" : "hsl(240 10% 0%)"
+}

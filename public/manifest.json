@@ -1,1 +1,13 @@
-{ "display": "standalone" }
+{
+    "name": "figrid",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "hsl(240, 10%, 0%)",
+    "icons": [
+        {
+            "src": "icon.webp",
+            "sizes": "48x48",
+            "type": "image/webp"
+        }
+    ]
+}

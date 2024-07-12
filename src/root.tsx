@@ -15,12 +15,13 @@ import {
     type MetaFunction,
 } from "@vercel/remix"
 import { SpeedInsights } from "@vercel/speed-insights/remix"
-import { PreventFlashOnWrongTheme, ThemeProvider } from "remix-themes"
+import { PreventFlashOnWrongTheme, Theme, ThemeProvider } from "remix-themes"
 import { themeSessionResolver } from "~/lib/sessionTheme.server.ts"
 
 import stylesheet from "~/styles.css"
 import {
     ContextThemeTransition,
+    getThemeHSL,
     useThemeTransitionInitialContext,
 } from "~/lib/contextThemeTransition.ts"
 import { useContext } from "react"
@@ -74,9 +75,11 @@ function App() {
                 />
                 <meta name="mobile-web-app-capable" content="yes" />
                 <meta name="apple-mobile-web-app-capable" content="yes" />
+                <meta name="theme-color" content={getThemeHSL(theme)} />
                 <Meta />
                 <PreventFlashOnWrongTheme ssrTheme={Boolean(theme)} />
                 <link rel="manifest" href="/manifest.json" />
+                <link rel="apple-touch-icon" sizes="180x180" href="/icon.png" />
                 <Links />
             </head>
             <body>
