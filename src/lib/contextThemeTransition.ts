@@ -34,5 +34,5 @@ function setPWATheme(theme: Theme) {
 }
 
 export function getThemeHSL(theme: Theme | null) {
-    return theme == Theme.LIGHT ? "hsl(0 0% 92%)" : "hsl(240 10% 0%)"
+    return theme == Theme.LIGHT ? "hsl(348 45% 64%)" : "hsl(240 10% 0%)"
 }

@@ -5,7 +5,7 @@ export function SiteDescription() {
     const step1 = (
         <>
             <ReaderIcon className="mr-3 h-6 w-6 min-w-6 text-accent-foreground" />
-            <p className="min-w-0 sm:text-center">add writing and images</p>
+            <p className="min-w-0 sm:text-center">add writing</p>
         </>
     )
 
