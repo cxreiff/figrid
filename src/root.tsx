@@ -15,7 +15,7 @@ import {
     type MetaFunction,
 } from "@vercel/remix"
 import { SpeedInsights } from "@vercel/speed-insights/remix"
-import { PreventFlashOnWrongTheme, Theme, ThemeProvider } from "remix-themes"
+import { PreventFlashOnWrongTheme, ThemeProvider } from "remix-themes"
 import { themeSessionResolver } from "~/lib/sessionTheme.server.ts"
 
 import stylesheet from "~/styles.css"

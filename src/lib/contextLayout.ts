@@ -11,6 +11,7 @@ const DEFAULT_LAYOUT_AREA = [45, 55] as const
 const DEFAULT_LAYOUT_STATUS = [45, 55] as const
 const DEFAULT_LAYOUT_WRITE = [26, 48, 26] as const
 const DEFAULT_LAYOUT_DETAILS = [30, 80] as const
+const DEFAULT_LAYOUT_CONFIG = [30, 80] as const
 
 const LAYOUT_MIN_SIZES = {
     read: [20, 25, 20] as const,
@@ -20,6 +21,7 @@ const LAYOUT_MIN_SIZES = {
     status: [20, 20] as const,
     write: [20, 25, 20] as const,
     details: [30, 20] as const,
+    config: [30, 20] as const,
 }
 
 const percent = z.number().min(0).max(100)
@@ -32,6 +34,7 @@ export const layoutCookieSchema = z.object({
     status: z.tuple([percent, percent]).optional().readonly(),
     write: z.tuple([percent, percent, percent]).optional().readonly(),
     details: z.tuple([percent, percent]).optional().readonly(),
+    config: z.tuple([percent, percent]).optional().readonly(),
 })
 
 type LayoutCookieType = z.infer<typeof layoutCookieSchema>
@@ -44,6 +47,7 @@ type LayoutContextType = {
     statusLayoutRef: RefObject<ImperativePanelGroupHandle> | null
     writeLayoutRef: RefObject<ImperativePanelGroupHandle> | null
     detailsLayoutRef: RefObject<ImperativePanelGroupHandle> | null
+    configLayoutRef: RefObject<ImperativePanelGroupHandle> | null
     initialLayout: Required<LayoutCookieType>
     minSizes: Required<LayoutCookieType>
     saveLayout: () => void
@@ -58,6 +62,7 @@ export const ContextLayout = createContext<LayoutContextType>({
     statusLayoutRef: null,
     writeLayoutRef: null,
     detailsLayoutRef: null,
+    configLayoutRef: null,
     initialLayout: {
         read: DEFAULT_LAYOUT_READ,
         combo: DEFAULT_LAYOUT_COMBO,
@@ -66,6 +71,7 @@ export const ContextLayout = createContext<LayoutContextType>({
         status: DEFAULT_LAYOUT_STATUS,
         write: DEFAULT_LAYOUT_WRITE,
         details: DEFAULT_LAYOUT_DETAILS,
+        config: DEFAULT_LAYOUT_CONFIG,
     },
     minSizes: LAYOUT_MIN_SIZES,
     saveLayout: () => {},
@@ -82,6 +88,7 @@ export function useInitialLayoutContext(
     const statusLayoutRef = useRef<ImperativePanelGroupHandle>(null)
     const writeLayoutRef = useRef<ImperativePanelGroupHandle>(null)
     const detailsLayoutRef = useRef<ImperativePanelGroupHandle>(null)
+    const configLayoutRef = useRef<ImperativePanelGroupHandle>(null)
     const fetcher = useFetcher()
 
     const saveLayout = useDebounce(() => {
@@ -95,6 +102,7 @@ export function useInitialLayoutContext(
                     status: statusLayoutRef.current?.getLayout(),
                     write: writeLayoutRef.current?.getLayout(),
                     details: detailsLayoutRef.current?.getLayout(),
+                    config: configLayoutRef.current?.getLayout(),
                 }),
             },
             { action: "/actions/layout", method: "post" },
@@ -109,6 +117,7 @@ export function useInitialLayoutContext(
         statusLayoutRef.current?.setLayout([...DEFAULT_LAYOUT_STATUS])
         writeLayoutRef.current?.setLayout([...DEFAULT_LAYOUT_WRITE])
         detailsLayoutRef.current?.setLayout([...DEFAULT_LAYOUT_DETAILS])
+        configLayoutRef.current?.setLayout([...DEFAULT_LAYOUT_CONFIG])
         fetcher.submit(null, {
             action: "/actions/layout/delete",
             method: "post",
@@ -123,6 +132,7 @@ export function useInitialLayoutContext(
         statusLayoutRef,
         writeLayoutRef,
         detailsLayoutRef,
+        configLayoutRef,
         initialLayout: {
             read: initialLayout.read || DEFAULT_LAYOUT_READ,
             combo: initialLayout.combo || DEFAULT_LAYOUT_COMBO,
@@ -131,6 +141,7 @@ export function useInitialLayoutContext(
             status: initialLayout.status || DEFAULT_LAYOUT_STATUS,
             write: initialLayout.write || DEFAULT_LAYOUT_WRITE,
             details: initialLayout.details || DEFAULT_LAYOUT_DETAILS,
+            config: initialLayout.config || DEFAULT_LAYOUT_CONFIG,
         },
         minSizes: LAYOUT_MIN_SIZES,
         saveLayout,

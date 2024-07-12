@@ -11,7 +11,7 @@ export const ContextThemeTransition = createContext<ContextThemeTransitionType>(
     {
         theme: null,
         themeTransitioning: false,
-        triggerThemeTransition: (_: Theme) => { },
+        triggerThemeTransition: (_: Theme) => {},
     },
 )
 
@@ -30,7 +30,9 @@ export function useThemeTransitionInitialContext(): ContextThemeTransitionType {
 }
 
 function setPWATheme(theme: Theme) {
-    document.querySelector("meta[name='theme-color']")?.setAttribute("content", getThemeHSL(theme))
+    document
+        .querySelector("meta[name='theme-color']")
+        ?.setAttribute("content", getThemeHSL(theme))
 }
 
 export function getThemeHSL(theme: Theme | null) {

@@ -10,7 +10,7 @@ export const WRITE_TABS = [
     "map",
     "editor",
     "details",
-    "grid",
+    "config",
 ] as const
 export const RESOURCE_TABS = [
     "tiles",
@@ -21,7 +21,7 @@ export const RESOURCE_TABS = [
     "locks",
 ] as const
 export const CENTER_TABS = ["map", "editor"] as const
-export const DETAILS_TABS = ["details", "grid"] as const
+export const DETAILS_TABS = ["details", "config"] as const
 
 export const tabsCookieSchema = z.object({
     readTab: z.enum(READ_TABS).optional().readonly(),

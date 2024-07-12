@@ -1,29 +1,24 @@
-import { Card } from "~/ui/primitives/card.tsx"
-import type { loader } from "~/routes/write+/$gridId+/_route.tsx"
-import { ValidatedForm } from "remix-validated-form"
-import { useSuperLoaderData } from "~/lib/superjson.ts"
-import { ValidatedInput } from "~/ui/validated/validatedInput.tsx"
-import { z } from "zod"
-import { withZod } from "@remix-validated-form/with-zod"
 import {
     DoubleArrowDownIcon,
     DoubleArrowUpIcon,
     FileIcon,
     ResetIcon,
-    TrashIcon,
 } from "@radix-ui/react-icons"
-import { ValidatedButton } from "~/ui/validated/validatedButton.tsx"
-import { ValidatedTextArea } from "~/ui/validated/validatedTextArea.tsx"
-import { LayoutAccordion } from "~/ui/layout/layoutAccordion.tsx"
-import { DetailsResourceLinker } from "../details/detailsResourceLinker.tsx"
+import { withZod } from "@remix-validated-form/with-zod"
 import { useState } from "react"
-import { DetailsResourceCard } from "../details/detailsResourceCard.tsx"
-import { LayoutTitledScrolls } from "~/ui/layout/layoutTitledScrolls.tsx"
-import { Image } from "~/ui/image.tsx"
-import { useAssetUrl } from "~/lib/useAssetUrl.ts"
-import { ImageDropzone } from "~/ui/imageDropzone.tsx"
-import { Form } from "@remix-run/react"
+import { ValidatedForm } from "remix-validated-form"
+import { z } from "zod"
+import { useSuperLoaderData } from "~/lib/superjson.ts"
+import type { loader } from "~/routes/write+/$gridId+/_route.tsx"
 import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
+import { LayoutAccordion } from "~/ui/layout/layoutAccordion.tsx"
+import { LayoutTitledScrolls } from "~/ui/layout/layoutTitledScrolls.tsx"
+import { Card } from "~/ui/primitives/card.tsx"
+import { ValidatedButton } from "~/ui/validated/validatedButton.tsx"
+import { ValidatedInput } from "~/ui/validated/validatedInput.tsx"
+import { ValidatedTextArea } from "~/ui/validated/validatedTextArea.tsx"
+import { DetailsResourceCard } from "../details/detailsResourceCard.tsx"
+import { DetailsResourceLinker } from "../details/detailsResourceLinker.tsx"
 
 const formSchema = withZod(
     z.object({
@@ -33,48 +28,12 @@ const formSchema = withZod(
     }),
 )
 
-export function Grid() {
+export function ConfigMain() {
     const { grid } = useSuperLoaderData<typeof loader>()
-
-    const { assetUrl, ASSET_FALLBACKS } = useAssetUrl()
 
     const [expanded, setExpanded] = useState<string[]>([])
 
     const accordionSection = {
-        "image": (
-            <div className="relative h-full min-h-fit rounded-sm border bg-background p-2">
-                {grid.image_asset ? (
-                    <>
-                        <Image
-                            className="h-44"
-                            src={assetUrl(
-                                grid.image_asset,
-                                ASSET_FALLBACKS.TILE_IMAGE,
-                            )}
-                            fade
-                        />
-                        <Form
-                            className="absolute right-2 top-2"
-                            action={`grids/${grid.id}/assets/images/${grid.image_asset_id}/delete`}
-                            navigate={false}
-                            method="POST"
-                        >
-                            <ButtonWithIcon
-                                icon={TrashIcon}
-                                type="submit"
-                                className="bg-card hover:bg-accent"
-                            />
-                        </Form>
-                    </>
-                ) : (
-                    <ImageDropzone
-                        getActionUrl={(label) =>
-                            `grids/${grid.id}/assets/images/${label}`
-                        }
-                    />
-                )}
-            </div>
-        ),
         "information": (
             <ValidatedForm
                 key={grid.id}

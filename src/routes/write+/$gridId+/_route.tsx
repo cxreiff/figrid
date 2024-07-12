@@ -24,7 +24,7 @@ import {
 } from "~/routes/read+/lib/processing.server.ts"
 import { ButtonWithIconLink } from "~/ui/buttonWithIconLink.tsx"
 import { ButtonWithIcon } from "~/ui/buttonWithIcon.tsx"
-import { Grid } from "~/routes/write+/ui/grid/grid.tsx"
+import { Config } from "~/routes/write+/ui/config/config.tsx"
 import { LayoutSplit } from "~/ui/layout/layoutSplit.tsx"
 import { getSessionTabs } from "~/lib/sessionTabs.server.ts"
 import {
@@ -191,7 +191,7 @@ export default function Route() {
 
     const details_section = <Details />
 
-    const grid_section = <Grid />
+    const config_section = <Config />
 
     const right_section = (
         <LayoutTabs
@@ -200,7 +200,7 @@ export default function Route() {
             onValueChange={tabsContext.setDetailsTab}
         >
             {details_section}
-            {grid_section}
+            {config_section}
         </LayoutTabs>
     )
 
@@ -235,7 +235,7 @@ export default function Route() {
                         {map_section}
                         {editor_section}
                         {details_section}
-                        {grid_section}
+                        {config_section}
                     </LayoutTabs>
                     <LayoutSplit
                         className="hidden lg:block"
